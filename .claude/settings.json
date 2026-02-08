@@ -1,0 +1,30 @@
+{
+  "hooks": {
+    "PreToolUse": [],
+    "PostToolUse": [],
+    "UserPromptSubmit": [
+      {
+        "matcher": "*",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node .claude/hooks/save-prompt.js"
+          }
+        ],
+        "description": "Save user prompts to prompt/personal_prompt.md for pattern analysis"
+      }
+    ],
+    "SessionStart": [
+      {
+        "matcher": "*",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node -e \"const fs=require('fs');const f='.claude/.analyze-trigger';if(fs.existsSync(f)){const n=fs.readFileSync(f,'utf8');console.error('[Hook] 📊 '+n+'개 프롬프트가 쌓였습니다. /analyze-prompt로 패턴 분석하세요.');fs.unlinkSync(f)}\""
+          }
+        ],
+        "description": "Check for analyze trigger on session start"
+      }
+    ]
+  }
+}
