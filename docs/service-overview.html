@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>거트알림 - 서비스 소개</title>
+<style>
+  @media print {
+    body { margin: 0; padding: 20px; }
+    .no-print { display: none; }
+    h1 { page-break-before: avoid; }
+    h2 { page-break-after: avoid; }
+    table { page-break-inside: avoid; }
+  }
+  body {
+    font-family: 'Pretendard', 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif;
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 40px 24px;
+    color: #1a1a1a;
+    line-height: 1.8;
+    font-size: 15px;
+  }
+  h1 {
+    font-size: 28px;
+    font-weight: 800;
+    color: #111;
+    border-bottom: 3px solid #2563eb;
+    padding-bottom: 12px;
+    margin-bottom: 32px;
+  }
+  h2 {
+    font-size: 20px;
+    font-weight: 700;
+    color: #1e3a5f;
+    margin-top: 40px;
+    margin-bottom: 16px;
+    padding-bottom: 6px;
+    border-bottom: 1px solid #e5e7eb;
+  }
+  h3 {
+    font-size: 16px;
+    font-weight: 600;
+    color: #334155;
+    margin-top: 24px;
+    margin-bottom: 8px;
+  }
+  p {
+    margin: 8px 0;
+  }
+  ul {
+    padding-left: 20px;
+    margin: 8px 0;
+  }
+  li {
+    margin: 4px 0;
+  }
+  strong {
+    color: #1e40af;
+  }
+  hr {
+    border: none;
+    border-top: 1px solid #e5e7eb;
+    margin: 32px 0;
+  }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 16px 0;
+    font-size: 14px;
+  }
+  th {
+    background-color: #f1f5f9;
+    font-weight: 600;
+    text-align: left;
+    padding: 10px 14px;
+    border: 1px solid #cbd5e1;
+  }
+  td {
+    padding: 10px 14px;
+    border: 1px solid #e2e8f0;
+  }
+  tr:nth-child(even) td {
+    background-color: #f8fafc;
+  }
+  pre {
+    background-color: #f8fafc;
+    border: 1px solid #e2e8f0;
+    border-radius: 6px;
+    padding: 16px;
+    font-family: 'D2Coding', 'Consolas', monospace;
+    font-size: 13px;
+    line-height: 1.6;
+    overflow-x: auto;
+  }
+  code {
+    font-family: 'D2Coding', 'Consolas', monospace;
+    font-size: 13px;
+  }
+  .summary-box {
+    background: linear-gradient(135deg, #eff6ff, #f0f9ff);
+    border-left: 4px solid #2563eb;
+    padding: 16px 20px;
+    border-radius: 0 8px 8px 0;
+    margin: 16px 0;
+    font-size: 16px;
+    font-weight: 500;
+  }
+  .print-btn {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background: #2563eb;
+    color: white;
+    border: none;
+    padding: 12px 24px;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    box-shadow: 0 2px 8px rgba(37,99,235,0.3);
+  }
+  .print-btn:hover {
+    background: #1d4ed8;
+  }
+</style>
+</head>
+<body>
+
+<button class="print-btn no-print" onclick="window.print()">PDF로 저장 (Ctrl+P)</button>
+
+<h1>거트알림 - 서비스 소개</h1>
+
+<h2>한 줄 요약</h2>
+<div class="summary-box">
+  배드민턴 거트 작업의 접수부터 완료까지 실시간 진행 현황을 알려주어, 고객의 헛걸음을 방지하고 샵의 고객 관리를 돕는 모바일 앱.
+</div>
+
+<hr>
+
+<h2>어떤 문제를 해결하나요?</h2>
+<p>배드민턴 거트(스트링) 교체를 위해 샵에 라켓을 맡기면, "언제까지 해드릴게요"라는 구두 약속만 이루어진다. 실제 완료 시점을 정확히 알 수 없어 다음과 같은 문제가 반복된다.</p>
+<ul>
+  <li>약속 시간에 맞춰 갔지만 작업이 아직 완료되지 않아 <strong>헛걸음하는 사례가 빈번</strong>하다.</li>
+  <li>고객은 작업 진행 상황을 알 수 없어 <strong>불안감과 불편함</strong>을 느낀다.</li>
+  <li>샵은 고객 문의 전화를 반복적으로 받는 <strong>운영 비효율</strong>이 발생한다.</li>
+</ul>
+<p>거트알림은 이 간극을 메운다.</p>
+<ul>
+  <li>사장님이 작업 상태를 변경하면 고객에게 <strong>푸시 알림이 즉시 전송</strong>된다.</li>
+  <li>고객은 앱에서 <strong>작업 진행 현황을 실시간으로 확인</strong>할 수 있다.</li>
+  <li>완료 알림을 받으면 <strong>샵 위치 길찾기</strong>로 바로 수령하러 갈 수 있다.</li>
+</ul>
+
+<hr>
+
+<h2>사용자는 누구인가요?</h2>
+
+<h3>고객 (배드민턴 동호인)</h3>
+<p>거트 교체를 맡기고 완료 여부가 궁금한 배드민턴 동호인. 실시간 알림으로 헛걸음 없이 라켓을 수령할 수 있다.</p>
+
+<h3>샵 사장님 (거트 전문점 운영자)</h3>
+<p>거트 작업을 접수하고 관리하는 샵 운영자. 앱으로 작업 상태를 관리하여 문의 전화를 줄이고, 회원 관리를 통해 단골 고객을 확보할 수 있다.</p>
+
+<hr>
+
+<h2>서비스 이용 흐름</h2>
+
+<h3>고객의 흐름</h3>
+<pre>1. 오프라인에서 샵에 라켓을 맡긴다.
+2. 사장님이 작업을 접수하면 "접수됨" 푸시 알림을 받는다.
+3. 앱에서 작업 진행 현황(접수됨 → 작업중 → 완료)을 실시간으로 확인한다.
+4. "완료" 푸시 알림을 받으면 샵 위치 길찾기로 라켓을 수령하러 간다.</pre>
+
+<h3>샵 사장님의 흐름</h3>
+<pre>1. 회원가입 시 "샵 사장님"을 선택하고 샵 정보를 등록한다.
+2. 고객이 라켓을 맡기면 QR 스캔 또는 수동으로 회원을 등록한다.
+3. 거트, 텐션, 라켓 정보를 입력하고 작업을 접수한다.
+4. 작업 진행에 따라 상태를 변경한다. (접수됨 → 작업중 → 완료)
+5. 상태 변경 즉시 고객에게 푸시 알림이 자동 전송된다.</pre>
+
+<hr>
+
+<h2>핵심 차별점: QR코드 기반 간편 회원 등록</h2>
+<p>기존 샵에서는 고객 정보를 수기로 메모하거나, 별도의 관리 수단이 없는 경우가 대부분이다. 거트알림은 <strong>QR코드 스캔 한 번으로 회원 등록과 작업 접수를 연결</strong>하는 방식으로 이 과정을 혁신한다.</p>
+
+<h3>앱 사용 고객의 경우</h3>
+<p>고객이 "내 QR코드" 화면을 보여주면, 사장님이 스캔하여 이름과 연락처가 자동 입력된다. 선호 거트, 텐션, 라켓 정보만 추가하면 바로 작업 접수가 가능하다.</p>
+
+<h3>앱 미가입 고객의 경우</h3>
+<p>사장님이 수동으로 회원을 등록한다. 나중에 고객이 앱에 가입하면, 전화번호 기준으로 기존 회원 정보와 자동 매칭되어 이전 작업 이력까지 바로 확인할 수 있다.</p>
+
+<hr>
+
+<h2>핵심 기능</h2>
+
+<h3>실시간 작업 현황 확인</h3>
+<p>고객은 앱에서 자신의 거트 작업 상태(접수됨 / 작업중 / 완료)를 실시간으로 확인할 수 있다. 각 상태 변경 시점이 타임라인으로 표시된다.</p>
+
+<h3>푸시 알림</h3>
+<p>사장님이 작업 상태를 변경하면 고객에게 즉시 푸시 알림이 전송된다. 완료 알림에는 샵 위치 바로가기가 포함되어, 탭 한 번으로 길찾기 화면으로 이동할 수 있다.</p>
+
+<h3>주변 샵 검색</h3>
+<p>네이버 지도에서 현재 위치 기준으로 주변 거트 샵을 검색할 수 있다. 지도 마커 또는 리스트 뷰로 확인 가능하며, 각 샵의 현재 작업 현황(접수 N건 / 작업중 N건)도 표시된다.</p>
+
+<h3>QR코드 회원 등록</h3>
+<p>고객이 QR코드를 보여주면 사장님이 스캔하여 간편하게 회원 등록을 할 수 있다. 개인정보 최소화를 위해 QR에는 user_id만 인코딩된다.</p>
+
+<h3>회원 관리</h3>
+<p>사장님은 회원별 선호 거트, 텐션, 라켓 정보, 방문 이력을 체계적으로 관리할 수 있다. 단골 고객의 선호 정보를 미리 파악하여 빠른 작업 접수가 가능하다.</p>
+
+<h3>작업 관리 대시보드</h3>
+<p>사장님은 오늘의 작업 현황(접수 / 진행 / 완료 건수)을 한눈에 확인하고, 한 탭으로 작업 상태를 전환할 수 있다.</p>
+
+<hr>
+
+<h2>비즈니스 모델</h2>
+<table>
+  <thead>
+    <tr><th>구분</th><th>비용</th></tr>
+  </thead>
+  <tbody>
+    <tr><td>고객 - 앱 사용</td><td>무료</td></tr>
+    <tr><td>고객 - 작업 현황 확인 및 알림</td><td>무료</td></tr>
+    <tr><td>샵 사장님 - 작업 관리 및 회원 관리</td><td>무료</td></tr>
+  </tbody>
+</table>
+<p>초기에는 모든 기능을 무료로 제공하여 사용자를 확보한다. 향후 샵 홍보 기능, 프리미엄 회원 관리 도구 등 부가 서비스를 통한 수익 모델을 검토할 수 있다.</p>
+
+<hr>
+
+<h2>주요 페이지 구성</h2>
+<table>
+  <thead>
+    <tr><th>페이지</th><th>설명</th></tr>
+  </thead>
+  <tbody>
+    <tr><td>스플래시 / 로그인</td><td>앱 진입, 역할 선택(고객 / 샵 사장님) 후 회원가입</td></tr>
+    <tr><td>고객 홈</td><td>현재 진행 중인 내 작업 목록 (상태 표시: 접수됨/작업중/완료)</td></tr>
+    <tr><td>작업 상세</td><td>거트, 텐션, 라켓, 샵 정보, 상태 타임라인</td></tr>
+    <tr><td>주변 샵 검색</td><td>네이버 지도에 주변 샵 마커 표시, 리스트 뷰 전환</td></tr>
+    <tr><td>샵 상세</td><td>샵 소개, 위치, 연락처, 길찾기 버튼, 현재 작업 현황</td></tr>
+    <tr><td>내 QR코드</td><td>사장님에게 보여줄 QR코드 화면</td></tr>
+    <tr><td>작업 이력</td><td>과거 완료된 작업 목록</td></tr>
+    <tr><td>마이페이지</td><td>프로필 수정, 알림 설정</td></tr>
+    <tr><td>사장님 대시보드</td><td>오늘의 작업 현황, 최근 작업 목록</td></tr>
+    <tr><td>작업 접수</td><td>QR 스캔 or 회원 검색 → 거트/텐션/라켓 입력 → 접수</td></tr>
+    <tr><td>작업 관리</td><td>전체 작업 목록, 상태 변경 버튼</td></tr>
+    <tr><td>회원 관리</td><td>회원 목록, 검색, 상세 정보 (선호 거트, 라켓, 방문 이력)</td></tr>
+    <tr><td>샵 설정</td><td>샵 정보 수정, 사장님 개인정보 수정</td></tr>
+  </tbody>
+</table>
+
+<hr>
+
+<h2>기술 구성 요약</h2>
+<table>
+  <thead>
+    <tr><th>영역</th><th>기술</th><th>역할</th></tr>
+  </thead>
+  <tbody>
+    <tr><td>프론트엔드</td><td>Flutter</td><td>iOS/Android 크로스 플랫폼 앱</td></tr>
+    <tr><td>DB/인증</td><td>Supabase (PostgreSQL + Auth)</td><td>데이터 저장, 사용자 인증</td></tr>
+    <tr><td>푸시 알림</td><td>Firebase Cloud Messaging (FCM)</td><td>작업 상태 변경 시 알림 전송</td></tr>
+    <tr><td>알림 트리거</td><td>Supabase Edge Function</td><td>DB 트리거 → FCM 호출</td></tr>
+    <tr><td>지도</td><td>Naver Map API</td><td>주변 샵 검색, 길찾기 연동</td></tr>
+  </tbody>
+</table>
+
+<hr>
+
+<h2>핵심 정책</h2>
+<ul>
+  <li><strong>앱 미가입 고객 지원</strong>: 고객이 앱에 가입하지 않아도 사장님이 수동으로 회원 등록 가능. 나중에 가입하면 전화번호로 자동 매칭</li>
+  <li><strong>개인정보 최소화</strong>: QR코드에는 user_id만 인코딩하여 개인정보 노출을 최소화</li>
+  <li><strong>가입 시 역할 고정</strong>: 고객과 샵 사장님 간 역할 전환은 불가</li>
+  <li><strong>작업 정보 독립 저장</strong>: 매 작업마다 거트, 텐션, 라켓 정보를 별도 저장하여 회원 선호값과 독립적으로 기록</li>
+</ul>
+
+</body>
+</html>
