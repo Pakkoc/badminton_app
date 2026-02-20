@@ -25,12 +25,33 @@ allowed-tools:
 /ui-screen-spec all              # 전체 화면 스펙 일괄 생성
 ```
 
+### 스펙 수정 모드
+
+기존 스펙을 수정하는 경우:
+
+```
+/ui-screen-spec update [screen-name]   # 특정 화면 스펙 수정
+```
+
+**수정 절차:**
+1. 기존 스펙 파일을 읽는다 (`docs/ui-specs/{screen-name}.md`)
+2. 변경 사유와 범위를 파악한다
+3. 변경된 내용을 반영하여 스펙을 업데이트한다
+4. **Cross-reference 확인**: 다른 스펙에서 이 화면을 참조하는 부분도 업데이트한다
+   - 네비게이션 섹션에서 이 화면으로 이동하는 경로
+   - 화면 ID나 화면명이 변경된 경우 모든 참조 문서를 검색하여 수정
+5. 커밋한다
+
+**Cross-reference 검색 방법:**
+- 변경된 화면 ID로 `docs/ui-specs/*.md` 전체를 Grep 검색한다
+- 예: `signup` → `profile-setup`으로 변경 시, 모든 스펙에서 `signup`을 검색하여 참조를 업데이트
+
 ### 화면 이름 목록
 
 공통 화면:
 - `splash` — 스플래시
-- `login` — 로그인
-- `signup` — 회원가입 (고객/사장님 분기)
+- `login` — 로그인 (소셜 로그인: 카카오/네이버/Gmail)
+- `profile-setup` — 프로필 설정 (소셜 로그인 후 신규 사용자 역할/이름/연락처 입력)
 
 고객 화면 (바텀 탭: 홈 / 샵검색 / 이력 / MY):
 - `customer-home` — 고객 홈 (진행 중 작업 목록)
@@ -118,6 +139,8 @@ allowed-tools:
 - 필드 검증 규칙은 **구체적인 조건**을 명시한다 (예: "2~20자", "010-XXXX-XXXX 형식").
 - 화면 상태(로딩/빈 상태/에러/정상)별 **UI 분기**를 정의한다.
 - **UX 가이드라인 체크리스트**를 각 스펙 문서 하단에 포함하여 충족 여부를 표시한다.
+- **스펙 수정 시** 화면 ID/이름이 변경되면 다른 스펙의 네비게이션 섹션에서 해당 화면을 참조하는 부분도 함께 수정한다.
+- **스펙 수정 시** 변경 이력을 최종 수정일에 반영한다.
 
 ## 출력 위치
 
@@ -127,7 +150,7 @@ allowed-tools:
 docs/ui-specs/
 ├── splash.md
 ├── login.md
-├── signup.md
+├── profile-setup.md
 ├── shop-signup.md
 ├── customer-home.md
 ├── order-detail.md
