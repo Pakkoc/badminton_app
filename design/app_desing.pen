@@ -7625,10 +7625,10 @@
           "type": "frame",
           "id": "FP75q",
           "x": 0,
-          "y": 324,
+          "y": 376,
           "name": "Bottom Sheet",
           "width": 390,
-          "height": 520,
+          "height": 468,
           "fill": "#FFFFFF",
           "cornerRadius": [
             24,
@@ -7701,9 +7701,11 @@
               "width": "fill_container",
               "height": "fill_container",
               "layout": "vertical",
-              "gap": 16,
+              "gap": 8,
               "padding": [
                 0,
+                24,
+                16,
                 24
               ],
               "children": [
@@ -7953,10 +7955,10 @@
           "type": "frame",
           "id": "7kR2T",
           "x": 0,
-          "y": 284,
+          "y": 328,
           "name": "Bottom Sheet",
           "width": 390,
-          "height": 560,
+          "height": 516,
           "fill": "#FFFFFF",
           "cornerRadius": [
             24,
@@ -8029,9 +8031,11 @@
               "width": "fill_container",
               "height": "fill_container",
               "layout": "vertical",
-              "gap": 16,
+              "gap": 8,
               "padding": [
                 0,
+                24,
+                16,
                 24
               ],
               "children": [
