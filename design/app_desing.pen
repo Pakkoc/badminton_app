@@ -45,7 +45,7 @@
               "name": "appName",
               "fill": "$--text-primary",
               "content": "거트알림",
-              "fontFamily": "Pretendard",
+              "fontFamily": "Gmarket Sans",
               "fontSize": 28,
               "fontWeight": "Bold"
             },
@@ -55,7 +55,7 @@
               "name": "tagline",
               "fill": "$--text-secondary",
               "content": "배드민턴 거트 작업 실시간 추적",
-              "fontFamily": "Pretendard",
+              "fontFamily": "Gmarket Sans",
               "fontSize": 14,
               "fontWeight": "Regular"
             }
@@ -81,7 +81,7 @@
               "name": "brandText",
               "fill": "$--text-tertiary",
               "content": "© 2026 거트알림",
-              "fontFamily": "Pretendard",
+              "fontFamily": "Gmarket Sans",
               "fontSize": 12,
               "fontWeight": "Regular"
             }
@@ -131,7 +131,7 @@
               "name": "logoText",
               "fill": "$--text-primary",
               "content": "거트알림",
-              "fontFamily": "Pretendard",
+              "fontFamily": "Gmarket Sans",
               "fontSize": 24,
               "fontWeight": "Bold"
             }
@@ -151,7 +151,7 @@
               "name": "welcomeTitle",
               "fill": "$--text-primary",
               "content": "반갑습니다!",
-              "fontFamily": "Pretendard",
+              "fontFamily": "Gmarket Sans",
               "fontSize": 28,
               "fontWeight": "Bold"
             },
@@ -163,7 +163,7 @@
               "textGrowth": "fixed-width",
               "width": "fill_container",
               "content": "로그인하고 거트 작업 현황을 확인하세요",
-              "fontFamily": "Pretendard",
+              "fontFamily": "Gmarket Sans",
               "fontSize": 14,
               "fontWeight": "Regular"
             }
@@ -197,7 +197,7 @@
                   "name": "emailPlaceholder",
                   "fill": "$--text-tertiary",
                   "content": "이메일",
-                  "fontFamily": "Pretendard",
+                  "fontFamily": "Gmarket Sans",
                   "fontSize": 14,
                   "fontWeight": "Regular"
                 }
@@ -223,7 +223,7 @@
                   "name": "passwordPlaceholder",
                   "fill": "$--text-tertiary",
                   "content": "비밀번호",
-                  "fontFamily": "Pretendard",
+                  "fontFamily": "Gmarket Sans",
                   "fontSize": 14,
                   "fontWeight": "Regular"
                 }
@@ -248,7 +248,7 @@
               "name": "loginText",
               "fill": "#FFFFFF",
               "content": "로그인",
-              "fontFamily": "Pretendard",
+              "fontFamily": "Gmarket Sans",
               "fontSize": 16,
               "fontWeight": "SemiBold"
             }
@@ -276,7 +276,7 @@
               "name": "dividerText",
               "fill": "$--text-tertiary",
               "content": "또는",
-              "fontFamily": "Pretendard",
+              "fontFamily": "Gmarket Sans",
               "fontSize": 12,
               "fontWeight": "Regular"
             },
@@ -304,7 +304,7 @@
               "name": "signupQuestion",
               "fill": "$--text-secondary",
               "content": "아직 회원이 아니신가요?",
-              "fontFamily": "Pretendard",
+              "fontFamily": "Gmarket Sans",
               "fontSize": 14,
               "fontWeight": "Regular"
             },
@@ -314,7 +314,7 @@
               "name": "signupLink",
               "fill": "$--primary",
               "content": "회원가입",
-              "fontFamily": "Pretendard",
+              "fontFamily": "Gmarket Sans",
               "fontSize": 14,
               "fontWeight": "SemiBold"
             }
@@ -365,7 +365,7 @@
               "name": "titleText",
               "fill": "$--text-primary",
               "content": "회원가입",
-              "fontFamily": "Pretendard",
+              "fontFamily": "Gmarket Sans",
               "fontSize": 24,
               "fontWeight": "700"
             },
@@ -375,7 +375,7 @@
               "name": "subtitleText",
               "fill": "$--text-secondary",
               "content": "거트알림에 오신 것을 환영합니다",
-              "fontFamily": "Pretendard",
+              "fontFamily": "Gmarket Sans",
               "fontSize": 14,
               "fontWeight": "normal"
             }
@@ -420,7 +420,7 @@
                   "name": "custTitle",
                   "fill": "$--text-primary",
                   "content": "고객",
-                  "fontFamily": "Pretendard",
+                  "fontFamily": "Gmarket Sans",
                   "fontSize": 16,
                   "fontWeight": "600"
                 },
@@ -430,7 +430,7 @@
                   "name": "custDesc",
                   "fill": "$--text-tertiary",
                   "content": "작업 현황 확인",
-                  "fontFamily": "Pretendard",
+                  "fontFamily": "Gmarket Sans",
                   "fontSize": 12,
                   "fontWeight": "normal"
                 }
@@ -468,7 +468,7 @@
                   "name": "shopTitle",
                   "fill": "$--text-primary",
                   "content": "샵 사장님",
-                  "fontFamily": "Pretendard",
+                  "fontFamily": "Gmarket Sans",
                   "fontSize": 16,
                   "fontWeight": "600"
                 },
@@ -478,7 +478,7 @@
                   "name": "shopDesc",
                   "fill": "$--text-tertiary",
                   "content": "작업 관리",
-                  "fontFamily": "Pretendard",
+                  "fontFamily": "Gmarket Sans",
                   "fontSize": 12,
                   "fontWeight": "normal"
                 }
@@ -514,7 +514,7 @@
                   "name": "ph1",
                   "fill": "$--text-tertiary",
                   "content": "이름",
-                  "fontFamily": "Pretendard",
+                  "fontFamily": "Gmarket Sans",
                   "fontSize": 14,
                   "fontWeight": "normal"
                 }
@@ -540,7 +540,7 @@
                   "name": "ph2",
                   "fill": "$--text-tertiary",
                   "content": "이메일",
-                  "fontFamily": "Pretendard",
+                  "fontFamily": "Gmarket Sans",
                   "fontSize": 14,
                   "fontWeight": "normal"
                 }
@@ -566,7 +566,7 @@
                   "name": "ph3",
                   "fill": "$--text-tertiary",
                   "content": "비밀번호",
-                  "fontFamily": "Pretendard",
+                  "fontFamily": "Gmarket Sans",
                   "fontSize": 14,
                   "fontWeight": "normal"
                 }
@@ -592,7 +592,7 @@
                   "name": "ph4",
                   "fill": "$--text-tertiary",
                   "content": "비밀번호 확인",
-                  "fontFamily": "Pretendard",
+                  "fontFamily": "Gmarket Sans",
                   "fontSize": 14,
                   "fontWeight": "normal"
                 }
@@ -618,7 +618,7 @@
                   "name": "ph5",
                   "fill": "$--text-tertiary",
                   "content": "연락처",
-                  "fontFamily": "Pretendard",
+                  "fontFamily": "Gmarket Sans",
                   "fontSize": 14,
                   "fontWeight": "normal"
                 }
@@ -643,7 +643,7 @@
               "name": "btnText",
               "fill": "#FFFFFF",
               "content": "회원가입",
-              "fontFamily": "Pretendard",
+              "fontFamily": "Gmarket Sans",
               "fontSize": 16,
               "fontWeight": "600"
             }
@@ -656,7 +656,7 @@
           "fill": "$--text-secondary",
           "content": "이미 계정이 있으신가요? 로그인",
           "textAlign": "center",
-          "fontFamily": "Pretendard",
+          "fontFamily": "Gmarket Sans",
           "fontSize": 14,
           "fontWeight": "normal"
         }
@@ -694,7 +694,7 @@
               "name": "appTitle",
               "fill": "$--primary",
               "content": "거트알림",
-              "fontFamily": "Pretendard",
+              "fontFamily": "Gmarket Sans",
               "fontSize": 20,
               "fontWeight": "Bold"
             },
@@ -757,7 +757,7 @@
                       "name": "stat1Text",
                       "fill": "$--text-primary",
                       "content": "접수 2건",
-                      "fontFamily": "Pretendard",
+                      "fontFamily": "Gmarket Sans",
                       "fontSize": 14,
                       "fontWeight": "SemiBold"
                     }
@@ -787,7 +787,7 @@
                       "name": "stat2Text",
                       "fill": "$--text-primary",
                       "content": "작업중 1건",
-                      "fontFamily": "Pretendard",
+                      "fontFamily": "Gmarket Sans",
                       "fontSize": 14,
                       "fontWeight": "SemiBold"
                     }
@@ -817,7 +817,7 @@
               "name": "sectionTitle",
               "fill": "$--text-primary",
               "content": "진행 중인 작업",
-              "fontFamily": "Pretendard",
+              "fontFamily": "Gmarket Sans",
               "fontSize": 18,
               "fontWeight": "SemiBold"
             },
@@ -827,7 +827,7 @@
               "name": "sectionLink",
               "fill": "$--primary",
               "content": "전체보기",
-              "fontFamily": "Pretendard",
+              "fontFamily": "Gmarket Sans",
               "fontSize": 14,
               "fontWeight": "normal"
             }
@@ -875,7 +875,7 @@
                       "name": "card1Title",
                       "fill": "$--text-primary",
                       "content": "YONEX AX99 Pro",
-                      "fontFamily": "Pretendard",
+                      "fontFamily": "Gmarket Sans",
                       "fontSize": 16,
                       "fontWeight": "SemiBold"
                     },
@@ -906,7 +906,7 @@
                           "name": "card1BadgeText",
                           "fill": "$--status-progress-text",
                           "content": "작업중",
-                          "fontFamily": "Pretendard",
+                          "fontFamily": "Gmarket Sans",
                           "fontSize": 12,
                           "fontWeight": "Medium"
                         }
@@ -920,7 +920,7 @@
                   "name": "card1Spec",
                   "fill": "$--text-secondary",
                   "content": "BG65 | 25lbs",
-                  "fontFamily": "Pretendard",
+                  "fontFamily": "Gmarket Sans",
                   "fontSize": 14,
                   "fontWeight": "normal"
                 },
@@ -948,7 +948,7 @@
                       "name": "card1ShopText",
                       "fill": "$--text-tertiary",
                       "content": "OO 거트샵 · 접수 14:30",
-                      "fontFamily": "Pretendard",
+                      "fontFamily": "Gmarket Sans",
                       "fontSize": 12,
                       "fontWeight": "normal"
                     }
@@ -986,7 +986,7 @@
                       "name": "card2Title",
                       "fill": "$--text-primary",
                       "content": "VICTOR Thruster F",
-                      "fontFamily": "Pretendard",
+                      "fontFamily": "Gmarket Sans",
                       "fontSize": 16,
                       "fontWeight": "SemiBold"
                     },
@@ -1017,7 +1017,7 @@
                           "name": "card2BadgeText",
                           "fill": "$--status-received-text",
                           "content": "접수됨",
-                          "fontFamily": "Pretendard",
+                          "fontFamily": "Gmarket Sans",
                           "fontSize": 12,
                           "fontWeight": "Medium"
                         }
@@ -1031,7 +1031,7 @@
                   "name": "card2Spec",
                   "fill": "$--text-secondary",
                   "content": "YONEX BG80 | 27lbs",
-                  "fontFamily": "Pretendard",
+                  "fontFamily": "Gmarket Sans",
                   "fontSize": 14,
                   "fontWeight": "normal"
                 },
@@ -1059,7 +1059,7 @@
                       "name": "card2ShopText",
                       "fill": "$--text-tertiary",
                       "content": "XX 스트링샵 · 접수 10:15",
-                      "fontFamily": "Pretendard",
+                      "fontFamily": "Gmarket Sans",
                       "fontSize": 12,
                       "fontWeight": "normal"
                     }
@@ -1123,7 +1123,7 @@
                   "name": "tab1Label",
                   "fill": "$--primary",
                   "content": "홈",
-                  "fontFamily": "Pretendard",
+                  "fontFamily": "Gmarket Sans",
                   "fontSize": 10,
                   "fontWeight": "normal"
                 }
@@ -1153,7 +1153,7 @@
                   "name": "tab2Label",
                   "fill": "$--text-tertiary",
                   "content": "샵검색",
-                  "fontFamily": "Pretendard",
+                  "fontFamily": "Gmarket Sans",
                   "fontSize": 10,
                   "fontWeight": "normal"
                 }
@@ -1183,7 +1183,7 @@
                   "name": "tab3Label",
                   "fill": "$--text-tertiary",
                   "content": "QR",
-                  "fontFamily": "Pretendard",
+                  "fontFamily": "Gmarket Sans",
                   "fontSize": 10,
                   "fontWeight": "normal"
                 }
@@ -1213,7 +1213,7 @@
                   "name": "tab4Label",
                   "fill": "$--text-tertiary",
                   "content": "이력",
-                  "fontFamily": "Pretendard",
+                  "fontFamily": "Gmarket Sans",
                   "fontSize": 10,
                   "fontWeight": "normal"
                 }
@@ -1243,7 +1243,7 @@
                   "name": "tab5Label",
                   "fill": "$--text-tertiary",
                   "content": "MY",
-                  "fontFamily": "Pretendard",
+                  "fontFamily": "Gmarket Sans",
                   "fontSize": 10,
                   "fontWeight": "normal"
                 }
@@ -1285,7 +1285,7 @@
               "name": "appBarTitle",
               "fill": "$--text-primary",
               "content": "대시보드",
-              "fontFamily": "Pretendard",
+              "fontFamily": "Gmarket Sans",
               "fontSize": 20,
               "fontWeight": "Bold"
             },
@@ -1316,7 +1316,7 @@
               "name": "statsTitle",
               "fill": "$--text-primary",
               "content": "오늘의 작업 현황",
-              "fontFamily": "Pretendard",
+              "fontFamily": "Gmarket Sans",
               "fontSize": 16,
               "fontWeight": "SemiBold"
             },
@@ -1345,7 +1345,7 @@
                       "name": "card1Num",
                       "fill": "$--status-received",
                       "content": "3",
-                      "fontFamily": "Pretendard",
+                      "fontFamily": "Gmarket Sans",
                       "fontSize": 32,
                       "fontWeight": "Bold"
                     },
@@ -1355,7 +1355,7 @@
                       "name": "card1Label",
                       "fill": "$--status-received-text",
                       "content": "접수됨",
-                      "fontFamily": "Pretendard",
+                      "fontFamily": "Gmarket Sans",
                       "fontSize": 12,
                       "fontWeight": "Medium"
                     }
@@ -1379,7 +1379,7 @@
                       "name": "card2Num",
                       "fill": "$--status-progress",
                       "content": "2",
-                      "fontFamily": "Pretendard",
+                      "fontFamily": "Gmarket Sans",
                       "fontSize": 32,
                       "fontWeight": "Bold"
                     },
@@ -1389,7 +1389,7 @@
                       "name": "card2Label",
                       "fill": "$--status-progress-text",
                       "content": "작업중",
-                      "fontFamily": "Pretendard",
+                      "fontFamily": "Gmarket Sans",
                       "fontSize": 12,
                       "fontWeight": "Medium"
                     }
@@ -1413,7 +1413,7 @@
                       "name": "card3Num",
                       "fill": "$--status-completed",
                       "content": "5",
-                      "fontFamily": "Pretendard",
+                      "fontFamily": "Gmarket Sans",
                       "fontSize": 32,
                       "fontWeight": "Bold"
                     },
@@ -1423,7 +1423,7 @@
                       "name": "card3Label",
                       "fill": "$--status-completed-text",
                       "content": "완료",
-                      "fontFamily": "Pretendard",
+                      "fontFamily": "Gmarket Sans",
                       "fontSize": 12,
                       "fontWeight": "Medium"
                     }
@@ -1453,7 +1453,7 @@
               "name": "recentTitle",
               "fill": "$--text-primary",
               "content": "최근 작업",
-              "fontFamily": "Pretendard",
+              "fontFamily": "Gmarket Sans",
               "fontSize": 18,
               "fontWeight": "SemiBold"
             },
@@ -1463,7 +1463,7 @@
               "name": "recentViewAll",
               "fill": "$--primary",
               "content": "전체보기",
-              "fontFamily": "Pretendard",
+              "fontFamily": "Gmarket Sans",
               "fontSize": 14,
               "fontWeight": "normal"
             }
@@ -1511,7 +1511,7 @@
                       "name": "nameText1",
                       "fill": "$--text-primary",
                       "content": "김민수",
-                      "fontFamily": "Pretendard",
+                      "fontFamily": "Gmarket Sans",
                       "fontSize": 16,
                       "fontWeight": "SemiBold"
                     },
@@ -1533,7 +1533,7 @@
                           "name": "badge1Text",
                           "fill": "$--status-received-text",
                           "content": "접수됨",
-                          "fontFamily": "Pretendard",
+                          "fontFamily": "Gmarket Sans",
                           "fontSize": 12,
                           "fontWeight": "Medium"
                         }
@@ -1547,7 +1547,7 @@
                   "name": "row2c1",
                   "fill": "$--text-secondary",
                   "content": "BG65 | 25lbs | AX99 Pro",
-                  "fontFamily": "Pretendard",
+                  "fontFamily": "Gmarket Sans",
                   "fontSize": 14,
                   "fontWeight": "normal"
                 },
@@ -1557,7 +1557,7 @@
                   "name": "row3c1",
                   "fill": "$--text-tertiary",
                   "content": "접수 14:30",
-                  "fontFamily": "Pretendard",
+                  "fontFamily": "Gmarket Sans",
                   "fontSize": 12,
                   "fontWeight": "normal"
                 },
@@ -1582,7 +1582,7 @@
                       "name": "actionBtn1Text",
                       "fill": "#FFFFFF",
                       "content": "작업 시작",
-                      "fontFamily": "Pretendard",
+                      "fontFamily": "Gmarket Sans",
                       "fontSize": 14,
                       "fontWeight": "Medium"
                     }
@@ -1620,7 +1620,7 @@
                       "name": "nameText2",
                       "fill": "$--text-primary",
                       "content": "이지은",
-                      "fontFamily": "Pretendard",
+                      "fontFamily": "Gmarket Sans",
                       "fontSize": 16,
                       "fontWeight": "SemiBold"
                     },
@@ -1642,7 +1642,7 @@
                           "name": "badge2Text",
                           "fill": "$--status-progress-text",
                           "content": "작업중",
-                          "fontFamily": "Pretendard",
+                          "fontFamily": "Gmarket Sans",
                           "fontSize": 12,
                           "fontWeight": "Medium"
                         }
@@ -1656,7 +1656,7 @@
                   "name": "row2c2",
                   "fill": "$--text-secondary",
                   "content": "YONEX BG80 | 27lbs | Victor TF",
-                  "fontFamily": "Pretendard",
+                  "fontFamily": "Gmarket Sans",
                   "fontSize": 14,
                   "fontWeight": "normal"
                 },
@@ -1666,7 +1666,7 @@
                   "name": "row3c2",
                   "fill": "$--text-tertiary",
                   "content": "접수 13:15",
-                  "fontFamily": "Pretendard",
+                  "fontFamily": "Gmarket Sans",
                   "fontSize": 12,
                   "fontWeight": "normal"
                 },
@@ -1691,7 +1691,7 @@
                       "name": "actionBtn2Text",
                       "fill": "#FFFFFF",
                       "content": "작업 완료",
-                      "fontFamily": "Pretendard",
+                      "fontFamily": "Gmarket Sans",
                       "fontSize": 14,
                       "fontWeight": "Medium"
                     }
@@ -1729,7 +1729,7 @@
                       "name": "nameText3",
                       "fill": "$--text-primary",
                       "content": "박현우",
-                      "fontFamily": "Pretendard",
+                      "fontFamily": "Gmarket Sans",
                       "fontSize": 16,
                       "fontWeight": "SemiBold"
                     },
@@ -1751,7 +1751,7 @@
                           "name": "badge3Text",
                           "fill": "$--status-completed-text",
                           "content": "완료",
-                          "fontFamily": "Pretendard",
+                          "fontFamily": "Gmarket Sans",
                           "fontSize": 12,
                           "fontWeight": "Medium"
                         }
@@ -1765,7 +1765,7 @@
                   "name": "row2c3",
                   "fill": "$--text-secondary",
                   "content": "BG65 | 24lbs | Astrox 88D",
-                  "fontFamily": "Pretendard",
+                  "fontFamily": "Gmarket Sans",
                   "fontSize": 14,
                   "fontWeight": "normal"
                 },
@@ -1775,7 +1775,7 @@
                   "name": "row3c3",
                   "fill": "$--text-tertiary",
                   "content": "완료 16:20",
-                  "fontFamily": "Pretendard",
+                  "fontFamily": "Gmarket Sans",
                   "fontSize": 12,
                   "fontWeight": "normal"
                 }
@@ -1882,7 +1882,7 @@
                       "name": "tab1Label",
                       "fill": "$--primary",
                       "content": "대시보드",
-                      "fontFamily": "Pretendard",
+                      "fontFamily": "Gmarket Sans",
                       "fontSize": 10,
                       "fontWeight": "normal"
                     }
@@ -1912,7 +1912,7 @@
                       "name": "tab2Label",
                       "fill": "$--text-tertiary",
                       "content": "작업관리",
-                      "fontFamily": "Pretendard",
+                      "fontFamily": "Gmarket Sans",
                       "fontSize": 10,
                       "fontWeight": "normal"
                     }
@@ -1942,7 +1942,7 @@
                       "name": "tab3Label",
                       "fill": "$--text-tertiary",
                       "content": "회원관리",
-                      "fontFamily": "Pretendard",
+                      "fontFamily": "Gmarket Sans",
                       "fontSize": 10,
                       "fontWeight": "normal"
                     }
@@ -1972,7 +1972,7 @@
                       "name": "tab4Label",
                       "fill": "$--text-tertiary",
                       "content": "설정",
-                      "fontFamily": "Pretendard",
+                      "fontFamily": "Gmarket Sans",
                       "fontSize": 10,
                       "fontWeight": "normal"
                     }
@@ -2032,7 +2032,7 @@
               "name": "title1",
               "fill": "$--text-primary",
               "content": "작업 접수",
-              "fontFamily": "Pretendard",
+              "fontFamily": "Gmarket Sans",
               "fontSize": 20,
               "fontWeight": "Bold"
             }
@@ -2074,7 +2074,7 @@
                   "name": "qrText",
                   "fill": "#FFFFFF",
                   "content": "QR 스캔으로 회원 확인",
-                  "fontFamily": "Pretendard",
+                  "fontFamily": "Gmarket Sans",
                   "fontSize": 16,
                   "fontWeight": "SemiBold"
                 }
@@ -2108,7 +2108,7 @@
               "name": "orText",
               "fill": "$--text-tertiary",
               "content": "또는",
-              "fontFamily": "Pretendard",
+              "fontFamily": "Gmarket Sans",
               "fontSize": 12,
               "fontWeight": "normal"
             },
@@ -2164,7 +2164,7 @@
                   "name": "searchPlaceholder",
                   "fill": "$--text-tertiary",
                   "content": "회원 이름 또는 연락처 검색",
-                  "fontFamily": "Pretendard",
+                  "fontFamily": "Gmarket Sans",
                   "fontSize": 14,
                   "fontWeight": "normal"
                 }
@@ -2210,7 +2210,7 @@
                       "name": "memberName",
                       "fill": "$--text-primary",
                       "content": "김민수",
-                      "fontFamily": "Pretendard",
+                      "fontFamily": "Gmarket Sans",
                       "fontSize": 16,
                       "fontWeight": "SemiBold"
                     },
@@ -2220,7 +2220,7 @@
                       "name": "memberPhone",
                       "fill": "$--text-secondary",
                       "content": "010-1234-5678",
-                      "fontFamily": "Pretendard",
+                      "fontFamily": "Gmarket Sans",
                       "fontSize": 14,
                       "fontWeight": "normal"
                     }
@@ -2232,7 +2232,7 @@
                   "name": "memberPref",
                   "fill": "$--text-tertiary",
                   "content": "선호: BG65 | 25lbs",
-                  "fontFamily": "Pretendard",
+                  "fontFamily": "Gmarket Sans",
                   "fontSize": 12,
                   "fontWeight": "normal"
                 }
@@ -2258,7 +2258,7 @@
               "name": "formLabel",
               "fill": "$--text-secondary",
               "content": "작업 정보",
-              "fontFamily": "Pretendard",
+              "fontFamily": "Gmarket Sans",
               "fontSize": 14,
               "fontWeight": "SemiBold"
             },
@@ -2282,7 +2282,7 @@
                   "name": "input1Text",
                   "fill": "$--text-tertiary",
                   "content": "거트 종류",
-                  "fontFamily": "Pretendard",
+                  "fontFamily": "Gmarket Sans",
                   "fontSize": 14,
                   "fontWeight": "normal"
                 }
@@ -2308,7 +2308,7 @@
                   "name": "input2Text",
                   "fill": "$--text-tertiary",
                   "content": "텐션 (lbs)",
-                  "fontFamily": "Pretendard",
+                  "fontFamily": "Gmarket Sans",
                   "fontSize": 14,
                   "fontWeight": "normal"
                 }
@@ -2334,7 +2334,7 @@
                   "name": "input3Text",
                   "fill": "$--text-tertiary",
                   "content": "라켓 모델명",
-                  "fontFamily": "Pretendard",
+                  "fontFamily": "Gmarket Sans",
                   "fontSize": 14,
                   "fontWeight": "normal"
                 }
@@ -2356,7 +2356,7 @@
                   "name": "memoText",
                   "fill": "$--text-tertiary",
                   "content": "메모 (선택사항)",
-                  "fontFamily": "Pretendard",
+                  "fontFamily": "Gmarket Sans",
                   "fontSize": 14,
                   "fontWeight": "normal"
                 }
@@ -2389,7 +2389,7 @@
                   "name": "submitText",
                   "fill": "#FFFFFF",
                   "content": "작업 접수하기",
-                  "fontFamily": "Pretendard",
+                  "fontFamily": "Gmarket Sans",
                   "fontSize": 16,
                   "fontWeight": "SemiBold"
                 }
@@ -2430,7 +2430,7 @@
               "name": "title2",
               "fill": "$--text-primary",
               "content": "작업 관리",
-              "fontFamily": "Pretendard",
+              "fontFamily": "Gmarket Sans",
               "fontSize": 20,
               "fontWeight": "Bold"
             }
@@ -2467,7 +2467,7 @@
                   "name": "tab1Text",
                   "fill": "#FFFFFF",
                   "content": "전체 10",
-                  "fontFamily": "Pretendard",
+                  "fontFamily": "Gmarket Sans",
                   "fontSize": 13,
                   "fontWeight": "Medium"
                 }
@@ -2497,7 +2497,7 @@
                   "name": "tab2Text",
                   "fill": "$--text-secondary",
                   "content": "접수 3",
-                  "fontFamily": "Pretendard",
+                  "fontFamily": "Gmarket Sans",
                   "fontSize": 13,
                   "fontWeight": "Medium"
                 }
@@ -2527,7 +2527,7 @@
                   "name": "tab3Text",
                   "fill": "$--text-secondary",
                   "content": "작업중 2",
-                  "fontFamily": "Pretendard",
+                  "fontFamily": "Gmarket Sans",
                   "fontSize": 13,
                   "fontWeight": "Medium"
                 }
@@ -2557,7 +2557,7 @@
                   "name": "tab4Text",
                   "fill": "$--text-secondary",
                   "content": "완료 5",
-                  "fontFamily": "Pretendard",
+                  "fontFamily": "Gmarket Sans",
                   "fontSize": 13,
                   "fontWeight": "Medium"
                 }
@@ -2607,7 +2607,7 @@
                       "name": "card1Name",
                       "fill": "$--text-primary",
                       "content": "김민수",
-                      "fontFamily": "Pretendard",
+                      "fontFamily": "Gmarket Sans",
                       "fontSize": 16,
                       "fontWeight": "SemiBold"
                     },
@@ -2629,7 +2629,7 @@
                           "name": "badge1Text",
                           "fill": "$--status-received",
                           "content": "접수",
-                          "fontFamily": "Pretendard",
+                          "fontFamily": "Gmarket Sans",
                           "fontSize": 12,
                           "fontWeight": "Medium"
                         }
@@ -2643,7 +2643,7 @@
                   "name": "card1Row2",
                   "fill": "$--text-secondary",
                   "content": "BG65 · 25lbs · ASTROX 88D",
-                  "fontFamily": "Pretendard",
+                  "fontFamily": "Gmarket Sans",
                   "fontSize": 14,
                   "fontWeight": "normal"
                 },
@@ -2653,7 +2653,7 @@
                   "name": "card1Row3",
                   "fill": "$--text-tertiary",
                   "content": "오늘 14:30 접수",
-                  "fontFamily": "Pretendard",
+                  "fontFamily": "Gmarket Sans",
                   "fontSize": 12,
                   "fontWeight": "normal"
                 },
@@ -2674,7 +2674,7 @@
                       "name": "card1ActionText",
                       "fill": "#FFFFFF",
                       "content": "작업 시작",
-                      "fontFamily": "Pretendard",
+                      "fontFamily": "Gmarket Sans",
                       "fontSize": 14,
                       "fontWeight": "Medium"
                     }
@@ -2712,7 +2712,7 @@
                       "name": "card2Name",
                       "fill": "$--text-primary",
                       "content": "이지현",
-                      "fontFamily": "Pretendard",
+                      "fontFamily": "Gmarket Sans",
                       "fontSize": 16,
                       "fontWeight": "SemiBold"
                     },
@@ -2734,7 +2734,7 @@
                           "name": "badge2Text",
                           "fill": "$--status-progress",
                           "content": "작업중",
-                          "fontFamily": "Pretendard",
+                          "fontFamily": "Gmarket Sans",
                           "fontSize": 12,
                           "fontWeight": "Medium"
                         }
@@ -2748,7 +2748,7 @@
                   "name": "card2Row2",
                   "fill": "$--text-secondary",
                   "content": "BG80 · 27lbs · NANOFLARE 700",
-                  "fontFamily": "Pretendard",
+                  "fontFamily": "Gmarket Sans",
                   "fontSize": 14,
                   "fontWeight": "normal"
                 },
@@ -2758,7 +2758,7 @@
                   "name": "card2Row3",
                   "fill": "$--text-tertiary",
                   "content": "오늘 13:00 접수",
-                  "fontFamily": "Pretendard",
+                  "fontFamily": "Gmarket Sans",
                   "fontSize": 12,
                   "fontWeight": "normal"
                 },
@@ -2779,7 +2779,7 @@
                       "name": "card2ActionText",
                       "fill": "#FFFFFF",
                       "content": "작업 완료",
-                      "fontFamily": "Pretendard",
+                      "fontFamily": "Gmarket Sans",
                       "fontSize": 14,
                       "fontWeight": "Medium"
                     }
@@ -2817,7 +2817,7 @@
                       "name": "card3Name",
                       "fill": "$--text-primary",
                       "content": "박서준",
-                      "fontFamily": "Pretendard",
+                      "fontFamily": "Gmarket Sans",
                       "fontSize": 16,
                       "fontWeight": "SemiBold"
                     },
@@ -2839,7 +2839,7 @@
                           "name": "badge3Text",
                           "fill": "$--status-completed",
                           "content": "완료",
-                          "fontFamily": "Pretendard",
+                          "fontFamily": "Gmarket Sans",
                           "fontSize": 12,
                           "fontWeight": "Medium"
                         }
@@ -2853,7 +2853,7 @@
                   "name": "card3Row2",
                   "fill": "$--text-secondary",
                   "content": "BG65Ti · 24lbs · VOLTRIC Z-FORCE",
-                  "fontFamily": "Pretendard",
+                  "fontFamily": "Gmarket Sans",
                   "fontSize": 14,
                   "fontWeight": "normal"
                 },
@@ -2863,7 +2863,7 @@
                   "name": "card3Row3",
                   "fill": "$--text-tertiary",
                   "content": "어제 16:00 완료",
-                  "fontFamily": "Pretendard",
+                  "fontFamily": "Gmarket Sans",
                   "fontSize": 12,
                   "fontWeight": "normal"
                 }
@@ -2923,7 +2923,7 @@
                   "name": "navLabel1",
                   "fill": "$--text-tertiary",
                   "content": "홈",
-                  "fontFamily": "Pretendard",
+                  "fontFamily": "Gmarket Sans",
                   "fontSize": 10,
                   "fontWeight": "normal"
                 }
@@ -2953,7 +2953,7 @@
                   "name": "navLabel2",
                   "fill": "$--primary",
                   "content": "작업관리",
-                  "fontFamily": "Pretendard",
+                  "fontFamily": "Gmarket Sans",
                   "fontSize": 10,
                   "fontWeight": "SemiBold"
                 }
@@ -2983,7 +2983,7 @@
                   "name": "navLabel3",
                   "fill": "$--text-tertiary",
                   "content": "회원",
-                  "fontFamily": "Pretendard",
+                  "fontFamily": "Gmarket Sans",
                   "fontSize": 10,
                   "fontWeight": "normal"
                 }
@@ -3013,7 +3013,7 @@
                   "name": "navLabel4",
                   "fill": "$--text-tertiary",
                   "content": "설정",
-                  "fontFamily": "Pretendard",
+                  "fontFamily": "Gmarket Sans",
                   "fontSize": 10,
                   "fontWeight": "normal"
                 }
@@ -3071,7 +3071,7 @@
               "name": "title3",
               "fill": "$--text-primary",
               "content": "회원 등록",
-              "fontFamily": "Pretendard",
+              "fontFamily": "Gmarket Sans",
               "fontSize": 20,
               "fontWeight": "Bold"
             }
@@ -3100,7 +3100,7 @@
                   "name": "label1",
                   "fill": "$--text-secondary",
                   "content": "기본 정보",
-                  "fontFamily": "Pretendard",
+                  "fontFamily": "Gmarket Sans",
                   "fontSize": 14,
                   "fontWeight": "SemiBold"
                 },
@@ -3124,7 +3124,7 @@
                       "name": "nameText",
                       "fill": "$--text-tertiary",
                       "content": "이름 *",
-                      "fontFamily": "Pretendard",
+                      "fontFamily": "Gmarket Sans",
                       "fontSize": 14,
                       "fontWeight": "normal"
                     }
@@ -3150,7 +3150,7 @@
                       "name": "phoneText",
                       "fill": "$--text-tertiary",
                       "content": "연락처 *",
-                      "fontFamily": "Pretendard",
+                      "fontFamily": "Gmarket Sans",
                       "fontSize": 14,
                       "fontWeight": "normal"
                     }
@@ -3172,7 +3172,7 @@
                   "name": "label2",
                   "fill": "$--text-secondary",
                   "content": "선호 정보",
-                  "fontFamily": "Pretendard",
+                  "fontFamily": "Gmarket Sans",
                   "fontSize": 14,
                   "fontWeight": "SemiBold"
                 },
@@ -3196,7 +3196,7 @@
                       "name": "gutText",
                       "fill": "$--text-tertiary",
                       "content": "선호 거트",
-                      "fontFamily": "Pretendard",
+                      "fontFamily": "Gmarket Sans",
                       "fontSize": 14,
                       "fontWeight": "normal"
                     }
@@ -3222,7 +3222,7 @@
                       "name": "tensionText",
                       "fill": "$--text-tertiary",
                       "content": "선호 텐션 (lbs)",
-                      "fontFamily": "Pretendard",
+                      "fontFamily": "Gmarket Sans",
                       "fontSize": 14,
                       "fontWeight": "normal"
                     }
@@ -3244,7 +3244,7 @@
                   "name": "label3",
                   "fill": "$--text-secondary",
                   "content": "라켓 정보",
-                  "fontFamily": "Pretendard",
+                  "fontFamily": "Gmarket Sans",
                   "fontSize": 14,
                   "fontWeight": "SemiBold"
                 },
@@ -3268,7 +3268,7 @@
                       "name": "racketText",
                       "fill": "$--text-tertiary",
                       "content": "라켓 모델명",
-                      "fontFamily": "Pretendard",
+                      "fontFamily": "Gmarket Sans",
                       "fontSize": 14,
                       "fontWeight": "normal"
                     }
@@ -3280,7 +3280,7 @@
                   "name": "addRacket",
                   "fill": "$--primary",
                   "content": "+ 라켓 추가",
-                  "fontFamily": "Pretendard",
+                  "fontFamily": "Gmarket Sans",
                   "fontSize": 14,
                   "fontWeight": "normal"
                 }
@@ -3300,7 +3300,7 @@
                   "name": "label4",
                   "fill": "$--text-secondary",
                   "content": "메모",
-                  "fontFamily": "Pretendard",
+                  "fontFamily": "Gmarket Sans",
                   "fontSize": 14,
                   "fontWeight": "SemiBold"
                 },
@@ -3321,7 +3321,7 @@
                       "name": "memoPlaceholder",
                       "fill": "$--text-tertiary",
                       "content": "메모 (선택사항)",
-                      "fontFamily": "Pretendard",
+                      "fontFamily": "Gmarket Sans",
                       "fontSize": 14,
                       "fontWeight": "normal"
                     }
@@ -3356,7 +3356,7 @@
                   "name": "submitText3",
                   "fill": "#FFFFFF",
                   "content": "회원 등록하기",
-                  "fontFamily": "Pretendard",
+                  "fontFamily": "Gmarket Sans",
                   "fontSize": 16,
                   "fontWeight": "SemiBold"
                 }

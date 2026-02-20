@@ -151,7 +151,7 @@ final appTheme = ThemeData(
     error: AppColors.error,
   ),
   scaffoldBackgroundColor: AppColors.background,
-  fontFamily: 'Pretendard',
+  fontFamily: 'GmarketSans',
 );
 ```
 
@@ -163,8 +163,8 @@ final appTheme = ThemeData(
 
 | 용도 | 폰트 | 비고 |
 |------|------|------|
-| 한국어 전체 | **Pretendard** | 기본 폰트. 토스/배민과 유사한 현대적 느낌 |
-| 대체 | **Noto Sans KR** | Pretendard 사용 불가 시 |
+| 한국어 전체 | **Gmarket Sans** | 기본 폰트. 둥글고 친근한 느낌. 배민/토스와 어울리는 스포티한 스타일 |
+| 대체 | **Pretendard** | Gmarket Sans 사용 불가 시 |
 
 ### 3.2 크기 스케일 (Type Scale)
 
@@ -511,7 +511,7 @@ const textSecondary = Color(0xFF475569);
 const textTertiary = Color(0xFF94A3B8);
 const border = Color(0xFFE2E8F0);
 
-// --- Typography: Pretendard ---
+// --- Typography: Gmarket Sans ---
 // --- Spacing: 4 / 8 / 12 / 16 / 20 / 24 / 32 / 40 ---
 // --- Radius: 8 / 12 / 16 / 20 / 999 ---
 // --- Animation: Micro 150-200ms, Transition 300ms ---
