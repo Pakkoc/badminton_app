@@ -100,11 +100,11 @@
       "height": 844,
       "fill": "$--surface",
       "layout": "vertical",
-      "gap": 32,
+      "gap": 24,
       "padding": [
-        120,
+        160,
         24,
-        24,
+        40,
         24
       ],
       "children": [
@@ -168,6 +168,13 @@
               "fontWeight": "Regular"
             }
           ]
+        },
+        {
+          "type": "frame",
+          "id": "Carpd",
+          "name": "Spacer",
+          "width": "fill_container",
+          "height": "fill_container"
         },
         {
           "type": "frame",
