@@ -3273,9 +3273,8 @@
       "x": 470,
       "y": 1174,
       "name": "Order Detail",
-      "clip": true,
       "width": 390,
-      "height": 844,
+      "height": 1020,
       "fill": "#F8FAFC",
       "layout": "vertical",
       "children": [
@@ -3328,9 +3327,8 @@
           "type": "frame",
           "id": "j15cO",
           "name": "Scroll Content",
-          "clip": true,
           "width": "fill_container",
-          "height": "fill_container",
+          "height": 964,
           "layout": "vertical",
           "gap": 24,
           "padding": 16,
@@ -3953,6 +3951,45 @@
                           "name": "dirText",
                           "fill": "#FFFFFF",
                           "content": "길찾기",
+                          "fontFamily": "Gmarket Sans",
+                          "fontSize": 16,
+                          "fontWeight": "500"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "frame",
+                      "id": "zqviZ",
+                      "name": "Phone Button",
+                      "width": "fill_container",
+                      "height": 48,
+                      "fill": "#FFFFFF",
+                      "cornerRadius": 12,
+                      "stroke": {
+                        "align": "inside",
+                        "thickness": 1.5,
+                        "fill": "#16A34A"
+                      },
+                      "gap": 8,
+                      "justifyContent": "center",
+                      "alignItems": "center",
+                      "children": [
+                        {
+                          "type": "icon_font",
+                          "id": "5RRtJ",
+                          "name": "phoneIcon",
+                          "width": 20,
+                          "height": 20,
+                          "iconFontName": "call",
+                          "iconFontFamily": "Material Symbols Outlined",
+                          "fill": "#16A34A"
+                        },
+                        {
+                          "type": "text",
+                          "id": "fvniD",
+                          "name": "phoneText",
+                          "fill": "#16A34A",
+                          "content": "전화하기",
                           "fontFamily": "Gmarket Sans",
                           "fontSize": 16,
                           "fontWeight": "500"
@@ -7439,50 +7476,20 @@
           "alignItems": "center",
           "children": [
             {
-              "type": "icon_font",
-              "id": "z0Bnd",
-              "name": "checkIcon",
-              "width": 16,
-              "height": 16,
-              "iconFontName": "check_circle",
-              "iconFontFamily": "Material Symbols Rounded",
-              "fill": "#16A34A"
-            },
-            {
-              "type": "text",
-              "id": "hVqw3",
-              "name": "stepLabel1",
-              "fill": "#16A34A",
-              "content": "정보 입력 ",
-              "fontFamily": "Gmarket Sans",
-              "fontSize": 12,
-              "fontWeight": "500"
-            },
-            {
-              "type": "frame",
-              "id": "0sPeJ",
-              "name": "stepLine",
-              "width": 40,
-              "height": 2,
-              "fill": "#16A34A"
-            },
-            {
               "type": "ellipse",
-              "id": "GFDNt",
-              "name": "dot2Active",
-              "fill": "#16A34A",
+              "id": "gHgp5",
+              "name": "dot1",
+              "fill": "#E2E8F0",
               "width": 10,
               "height": 10
             },
             {
-              "type": "text",
-              "id": "Xa666",
-              "name": "stepLabel2",
+              "type": "ellipse",
+              "id": "FMjkh",
+              "name": "dot2",
               "fill": "#16A34A",
-              "content": " 샵 등록",
-              "fontFamily": "Gmarket Sans",
-              "fontSize": 12,
-              "fontWeight": "600"
+              "width": 10,
+              "height": 10
             }
           ]
         },
