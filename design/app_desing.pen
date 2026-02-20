@@ -6126,8 +6126,8 @@
             {
               "type": "frame",
               "id": "V0i5J",
-              "x": 0,
-              "y": 0,
+              "x": 16,
+              "y": 8,
               "name": "Card List",
               "width": 358,
               "height": 604,
