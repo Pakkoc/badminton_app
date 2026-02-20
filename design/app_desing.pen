@@ -801,7 +801,7 @@
                       "id": "HeL4k",
                       "name": "card1Title",
                       "fill": "$--text-primary",
-                      "content": "YONEX AX99 Pro",
+                      "content": "OO 거트샵",
                       "fontFamily": "Gmarket Sans",
                       "fontSize": 16,
                       "fontWeight": "SemiBold"
@@ -842,16 +842,6 @@
                   ]
                 },
                 {
-                  "type": "text",
-                  "id": "nARyU",
-                  "name": "card1Spec",
-                  "fill": "$--text-secondary",
-                  "content": "BG65 | 25lbs",
-                  "fontFamily": "Gmarket Sans",
-                  "fontSize": 14,
-                  "fontWeight": "normal"
-                },
-                {
                   "type": "frame",
                   "id": "ztRnV",
                   "name": "Card1 Bottom",
@@ -865,7 +855,7 @@
                       "name": "card1ShopIcon",
                       "width": 16,
                       "height": 16,
-                      "iconFontName": "storefront",
+                      "iconFontName": "schedule",
                       "iconFontFamily": "Material Symbols Rounded",
                       "fill": "$--text-tertiary"
                     },
@@ -874,7 +864,7 @@
                       "id": "1Witj",
                       "name": "card1ShopText",
                       "fill": "$--text-tertiary",
-                      "content": "OO 거트샵 · 접수 14:30",
+                      "content": "접수 14:30",
                       "fontFamily": "Gmarket Sans",
                       "fontSize": 12,
                       "fontWeight": "normal"
@@ -912,7 +902,7 @@
                       "id": "YfFes",
                       "name": "card2Title",
                       "fill": "$--text-primary",
-                      "content": "VICTOR Thruster F",
+                      "content": "XX 스트링샵",
                       "fontFamily": "Gmarket Sans",
                       "fontSize": 16,
                       "fontWeight": "SemiBold"
@@ -953,16 +943,6 @@
                   ]
                 },
                 {
-                  "type": "text",
-                  "id": "ucHEV",
-                  "name": "card2Spec",
-                  "fill": "$--text-secondary",
-                  "content": "YONEX BG80 | 27lbs",
-                  "fontFamily": "Gmarket Sans",
-                  "fontSize": 14,
-                  "fontWeight": "normal"
-                },
-                {
                   "type": "frame",
                   "id": "FbhiF",
                   "name": "Card2 Bottom",
@@ -976,7 +956,7 @@
                       "name": "card2ShopIcon",
                       "width": 16,
                       "height": 16,
-                      "iconFontName": "storefront",
+                      "iconFontName": "schedule",
                       "iconFontFamily": "Material Symbols Rounded",
                       "fill": "$--text-tertiary"
                     },
@@ -985,7 +965,7 @@
                       "id": "k8hcZ",
                       "name": "card2ShopText",
                       "fill": "$--text-tertiary",
-                      "content": "XX 스트링샵 · 접수 10:15",
+                      "content": "접수 10:15",
                       "fontFamily": "Gmarket Sans",
                       "fontSize": 12,
                       "fontWeight": "normal"
@@ -1440,16 +1420,6 @@
                 },
                 {
                   "type": "text",
-                  "id": "3pwYM",
-                  "name": "row2c1",
-                  "fill": "$--text-secondary",
-                  "content": "BG65 | 25lbs | AX99 Pro",
-                  "fontFamily": "Gmarket Sans",
-                  "fontSize": 14,
-                  "fontWeight": "normal"
-                },
-                {
-                  "type": "text",
                   "id": "Ap4NM",
                   "name": "row3c1",
                   "fill": "$--text-tertiary",
@@ -1549,16 +1519,6 @@
                 },
                 {
                   "type": "text",
-                  "id": "CD4Ys",
-                  "name": "row2c2",
-                  "fill": "$--text-secondary",
-                  "content": "YONEX BG80 | 27lbs | Victor TF",
-                  "fontFamily": "Gmarket Sans",
-                  "fontSize": 14,
-                  "fontWeight": "normal"
-                },
-                {
-                  "type": "text",
                   "id": "hfBuX",
                   "name": "row3c2",
                   "fill": "$--text-tertiary",
@@ -1655,16 +1615,6 @@
                       ]
                     }
                   ]
-                },
-                {
-                  "type": "text",
-                  "id": "WnaWk",
-                  "name": "row2c3",
-                  "fill": "$--text-secondary",
-                  "content": "BG65 | 24lbs | Astrox 88D",
-                  "fontFamily": "Gmarket Sans",
-                  "fontSize": 14,
-                  "fontWeight": "normal"
                 },
                 {
                   "type": "text",
@@ -2122,16 +2072,6 @@
                       "fontWeight": "normal"
                     }
                   ]
-                },
-                {
-                  "type": "text",
-                  "id": "7enr0",
-                  "name": "memberPref",
-                  "fill": "$--text-tertiary",
-                  "content": "선호: BG65 | 25lbs",
-                  "fontFamily": "Gmarket Sans",
-                  "fontSize": 12,
-                  "fontWeight": "normal"
                 }
               ]
             }
@@ -2154,88 +2094,10 @@
               "id": "h1Mt2",
               "name": "formLabel",
               "fill": "$--text-secondary",
-              "content": "작업 정보",
+              "content": "메모",
               "fontFamily": "Gmarket Sans",
               "fontSize": 14,
               "fontWeight": "SemiBold"
-            },
-            {
-              "type": "frame",
-              "id": "88id7",
-              "name": "Gut Input",
-              "width": "fill_container",
-              "height": 48,
-              "fill": "$--surface-variant",
-              "cornerRadius": 8,
-              "padding": [
-                0,
-                16
-              ],
-              "alignItems": "center",
-              "children": [
-                {
-                  "type": "text",
-                  "id": "CosGj",
-                  "name": "input1Text",
-                  "fill": "$--text-tertiary",
-                  "content": "거트 종류",
-                  "fontFamily": "Gmarket Sans",
-                  "fontSize": 14,
-                  "fontWeight": "normal"
-                }
-              ]
-            },
-            {
-              "type": "frame",
-              "id": "xyFIF",
-              "name": "Tension Input",
-              "width": "fill_container",
-              "height": 48,
-              "fill": "$--surface-variant",
-              "cornerRadius": 8,
-              "padding": [
-                0,
-                16
-              ],
-              "alignItems": "center",
-              "children": [
-                {
-                  "type": "text",
-                  "id": "UZx1i",
-                  "name": "input2Text",
-                  "fill": "$--text-tertiary",
-                  "content": "텐션 (lbs)",
-                  "fontFamily": "Gmarket Sans",
-                  "fontSize": 14,
-                  "fontWeight": "normal"
-                }
-              ]
-            },
-            {
-              "type": "frame",
-              "id": "XpgJ7",
-              "name": "Racket Input",
-              "width": "fill_container",
-              "height": 48,
-              "fill": "$--surface-variant",
-              "cornerRadius": 8,
-              "padding": [
-                0,
-                16
-              ],
-              "alignItems": "center",
-              "children": [
-                {
-                  "type": "text",
-                  "id": "3tyRK",
-                  "name": "input3Text",
-                  "fill": "$--text-tertiary",
-                  "content": "라켓 모델명",
-                  "fontFamily": "Gmarket Sans",
-                  "fontSize": 14,
-                  "fontWeight": "normal"
-                }
-              ]
             },
             {
               "type": "frame",
@@ -2536,16 +2398,6 @@
                 },
                 {
                   "type": "text",
-                  "id": "eZMiN",
-                  "name": "card1Row2",
-                  "fill": "$--text-secondary",
-                  "content": "BG65 · 25lbs · ASTROX 88D",
-                  "fontFamily": "Gmarket Sans",
-                  "fontSize": 14,
-                  "fontWeight": "normal"
-                },
-                {
-                  "type": "text",
                   "id": "bk3AY",
                   "name": "card1Row3",
                   "fill": "$--text-tertiary",
@@ -2641,16 +2493,6 @@
                 },
                 {
                   "type": "text",
-                  "id": "XL3Kb",
-                  "name": "card2Row2",
-                  "fill": "$--text-secondary",
-                  "content": "BG80 · 27lbs · NANOFLARE 700",
-                  "fontFamily": "Gmarket Sans",
-                  "fontSize": 14,
-                  "fontWeight": "normal"
-                },
-                {
-                  "type": "text",
                   "id": "rjbOH",
                   "name": "card2Row3",
                   "fill": "$--text-tertiary",
@@ -2743,16 +2585,6 @@
                       ]
                     }
                   ]
-                },
-                {
-                  "type": "text",
-                  "id": "DQ34q",
-                  "name": "card3Row2",
-                  "fill": "$--text-secondary",
-                  "content": "BG65Ti · 24lbs · VOLTRIC Z-FORCE",
-                  "fontFamily": "Gmarket Sans",
-                  "fontSize": 14,
-                  "fontWeight": "normal"
                 },
                 {
                   "type": "text",
@@ -3232,170 +3064,6 @@
                   "fontFamily": "Gmarket Sans",
                   "fontSize": 24,
                   "fontWeight": "700"
-                }
-              ]
-            },
-            {
-              "type": "frame",
-              "id": "ZmNzn",
-              "name": "Work Info Section",
-              "width": "fill_container",
-              "layout": "vertical",
-              "gap": 12,
-              "children": [
-                {
-                  "type": "text",
-                  "id": "pyvk6",
-                  "name": "workTitle",
-                  "fill": "#0F172A",
-                  "content": "작업 정보",
-                  "fontFamily": "Gmarket Sans",
-                  "fontSize": 16,
-                  "fontWeight": "600"
-                },
-                {
-                  "type": "frame",
-                  "id": "rsc1R",
-                  "name": "Work Info Card",
-                  "width": "fill_container",
-                  "fill": "#FFFFFF",
-                  "cornerRadius": 16,
-                  "stroke": {
-                    "align": "inside",
-                    "thickness": 1,
-                    "fill": "#E2E8F0"
-                  },
-                  "layout": "vertical",
-                  "gap": 16,
-                  "padding": 16,
-                  "children": [
-                    {
-                      "type": "frame",
-                      "id": "VyeMm",
-                      "name": "Racket Row",
-                      "width": "fill_container",
-                      "gap": 12,
-                      "alignItems": "center",
-                      "children": [
-                        {
-                          "type": "icon_font",
-                          "id": "khW1N",
-                          "name": "icon1",
-                          "width": 20,
-                          "height": 20,
-                          "iconFontName": "sports_tennis",
-                          "iconFontFamily": "Material Symbols Outlined",
-                          "fill": "#94A3B8"
-                        },
-                        {
-                          "type": "text",
-                          "id": "mNcGM",
-                          "name": "label1",
-                          "fill": "#94A3B8",
-                          "textGrowth": "fixed-width",
-                          "width": 48,
-                          "content": "라켓",
-                          "fontFamily": "Gmarket Sans",
-                          "fontSize": 14,
-                          "fontWeight": "normal"
-                        },
-                        {
-                          "type": "text",
-                          "id": "IlXHg",
-                          "name": "val1",
-                          "fill": "#0F172A",
-                          "content": "YONEX AX99 Pro",
-                          "fontFamily": "Gmarket Sans",
-                          "fontSize": 16,
-                          "fontWeight": "500"
-                        }
-                      ]
-                    },
-                    {
-                      "type": "frame",
-                      "id": "cY0ey",
-                      "name": "Gut Row",
-                      "width": "fill_container",
-                      "gap": 12,
-                      "alignItems": "center",
-                      "children": [
-                        {
-                          "type": "icon_font",
-                          "id": "qi52O",
-                          "name": "icon2",
-                          "width": 20,
-                          "height": 20,
-                          "iconFontName": "straighten",
-                          "iconFontFamily": "Material Symbols Outlined",
-                          "fill": "#94A3B8"
-                        },
-                        {
-                          "type": "text",
-                          "id": "E0r6B",
-                          "name": "label2",
-                          "fill": "#94A3B8",
-                          "textGrowth": "fixed-width",
-                          "width": 48,
-                          "content": "거트",
-                          "fontFamily": "Gmarket Sans",
-                          "fontSize": 14,
-                          "fontWeight": "normal"
-                        },
-                        {
-                          "type": "text",
-                          "id": "KeYEW",
-                          "name": "val2",
-                          "fill": "#0F172A",
-                          "content": "BG65",
-                          "fontFamily": "Gmarket Sans",
-                          "fontSize": 16,
-                          "fontWeight": "500"
-                        }
-                      ]
-                    },
-                    {
-                      "type": "frame",
-                      "id": "FSYK2",
-                      "name": "Tension Row",
-                      "width": "fill_container",
-                      "gap": 12,
-                      "alignItems": "center",
-                      "children": [
-                        {
-                          "type": "icon_font",
-                          "id": "kLXyh",
-                          "name": "icon3",
-                          "width": 20,
-                          "height": 20,
-                          "iconFontName": "tune",
-                          "iconFontFamily": "Material Symbols Outlined",
-                          "fill": "#94A3B8"
-                        },
-                        {
-                          "type": "text",
-                          "id": "hYSHv",
-                          "name": "label3",
-                          "fill": "#94A3B8",
-                          "textGrowth": "fixed-width",
-                          "width": 48,
-                          "content": "텐션",
-                          "fontFamily": "Gmarket Sans",
-                          "fontSize": 14,
-                          "fontWeight": "normal"
-                        },
-                        {
-                          "type": "text",
-                          "id": "uhjvH",
-                          "name": "val3",
-                          "fill": "#0F172A",
-                          "content": "25lbs",
-                          "fontFamily": "Gmarket Sans",
-                          "fontSize": 16,
-                          "fontWeight": "500"
-                        }
-                      ]
-                    }
-                  ]
                 }
               ]
             },
@@ -4992,7 +4660,7 @@
                       "id": "fnG5v",
                       "name": "card1title",
                       "fill": "#0F172A",
-                      "content": "YONEX AX99 Pro",
+                      "content": "OO 거트샵",
                       "fontFamily": "Gmarket Sans",
                       "fontSize": 16,
                       "fontWeight": "700"
@@ -5025,16 +4693,6 @@
                   ]
                 },
                 {
-                  "type": "text",
-                  "id": "Pgi4l",
-                  "name": "card1gut",
-                  "fill": "#475569",
-                  "content": "BG65 | 25lbs",
-                  "fontFamily": "Gmarket Sans",
-                  "fontSize": 14,
-                  "fontWeight": "normal"
-                },
-                {
                   "type": "frame",
                   "id": "3l5Ba",
                   "name": "Card 1 Row 3",
@@ -5047,17 +4705,7 @@
                       "id": "0Zfcd",
                       "name": "card1shop",
                       "fill": "#94A3B8",
-                      "content": "OO 거트샵",
-                      "fontFamily": "Gmarket Sans",
-                      "fontSize": 12,
-                      "fontWeight": "normal"
-                    },
-                    {
-                      "type": "text",
-                      "id": "0eBPq",
-                      "name": "card1date",
-                      "fill": "#94A3B8",
-                      "content": "완료일 02/18",
+                      "content": "2025.02.18 완료",
                       "fontFamily": "Gmarket Sans",
                       "fontSize": 12,
                       "fontWeight": "normal"
@@ -5090,7 +4738,7 @@
                       "id": "mtIwU",
                       "name": "card2title",
                       "fill": "#0F172A",
-                      "content": "VICTOR Thruster F",
+                      "content": "XX 스트링샵",
                       "fontFamily": "Gmarket Sans",
                       "fontSize": 16,
                       "fontWeight": "700"
@@ -5123,16 +4771,6 @@
                   ]
                 },
                 {
-                  "type": "text",
-                  "id": "y2OZD",
-                  "name": "card2gut",
-                  "fill": "#475569",
-                  "content": "YONEX BG80 | 27lbs",
-                  "fontFamily": "Gmarket Sans",
-                  "fontSize": 14,
-                  "fontWeight": "normal"
-                },
-                {
                   "type": "frame",
                   "id": "P2wrf",
                   "name": "Card 2 Row 3",
@@ -5145,17 +4783,7 @@
                       "id": "VVytk",
                       "name": "card2shop",
                       "fill": "#94A3B8",
-                      "content": "XX 스트링샵",
-                      "fontFamily": "Gmarket Sans",
-                      "fontSize": 12,
-                      "fontWeight": "normal"
-                    },
-                    {
-                      "type": "text",
-                      "id": "ddXk7",
-                      "name": "card2date",
-                      "fill": "#94A3B8",
-                      "content": "완료일 02/15",
+                      "content": "2025.02.15 완료",
                       "fontFamily": "Gmarket Sans",
                       "fontSize": 12,
                       "fontWeight": "normal"
@@ -5188,7 +4816,7 @@
                       "id": "P9Nut",
                       "name": "card3title",
                       "fill": "#0F172A",
-                      "content": "Li-Ning N99",
+                      "content": "YY 배드민턴",
                       "fontFamily": "Gmarket Sans",
                       "fontSize": 16,
                       "fontWeight": "700"
@@ -5221,16 +4849,6 @@
                   ]
                 },
                 {
-                  "type": "text",
-                  "id": "MSS8k",
-                  "name": "card3gut",
-                  "fill": "#475569",
-                  "content": "BG65Ti | 24lbs",
-                  "fontFamily": "Gmarket Sans",
-                  "fontSize": 14,
-                  "fontWeight": "normal"
-                },
-                {
                   "type": "frame",
                   "id": "iqUmZ",
                   "name": "Card 3 Row 3",
@@ -5243,17 +4861,7 @@
                       "id": "MOIVP",
                       "name": "card3shop",
                       "fill": "#94A3B8",
-                      "content": "YY 배드민턴",
-                      "fontFamily": "Gmarket Sans",
-                      "fontSize": 12,
-                      "fontWeight": "normal"
-                    },
-                    {
-                      "type": "text",
-                      "id": "o0bsD",
-                      "name": "card3date",
-                      "fill": "#94A3B8",
-                      "content": "완료일 02/10",
+                      "content": "2025.02.10 완료",
                       "fontFamily": "Gmarket Sans",
                       "fontSize": 12,
                       "fontWeight": "normal"
