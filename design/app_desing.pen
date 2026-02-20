@@ -100,9 +100,9 @@
       "height": 844,
       "fill": "$--surface",
       "layout": "vertical",
-      "gap": 24,
+      "gap": 32,
       "padding": [
-        60,
+        120,
         24,
         24,
         24
@@ -162,7 +162,7 @@
               "fill": "$--text-secondary",
               "textGrowth": "fixed-width",
               "width": "fill_container",
-              "content": "로그인하고 거트 작업 현황을 확인하세요",
+              "content": "간편하게 시작하세요",
               "fontFamily": "Gmarket Sans",
               "fontSize": 14,
               "fontWeight": "Regular"
@@ -171,152 +171,97 @@
         },
         {
           "type": "frame",
-          "id": "rL3w7",
-          "name": "Form Area",
+          "id": "kR7db",
+          "name": "Social Login Group",
           "width": "fill_container",
           "layout": "vertical",
-          "gap": 16,
-          "children": [
-            {
-              "type": "frame",
-              "id": "xFLWZ",
-              "name": "Email Input",
-              "width": "fill_container",
-              "height": 48,
-              "fill": "$--surface-variant",
-              "cornerRadius": 8,
-              "padding": [
-                0,
-                16
-              ],
-              "alignItems": "center",
-              "children": [
-                {
-                  "type": "text",
-                  "id": "NvdMw",
-                  "name": "emailPlaceholder",
-                  "fill": "$--text-tertiary",
-                  "content": "이메일",
-                  "fontFamily": "Gmarket Sans",
-                  "fontSize": 14,
-                  "fontWeight": "Regular"
-                }
-              ]
-            },
-            {
-              "type": "frame",
-              "id": "3baXI",
-              "name": "Password Input",
-              "width": "fill_container",
-              "height": 48,
-              "fill": "$--surface-variant",
-              "cornerRadius": 8,
-              "padding": [
-                0,
-                16
-              ],
-              "alignItems": "center",
-              "children": [
-                {
-                  "type": "text",
-                  "id": "K3NaL",
-                  "name": "passwordPlaceholder",
-                  "fill": "$--text-tertiary",
-                  "content": "비밀번호",
-                  "fontFamily": "Gmarket Sans",
-                  "fontSize": 14,
-                  "fontWeight": "Regular"
-                }
-              ]
-            }
-          ]
-        },
-        {
-          "type": "frame",
-          "id": "MDAXs",
-          "name": "Login Button",
-          "width": "fill_container",
-          "height": 48,
-          "fill": "$--primary",
-          "cornerRadius": 12,
-          "justifyContent": "center",
-          "alignItems": "center",
-          "children": [
-            {
-              "type": "text",
-              "id": "fxP69",
-              "name": "loginText",
-              "fill": "#FFFFFF",
-              "content": "로그인",
-              "fontFamily": "Gmarket Sans",
-              "fontSize": 16,
-              "fontWeight": "SemiBold"
-            }
-          ]
-        },
-        {
-          "type": "frame",
-          "id": "YSgob",
-          "name": "Divider Row",
-          "width": "fill_container",
           "gap": 12,
-          "alignItems": "center",
           "children": [
             {
               "type": "frame",
-              "id": "qEtsM",
-              "name": "Divider Left",
+              "id": "rQjMa",
+              "name": "Kakao Login Button",
               "width": "fill_container",
-              "height": 1,
-              "fill": "$--border"
-            },
-            {
-              "type": "text",
-              "id": "RHPWh",
-              "name": "dividerText",
-              "fill": "$--text-tertiary",
-              "content": "또는",
-              "fontFamily": "Gmarket Sans",
-              "fontSize": 12,
-              "fontWeight": "Regular"
+              "height": 48,
+              "fill": "#FEE500",
+              "cornerRadius": 12,
+              "gap": 8,
+              "justifyContent": "center",
+              "alignItems": "center",
+              "children": [
+                {
+                  "type": "text",
+                  "id": "3pkxg",
+                  "name": "kakaoIcon",
+                  "content": "💬",
+                  "fontFamily": "Inter",
+                  "fontSize": 18,
+                  "fontWeight": "normal"
+                },
+                {
+                  "type": "text",
+                  "id": "3UO1N",
+                  "name": "kakaoText",
+                  "fill": "#191919",
+                  "content": "카카오로 시작하기",
+                  "fontFamily": "Gmarket Sans",
+                  "fontSize": 15,
+                  "fontWeight": "600"
+                }
+              ]
             },
             {
               "type": "frame",
-              "id": "05Xf1",
-              "name": "Divider Right",
+              "id": "kT9dm",
+              "name": "Naver Login Button",
               "width": "fill_container",
-              "height": 1,
-              "fill": "$--border"
-            }
-          ]
-        },
-        {
-          "type": "frame",
-          "id": "2bNcV",
-          "name": "Signup Link",
-          "width": "fill_container",
-          "gap": 4,
-          "justifyContent": "center",
-          "children": [
-            {
-              "type": "text",
-              "id": "mikwa",
-              "name": "signupQuestion",
-              "fill": "$--text-secondary",
-              "content": "아직 회원이 아니신가요?",
-              "fontFamily": "Gmarket Sans",
-              "fontSize": 14,
-              "fontWeight": "Regular"
+              "height": 48,
+              "fill": "#03C75A",
+              "cornerRadius": 12,
+              "gap": 8,
+              "justifyContent": "center",
+              "alignItems": "center",
+              "children": [
+                {
+                  "type": "text",
+                  "id": "jH2b5",
+                  "name": "naverText",
+                  "fill": "#FFFFFF",
+                  "content": "N  네이버로 시작하기",
+                  "fontFamily": "Gmarket Sans",
+                  "fontSize": 15,
+                  "fontWeight": "600"
+                }
+              ]
             },
             {
-              "type": "text",
-              "id": "vAfHH",
-              "name": "signupLink",
-              "fill": "$--primary",
-              "content": "회원가입",
-              "fontFamily": "Gmarket Sans",
-              "fontSize": 14,
-              "fontWeight": "SemiBold"
+              "type": "frame",
+              "id": "Ue3TL",
+              "name": "Gmail Login Button",
+              "width": "fill_container",
+              "height": 48,
+              "fill": "#FFFFFF",
+              "cornerRadius": 12,
+              "stroke": {
+                "align": "inside",
+                "thickness": 1.5,
+                "fill": "#E2E8F0"
+              },
+              "gap": 8,
+              "justifyContent": "center",
+              "alignItems": "center",
+              "children": [
+                {
+                  "type": "text",
+                  "id": "EGjES",
+                  "name": "gmailText",
+                  "fill": "#0F172A",
+                  "content": "G  Gmail로 시작하기",
+                  "fontFamily": "Gmarket Sans",
+                  "fontSize": 15,
+                  "fontWeight": "600"
+                }
+              ]
             }
           ]
         }
@@ -364,7 +309,7 @@
               "id": "uJqSz",
               "name": "titleText",
               "fill": "$--text-primary",
-              "content": "회원가입",
+              "content": "프로필 설정",
               "fontFamily": "Gmarket Sans",
               "fontSize": 24,
               "fontWeight": "700"
@@ -374,7 +319,7 @@
               "id": "sYU8e",
               "name": "subtitleText",
               "fill": "$--text-secondary",
-              "content": "거트알림에 오신 것을 환영합니다",
+              "content": "서비스 이용을 위해 정보를 입력해주세요",
               "fontFamily": "Gmarket Sans",
               "fontSize": 14,
               "fontWeight": "normal"
@@ -581,84 +526,6 @@
             },
             {
               "type": "frame",
-              "id": "b42V2",
-              "name": "Email Input",
-              "width": "fill_container",
-              "height": 48,
-              "fill": "$--surface-variant",
-              "cornerRadius": 8,
-              "padding": [
-                0,
-                16
-              ],
-              "alignItems": "center",
-              "children": [
-                {
-                  "type": "text",
-                  "id": "cOSqi",
-                  "name": "ph2",
-                  "fill": "$--text-tertiary",
-                  "content": "이메일",
-                  "fontFamily": "Gmarket Sans",
-                  "fontSize": 14,
-                  "fontWeight": "normal"
-                }
-              ]
-            },
-            {
-              "type": "frame",
-              "id": "D5IXb",
-              "name": "Password Input",
-              "width": "fill_container",
-              "height": 48,
-              "fill": "$--surface-variant",
-              "cornerRadius": 8,
-              "padding": [
-                0,
-                16
-              ],
-              "alignItems": "center",
-              "children": [
-                {
-                  "type": "text",
-                  "id": "AJnz6",
-                  "name": "ph3",
-                  "fill": "$--text-tertiary",
-                  "content": "비밀번호",
-                  "fontFamily": "Gmarket Sans",
-                  "fontSize": 14,
-                  "fontWeight": "normal"
-                }
-              ]
-            },
-            {
-              "type": "frame",
-              "id": "nGvh8",
-              "name": "Password Confirm Input",
-              "width": "fill_container",
-              "height": 48,
-              "fill": "$--surface-variant",
-              "cornerRadius": 8,
-              "padding": [
-                0,
-                16
-              ],
-              "alignItems": "center",
-              "children": [
-                {
-                  "type": "text",
-                  "id": "bTeHP",
-                  "name": "ph4",
-                  "fill": "$--text-tertiary",
-                  "content": "비밀번호 확인",
-                  "fontFamily": "Gmarket Sans",
-                  "fontSize": 14,
-                  "fontWeight": "normal"
-                }
-              ]
-            },
-            {
-              "type": "frame",
               "id": "M1vfQ",
               "name": "Phone Input",
               "width": "fill_container",
@@ -701,23 +568,12 @@
               "id": "dUoNL",
               "name": "btnText",
               "fill": "#FFFFFF",
-              "content": "회원가입",
+              "content": "시작하기",
               "fontFamily": "Gmarket Sans",
               "fontSize": 16,
               "fontWeight": "600"
             }
           ]
-        },
-        {
-          "type": "text",
-          "id": "VnaAt",
-          "name": "Bottom Link",
-          "fill": "$--text-secondary",
-          "content": "이미 계정이 있으신가요? 로그인",
-          "textAlign": "center",
-          "fontFamily": "Gmarket Sans",
-          "fontSize": 14,
-          "fontWeight": "normal"
         }
       ]
     },
