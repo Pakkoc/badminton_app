@@ -173,7 +173,7 @@
 | 1 | 검색어 입력 | 검색바에 텍스트 입력 | 300ms debounce 후 검색 쿼리 실행 | 검색 결과에 맞는 회원만 목록에 표시 |
 | 2 | 검색어 초기화 | 검색바 초기화 아이콘(X) 터치 | 검색어 삭제, 전체 회원 목록 표시 | 목록 원래 상태로 복원 |
 | 3 | 회원 카드 탭 | 회원 카드 터치 | 회원 상세 화면으로 이동 | `owner-member-detail` 화면, `memberId` 전달 |
-| 4 | FAB 탭 | 우하단 회원 등록 버튼 터치 | 회원 등록 화면으로 이동 | `owner-member-create` 화면으로 전환 |
+| 4 | FAB 탭 | 우하단 회원 등록 버튼 터치 | 회원 등록 화면으로 이동 | `owner-member-register` 화면으로 전환 |
 | 5 | 아래로 당기기 | Pull-to-refresh 제스처 | 회원 목록 데이터 재조회 | 로딩 인디케이터 표시 후 목록 갱신 |
 | 6 | 하단 탭 전환 | 하단 네비게이션 탭 터치 | 해당 화면으로 이동 | 선택된 탭 화면으로 전환 |
 
@@ -264,7 +264,7 @@ final count = await supabase
 | 대상 화면 | 동작 | 전달 파라미터 |
 |-----------|------|---------------|
 | 회원 상세 (`owner-member-detail`) | 회원 카드 탭 | `memberId` |
-| 회원 등록 (`owner-member-create`) | FAB 탭 | 없음 |
+| 회원 등록 (`owner-member-register`) | FAB 탭 | 없음 |
 | 사장님 대시보드 (`owner-dashboard`) | 하단 "대시보드" 탭 | 없음 |
 | 작업 관리 (`owner-order-manage`) | 하단 "작업관리" 탭 | 없음 |
 | 샵 설정 (`owner-shop-settings`) | 하단 "설정" 탭 | 없음 |

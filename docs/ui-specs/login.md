@@ -306,7 +306,7 @@ if (result == null) {
 | 대상 화면 | 동작 | 전달 파라미터 |
 |-----------|------|---------------|
 | 고객 홈 (`customer-home`) | 소셜 로그인 성공 + 기존 사용자 + role이 `customer` | 없음 |
-| 사장님 대시보드 (`shop-owner-dashboard`) | 소셜 로그인 성공 + 기존 사용자 + role이 `shop_owner` | 없음 |
+| 사장님 대시보드 (`owner-dashboard`) | 소셜 로그인 성공 + 기존 사용자 + role이 `shop_owner` | 없음 |
 | 프로필 설정 (`profile-setup`) | 소셜 로그인 성공 + 신규 사용자 (users 테이블에 없음) | 없음 |
 
 ---

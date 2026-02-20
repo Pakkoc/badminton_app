@@ -213,7 +213,7 @@ if (session != null) {
 |-----------|------|---------------|
 | 로그인 (`login`) | 미로그인 상태일 때 자동 이동 | 없음 |
 | 고객 홈 (`customer-home`) | 로그인 상태 + role이 `customer`일 때 자동 이동 | 없음 |
-| 사장님 대시보드 (`shop-owner-dashboard`) | 로그인 상태 + role이 `shop_owner`일 때 자동 이동 | 없음 |
+| 사장님 대시보드 (`owner-dashboard`) | 로그인 상태 + role이 `shop_owner`일 때 자동 이동 | 없음 |
 
 ---
 

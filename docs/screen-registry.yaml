@@ -3,7 +3,7 @@
 # 변경 시 이 파일을 먼저 수정하고, /sync 스킬로 전체 문서를 동기화한다.
 #
 # 필드 설명:
-#   id: 화면 고유 ID
+#   id: 화면 고유 ID (역할 접두사 포함: customer-, owner-)
 #   name: 화면 표시 이름
 #   description: 화면 목적 한줄 요약
 #   role: common | customer | shop_owner
@@ -57,46 +57,46 @@ screens:
     role: customer
     pencil_id: 0b6dS
     spec_file: docs/ui-specs/customer-home.md
-    nav_to: [order-detail, shop-search, order-history, mypage]
+    nav_to: [customer-order-detail, customer-shop-search, customer-order-history, customer-mypage]
     nav_from: [login, profile-setup, splash]
 
-  order-detail:
+  customer-order-detail:
     name: "작업 상세"
     description: "거트 작업의 상세 정보 및 진행 상태"
     role: customer
     pencil_id: l7Ghq
     spec_file: docs/ui-specs/order-detail.md
     nav_to: []
-    nav_from: [customer-home, order-history]
+    nav_from: [customer-home, customer-order-history]
 
-  order-history:
+  customer-order-history:
     name: "작업 이력"
     description: "완료된 거트 작업 이력 목록"
     role: customer
     pencil_id: cdfXb
     spec_file: docs/ui-specs/order-history.md
-    nav_to: [order-detail]
+    nav_to: [customer-order-detail]
     nav_from: [customer-home]
 
-  shop-search:
+  customer-shop-search:
     name: "주변 샵 검색"
     description: "네이버 지도 기반 주변 거트 샵 검색"
     role: customer
     pencil_id: KMb0t
     spec_file: docs/ui-specs/shop-search.md
-    nav_to: [shop-detail]
+    nav_to: [customer-shop-detail]
     nav_from: [customer-home]
 
-  shop-detail:
+  customer-shop-detail:
     name: "샵 상세"
     description: "샵 정보, 공지/이벤트/재고 탭"
     role: customer
     pencil_id: S4mUF
     spec_file: docs/ui-specs/shop-detail.md
     nav_to: []
-    nav_from: [shop-search]
+    nav_from: [customer-shop-search]
 
-  mypage:
+  customer-mypage:
     name: "마이페이지"
     description: "내 정보 확인 및 설정"
     role: customer
@@ -112,77 +112,77 @@ screens:
     role: shop_owner
     pencil_id: ExImm
     spec_file: docs/ui-specs/owner-dashboard.md
-    nav_to: [order-create, order-manage, member-list, shop-settings]
+    nav_to: [owner-order-create, owner-order-manage, owner-member-list, owner-shop-settings]
     nav_from: [login, owner-shop-signup, splash]
 
-  order-create:
+  owner-order-create:
     name: "작업 접수"
     description: "새 거트 작업 접수 (회원 선택 + 작업 정보)"
     role: shop_owner
     pencil_id: HEBtI
     spec_file: docs/ui-specs/order-create.md
-    nav_to: [member-register]
-    nav_from: [owner-dashboard, order-manage]
+    nav_to: [owner-member-register]
+    nav_from: [owner-dashboard, owner-order-manage]
 
-  order-manage:
+  owner-order-manage:
     name: "작업 관리"
     description: "전체 작업 목록 필터링 및 상태 관리"
     role: shop_owner
     pencil_id: UVpp2
     spec_file: docs/ui-specs/order-manage.md
-    nav_to: [order-create]
+    nav_to: [owner-order-create]
     nav_from: [owner-dashboard]
 
-  member-list:
+  owner-member-list:
     name: "회원 관리"
     description: "등록 회원 목록 검색 및 관리"
     role: shop_owner
     pencil_id: CpHGp
     spec_file: docs/ui-specs/member-list.md
-    nav_to: [member-register]
+    nav_to: [owner-member-register]
     nav_from: [owner-dashboard]
 
-  member-register:
+  owner-member-register:
     name: "회원 등록"
     description: "신규 회원 수동 등록"
     role: shop_owner
     pencil_id: C60xa
     spec_file: docs/ui-specs/member-register.md
     nav_to: []
-    nav_from: [member-list, order-create]
+    nav_from: [owner-member-list, owner-order-create]
 
-  shop-settings:
+  owner-shop-settings:
     name: "샵 설정"
     description: "샵 정보 수정 및 관리 메뉴"
     role: shop_owner
     pencil_id: qQBpR
     spec_file: docs/ui-specs/shop-settings.md
-    nav_to: [shop-qr, post-create, inventory-manage]
+    nav_to: [owner-shop-qr, owner-post-create, owner-inventory-manage]
     nav_from: [owner-dashboard]
 
-  shop-qr:
+  owner-shop-qr:
     name: "샵 QR코드"
     description: "고객용 QR코드 생성 및 공유"
     role: shop_owner
     pencil_id: PYHid
     spec_file: docs/ui-specs/shop-qr.md
     nav_to: []
-    nav_from: [shop-settings]
+    nav_from: [owner-shop-settings]
 
-  post-create:
+  owner-post-create:
     name: "게시글 작성"
     description: "공지사항/이벤트 게시글 작성"
     role: shop_owner
     pencil_id: zQq8F
     spec_file: docs/ui-specs/post-create.md
     nav_to: []
-    nav_from: [shop-settings]
+    nav_from: [owner-shop-settings]
 
-  inventory-manage:
+  owner-inventory-manage:
     name: "재고 관리"
     description: "거트 스트링 재고 등록 및 관리"
     role: shop_owner
     pencil_id: frCH8
     spec_file: docs/ui-specs/inventory-manage.md
     nav_to: []
-    nav_from: [shop-settings]
+    nav_from: [owner-shop-settings]
