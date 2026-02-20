@@ -5220,7 +5220,7 @@
     {
       "type": "frame",
       "id": "qQBpR",
-      "x": 2350,
+      "x": 1410,
       "y": 2248,
       "name": "Shop Settings",
       "width": 390,
@@ -5970,7 +5970,7 @@
     {
       "type": "text",
       "id": "TJfut",
-      "x": 2485,
+      "x": 1545,
       "y": 3108,
       "name": "n16",
       "fill": "#94A3B8",
@@ -6403,7 +6403,7 @@
     {
       "type": "frame",
       "id": "PYHid",
-      "x": 2820,
+      "x": 1880,
       "y": 2248,
       "name": "Shop QR Code",
       "width": 390,
@@ -6768,7 +6768,7 @@
     {
       "type": "text",
       "id": "bzQ6N",
-      "x": 2940,
+      "x": 2000,
       "y": 3108,
       "name": "shopQrLabel",
       "fill": "#94A3B8",
@@ -7608,6 +7608,334 @@
       "fontFamily": "Gmarket Sans",
       "fontSize": 28,
       "fontWeight": "bold"
+    },
+    {
+      "type": "frame",
+      "id": "4eLmy",
+      "x": 940,
+      "y": 3328,
+      "name": "Inventory Add BottomSheet",
+      "clip": true,
+      "width": 390,
+      "height": 844,
+      "fill": "#00000066",
+      "layout": "none",
+      "children": [
+        {
+          "type": "frame",
+          "id": "FP75q",
+          "x": 0,
+          "y": 324,
+          "name": "Bottom Sheet",
+          "width": 390,
+          "height": 520,
+          "fill": "#FFFFFF",
+          "cornerRadius": [
+            24,
+            24,
+            0,
+            0
+          ],
+          "layout": "vertical",
+          "children": [
+            {
+              "type": "frame",
+              "id": "bYwrW",
+              "name": "Handle Wrap",
+              "width": "fill_container",
+              "height": 32,
+              "justifyContent": "center",
+              "alignItems": "center",
+              "children": [
+                {
+                  "type": "frame",
+                  "id": "M84Ca",
+                  "name": "Handle",
+                  "width": 40,
+                  "height": 4,
+                  "fill": "#CBD5E1",
+                  "cornerRadius": 2
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "sC6Qm",
+              "name": "Header",
+              "width": "fill_container",
+              "padding": [
+                0,
+                24,
+                16,
+                24
+              ],
+              "justifyContent": "space_between",
+              "alignItems": "center",
+              "children": [
+                {
+                  "type": "text",
+                  "id": "jpF1q",
+                  "name": "headerTitle",
+                  "fill": "#0F172A",
+                  "content": "상품 추가",
+                  "fontFamily": "Gmarket Sans",
+                  "fontSize": 18,
+                  "fontWeight": "SemiBold"
+                },
+                {
+                  "type": "icon_font",
+                  "id": "CDGXW",
+                  "name": "closeIcon",
+                  "width": 24,
+                  "height": 24,
+                  "iconFontName": "close",
+                  "iconFontFamily": "Material Symbols Rounded",
+                  "fill": "#94A3B8"
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "ytjlI",
+              "name": "Form Area",
+              "width": "fill_container",
+              "height": "fill_container",
+              "layout": "vertical",
+              "gap": 16,
+              "padding": [
+                0,
+                24
+              ],
+              "children": [
+                {
+                  "type": "text",
+                  "id": "wgCsw",
+                  "name": "nameLabel",
+                  "fill": "#475569",
+                  "content": "상품명 *",
+                  "fontFamily": "Gmarket Sans",
+                  "fontSize": 14,
+                  "fontWeight": "SemiBold"
+                },
+                {
+                  "type": "frame",
+                  "id": "Um0jX",
+                  "name": "Name Input",
+                  "width": "fill_container",
+                  "height": 48,
+                  "fill": "#F8FAFC",
+                  "cornerRadius": 8,
+                  "stroke": {
+                    "align": "inside",
+                    "thickness": 1,
+                    "fill": "#E2E8F0"
+                  },
+                  "padding": [
+                    0,
+                    16
+                  ],
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "g5GAT",
+                      "name": "namePlaceholder",
+                      "fill": "#94A3B8",
+                      "content": "상품 이름을 입력하세요",
+                      "fontFamily": "Gmarket Sans",
+                      "fontSize": 14,
+                      "fontWeight": "normal"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "id": "QyJtq",
+                  "name": "catLabel",
+                  "fill": "#475569",
+                  "content": "카테고리",
+                  "fontFamily": "Gmarket Sans",
+                  "fontSize": 14,
+                  "fontWeight": "SemiBold"
+                },
+                {
+                  "type": "frame",
+                  "id": "OdHRa",
+                  "name": "Category Input",
+                  "width": "fill_container",
+                  "height": 48,
+                  "fill": "#F8FAFC",
+                  "cornerRadius": 8,
+                  "stroke": {
+                    "align": "inside",
+                    "thickness": 1,
+                    "fill": "#E2E8F0"
+                  },
+                  "padding": [
+                    0,
+                    16
+                  ],
+                  "justifyContent": "space_between",
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "Fy4l9",
+                      "name": "catPlaceholder",
+                      "fill": "#94A3B8",
+                      "content": "카테고리 선택 또는 입력",
+                      "fontFamily": "Gmarket Sans",
+                      "fontSize": 14,
+                      "fontWeight": "normal"
+                    },
+                    {
+                      "type": "icon_font",
+                      "id": "vb8f2",
+                      "name": "catDropIcon",
+                      "width": 20,
+                      "height": 20,
+                      "iconFontName": "expand_more",
+                      "iconFontFamily": "Material Symbols Rounded",
+                      "fill": "#94A3B8"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "id": "HgSTA",
+                  "name": "qtyLabel",
+                  "fill": "#475569",
+                  "content": "재고 수량 *",
+                  "fontFamily": "Gmarket Sans",
+                  "fontSize": 14,
+                  "fontWeight": "SemiBold"
+                },
+                {
+                  "type": "frame",
+                  "id": "f9ubP",
+                  "name": "Quantity Input",
+                  "width": "fill_container",
+                  "height": 48,
+                  "fill": "#F8FAFC",
+                  "cornerRadius": 8,
+                  "stroke": {
+                    "align": "inside",
+                    "thickness": 1,
+                    "fill": "#E2E8F0"
+                  },
+                  "padding": [
+                    0,
+                    16
+                  ],
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "ov3BW",
+                      "name": "qtyPlaceholder",
+                      "fill": "#94A3B8",
+                      "content": "수량 입력",
+                      "fontFamily": "Gmarket Sans",
+                      "fontSize": 14,
+                      "fontWeight": "normal"
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "ogHZs",
+                  "name": "Image Row",
+                  "width": "fill_container",
+                  "gap": 12,
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "WDV0h",
+                      "name": "imgLabel",
+                      "fill": "#475569",
+                      "content": "이미지 (선택)",
+                      "fontFamily": "Gmarket Sans",
+                      "fontSize": 14,
+                      "fontWeight": "SemiBold"
+                    },
+                    {
+                      "type": "frame",
+                      "id": "oQX6E",
+                      "name": "Image Add Box",
+                      "width": 64,
+                      "height": 64,
+                      "fill": "#F1F5F9",
+                      "cornerRadius": 8,
+                      "stroke": {
+                        "align": "inside",
+                        "thickness": 1,
+                        "fill": "#E2E8F0"
+                      },
+                      "justifyContent": "center",
+                      "alignItems": "center",
+                      "children": [
+                        {
+                          "type": "icon_font",
+                          "id": "iaK1o",
+                          "name": "imgIcon",
+                          "width": 24,
+                          "height": 24,
+                          "iconFontName": "add_a_photo",
+                          "iconFontFamily": "Material Symbols Rounded",
+                          "fill": "#94A3B8"
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "a6v1b",
+                  "name": "Spacer",
+                  "width": "fill_container",
+                  "height": "fill_container"
+                },
+                {
+                  "type": "frame",
+                  "id": "wUVJt",
+                  "name": "Save Button",
+                  "width": "fill_container",
+                  "height": 52,
+                  "fill": "#F97316",
+                  "cornerRadius": 12,
+                  "justifyContent": "center",
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "VUJ8z",
+                      "name": "saveTxt",
+                      "fill": "#FFFFFF",
+                      "content": "저장",
+                      "fontFamily": "Gmarket Sans",
+                      "fontSize": 16,
+                      "fontWeight": "SemiBold"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "text",
+      "id": "hjnTS",
+      "x": 1040,
+      "y": 4188,
+      "name": "bsLabel",
+      "fill": "#94A3B8",
+      "content": "재고 추가 (바텀시트)",
+      "fontFamily": "Gmarket Sans",
+      "fontSize": 14,
+      "fontWeight": "normal"
     }
   ],
   "variables": {
