@@ -288,7 +288,6 @@ await supabase.from('orders').insert({
 |-----------|------|---------------|
 | 사장님 대시보드 (`owner-dashboard`) | FAB 버튼 탭 | 없음 |
 | 작업 관리 (`owner-order-manage`) | "작업 접수" 버튼 탭 | 없음 |
-| 회원 상세 (`owner-member-detail`) | "작업 접수" 버튼 탭 | `member_id` (회원 자동 선택) |
 
 ### 8.2 이동 가능 화면
 

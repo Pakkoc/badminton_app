@@ -397,10 +397,8 @@ supabase
 |-----------|---------|------|---------------|
 | 작업 상세 | `customer-order-detail` | 작업 카드 탭 | `order_id` (String, UUID) |
 | 주변 샵 검색 | `customer-shop-search` | 하단 "샵검색" 탭 또는 빈 상태 CTA 버튼 탭 | 없음 |
-| 내 QR코드 | `customer-my-qr` | 하단 "QR" 탭 | 없음 |
-| 작업 이력 | `customer-history` | 하단 "이력" 탭 | 없음 |
+| 작업 이력 | `customer-order-history` | 하단 "이력" 탭 | 없음 |
 | 마이페이지 | `customer-mypage` | 하단 "MY" 탭 | 없음 |
-| 알림 목록 | `customer-notifications` | 앱바 알림 아이콘 탭 | 없음 |
 
 ---
 

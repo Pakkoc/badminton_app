@@ -410,8 +410,7 @@ final orderCounts = await supabase
 |-----------|---------|------|---------------|
 | 샵 상세 | `customer-shop-detail` | 샵 카드 탭 | `shop_id` (String, UUID) |
 | 고객 홈 | `customer-home` | 하단 "홈" 탭 | 없음 |
-| 내 QR코드 | `customer-my-qr` | 하단 "QR" 탭 | 없음 |
-| 작업 이력 | `customer-history` | 하단 "이력" 탭 | 없음 |
+| 작업 이력 | `customer-order-history` | 하단 "이력" 탭 | 없음 |
 | 마이페이지 | `customer-mypage` | 하단 "MY" 탭 | 없음 |
 
 ---

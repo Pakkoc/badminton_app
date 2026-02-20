@@ -314,7 +314,7 @@ supabase
 | 출발 화면 | 동작 | 전달 파라미터 |
 |-----------|------|---------------|
 | 고객 홈 (`customer-home`) | 작업 카드 탭 | `order_id` (String, UUID) |
-| 작업 이력 (`customer-history`) | 이력 카드 탭 | `order_id` (String, UUID) |
+| 작업 이력 (`customer-order-history`) | 이력 카드 탭 | `order_id` (String, UUID) |
 | 푸시 알림 | 알림 탭 시 딥링크 | `order_id` (String, UUID) |
 
 ### 8.2 이동 가능 화면

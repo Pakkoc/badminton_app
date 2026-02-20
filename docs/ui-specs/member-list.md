@@ -263,7 +263,6 @@ final count = await supabase
 
 | 대상 화면 | 동작 | 전달 파라미터 |
 |-----------|------|---------------|
-| 회원 상세 (`owner-member-detail`) | 회원 카드 탭 | `memberId` |
 | 회원 등록 (`owner-member-register`) | FAB 탭 | 없음 |
 | 사장님 대시보드 (`owner-dashboard`) | 하단 "대시보드" 탭 | 없음 |
 | 작업 관리 (`owner-order-manage`) | 하단 "작업관리" 탭 | 없음 |
