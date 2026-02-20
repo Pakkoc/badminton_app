@@ -4122,7 +4122,12 @@
           "name": "Map Area",
           "width": "fill_container",
           "height": 350,
-          "fill": "#E2E8F0",
+          "fill": {
+            "type": "image",
+            "enabled": true,
+            "url": "./images/generated-1771593717613.png",
+            "mode": "fill"
+          },
           "layout": "none",
           "children": [
             {
@@ -7622,37 +7627,17 @@
               "name": "mapPreview",
               "width": "fill_container",
               "height": 150,
-              "fill": "#E2E8F0",
+              "fill": {
+                "type": "image",
+                "enabled": true,
+                "url": "./images/generated-1771593735478.png",
+                "mode": "fill"
+              },
               "cornerRadius": 8,
               "layout": "vertical",
               "gap": 8,
               "justifyContent": "center",
-              "alignItems": "center",
-              "children": [
-                {
-                  "type": "icon_font",
-                  "id": "5fpAL",
-                  "name": "mapIcon",
-                  "width": 28,
-                  "height": 28,
-                  "iconFontName": "map-pin",
-                  "iconFontFamily": "lucide",
-                  "fill": "#16A34A"
-                },
-                {
-                  "type": "text",
-                  "id": "S5miH",
-                  "name": "mapText",
-                  "fill": "#94A3B8",
-                  "textGrowth": "fixed-width",
-                  "width": 200,
-                  "content": "주소를 입력하면 지도에 표시됩니다",
-                  "textAlign": "center",
-                  "fontFamily": "Gmarket Sans",
-                  "fontSize": 13,
-                  "fontWeight": "normal"
-                }
-              ]
+              "alignItems": "center"
             },
             {
               "type": "frame",
