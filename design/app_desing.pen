@@ -6741,7 +6741,94 @@
       "width": 390,
       "height": 844,
       "fill": "#F8FAFC",
-      "layout": "vertical"
+      "layout": "vertical",
+      "children": [
+        {
+          "type": "frame",
+          "id": "BTXvt",
+          "name": "App Bar",
+          "width": "fill_container",
+          "height": 56,
+          "fill": "#FFFFFF",
+          "stroke": {
+            "align": "inside",
+            "thickness": {
+              "bottom": 0.5
+            },
+            "fill": "#E2E8F0"
+          },
+          "padding": [
+            0,
+            20
+          ],
+          "alignItems": "center",
+          "children": [
+            {
+              "type": "text",
+              "id": "c5H7b",
+              "name": "appTitle2",
+              "fill": "#0F172A",
+              "content": "샵 설정",
+              "fontFamily": "Gmarket Sans",
+              "fontSize": 18,
+              "fontWeight": "600"
+            }
+          ]
+        },
+        {
+          "type": "frame",
+          "id": "a8MFS",
+          "name": "Scroll Content",
+          "width": "fill_container",
+          "height": "fill_container",
+          "layout": "vertical",
+          "gap": 20,
+          "padding": 16,
+          "children": [
+            {
+              "type": "frame",
+              "id": "Lz1aU",
+              "name": "Section Header 1",
+              "gap": 6,
+              "alignItems": "center",
+              "children": [
+                {
+                  "type": "icon_font",
+                  "id": "arlpg",
+                  "name": "secIcon1",
+                  "width": 20,
+                  "height": 20,
+                  "iconFontName": "store",
+                  "iconFontFamily": "Material Symbols Rounded",
+                  "fill": "#16A34A"
+                },
+                {
+                  "type": "text",
+                  "id": "ztib9",
+                  "name": "secTitle1",
+                  "fill": "#0F172A",
+                  "content": "샵 정보",
+                  "fontFamily": "Gmarket Sans",
+                  "fontSize": 16,
+                  "fontWeight": "700"
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "cWpdn",
+              "name": "Shop Info Card",
+              "width": "fill_container",
+              "height": "fit_content(0)",
+              "fill": "#FFFFFF",
+              "cornerRadius": 16,
+              "layout": "vertical",
+              "gap": 16,
+              "padding": 16
+            }
+          ]
+        }
+      ]
     }
   ],
   "variables": {
