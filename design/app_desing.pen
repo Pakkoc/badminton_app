@@ -4122,12 +4122,7 @@
           "name": "Map Area",
           "width": "fill_container",
           "height": 350,
-          "fill": {
-            "type": "image",
-            "enabled": true,
-            "url": "./images/generated-1771593717613.png",
-            "mode": "fill"
-          },
+          "fill": "#E2E8F0",
           "layout": "none",
           "children": [
             {
@@ -4711,7 +4706,12 @@
           "name": "Map Preview",
           "width": "fill_container",
           "height": 180,
-          "fill": "#E2E8F0",
+          "fill": {
+            "type": "image",
+            "enabled": true,
+            "url": "./images/generated-1771596168367.png",
+            "mode": "fill"
+          },
           "layout": "none",
           "children": [
             {
@@ -6131,8 +6131,8 @@
             {
               "type": "frame",
               "id": "V0i5J",
-              "x": 16,
-              "y": 8,
+              "x": 0,
+              "y": 0,
               "name": "Card List",
               "width": 358,
               "height": 604,
@@ -7630,7 +7630,7 @@
               "fill": {
                 "type": "image",
                 "enabled": true,
-                "url": "./images/generated-1771593735478.png",
+                "url": "./images/generated-1771596215289.png",
                 "mode": "fill"
               },
               "cornerRadius": 8,
