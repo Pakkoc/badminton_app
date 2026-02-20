@@ -7677,7 +7677,61 @@
               "width": 173,
               "height": 170,
               "fill": "#FFFFFF",
-              "cornerRadius": 12
+              "cornerRadius": 12,
+              "layout": "vertical",
+              "gap": 8,
+              "padding": [
+                16,
+                8,
+                8,
+                8
+              ],
+              "alignItems": "center",
+              "children": [
+                {
+                  "type": "frame",
+                  "id": "VbpID",
+                  "name": "Icon Area",
+                  "width": "fill_container",
+                  "height": 80,
+                  "fill": "#F1F5F9",
+                  "cornerRadius": 8,
+                  "justifyContent": "center",
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "icon_font",
+                      "id": "qE7l8",
+                      "name": "ic1i",
+                      "width": 32,
+                      "height": 32,
+                      "iconFontName": "sports_tennis",
+                      "iconFontFamily": "Material Symbols Rounded",
+                      "fill": "#94A3B8"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "id": "iizux",
+                  "name": "t1n",
+                  "fill": "#0F172A",
+                  "content": "YONEX AX99 Pro",
+                  "fontFamily": "Gmarket Sans",
+                  "fontSize": 13,
+                  "fontWeight": "500"
+                },
+                {
+                  "type": "text",
+                  "id": "tBSVU",
+                  "name": "t1q",
+                  "fill": "#475569",
+                  "content": "재고: 3개",
+                  "fontFamily": "Gmarket Sans",
+                  "fontSize": 11,
+                  "fontWeight": "normal"
+                }
+              ]
             },
             {
               "type": "frame",
@@ -7687,7 +7741,61 @@
               "width": 173,
               "height": 170,
               "fill": "#FFFFFF",
-              "cornerRadius": 12
+              "cornerRadius": 12,
+              "layout": "vertical",
+              "gap": 8,
+              "padding": [
+                16,
+                8,
+                8,
+                8
+              ],
+              "alignItems": "center",
+              "children": [
+                {
+                  "type": "frame",
+                  "id": "kla5W",
+                  "name": "Icon Area",
+                  "width": "fill_container",
+                  "height": 80,
+                  "fill": "#F1F5F9",
+                  "cornerRadius": 8,
+                  "justifyContent": "center",
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "icon_font",
+                      "id": "GCwuv",
+                      "name": "ic2i",
+                      "width": 32,
+                      "height": 32,
+                      "iconFontName": "sports_tennis",
+                      "iconFontFamily": "Material Symbols Rounded",
+                      "fill": "#94A3B8"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "id": "yiz9A",
+                  "name": "t2n",
+                  "fill": "#0F172A",
+                  "content": "YONEX MAVIS 350",
+                  "fontFamily": "Gmarket Sans",
+                  "fontSize": 13,
+                  "fontWeight": "500"
+                },
+                {
+                  "type": "text",
+                  "id": "06N7K",
+                  "name": "t2q",
+                  "fill": "#475569",
+                  "content": "재고: 12통",
+                  "fontFamily": "Gmarket Sans",
+                  "fontSize": 11,
+                  "fontWeight": "normal"
+                }
+              ]
             },
             {
               "type": "frame",
@@ -7697,7 +7805,61 @@
               "width": 173,
               "height": 170,
               "fill": "#FFFFFF",
-              "cornerRadius": 12
+              "cornerRadius": 12,
+              "layout": "vertical",
+              "gap": 8,
+              "padding": [
+                16,
+                8,
+                8,
+                8
+              ],
+              "alignItems": "center",
+              "children": [
+                {
+                  "type": "frame",
+                  "id": "rHzXZ",
+                  "name": "Icon Area",
+                  "width": "fill_container",
+                  "height": 80,
+                  "fill": "#F1F5F9",
+                  "cornerRadius": 8,
+                  "justifyContent": "center",
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "icon_font",
+                      "id": "ebSzB",
+                      "name": "ic3i",
+                      "width": 32,
+                      "height": 32,
+                      "iconFontName": "handyman",
+                      "iconFontFamily": "Material Symbols Rounded",
+                      "fill": "#94A3B8"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "id": "hfynW",
+                  "name": "t3n",
+                  "fill": "#0F172A",
+                  "content": "YONEX AC102",
+                  "fontFamily": "Gmarket Sans",
+                  "fontSize": 13,
+                  "fontWeight": "500"
+                },
+                {
+                  "type": "text",
+                  "id": "vc3ND",
+                  "name": "t3q",
+                  "fill": "#475569",
+                  "content": "재고: 8개",
+                  "fontFamily": "Gmarket Sans",
+                  "fontSize": 11,
+                  "fontWeight": "normal"
+                }
+              ]
             },
             {
               "type": "frame",
@@ -7707,7 +7869,61 @@
               "width": 173,
               "height": 170,
               "fill": "#FFFFFF",
-              "cornerRadius": 12
+              "cornerRadius": 12,
+              "layout": "vertical",
+              "gap": 8,
+              "padding": [
+                16,
+                8,
+                8,
+                8
+              ],
+              "alignItems": "center",
+              "children": [
+                {
+                  "type": "frame",
+                  "id": "dsCDD",
+                  "name": "Icon Area",
+                  "width": "fill_container",
+                  "height": 80,
+                  "fill": "#F1F5F9",
+                  "cornerRadius": 8,
+                  "justifyContent": "center",
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "icon_font",
+                      "id": "aLKnN",
+                      "name": "ic4i",
+                      "width": 32,
+                      "height": 32,
+                      "iconFontName": "backpack",
+                      "iconFontFamily": "Material Symbols Rounded",
+                      "fill": "#94A3B8"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "id": "h0MGd",
+                  "name": "t4n",
+                  "fill": "#0F172A",
+                  "content": "배드민턴 가방",
+                  "fontFamily": "Gmarket Sans",
+                  "fontSize": 13,
+                  "fontWeight": "500"
+                },
+                {
+                  "type": "text",
+                  "id": "Wr2oZ",
+                  "name": "t4q",
+                  "fill": "#EF4444",
+                  "content": "품절",
+                  "fontFamily": "Gmarket Sans",
+                  "fontSize": 11,
+                  "fontWeight": "normal"
+                }
+              ]
             }
           ]
         },
@@ -8107,7 +8323,61 @@
               "width": 173,
               "height": 170,
               "fill": "#FFFFFF",
-              "cornerRadius": 12
+              "cornerRadius": 12,
+              "layout": "vertical",
+              "gap": 8,
+              "padding": [
+                16,
+                8,
+                8,
+                8
+              ],
+              "alignItems": "center",
+              "children": [
+                {
+                  "type": "frame",
+                  "id": "dco0N",
+                  "name": "Icon Area",
+                  "width": "fill_container",
+                  "height": 80,
+                  "fill": "#F1F5F9",
+                  "cornerRadius": 8,
+                  "justifyContent": "center",
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "icon_font",
+                      "id": "VOl8q",
+                      "name": "eic1i",
+                      "width": 32,
+                      "height": 32,
+                      "iconFontName": "sports_tennis",
+                      "iconFontFamily": "Material Symbols Rounded",
+                      "fill": "#94A3B8"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "id": "1UNnY",
+                  "name": "et1n",
+                  "fill": "#0F172A",
+                  "content": "YONEX AX99 Pro",
+                  "fontFamily": "Gmarket Sans",
+                  "fontSize": 13,
+                  "fontWeight": "500"
+                },
+                {
+                  "type": "text",
+                  "id": "a2z05",
+                  "name": "et1q",
+                  "fill": "#475569",
+                  "content": "재고: 3개",
+                  "fontFamily": "Gmarket Sans",
+                  "fontSize": 11,
+                  "fontWeight": "normal"
+                }
+              ]
             },
             {
               "type": "frame",
@@ -8117,7 +8387,61 @@
               "width": 173,
               "height": 170,
               "fill": "#FFFFFF",
-              "cornerRadius": 12
+              "cornerRadius": 12,
+              "layout": "vertical",
+              "gap": 8,
+              "padding": [
+                16,
+                8,
+                8,
+                8
+              ],
+              "alignItems": "center",
+              "children": [
+                {
+                  "type": "frame",
+                  "id": "6RnoN",
+                  "name": "Icon Area",
+                  "width": "fill_container",
+                  "height": 80,
+                  "fill": "#F1F5F9",
+                  "cornerRadius": 8,
+                  "justifyContent": "center",
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "icon_font",
+                      "id": "jPSFH",
+                      "name": "eic2i",
+                      "width": 32,
+                      "height": 32,
+                      "iconFontName": "sports_tennis",
+                      "iconFontFamily": "Material Symbols Rounded",
+                      "fill": "#94A3B8"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "id": "nwEcx",
+                  "name": "et2n",
+                  "fill": "#0F172A",
+                  "content": "YONEX MAVIS 350",
+                  "fontFamily": "Gmarket Sans",
+                  "fontSize": 13,
+                  "fontWeight": "500"
+                },
+                {
+                  "type": "text",
+                  "id": "bGmOA",
+                  "name": "et2q",
+                  "fill": "#475569",
+                  "content": "재고: 12통",
+                  "fontFamily": "Gmarket Sans",
+                  "fontSize": 11,
+                  "fontWeight": "normal"
+                }
+              ]
             },
             {
               "type": "frame",
@@ -8127,7 +8451,61 @@
               "width": 173,
               "height": 170,
               "fill": "#FFFFFF",
-              "cornerRadius": 12
+              "cornerRadius": 12,
+              "layout": "vertical",
+              "gap": 8,
+              "padding": [
+                16,
+                8,
+                8,
+                8
+              ],
+              "alignItems": "center",
+              "children": [
+                {
+                  "type": "frame",
+                  "id": "paLy7",
+                  "name": "Icon Area",
+                  "width": "fill_container",
+                  "height": 80,
+                  "fill": "#F1F5F9",
+                  "cornerRadius": 8,
+                  "justifyContent": "center",
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "icon_font",
+                      "id": "SjiFC",
+                      "name": "eic3i",
+                      "width": 32,
+                      "height": 32,
+                      "iconFontName": "handyman",
+                      "iconFontFamily": "Material Symbols Rounded",
+                      "fill": "#94A3B8"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "id": "eo3QT",
+                  "name": "et3n",
+                  "fill": "#0F172A",
+                  "content": "YONEX AC102",
+                  "fontFamily": "Gmarket Sans",
+                  "fontSize": 13,
+                  "fontWeight": "500"
+                },
+                {
+                  "type": "text",
+                  "id": "jQejf",
+                  "name": "et3q",
+                  "fill": "#475569",
+                  "content": "재고: 8개",
+                  "fontFamily": "Gmarket Sans",
+                  "fontSize": 11,
+                  "fontWeight": "normal"
+                }
+              ]
             },
             {
               "type": "frame",
@@ -8137,7 +8515,61 @@
               "width": 173,
               "height": 170,
               "fill": "#FFFFFF",
-              "cornerRadius": 12
+              "cornerRadius": 12,
+              "layout": "vertical",
+              "gap": 8,
+              "padding": [
+                16,
+                8,
+                8,
+                8
+              ],
+              "alignItems": "center",
+              "children": [
+                {
+                  "type": "frame",
+                  "id": "cJnzP",
+                  "name": "Icon Area",
+                  "width": "fill_container",
+                  "height": 80,
+                  "fill": "#F1F5F9",
+                  "cornerRadius": 8,
+                  "justifyContent": "center",
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "icon_font",
+                      "id": "scBMJ",
+                      "name": "eic4i",
+                      "width": 32,
+                      "height": 32,
+                      "iconFontName": "backpack",
+                      "iconFontFamily": "Material Symbols Rounded",
+                      "fill": "#94A3B8"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "id": "Qe6Qh",
+                  "name": "et4n",
+                  "fill": "#0F172A",
+                  "content": "배드민턴 가방",
+                  "fontFamily": "Gmarket Sans",
+                  "fontSize": 13,
+                  "fontWeight": "500"
+                },
+                {
+                  "type": "text",
+                  "id": "LXGLV",
+                  "name": "et4q",
+                  "fill": "#EF4444",
+                  "content": "품절",
+                  "fontFamily": "Gmarket Sans",
+                  "fontSize": 11,
+                  "fontWeight": "normal"
+                }
+              ]
             }
           ]
         },
