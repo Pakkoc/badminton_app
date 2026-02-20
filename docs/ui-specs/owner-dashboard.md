@@ -35,7 +35,7 @@
 │  최근 작업 목록               │
 │  ┌───────────────────────┐  │
 │  │ 작업 카드 1            │  │
-│  │ 회원명 · 거트 · 상태    │  │
+│  │ 회원명 · 상태           │  │
 │  │ [상태변경 버튼]         │  │
 │  └───────────────────────┘  │
 │  ┌───────────────────────┐  │
@@ -103,8 +103,6 @@
 |----------|------|------|------|
 | 회원 이름 | Text | `titleMedium` (16sp, Medium) | 항상 표시 |
 | 상태 뱃지 | StatusBadge | 접수됨/작업중/완료 | 카드 우측 상단 |
-| 거트 정보 | Text | "BG65 \| 25lbs" (`bodyMedium`, 14sp, `#475569`) | 항상 표시 |
-| 라켓 모델 | Text | "YONEX AX99" (`bodySmall`, 12sp, `#94A3B8`) | 항상 표시 |
 | 접수 시간 | Text | "14:30 접수" (`bodySmall`, 12sp, `#94A3B8`) | 항상 표시 |
 | 상태 변경 버튼 | Button | 다음 상태로 변경하는 버튼 | 완료 상태이면 숨김 |
 
@@ -151,9 +149,6 @@
 | in_progress_count | int | orders COUNT | 숫자 (32sp) | 오늘 작업중 상태 건수 |
 | completed_count | int | orders COUNT | 숫자 (32sp) | 오늘 완료 상태 건수 |
 | member_name | String | members.name | 텍스트 | 회원 이름 |
-| gut_name | String | orders.gut_name | 텍스트 | 거트명 |
-| tension | String | orders.tension | 텍스트 (예: "25lbs") | 텐션값 |
-| racket_model | String | orders.racket_model | 텍스트 | 라켓 모델명 |
 | status | Enum | orders.status | StatusBadge | 작업 상태 |
 | created_at | Timestamp | orders.created_at | "HH:mm 접수" | 접수 시간 |
 
