@@ -121,7 +121,7 @@ screens:
     role: shop_owner
     pencil_id: HEBtI
     spec_file: docs/ui-specs/order-create.md
-    nav_to: [owner-member-register]
+    nav_to: []
     nav_from: [owner-dashboard, owner-order-manage]
 
   owner-order-manage:
@@ -139,17 +139,8 @@ screens:
     role: shop_owner
     pencil_id: CpHGp
     spec_file: docs/ui-specs/member-list.md
-    nav_to: [owner-member-register]
-    nav_from: [owner-dashboard]
-
-  owner-member-register:
-    name: "회원 등록"
-    description: "신규 회원 수동 등록"
-    role: shop_owner
-    pencil_id: C60xa
-    spec_file: docs/ui-specs/member-register.md
     nav_to: []
-    nav_from: [owner-member-list, owner-order-create]
+    nav_from: [owner-dashboard]
 
   owner-shop-settings:
     name: "샵 설정"
