@@ -2564,6 +2564,462 @@
               ]
             }
           ]
+        },
+        {
+          "type": "frame",
+          "id": "DaNso",
+          "name": "Order List",
+          "width": "fill_container",
+          "layout": "vertical",
+          "gap": 10,
+          "padding": [
+            12,
+            16
+          ],
+          "children": [
+            {
+              "type": "frame",
+              "id": "UU6TC",
+              "name": "Order Card 1",
+              "width": "fill_container",
+              "fill": "$--surface",
+              "cornerRadius": 16,
+              "stroke": {
+                "align": "inside",
+                "thickness": 1,
+                "fill": "$--border"
+              },
+              "layout": "vertical",
+              "gap": 8,
+              "padding": 16,
+              "children": [
+                {
+                  "type": "frame",
+                  "id": "bJ0ul",
+                  "name": "card1Row1",
+                  "width": "fill_container",
+                  "justifyContent": "space_between",
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "yfSAn",
+                      "name": "card1Name",
+                      "fill": "$--text-primary",
+                      "content": "김민수",
+                      "fontFamily": "Pretendard",
+                      "fontSize": 16,
+                      "fontWeight": "SemiBold"
+                    },
+                    {
+                      "type": "frame",
+                      "id": "veYL4",
+                      "name": "badge1",
+                      "fill": "$--status-received-bg",
+                      "cornerRadius": 999,
+                      "padding": [
+                        4,
+                        10
+                      ],
+                      "alignItems": "center",
+                      "children": [
+                        {
+                          "type": "text",
+                          "id": "1Vrp8",
+                          "name": "badge1Text",
+                          "fill": "$--status-received",
+                          "content": "접수",
+                          "fontFamily": "Pretendard",
+                          "fontSize": 12,
+                          "fontWeight": "Medium"
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "id": "eZMiN",
+                  "name": "card1Row2",
+                  "fill": "$--text-secondary",
+                  "content": "BG65 · 25lbs · ASTROX 88D",
+                  "fontFamily": "Pretendard",
+                  "fontSize": 14,
+                  "fontWeight": "normal"
+                },
+                {
+                  "type": "text",
+                  "id": "bk3AY",
+                  "name": "card1Row3",
+                  "fill": "$--text-tertiary",
+                  "content": "오늘 14:30 접수",
+                  "fontFamily": "Pretendard",
+                  "fontSize": 12,
+                  "fontWeight": "normal"
+                },
+                {
+                  "type": "frame",
+                  "id": "xswV0",
+                  "name": "Action Button",
+                  "width": "fill_container",
+                  "height": 36,
+                  "fill": "$--primary",
+                  "cornerRadius": 8,
+                  "justifyContent": "center",
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "nae0x",
+                      "name": "card1ActionText",
+                      "fill": "#FFFFFF",
+                      "content": "작업 시작",
+                      "fontFamily": "Pretendard",
+                      "fontSize": 14,
+                      "fontWeight": "Medium"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "lfs9n",
+              "name": "Order Card 2",
+              "width": "fill_container",
+              "fill": "$--surface",
+              "cornerRadius": 16,
+              "stroke": {
+                "align": "inside",
+                "thickness": 1,
+                "fill": "$--border"
+              },
+              "layout": "vertical",
+              "gap": 8,
+              "padding": 16,
+              "children": [
+                {
+                  "type": "frame",
+                  "id": "5Vlhq",
+                  "name": "card2Row1",
+                  "width": "fill_container",
+                  "justifyContent": "space_between",
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "NnFRT",
+                      "name": "card2Name",
+                      "fill": "$--text-primary",
+                      "content": "이지현",
+                      "fontFamily": "Pretendard",
+                      "fontSize": 16,
+                      "fontWeight": "SemiBold"
+                    },
+                    {
+                      "type": "frame",
+                      "id": "qTZjM",
+                      "name": "badge2",
+                      "fill": "$--status-progress-bg",
+                      "cornerRadius": 999,
+                      "padding": [
+                        4,
+                        10
+                      ],
+                      "alignItems": "center",
+                      "children": [
+                        {
+                          "type": "text",
+                          "id": "klOdO",
+                          "name": "badge2Text",
+                          "fill": "$--status-progress",
+                          "content": "작업중",
+                          "fontFamily": "Pretendard",
+                          "fontSize": 12,
+                          "fontWeight": "Medium"
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "id": "XL3Kb",
+                  "name": "card2Row2",
+                  "fill": "$--text-secondary",
+                  "content": "BG80 · 27lbs · NANOFLARE 700",
+                  "fontFamily": "Pretendard",
+                  "fontSize": 14,
+                  "fontWeight": "normal"
+                },
+                {
+                  "type": "text",
+                  "id": "rjbOH",
+                  "name": "card2Row3",
+                  "fill": "$--text-tertiary",
+                  "content": "오늘 13:00 접수",
+                  "fontFamily": "Pretendard",
+                  "fontSize": 12,
+                  "fontWeight": "normal"
+                },
+                {
+                  "type": "frame",
+                  "id": "E1g9b",
+                  "name": "Action Button",
+                  "width": "fill_container",
+                  "height": 36,
+                  "fill": "$--status-completed",
+                  "cornerRadius": 8,
+                  "justifyContent": "center",
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "Kc5vy",
+                      "name": "card2ActionText",
+                      "fill": "#FFFFFF",
+                      "content": "작업 완료",
+                      "fontFamily": "Pretendard",
+                      "fontSize": 14,
+                      "fontWeight": "Medium"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "44S7S",
+              "name": "Order Card 3",
+              "width": "fill_container",
+              "fill": "$--surface",
+              "cornerRadius": 16,
+              "stroke": {
+                "align": "inside",
+                "thickness": 1,
+                "fill": "$--border"
+              },
+              "layout": "vertical",
+              "gap": 8,
+              "padding": 16,
+              "children": [
+                {
+                  "type": "frame",
+                  "id": "EHiI1",
+                  "name": "card3Row1",
+                  "width": "fill_container",
+                  "justifyContent": "space_between",
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "kolBj",
+                      "name": "card3Name",
+                      "fill": "$--text-primary",
+                      "content": "박서준",
+                      "fontFamily": "Pretendard",
+                      "fontSize": 16,
+                      "fontWeight": "SemiBold"
+                    },
+                    {
+                      "type": "frame",
+                      "id": "TkKlT",
+                      "name": "badge3",
+                      "fill": "$--status-completed-bg",
+                      "cornerRadius": 999,
+                      "padding": [
+                        4,
+                        10
+                      ],
+                      "alignItems": "center",
+                      "children": [
+                        {
+                          "type": "text",
+                          "id": "FHjKg",
+                          "name": "badge3Text",
+                          "fill": "$--status-completed",
+                          "content": "완료",
+                          "fontFamily": "Pretendard",
+                          "fontSize": 12,
+                          "fontWeight": "Medium"
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "id": "DQ34q",
+                  "name": "card3Row2",
+                  "fill": "$--text-secondary",
+                  "content": "BG65Ti · 24lbs · VOLTRIC Z-FORCE",
+                  "fontFamily": "Pretendard",
+                  "fontSize": 14,
+                  "fontWeight": "normal"
+                },
+                {
+                  "type": "text",
+                  "id": "7P3y4",
+                  "name": "card3Row3",
+                  "fill": "$--text-tertiary",
+                  "content": "어제 16:00 완료",
+                  "fontFamily": "Pretendard",
+                  "fontSize": 12,
+                  "fontWeight": "normal"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "frame",
+          "id": "qSyiA",
+          "name": "Spacer",
+          "width": "fill_container",
+          "height": "fill_container"
+        },
+        {
+          "type": "frame",
+          "id": "6QaNa",
+          "name": "Bottom Nav",
+          "width": "fill_container",
+          "height": 64,
+          "fill": "$--surface",
+          "stroke": {
+            "align": "inside",
+            "thickness": {
+              "top": 1
+            },
+            "fill": "$--border"
+          },
+          "padding": [
+            8,
+            0
+          ],
+          "justifyContent": "space_around",
+          "alignItems": "center",
+          "children": [
+            {
+              "type": "frame",
+              "id": "RyQd9",
+              "name": "navItem1",
+              "layout": "vertical",
+              "gap": 4,
+              "alignItems": "center",
+              "children": [
+                {
+                  "type": "icon_font",
+                  "id": "Rd2q6",
+                  "name": "navIcon1",
+                  "width": 24,
+                  "height": 24,
+                  "iconFontName": "home",
+                  "iconFontFamily": "Material Symbols Rounded",
+                  "fill": "$--text-tertiary"
+                },
+                {
+                  "type": "text",
+                  "id": "2TL8I",
+                  "name": "navLabel1",
+                  "fill": "$--text-tertiary",
+                  "content": "홈",
+                  "fontFamily": "Pretendard",
+                  "fontSize": 10,
+                  "fontWeight": "normal"
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "iNec9",
+              "name": "navItem2",
+              "layout": "vertical",
+              "gap": 4,
+              "alignItems": "center",
+              "children": [
+                {
+                  "type": "icon_font",
+                  "id": "T9FvS",
+                  "name": "navIcon2",
+                  "width": 24,
+                  "height": 24,
+                  "iconFontName": "assignment",
+                  "iconFontFamily": "Material Symbols Rounded",
+                  "fill": "$--primary"
+                },
+                {
+                  "type": "text",
+                  "id": "jZlem",
+                  "name": "navLabel2",
+                  "fill": "$--primary",
+                  "content": "작업관리",
+                  "fontFamily": "Pretendard",
+                  "fontSize": 10,
+                  "fontWeight": "SemiBold"
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "1Ubca",
+              "name": "navItem3",
+              "layout": "vertical",
+              "gap": 4,
+              "alignItems": "center",
+              "children": [
+                {
+                  "type": "icon_font",
+                  "id": "dkTVf",
+                  "name": "navIcon3",
+                  "width": 24,
+                  "height": 24,
+                  "iconFontName": "group",
+                  "iconFontFamily": "Material Symbols Rounded",
+                  "fill": "$--text-tertiary"
+                },
+                {
+                  "type": "text",
+                  "id": "X75tT",
+                  "name": "navLabel3",
+                  "fill": "$--text-tertiary",
+                  "content": "회원",
+                  "fontFamily": "Pretendard",
+                  "fontSize": 10,
+                  "fontWeight": "normal"
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "RULHS",
+              "name": "navItem4",
+              "layout": "vertical",
+              "gap": 4,
+              "alignItems": "center",
+              "children": [
+                {
+                  "type": "icon_font",
+                  "id": "DrfcT",
+                  "name": "navIcon4",
+                  "width": 24,
+                  "height": 24,
+                  "iconFontName": "settings",
+                  "iconFontFamily": "Material Symbols Rounded",
+                  "fill": "$--text-tertiary"
+                },
+                {
+                  "type": "text",
+                  "id": "SiFXF",
+                  "name": "navLabel4",
+                  "fill": "$--text-tertiary",
+                  "content": "설정",
+                  "fontFamily": "Pretendard",
+                  "fontSize": 10,
+                  "fontWeight": "normal"
+                }
+              ]
+            }
+          ]
         }
       ]
     },
@@ -2577,7 +3033,338 @@
       "width": 390,
       "height": 844,
       "fill": "$--background",
-      "layout": "vertical"
+      "layout": "vertical",
+      "children": [
+        {
+          "type": "frame",
+          "id": "4w7SP",
+          "name": "App Bar",
+          "width": "fill_container",
+          "height": 56,
+          "fill": "$--surface",
+          "padding": [
+            0,
+            16
+          ],
+          "alignItems": "center",
+          "children": [
+            {
+              "type": "icon_font",
+              "id": "mh92n",
+              "name": "backIcon3",
+              "width": 24,
+              "height": 24,
+              "iconFontName": "arrow_back",
+              "iconFontFamily": "Material Symbols Rounded",
+              "fill": "$--text-primary"
+            },
+            {
+              "type": "frame",
+              "id": "WR0lr",
+              "name": "gap3",
+              "width": 12,
+              "height": 1
+            },
+            {
+              "type": "text",
+              "id": "8JiqK",
+              "name": "title3",
+              "fill": "$--text-primary",
+              "content": "회원 등록",
+              "fontFamily": "Pretendard",
+              "fontSize": 20,
+              "fontWeight": "Bold"
+            }
+          ]
+        },
+        {
+          "type": "frame",
+          "id": "KhOFU",
+          "name": "Form Content",
+          "width": "fill_container",
+          "layout": "vertical",
+          "gap": 20,
+          "padding": 16,
+          "children": [
+            {
+              "type": "frame",
+              "id": "rQ7iU",
+              "name": "Basic Info",
+              "width": "fill_container",
+              "layout": "vertical",
+              "gap": 12,
+              "children": [
+                {
+                  "type": "text",
+                  "id": "FDxKZ",
+                  "name": "label1",
+                  "fill": "$--text-secondary",
+                  "content": "기본 정보",
+                  "fontFamily": "Pretendard",
+                  "fontSize": 14,
+                  "fontWeight": "SemiBold"
+                },
+                {
+                  "type": "frame",
+                  "id": "1SPK5",
+                  "name": "Name Input",
+                  "width": "fill_container",
+                  "height": 48,
+                  "fill": "$--surface-variant",
+                  "cornerRadius": 8,
+                  "padding": [
+                    0,
+                    16
+                  ],
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "jGYqo",
+                      "name": "nameText",
+                      "fill": "$--text-tertiary",
+                      "content": "이름 *",
+                      "fontFamily": "Pretendard",
+                      "fontSize": 14,
+                      "fontWeight": "normal"
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "3bAsG",
+                  "name": "Phone Input",
+                  "width": "fill_container",
+                  "height": 48,
+                  "fill": "$--surface-variant",
+                  "cornerRadius": 8,
+                  "padding": [
+                    0,
+                    16
+                  ],
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "xwfkG",
+                      "name": "phoneText",
+                      "fill": "$--text-tertiary",
+                      "content": "연락처 *",
+                      "fontFamily": "Pretendard",
+                      "fontSize": 14,
+                      "fontWeight": "normal"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "pS5bF",
+              "name": "Preference Info",
+              "width": "fill_container",
+              "layout": "vertical",
+              "gap": 12,
+              "children": [
+                {
+                  "type": "text",
+                  "id": "X0wKT",
+                  "name": "label2",
+                  "fill": "$--text-secondary",
+                  "content": "선호 정보",
+                  "fontFamily": "Pretendard",
+                  "fontSize": 14,
+                  "fontWeight": "SemiBold"
+                },
+                {
+                  "type": "frame",
+                  "id": "3D1NO",
+                  "name": "Gut Input",
+                  "width": "fill_container",
+                  "height": 48,
+                  "fill": "$--surface-variant",
+                  "cornerRadius": 8,
+                  "padding": [
+                    0,
+                    16
+                  ],
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "p6K5p",
+                      "name": "gutText",
+                      "fill": "$--text-tertiary",
+                      "content": "선호 거트",
+                      "fontFamily": "Pretendard",
+                      "fontSize": 14,
+                      "fontWeight": "normal"
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "bFo3V",
+                  "name": "Tension Input",
+                  "width": "fill_container",
+                  "height": 48,
+                  "fill": "$--surface-variant",
+                  "cornerRadius": 8,
+                  "padding": [
+                    0,
+                    16
+                  ],
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "GC2gC",
+                      "name": "tensionText",
+                      "fill": "$--text-tertiary",
+                      "content": "선호 텐션 (lbs)",
+                      "fontFamily": "Pretendard",
+                      "fontSize": 14,
+                      "fontWeight": "normal"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "GMY0x",
+              "name": "Racket Info",
+              "width": "fill_container",
+              "layout": "vertical",
+              "gap": 12,
+              "children": [
+                {
+                  "type": "text",
+                  "id": "eObsS",
+                  "name": "label3",
+                  "fill": "$--text-secondary",
+                  "content": "라켓 정보",
+                  "fontFamily": "Pretendard",
+                  "fontSize": 14,
+                  "fontWeight": "SemiBold"
+                },
+                {
+                  "type": "frame",
+                  "id": "4tcX3",
+                  "name": "Racket Input",
+                  "width": "fill_container",
+                  "height": 48,
+                  "fill": "$--surface-variant",
+                  "cornerRadius": 8,
+                  "padding": [
+                    0,
+                    16
+                  ],
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "eB4fv",
+                      "name": "racketText",
+                      "fill": "$--text-tertiary",
+                      "content": "라켓 모델명",
+                      "fontFamily": "Pretendard",
+                      "fontSize": 14,
+                      "fontWeight": "normal"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "id": "SPb66",
+                  "name": "addRacket",
+                  "fill": "$--primary",
+                  "content": "+ 라켓 추가",
+                  "fontFamily": "Pretendard",
+                  "fontSize": 14,
+                  "fontWeight": "normal"
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "WZ6QL",
+              "name": "Memo Section",
+              "width": "fill_container",
+              "layout": "vertical",
+              "gap": 12,
+              "children": [
+                {
+                  "type": "text",
+                  "id": "m1Eyi",
+                  "name": "label4",
+                  "fill": "$--text-secondary",
+                  "content": "메모",
+                  "fontFamily": "Pretendard",
+                  "fontSize": 14,
+                  "fontWeight": "SemiBold"
+                },
+                {
+                  "type": "frame",
+                  "id": "6ECpY",
+                  "name": "Memo Textarea",
+                  "width": "fill_container",
+                  "height": 100,
+                  "fill": "$--surface-variant",
+                  "cornerRadius": 8,
+                  "layout": "vertical",
+                  "padding": 16,
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "UOg4j",
+                      "name": "memoPlaceholder",
+                      "fill": "$--text-tertiary",
+                      "content": "메모 (선택사항)",
+                      "fontFamily": "Pretendard",
+                      "fontSize": 14,
+                      "fontWeight": "normal"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "frame",
+          "id": "Zisk7",
+          "name": "Submit Wrap",
+          "width": "fill_container",
+          "layout": "vertical",
+          "padding": 16,
+          "children": [
+            {
+              "type": "frame",
+              "id": "QkaNg",
+              "name": "Submit Button",
+              "width": "fill_container",
+              "height": 48,
+              "fill": "$--primary",
+              "cornerRadius": 12,
+              "justifyContent": "center",
+              "alignItems": "center",
+              "children": [
+                {
+                  "type": "text",
+                  "id": "BL1Lr",
+                  "name": "submitText3",
+                  "fill": "#FFFFFF",
+                  "content": "회원 등록하기",
+                  "fontFamily": "Pretendard",
+                  "fontSize": 16,
+                  "fontWeight": "SemiBold"
+                }
+              ]
+            }
+          ]
+        }
+      ]
     }
   ],
   "variables": {
