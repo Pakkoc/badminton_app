@@ -1161,36 +1161,6 @@
             },
             {
               "type": "frame",
-              "id": "1t8Vm",
-              "name": "Tab QR",
-              "layout": "vertical",
-              "gap": 4,
-              "alignItems": "center",
-              "children": [
-                {
-                  "type": "icon_font",
-                  "id": "sNHAl",
-                  "name": "tab3Icon",
-                  "width": 24,
-                  "height": 24,
-                  "iconFontName": "qr_code_2",
-                  "iconFontFamily": "Material Symbols Rounded",
-                  "fill": "$--text-tertiary"
-                },
-                {
-                  "type": "text",
-                  "id": "gdN5S",
-                  "name": "tab3Label",
-                  "fill": "$--text-tertiary",
-                  "content": "QR",
-                  "fontFamily": "Gmarket Sans",
-                  "fontSize": 10,
-                  "fontWeight": "normal"
-                }
-              ]
-            },
-            {
-              "type": "frame",
               "id": "LCK4I",
               "name": "Tab History",
               "layout": "vertical",
@@ -4514,37 +4484,6 @@
             },
             {
               "type": "frame",
-              "id": "8sQUh",
-              "name": "Tab QR",
-              "width": 56,
-              "layout": "vertical",
-              "gap": 4,
-              "alignItems": "center",
-              "children": [
-                {
-                  "type": "icon_font",
-                  "id": "9f1mc",
-                  "name": "tab3Icon",
-                  "width": 24,
-                  "height": 24,
-                  "iconFontName": "qr_code_2",
-                  "iconFontFamily": "Material Symbols Outlined",
-                  "fill": "#94A3B8"
-                },
-                {
-                  "type": "text",
-                  "id": "Acqvc",
-                  "name": "tab3Label",
-                  "fill": "#94A3B8",
-                  "content": "QR",
-                  "fontFamily": "Gmarket Sans",
-                  "fontSize": 12,
-                  "fontWeight": "500"
-                }
-              ]
-            },
-            {
-              "type": "frame",
               "id": "bYIJv",
               "name": "Tab History",
               "width": 56,
@@ -5428,36 +5367,6 @@
             },
             {
               "type": "frame",
-              "id": "1mIWe",
-              "name": "Tab QR",
-              "layout": "vertical",
-              "gap": 4,
-              "alignItems": "center",
-              "children": [
-                {
-                  "type": "icon_font",
-                  "id": "4Ciq9",
-                  "name": "tab3icon",
-                  "width": 24,
-                  "height": 24,
-                  "iconFontName": "qr_code_2",
-                  "iconFontFamily": "Material Symbols Rounded",
-                  "fill": "#94A3B8"
-                },
-                {
-                  "type": "text",
-                  "id": "Chilx",
-                  "name": "tab3label",
-                  "fill": "#94A3B8",
-                  "content": "QR",
-                  "fontFamily": "Gmarket Sans",
-                  "fontSize": 10,
-                  "fontWeight": "normal"
-                }
-              ]
-            },
-            {
-              "type": "frame",
               "id": "3PIOa",
               "name": "Tab History",
               "layout": "vertical",
@@ -5908,36 +5817,6 @@
                   "name": "t2l",
                   "fill": "#94A3B8",
                   "content": "샵검색",
-                  "fontFamily": "Gmarket Sans",
-                  "fontSize": 10,
-                  "fontWeight": "normal"
-                }
-              ]
-            },
-            {
-              "type": "frame",
-              "id": "SO5eT",
-              "name": "Tab QR",
-              "layout": "vertical",
-              "gap": 4,
-              "alignItems": "center",
-              "children": [
-                {
-                  "type": "icon_font",
-                  "id": "vEgSL",
-                  "name": "t3i",
-                  "width": 24,
-                  "height": 24,
-                  "iconFontName": "qr_code_2",
-                  "iconFontFamily": "Material Symbols Rounded",
-                  "fill": "#94A3B8"
-                },
-                {
-                  "type": "text",
-                  "id": "i7Y6x",
-                  "name": "t3l",
-                  "fill": "#94A3B8",
-                  "content": "QR",
                   "fontFamily": "Gmarket Sans",
                   "fontSize": 10,
                   "fontWeight": "normal"
