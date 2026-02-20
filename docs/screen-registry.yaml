@@ -112,7 +112,7 @@ screens:
     role: shop_owner
     pencil_id: ExImm
     spec_file: docs/ui-specs/owner-dashboard.md
-    nav_to: [owner-order-create, owner-order-manage, owner-member-list, owner-shop-settings]
+    nav_to: [owner-order-create, owner-order-manage, owner-shop-settings]
     nav_from: [login, owner-shop-signup, splash]
 
   owner-order-create:
@@ -131,15 +131,6 @@ screens:
     pencil_id: UVpp2
     spec_file: docs/ui-specs/order-manage.md
     nav_to: [owner-order-create]
-    nav_from: [owner-dashboard]
-
-  owner-member-list:
-    name: "회원 관리"
-    description: "등록 회원 목록 검색 및 관리"
-    role: shop_owner
-    pencil_id: CpHGp
-    spec_file: docs/ui-specs/member-list.md
-    nav_to: []
     nav_from: [owner-dashboard]
 
   owner-shop-settings:
