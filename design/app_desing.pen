@@ -7936,6 +7936,360 @@
       "fontFamily": "Gmarket Sans",
       "fontSize": 14,
       "fontWeight": "normal"
+    },
+    {
+      "type": "frame",
+      "id": "66Y7D",
+      "x": 1410,
+      "y": 3328,
+      "name": "Inventory Edit BottomSheet",
+      "clip": true,
+      "width": 390,
+      "height": 844,
+      "fill": "#00000066",
+      "layout": "none",
+      "children": [
+        {
+          "type": "frame",
+          "id": "7kR2T",
+          "x": 0,
+          "y": 284,
+          "name": "Bottom Sheet",
+          "width": 390,
+          "height": 560,
+          "fill": "#FFFFFF",
+          "cornerRadius": [
+            24,
+            24,
+            0,
+            0
+          ],
+          "layout": "vertical",
+          "children": [
+            {
+              "type": "frame",
+              "id": "n6pFu",
+              "name": "Handle Wrap",
+              "width": "fill_container",
+              "height": 32,
+              "justifyContent": "center",
+              "alignItems": "center",
+              "children": [
+                {
+                  "type": "frame",
+                  "id": "nclNT",
+                  "name": "Handle",
+                  "width": 40,
+                  "height": 4,
+                  "fill": "#CBD5E1",
+                  "cornerRadius": 2
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "3eLSW",
+              "name": "Header",
+              "width": "fill_container",
+              "padding": [
+                0,
+                24,
+                16,
+                24
+              ],
+              "justifyContent": "space_between",
+              "alignItems": "center",
+              "children": [
+                {
+                  "type": "text",
+                  "id": "I86VZ",
+                  "name": "eTitle",
+                  "fill": "#0F172A",
+                  "content": "상품 수정",
+                  "fontFamily": "Gmarket Sans",
+                  "fontSize": 18,
+                  "fontWeight": "SemiBold"
+                },
+                {
+                  "type": "icon_font",
+                  "id": "kD7MV",
+                  "name": "eClose",
+                  "width": 24,
+                  "height": 24,
+                  "iconFontName": "close",
+                  "iconFontFamily": "Material Symbols Rounded",
+                  "fill": "#94A3B8"
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "1q0O7",
+              "name": "Form Area",
+              "width": "fill_container",
+              "height": "fill_container",
+              "layout": "vertical",
+              "gap": 16,
+              "padding": [
+                0,
+                24
+              ],
+              "children": [
+                {
+                  "type": "text",
+                  "id": "UbfzK",
+                  "name": "enLabel",
+                  "fill": "#475569",
+                  "content": "상품명 *",
+                  "fontFamily": "Gmarket Sans",
+                  "fontSize": 14,
+                  "fontWeight": "SemiBold"
+                },
+                {
+                  "type": "frame",
+                  "id": "9JGrZ",
+                  "name": "Name Input",
+                  "width": "fill_container",
+                  "height": 48,
+                  "fill": "#FFFFFF",
+                  "cornerRadius": 8,
+                  "stroke": {
+                    "align": "inside",
+                    "thickness": 1,
+                    "fill": "#E2E8F0"
+                  },
+                  "padding": [
+                    0,
+                    16
+                  ],
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "l7Eap",
+                      "name": "enValue",
+                      "fill": "#0F172A",
+                      "content": "YONEX AX99 Pro",
+                      "fontFamily": "Gmarket Sans",
+                      "fontSize": 14,
+                      "fontWeight": "normal"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "id": "PMqKr",
+                  "name": "ecLabel",
+                  "fill": "#475569",
+                  "content": "카테고리",
+                  "fontFamily": "Gmarket Sans",
+                  "fontSize": 14,
+                  "fontWeight": "SemiBold"
+                },
+                {
+                  "type": "frame",
+                  "id": "Y5SYL",
+                  "name": "Category Input",
+                  "width": "fill_container",
+                  "height": 48,
+                  "fill": "#FFFFFF",
+                  "cornerRadius": 8,
+                  "stroke": {
+                    "align": "inside",
+                    "thickness": 1,
+                    "fill": "#E2E8F0"
+                  },
+                  "padding": [
+                    0,
+                    16
+                  ],
+                  "justifyContent": "space_between",
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "quGXh",
+                      "name": "ecValue",
+                      "fill": "#0F172A",
+                      "content": "라켓",
+                      "fontFamily": "Gmarket Sans",
+                      "fontSize": 14,
+                      "fontWeight": "normal"
+                    },
+                    {
+                      "type": "icon_font",
+                      "id": "cKDjM",
+                      "name": "ecDrop",
+                      "width": 20,
+                      "height": 20,
+                      "iconFontName": "keyboard_arrow_down",
+                      "iconFontFamily": "Material Symbols Rounded",
+                      "fill": "#94A3B8"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "id": "3qurD",
+                  "name": "eqLabel",
+                  "fill": "#475569",
+                  "content": "재고 수량 *",
+                  "fontFamily": "Gmarket Sans",
+                  "fontSize": 14,
+                  "fontWeight": "SemiBold"
+                },
+                {
+                  "type": "frame",
+                  "id": "Cn0PF",
+                  "name": "Quantity Input",
+                  "width": "fill_container",
+                  "height": 48,
+                  "fill": "#FFFFFF",
+                  "cornerRadius": 8,
+                  "stroke": {
+                    "align": "inside",
+                    "thickness": 1,
+                    "fill": "#E2E8F0"
+                  },
+                  "padding": [
+                    0,
+                    16
+                  ],
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "YMUpg",
+                      "name": "eqValue",
+                      "fill": "#0F172A",
+                      "content": "3",
+                      "fontFamily": "Gmarket Sans",
+                      "fontSize": 14,
+                      "fontWeight": "normal"
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "KLREp",
+                  "name": "Image Row",
+                  "width": "fill_container",
+                  "gap": 12,
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "pMVzC",
+                      "name": "eiLabel",
+                      "fill": "#475569",
+                      "content": "이미지 (선택)",
+                      "fontFamily": "Gmarket Sans",
+                      "fontSize": 14,
+                      "fontWeight": "SemiBold"
+                    },
+                    {
+                      "type": "frame",
+                      "id": "W9iJv",
+                      "name": "Thumbnail",
+                      "width": 64,
+                      "height": 64,
+                      "fill": "#F1F5F9",
+                      "cornerRadius": 8,
+                      "justifyContent": "center",
+                      "alignItems": "center",
+                      "children": [
+                        {
+                          "type": "icon_font",
+                          "id": "TSzzH",
+                          "name": "eiIcon",
+                          "width": 32,
+                          "height": 32,
+                          "iconFontName": "sports_tennis",
+                          "iconFontFamily": "Material Symbols Rounded",
+                          "fill": "#94A3B8"
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "IjpLc",
+                  "name": "Spacer",
+                  "width": "fill_container",
+                  "height": "fill_container"
+                },
+                {
+                  "type": "frame",
+                  "id": "Pc6wk",
+                  "name": "Button Wrap",
+                  "width": "fill_container",
+                  "layout": "vertical",
+                  "gap": 8,
+                  "children": [
+                    {
+                      "type": "frame",
+                      "id": "ZO40e",
+                      "name": "Save Button",
+                      "width": "fill_container",
+                      "height": 52,
+                      "fill": "#F97316",
+                      "cornerRadius": 12,
+                      "justifyContent": "center",
+                      "alignItems": "center",
+                      "children": [
+                        {
+                          "type": "text",
+                          "id": "pSQgp",
+                          "name": "eSaveTxt",
+                          "fill": "#FFFFFF",
+                          "content": "저장",
+                          "fontFamily": "Gmarket Sans",
+                          "fontSize": 16,
+                          "fontWeight": "SemiBold"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "frame",
+                      "id": "NzYQy",
+                      "name": "Delete Button",
+                      "width": "fill_container",
+                      "height": 44,
+                      "justifyContent": "center",
+                      "alignItems": "center",
+                      "children": [
+                        {
+                          "type": "text",
+                          "id": "uUD8h",
+                          "name": "eDelTxt",
+                          "fill": "#EF4444",
+                          "content": "삭제",
+                          "fontFamily": "Gmarket Sans",
+                          "fontSize": 14,
+                          "fontWeight": "normal"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "text",
+      "id": "XTI0c",
+      "x": 1510,
+      "y": 4188,
+      "name": "editLabel",
+      "fill": "#94A3B8",
+      "content": "재고 수정 (바텀시트)",
+      "fontFamily": "Gmarket Sans",
+      "fontSize": 14,
+      "fontWeight": "normal"
     }
   ],
   "variables": {
