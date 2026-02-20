@@ -2582,7 +2582,7 @@
           "id": "6QaNa",
           "name": "Bottom Nav",
           "width": "fill_container",
-          "height": 64,
+          "height": 80,
           "fill": "$--surface",
           "stroke": {
             "align": "inside",
@@ -2593,6 +2593,8 @@
           },
           "padding": [
             8,
+            0,
+            24,
             0
           ],
           "justifyContent": "space_around",
@@ -2699,7 +2701,7 @@
       "y": 1174,
       "name": "Order Detail",
       "width": 390,
-      "height": 1020,
+      "height": 844,
       "fill": "#F8FAFC",
       "layout": "vertical",
       "children": [
@@ -2753,7 +2755,7 @@
           "id": "j15cO",
           "name": "Scroll Content",
           "width": "fill_container",
-          "height": 964,
+          "height": "fill_container",
           "layout": "vertical",
           "gap": 24,
           "padding": 16,
@@ -3775,14 +3777,14 @@
           "stroke": {
             "align": "inside",
             "thickness": {
-              "top": 0.5
+              "top": 1
             },
             "fill": "#E2E8F0"
           },
           "padding": [
             8,
             0,
-            20,
+            24,
             0
           ],
           "justifyContent": "space_around",
@@ -5664,17 +5666,19 @@
           "id": "Vm6l6",
           "name": "Bottom Nav",
           "width": "fill_container",
-          "height": 64,
+          "height": 80,
           "fill": "#FFFFFF",
           "stroke": {
             "align": "inside",
             "thickness": {
-              "top": 0.5
+              "top": 1
             },
             "fill": "#E2E8F0"
           },
           "padding": [
-            4,
+            8,
+            0,
+            24,
             0
           ],
           "justifyContent": "space_around",
@@ -5850,7 +5854,7 @@
       "y": 960,
       "name": "n3",
       "fill": "#94A3B8",
-      "content": "회원가입",
+      "content": "프로필 설정",
       "fontFamily": "Gmarket Sans",
       "fontSize": 14,
       "fontWeight": "normal"
@@ -5871,7 +5875,7 @@
       "type": "text",
       "id": "0OHWY",
       "x": 600,
-      "y": 2210,
+      "y": 2034,
       "name": "n5",
       "fill": "#94A3B8",
       "content": "작업 상세",
@@ -6643,7 +6647,7 @@
           "id": "madGF",
           "name": "bottomNav",
           "width": "fill_container",
-          "height": 60,
+          "height": 80,
           "fill": "#FFFFFF",
           "stroke": {
             "align": "inside",
@@ -6652,6 +6656,12 @@
             },
             "fill": "#E2E8F0"
           },
+          "padding": [
+            8,
+            0,
+            24,
+            0
+          ],
           "justifyContent": "space_around",
           "alignItems": "center",
           "children": [
