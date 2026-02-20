@@ -7618,9 +7618,109 @@
       "clip": true,
       "width": 390,
       "height": 844,
-      "fill": "#0000004D",
+      "fill": "#F8FAFC",
       "layout": "none",
       "children": [
+        {
+          "type": "frame",
+          "id": "Y3Qtz",
+          "x": 0,
+          "y": 0,
+          "name": "BG AppBar",
+          "width": 390,
+          "height": 56,
+          "fill": "#FFFFFF",
+          "gap": 12,
+          "padding": [
+            0,
+            16
+          ],
+          "alignItems": "center",
+          "children": [
+            {
+              "type": "icon_font",
+              "id": "UrBrD",
+              "name": "abIcon",
+              "width": 24,
+              "height": 24,
+              "iconFontName": "arrow_back",
+              "iconFontFamily": "Material Symbols Rounded",
+              "fill": "#0F172A"
+            },
+            {
+              "type": "text",
+              "id": "pffHs",
+              "name": "abTitle",
+              "fill": "#0F172A",
+              "content": "재고 관리",
+              "fontFamily": "Gmarket Sans",
+              "fontSize": 18,
+              "fontWeight": "500"
+            }
+          ]
+        },
+        {
+          "type": "frame",
+          "id": "kS6Oq",
+          "x": 16,
+          "y": 72,
+          "name": "BG Grid",
+          "width": 358,
+          "height": 360,
+          "gap": 12,
+          "children": [
+            {
+              "type": "frame",
+              "id": "4z5F2",
+              "name": "BG Card1",
+              "opacity": 0.6,
+              "width": 173,
+              "height": 170,
+              "fill": "#FFFFFF",
+              "cornerRadius": 12
+            },
+            {
+              "type": "frame",
+              "id": "ZBIsE",
+              "name": "BG Card2",
+              "opacity": 0.6,
+              "width": 173,
+              "height": 170,
+              "fill": "#FFFFFF",
+              "cornerRadius": 12
+            },
+            {
+              "type": "frame",
+              "id": "ZAmkQ",
+              "name": "BG Card3",
+              "opacity": 0.6,
+              "width": 173,
+              "height": 170,
+              "fill": "#FFFFFF",
+              "cornerRadius": 12
+            },
+            {
+              "type": "frame",
+              "id": "yJuiC",
+              "name": "BG Card4",
+              "opacity": 0.6,
+              "width": 173,
+              "height": 170,
+              "fill": "#FFFFFF",
+              "cornerRadius": 12
+            }
+          ]
+        },
+        {
+          "type": "frame",
+          "id": "ge0uo",
+          "x": 0,
+          "y": 0,
+          "name": "Scrim",
+          "width": 390,
+          "height": 844,
+          "fill": "#0000004D"
+        },
         {
           "type": "frame",
           "id": "FP75q",
@@ -7948,9 +8048,109 @@
       "clip": true,
       "width": 390,
       "height": 844,
-      "fill": "#0000004D",
+      "fill": "#F8FAFC",
       "layout": "none",
       "children": [
+        {
+          "type": "frame",
+          "id": "b08tG",
+          "x": 0,
+          "y": 0,
+          "name": "BG AppBar",
+          "width": 390,
+          "height": 56,
+          "fill": "#FFFFFF",
+          "gap": 12,
+          "padding": [
+            0,
+            16
+          ],
+          "alignItems": "center",
+          "children": [
+            {
+              "type": "icon_font",
+              "id": "gMZy6",
+              "name": "ab2Icon",
+              "width": 24,
+              "height": 24,
+              "iconFontName": "arrow_back",
+              "iconFontFamily": "Material Symbols Rounded",
+              "fill": "#0F172A"
+            },
+            {
+              "type": "text",
+              "id": "232zo",
+              "name": "ab2Title",
+              "fill": "#0F172A",
+              "content": "재고 관리",
+              "fontFamily": "Gmarket Sans",
+              "fontSize": 18,
+              "fontWeight": "500"
+            }
+          ]
+        },
+        {
+          "type": "frame",
+          "id": "hEsyY",
+          "x": 16,
+          "y": 72,
+          "name": "BG Grid",
+          "width": 358,
+          "height": 360,
+          "gap": 12,
+          "children": [
+            {
+              "type": "frame",
+              "id": "Ck35L",
+              "name": "BG Card1",
+              "opacity": 0.6,
+              "width": 173,
+              "height": 170,
+              "fill": "#FFFFFF",
+              "cornerRadius": 12
+            },
+            {
+              "type": "frame",
+              "id": "VuXUO",
+              "name": "BG Card2",
+              "opacity": 0.6,
+              "width": 173,
+              "height": 170,
+              "fill": "#FFFFFF",
+              "cornerRadius": 12
+            },
+            {
+              "type": "frame",
+              "id": "UMxdU",
+              "name": "BG Card3",
+              "opacity": 0.6,
+              "width": 173,
+              "height": 170,
+              "fill": "#FFFFFF",
+              "cornerRadius": 12
+            },
+            {
+              "type": "frame",
+              "id": "thUVF",
+              "name": "BG Card4",
+              "opacity": 0.6,
+              "width": 173,
+              "height": 170,
+              "fill": "#FFFFFF",
+              "cornerRadius": 12
+            }
+          ]
+        },
+        {
+          "type": "frame",
+          "id": "Fotx4",
+          "x": 0,
+          "y": 0,
+          "name": "Scrim",
+          "width": 390,
+          "height": 844,
+          "fill": "#0000004D"
+        },
         {
           "type": "frame",
           "id": "7kR2T",
