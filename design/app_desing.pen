@@ -6957,8 +6957,11 @@
           "width": "fill_container",
           "height": "fill_container",
           "layout": "vertical",
-          "gap": 20,
-          "padding": 16,
+          "gap": 12,
+          "padding": [
+            12,
+            16
+          ],
           "children": [
             {
               "type": "frame",
@@ -6997,8 +7000,8 @@
               "fill": "#FFFFFF",
               "cornerRadius": 16,
               "layout": "vertical",
-              "gap": 16,
-              "padding": 16,
+              "gap": 12,
+              "padding": 14,
               "children": [
                 {
                   "type": "frame",
@@ -7218,8 +7221,8 @@
               "fill": "#FFFFFF",
               "cornerRadius": 16,
               "layout": "vertical",
-              "gap": 16,
-              "padding": 16,
+              "gap": 12,
+              "padding": 14,
               "children": [
                 {
                   "type": "frame",
@@ -7331,6 +7334,158 @@
                   "fontFamily": "Gmarket Sans",
                   "fontSize": 16,
                   "fontWeight": "600"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "frame",
+          "id": "Vm6l6",
+          "name": "Bottom Nav",
+          "width": "fill_container",
+          "height": 64,
+          "fill": "#FFFFFF",
+          "stroke": {
+            "align": "inside",
+            "thickness": {
+              "top": 0.5
+            },
+            "fill": "#E2E8F0"
+          },
+          "padding": [
+            4,
+            0
+          ],
+          "justifyContent": "space_around",
+          "alignItems": "center",
+          "children": [
+            {
+              "type": "frame",
+              "id": "4QMaB",
+              "name": "Tab Dashboard",
+              "width": "fill_container",
+              "height": "fill_container",
+              "layout": "vertical",
+              "gap": 2,
+              "justifyContent": "center",
+              "alignItems": "center",
+              "children": [
+                {
+                  "type": "icon_font",
+                  "id": "IpWYa",
+                  "name": "s2tab1Icon",
+                  "width": 24,
+                  "height": 24,
+                  "iconFontName": "dashboard",
+                  "iconFontFamily": "Material Symbols Rounded",
+                  "fill": "#94A3B8"
+                },
+                {
+                  "type": "text",
+                  "id": "5uaWj",
+                  "name": "s2tab1Text",
+                  "fill": "#94A3B8",
+                  "content": "대시보드",
+                  "fontFamily": "Gmarket Sans",
+                  "fontSize": 10
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "El7WM",
+              "name": "Tab Orders",
+              "width": "fill_container",
+              "height": "fill_container",
+              "layout": "vertical",
+              "gap": 2,
+              "justifyContent": "center",
+              "alignItems": "center",
+              "children": [
+                {
+                  "type": "icon_font",
+                  "id": "X1NJL",
+                  "name": "s2tab2Icon",
+                  "width": 24,
+                  "height": 24,
+                  "iconFontName": "assignment",
+                  "iconFontFamily": "Material Symbols Rounded",
+                  "fill": "#94A3B8"
+                },
+                {
+                  "type": "text",
+                  "id": "BYNmp",
+                  "name": "s2tab2Text",
+                  "fill": "#94A3B8",
+                  "content": "작업관리",
+                  "fontFamily": "Gmarket Sans",
+                  "fontSize": 10
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "2Y5Qr",
+              "name": "Tab Members",
+              "width": "fill_container",
+              "height": "fill_container",
+              "layout": "vertical",
+              "gap": 2,
+              "justifyContent": "center",
+              "alignItems": "center",
+              "children": [
+                {
+                  "type": "icon_font",
+                  "id": "mYlVO",
+                  "name": "s2tab3Icon",
+                  "width": 24,
+                  "height": 24,
+                  "iconFontName": "group",
+                  "iconFontFamily": "Material Symbols Rounded",
+                  "fill": "#94A3B8"
+                },
+                {
+                  "type": "text",
+                  "id": "38FjR",
+                  "name": "s2tab3Text",
+                  "fill": "#94A3B8",
+                  "content": "회원관리",
+                  "fontFamily": "Gmarket Sans",
+                  "fontSize": 10
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "uyOmb",
+              "name": "Tab Settings",
+              "width": "fill_container",
+              "height": "fill_container",
+              "layout": "vertical",
+              "gap": 2,
+              "justifyContent": "center",
+              "alignItems": "center",
+              "children": [
+                {
+                  "type": "icon_font",
+                  "id": "ud7Ab",
+                  "name": "s2tab4Icon",
+                  "width": 24,
+                  "height": 24,
+                  "iconFontName": "settings",
+                  "iconFontFamily": "Material Symbols Rounded",
+                  "fill": "#16A34A"
+                },
+                {
+                  "type": "text",
+                  "id": "7hpPZ",
+                  "name": "s2tab4Text",
+                  "fill": "#16A34A",
+                  "content": "설정",
+                  "fontFamily": "Gmarket Sans",
+                  "fontSize": 10,
+                  "fontWeight": "500"
                 }
               ]
             }
