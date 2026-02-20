@@ -102,7 +102,7 @@
       "layout": "vertical",
       "gap": 24,
       "padding": [
-        160,
+        24,
         24,
         40,
         24
@@ -110,71 +110,76 @@
       "children": [
         {
           "type": "frame",
-          "id": "3wFu7",
-          "name": "Logo Row",
-          "gap": 8,
-          "alignItems": "center",
-          "children": [
-            {
-              "type": "icon_font",
-              "id": "mpFIY",
-              "name": "logoIcon",
-              "width": 40,
-              "height": 40,
-              "iconFontName": "sports_tennis",
-              "iconFontFamily": "Material Symbols Rounded",
-              "fill": "$--primary"
-            },
-            {
-              "type": "text",
-              "id": "z5H33",
-              "name": "logoText",
-              "fill": "$--text-primary",
-              "content": "거트알림",
-              "fontFamily": "Gmarket Sans",
-              "fontSize": 24,
-              "fontWeight": "Bold"
-            }
-          ]
-        },
-        {
-          "type": "frame",
-          "id": "MNgQS",
-          "name": "Welcome Section",
+          "id": "ir31u",
+          "name": "Center Content",
           "width": "fill_container",
+          "height": "fill_container",
           "layout": "vertical",
-          "gap": 8,
+          "gap": 16,
+          "justifyContent": "center",
           "children": [
             {
-              "type": "text",
-              "id": "5Aqzi",
-              "name": "welcomeTitle",
-              "fill": "$--text-primary",
-              "content": "반갑습니다!",
-              "fontFamily": "Gmarket Sans",
-              "fontSize": 28,
-              "fontWeight": "Bold"
+              "type": "frame",
+              "id": "3wFu7",
+              "name": "Logo Row",
+              "gap": 8,
+              "alignItems": "center",
+              "children": [
+                {
+                  "type": "icon_font",
+                  "id": "mpFIY",
+                  "name": "logoIcon",
+                  "width": 40,
+                  "height": 40,
+                  "iconFontName": "sports_tennis",
+                  "iconFontFamily": "Material Symbols Rounded",
+                  "fill": "$--primary"
+                },
+                {
+                  "type": "text",
+                  "id": "z5H33",
+                  "name": "logoText",
+                  "fill": "$--text-primary",
+                  "content": "거트알림",
+                  "fontFamily": "Gmarket Sans",
+                  "fontSize": 24,
+                  "fontWeight": "Bold"
+                }
+              ]
             },
             {
-              "type": "text",
-              "id": "i4XV2",
-              "name": "welcomeSubtitle",
-              "fill": "$--text-secondary",
-              "textGrowth": "fixed-width",
+              "type": "frame",
+              "id": "MNgQS",
+              "name": "Welcome Section",
               "width": "fill_container",
-              "content": "간편하게 시작하세요",
-              "fontFamily": "Gmarket Sans",
-              "fontSize": 14,
-              "fontWeight": "Regular"
+              "layout": "vertical",
+              "gap": 8,
+              "children": [
+                {
+                  "type": "text",
+                  "id": "5Aqzi",
+                  "name": "welcomeTitle",
+                  "fill": "$--text-primary",
+                  "content": "반갑습니다!",
+                  "fontFamily": "Gmarket Sans",
+                  "fontSize": 28,
+                  "fontWeight": "Bold"
+                },
+                {
+                  "type": "text",
+                  "id": "i4XV2",
+                  "name": "welcomeSubtitle",
+                  "fill": "$--text-secondary",
+                  "textGrowth": "fixed-width",
+                  "width": "fill_container",
+                  "content": "간편하게 시작하세요",
+                  "fontFamily": "Gmarket Sans",
+                  "fontSize": 14,
+                  "fontWeight": "Regular"
+                }
+              ]
             }
           ]
-        },
-        {
-          "type": "frame",
-          "id": "Carpd",
-          "name": "Spacer",
-          "width": "fill_container",
-          "height": "fill_container"
         },
         {
           "type": "frame",
