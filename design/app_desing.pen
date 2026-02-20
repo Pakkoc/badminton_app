@@ -4122,7 +4122,12 @@
           "name": "Map Area",
           "width": "fill_container",
           "height": 350,
-          "fill": "#E2E8F0",
+          "fill": {
+            "type": "image",
+            "enabled": true,
+            "url": "./images/generated-1771596301347.png",
+            "mode": "fill"
+          },
           "layout": "none",
           "children": [
             {
