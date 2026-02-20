@@ -25,6 +25,11 @@ allowed-tools: Read, Glob, Grep, Write, Edit, Bash, Task
 다음 파일/디렉토리 존재 여부를 확인하여 현재 Phase를 판단한다:
 
 ```
+0. 브레인스토밍 확인
+   - 프로젝트 아이디어가 구체화되어 있는지
+   - 핵심 기능과 사용자가 정의되어 있는지
+   → 없으면: Phase 0 (브레인스토밍) 필요
+
 1. 기획 문서 확인
    - docs/requirements*, docs/plans*, docs/service-overview* 등
    - README.md 에 프로젝트 개요가 있는지
@@ -53,6 +58,41 @@ allowed-tools: Read, Glob, Grep, Write, Edit, Bash, Task
 ```
 
 ## 전체 워크플로우
+
+### Phase 0: 브레인스토밍 (Brainstorming)
+
+**목표**: 프로젝트 아이디어를 발산하고 핵심 방향을 잡는다.
+
+**사용자에게 질문할 것** (AskUserQuestion 도구 사용):
+- "어떤 앱/서비스를 만들고 싶으신가요?"
+- "이 서비스가 해결하려는 문제는 무엇인가요?"
+- "주요 사용자는 누구인가요?"
+- "비슷한 서비스 중 참고하고 싶은 것이 있나요?"
+
+**수행 작업**:
+- brainstorming 스킬을 사용하여 아이디어 발산 및 구체화
+- 사용자의 니즈와 문제 상황 탐색
+- 핵심 기능과 차별점 도출
+- 사용자 페르소나 정의
+- 경쟁 서비스 분석 (있을 경우)
+- 아이디어를 서비스 개요 문서로 정리
+
+**산출물**:
+- 서비스 개요 문서 (docs/service-overview.md)
+  - 한 줄 요약
+  - 문제 정의
+  - 사용자 정의
+  - 서비스 이용 흐름
+  - 핵심 기능
+  - 차별점
+
+**완료 기준**:
+- 서비스의 핵심 가치와 해결하려는 문제가 명확함
+- 주요 사용자와 사용 흐름이 정의됨
+- 핵심 기능 목록이 도출됨
+- 사용자가 서비스 방향에 동의함
+
+---
 
 ### Phase 1: 기획 (Planning)
 
@@ -224,10 +264,10 @@ allowed-tools: Read, Glob, Grep, Write, Edit, Bash, Task
 
 | 스킬 | 용도 | 사용 Phase |
 |------|------|-----------|
-| brainstorming | 기획 보완, 아이디어 발산 | Phase 1 |
-| ui-ux-pro-max | 디자인 시스템 생성 | Phase 2 |
-| ui-screen-spec | 화면별 UI 스펙 작성 | Phase 3 |
+| brainstorming | 아이디어 발산, 서비스 방향 탐색 | Phase 0 |
 | writing-plans | 계획 수립 및 문서화 | Phase 1, 6 |
+| ui-ux-pro-max | 디자인 시스템 생성, UX 가이드라인 | Phase 2, 3 |
+| ui-screen-spec | 화면별 UI 스펙 작성 | Phase 3 |
 | verification-before-completion | 완료 전 검증 | Phase 5 |
 
 ## 핵심 원칙
