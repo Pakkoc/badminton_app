@@ -6150,6 +6150,181 @@
               ]
             }
           ]
+        },
+        {
+          "type": "frame",
+          "id": "YCVqX",
+          "name": "Bottom Navigation",
+          "width": "fill_container",
+          "height": 80,
+          "fill": "#FFFFFF",
+          "stroke": {
+            "align": "inside",
+            "thickness": {
+              "top": 1
+            },
+            "fill": "#E2E8F0"
+          },
+          "padding": [
+            8,
+            0,
+            24,
+            0
+          ],
+          "justifyContent": "space_around",
+          "alignItems": "center",
+          "children": [
+            {
+              "type": "frame",
+              "id": "7wGc8",
+              "name": "Tab Home",
+              "layout": "vertical",
+              "gap": 4,
+              "alignItems": "center",
+              "children": [
+                {
+                  "type": "icon_font",
+                  "id": "9KcpB",
+                  "name": "t1i",
+                  "width": 24,
+                  "height": 24,
+                  "iconFontName": "home",
+                  "iconFontFamily": "Material Symbols Rounded",
+                  "fill": "#94A3B8"
+                },
+                {
+                  "type": "text",
+                  "id": "hXBvB",
+                  "name": "t1l",
+                  "fill": "#94A3B8",
+                  "content": "홈",
+                  "fontFamily": "Gmarket Sans",
+                  "fontSize": 10,
+                  "fontWeight": "normal"
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "E3nWf",
+              "name": "Tab Search",
+              "layout": "vertical",
+              "gap": 4,
+              "alignItems": "center",
+              "children": [
+                {
+                  "type": "icon_font",
+                  "id": "Hmai5",
+                  "name": "t2i",
+                  "width": 24,
+                  "height": 24,
+                  "iconFontName": "search",
+                  "iconFontFamily": "Material Symbols Rounded",
+                  "fill": "#94A3B8"
+                },
+                {
+                  "type": "text",
+                  "id": "jecO2",
+                  "name": "t2l",
+                  "fill": "#94A3B8",
+                  "content": "샵검색",
+                  "fontFamily": "Gmarket Sans",
+                  "fontSize": 10,
+                  "fontWeight": "normal"
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "SO5eT",
+              "name": "Tab QR",
+              "layout": "vertical",
+              "gap": 4,
+              "alignItems": "center",
+              "children": [
+                {
+                  "type": "icon_font",
+                  "id": "vEgSL",
+                  "name": "t3i",
+                  "width": 24,
+                  "height": 24,
+                  "iconFontName": "qr_code_2",
+                  "iconFontFamily": "Material Symbols Rounded",
+                  "fill": "#94A3B8"
+                },
+                {
+                  "type": "text",
+                  "id": "i7Y6x",
+                  "name": "t3l",
+                  "fill": "#94A3B8",
+                  "content": "QR",
+                  "fontFamily": "Gmarket Sans",
+                  "fontSize": 10,
+                  "fontWeight": "normal"
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "udTz0",
+              "name": "Tab History",
+              "layout": "vertical",
+              "gap": 4,
+              "alignItems": "center",
+              "children": [
+                {
+                  "type": "icon_font",
+                  "id": "WkIOa",
+                  "name": "t4i",
+                  "width": 24,
+                  "height": 24,
+                  "iconFontName": "history",
+                  "iconFontFamily": "Material Symbols Rounded",
+                  "fill": "#94A3B8"
+                },
+                {
+                  "type": "text",
+                  "id": "ae74C",
+                  "name": "t4l",
+                  "fill": "#94A3B8",
+                  "content": "이력",
+                  "fontFamily": "Gmarket Sans",
+                  "fontSize": 10,
+                  "fontWeight": "normal"
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "1uZHD",
+              "name": "Tab MY",
+              "layout": "vertical",
+              "gap": 4,
+              "alignItems": "center",
+              "children": [
+                {
+                  "type": "icon_font",
+                  "id": "NXu1l",
+                  "name": "t5i",
+                  "width": 24,
+                  "height": 24,
+                  "iconFontName": "person",
+                  "iconFontFamily": "Material Symbols Rounded",
+                  "fill": "#16A34A"
+                },
+                {
+                  "type": "text",
+                  "id": "wa9Xi",
+                  "name": "t5l",
+                  "fill": "#16A34A",
+                  "content": "MY",
+                  "fontFamily": "Gmarket Sans",
+                  "fontSize": 10,
+                  "fontWeight": "normal"
+                }
+              ]
+            }
+          ]
         }
       ]
     },
@@ -6819,12 +6994,345 @@
               "id": "cWpdn",
               "name": "Shop Info Card",
               "width": "fill_container",
-              "height": "fit_content(0)",
               "fill": "#FFFFFF",
               "cornerRadius": 16,
               "layout": "vertical",
               "gap": 16,
-              "padding": 16
+              "padding": 16,
+              "children": [
+                {
+                  "type": "frame",
+                  "id": "YBhSw",
+                  "name": "Field Shop Name",
+                  "width": "fill_container",
+                  "layout": "vertical",
+                  "gap": 6,
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "5W9ha",
+                      "name": "label1",
+                      "fill": "#64748B",
+                      "content": "샵 이름",
+                      "fontFamily": "Gmarket Sans",
+                      "fontSize": 12
+                    },
+                    {
+                      "type": "frame",
+                      "id": "rvtOd",
+                      "name": "input1",
+                      "width": "fill_container",
+                      "height": 44,
+                      "fill": "#F1F5F9",
+                      "cornerRadius": 8,
+                      "padding": [
+                        0,
+                        16
+                      ],
+                      "alignItems": "center",
+                      "children": [
+                        {
+                          "type": "text",
+                          "id": "sw1dC",
+                          "name": "inputText1",
+                          "fill": "#0F172A",
+                          "content": "OO 거트 스트링샵",
+                          "fontFamily": "Gmarket Sans",
+                          "fontSize": 14
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "rb3mY",
+                  "name": "Field Address",
+                  "width": "fill_container",
+                  "layout": "vertical",
+                  "gap": 6,
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "QFwMn",
+                      "name": "label2",
+                      "fill": "#64748B",
+                      "content": "주소",
+                      "fontFamily": "Gmarket Sans",
+                      "fontSize": 12
+                    },
+                    {
+                      "type": "frame",
+                      "id": "xfbXN",
+                      "name": "input2",
+                      "width": "fill_container",
+                      "height": 44,
+                      "fill": "#F1F5F9",
+                      "cornerRadius": 8,
+                      "padding": [
+                        0,
+                        16
+                      ],
+                      "alignItems": "center",
+                      "children": [
+                        {
+                          "type": "text",
+                          "id": "Of3fI",
+                          "name": "inputText2",
+                          "fill": "#0F172A",
+                          "content": "서울시 강남구 테헤란로 123",
+                          "fontFamily": "Gmarket Sans",
+                          "fontSize": 14
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "1N7qo",
+                  "name": "Field Phone",
+                  "width": "fill_container",
+                  "layout": "vertical",
+                  "gap": 6,
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "lwxUX",
+                      "name": "label3",
+                      "fill": "#64748B",
+                      "content": "연락처",
+                      "fontFamily": "Gmarket Sans",
+                      "fontSize": 12
+                    },
+                    {
+                      "type": "frame",
+                      "id": "TDQqw",
+                      "name": "input3",
+                      "width": "fill_container",
+                      "height": 44,
+                      "fill": "#F1F5F9",
+                      "cornerRadius": 8,
+                      "padding": [
+                        0,
+                        16
+                      ],
+                      "alignItems": "center",
+                      "children": [
+                        {
+                          "type": "text",
+                          "id": "0MeKV",
+                          "name": "inputText3",
+                          "fill": "#0F172A",
+                          "content": "02-1234-5678",
+                          "fontFamily": "Gmarket Sans",
+                          "fontSize": 14
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "5hGuF",
+                  "name": "Field Description",
+                  "width": "fill_container",
+                  "layout": "vertical",
+                  "gap": 6,
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "5qShE",
+                      "name": "label4",
+                      "fill": "#64748B",
+                      "content": "소개글",
+                      "fontFamily": "Gmarket Sans",
+                      "fontSize": 12
+                    },
+                    {
+                      "type": "frame",
+                      "id": "hq83Y",
+                      "name": "input4",
+                      "width": "fill_container",
+                      "height": 80,
+                      "fill": "#F1F5F9",
+                      "cornerRadius": 8,
+                      "layout": "vertical",
+                      "padding": [
+                        12,
+                        16
+                      ],
+                      "children": [
+                        {
+                          "type": "text",
+                          "id": "B1EYp",
+                          "name": "inputText4",
+                          "fill": "#0F172A",
+                          "textGrowth": "fixed-width",
+                          "width": "fill_container",
+                          "content": "배드민턴 거트 전문 매장입니다. 정확한 텐션과 빠른 작업을 약속드립니다.",
+                          "lineHeight": 1.5,
+                          "fontFamily": "Gmarket Sans",
+                          "fontSize": 14
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "mowny",
+              "name": "Section Header 2",
+              "gap": 6,
+              "alignItems": "center",
+              "children": [
+                {
+                  "type": "icon_font",
+                  "id": "04ySA",
+                  "name": "secIcon2",
+                  "width": 20,
+                  "height": 20,
+                  "iconFontName": "person",
+                  "iconFontFamily": "Material Symbols Rounded",
+                  "fill": "#16A34A"
+                },
+                {
+                  "type": "text",
+                  "id": "Z6Yp1",
+                  "name": "secTitle2",
+                  "fill": "#0F172A",
+                  "content": "사장님 정보",
+                  "fontFamily": "Gmarket Sans",
+                  "fontSize": 16,
+                  "fontWeight": "700"
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "gsAjQ",
+              "name": "Owner Info Card",
+              "width": "fill_container",
+              "fill": "#FFFFFF",
+              "cornerRadius": 16,
+              "layout": "vertical",
+              "gap": 16,
+              "padding": 16,
+              "children": [
+                {
+                  "type": "frame",
+                  "id": "DQ9X5",
+                  "name": "Field Owner Name",
+                  "width": "fill_container",
+                  "layout": "vertical",
+                  "gap": 6,
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "w22IU",
+                      "name": "oLabel1",
+                      "fill": "#64748B",
+                      "content": "이름",
+                      "fontFamily": "Gmarket Sans",
+                      "fontSize": 12
+                    },
+                    {
+                      "type": "frame",
+                      "id": "ZvJ8K",
+                      "name": "oInput1",
+                      "width": "fill_container",
+                      "height": 44,
+                      "fill": "#F1F5F9",
+                      "cornerRadius": 8,
+                      "padding": [
+                        0,
+                        16
+                      ],
+                      "alignItems": "center",
+                      "children": [
+                        {
+                          "type": "text",
+                          "id": "sZeen",
+                          "name": "oInputText1",
+                          "fill": "#0F172A",
+                          "content": "홍길동",
+                          "fontFamily": "Gmarket Sans",
+                          "fontSize": 14
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "UT2yi",
+                  "name": "Field Owner Phone",
+                  "width": "fill_container",
+                  "layout": "vertical",
+                  "gap": 6,
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "MchrW",
+                      "name": "oLabel2",
+                      "fill": "#64748B",
+                      "content": "연락처",
+                      "fontFamily": "Gmarket Sans",
+                      "fontSize": 12
+                    },
+                    {
+                      "type": "frame",
+                      "id": "2bx4l",
+                      "name": "oInput2",
+                      "width": "fill_container",
+                      "height": 44,
+                      "fill": "#F1F5F9",
+                      "cornerRadius": 8,
+                      "padding": [
+                        0,
+                        16
+                      ],
+                      "alignItems": "center",
+                      "children": [
+                        {
+                          "type": "text",
+                          "id": "wst4i",
+                          "name": "oInputText2",
+                          "fill": "#0F172A",
+                          "content": "010-1234-5678",
+                          "fontFamily": "Gmarket Sans",
+                          "fontSize": 14
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "bhtiV",
+              "name": "Save Button",
+              "width": "fill_container",
+              "height": 48,
+              "fill": "#16A34A",
+              "cornerRadius": 12,
+              "justifyContent": "center",
+              "alignItems": "center",
+              "children": [
+                {
+                  "type": "text",
+                  "id": "IYGCv",
+                  "name": "saveBtnText",
+                  "fill": "#FFFFFF",
+                  "content": "저장하기",
+                  "fontFamily": "Gmarket Sans",
+                  "fontSize": 16,
+                  "fontWeight": "600"
+                }
+              ]
             }
           ]
         }
