@@ -7755,7 +7755,7 @@
                   "id": "QyJtq",
                   "name": "catLabel",
                   "fill": "#475569",
-                  "content": "카테고리",
+                  "content": "카테고리 *",
                   "fontFamily": "Gmarket Sans",
                   "fontSize": 14,
                   "fontWeight": "SemiBold"
@@ -7785,7 +7785,7 @@
                       "id": "Fy4l9",
                       "name": "catPlaceholder",
                       "fill": "#94A3B8",
-                      "content": "카테고리 선택 또는 입력",
+                      "content": "카테고리 선택",
                       "fontFamily": "Gmarket Sans",
                       "fontSize": 14,
                       "fontWeight": "normal"
@@ -8085,7 +8085,7 @@
                   "id": "PMqKr",
                   "name": "ecLabel",
                   "fill": "#475569",
-                  "content": "카테고리",
+                  "content": "카테고리 *",
                   "fontFamily": "Gmarket Sans",
                   "fontSize": 14,
                   "fontWeight": "SemiBold"
