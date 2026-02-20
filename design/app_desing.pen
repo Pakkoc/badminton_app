@@ -383,6 +383,65 @@
         },
         {
           "type": "frame",
+          "id": "md4pZ",
+          "name": "StepIndicator",
+          "width": "fill_container",
+          "height": 40,
+          "padding": [
+            0,
+            60
+          ],
+          "justifyContent": "center",
+          "alignItems": "center",
+          "children": [
+            {
+              "type": "ellipse",
+              "id": "klKpR",
+              "name": "dot1Active",
+              "fill": "#16A34A",
+              "width": 10,
+              "height": 10
+            },
+            {
+              "type": "text",
+              "id": "lzatx",
+              "name": "stepLabel1",
+              "fill": "#16A34A",
+              "content": " 정보 입력 ",
+              "fontFamily": "Gmarket Sans",
+              "fontSize": 12,
+              "fontWeight": "500"
+            },
+            {
+              "type": "frame",
+              "id": "jmozs",
+              "name": "stepLine",
+              "width": 40,
+              "height": 2,
+              "fill": "#E2E8F0"
+            },
+            {
+              "type": "ellipse",
+              "id": "mcLDp",
+              "name": "dot2Inactive",
+              "fill": "#94A3B8",
+              "width": 10,
+              "height": 10
+            },
+            {
+              "type": "text",
+              "id": "zBffW",
+              "name": "stepLabel2",
+              "fill": "#94A3B8",
+              "content": " 샵 등록",
+              "fontFamily": "Gmarket Sans",
+              "fontSize": 12,
+              "fontWeight": "normal"
+            }
+          ]
+        },
+        {
+          "type": "frame",
           "id": "Lgq4k",
           "name": "Role Selection",
           "width": "fill_container",
@@ -5051,7 +5110,8 @@
                   "fill": "#475569",
                   "content": "BG65 | 25lbs",
                   "fontFamily": "Gmarket Sans",
-                  "fontSize": 14
+                  "fontSize": 14,
+                  "fontWeight": "normal"
                 },
                 {
                   "type": "frame",
@@ -5068,7 +5128,8 @@
                       "fill": "#94A3B8",
                       "content": "OO 거트샵",
                       "fontFamily": "Gmarket Sans",
-                      "fontSize": 12
+                      "fontSize": 12,
+                      "fontWeight": "normal"
                     },
                     {
                       "type": "text",
@@ -5077,7 +5138,8 @@
                       "fill": "#94A3B8",
                       "content": "완료일 02/18",
                       "fontFamily": "Gmarket Sans",
-                      "fontSize": 12
+                      "fontSize": 12,
+                      "fontWeight": "normal"
                     }
                   ]
                 }
@@ -5146,7 +5208,8 @@
                   "fill": "#475569",
                   "content": "YONEX BG80 | 27lbs",
                   "fontFamily": "Gmarket Sans",
-                  "fontSize": 14
+                  "fontSize": 14,
+                  "fontWeight": "normal"
                 },
                 {
                   "type": "frame",
@@ -5163,7 +5226,8 @@
                       "fill": "#94A3B8",
                       "content": "XX 스트링샵",
                       "fontFamily": "Gmarket Sans",
-                      "fontSize": 12
+                      "fontSize": 12,
+                      "fontWeight": "normal"
                     },
                     {
                       "type": "text",
@@ -5172,7 +5236,8 @@
                       "fill": "#94A3B8",
                       "content": "완료일 02/15",
                       "fontFamily": "Gmarket Sans",
-                      "fontSize": 12
+                      "fontSize": 12,
+                      "fontWeight": "normal"
                     }
                   ]
                 }
@@ -5241,7 +5306,8 @@
                   "fill": "#475569",
                   "content": "BG65Ti | 24lbs",
                   "fontFamily": "Gmarket Sans",
-                  "fontSize": 14
+                  "fontSize": 14,
+                  "fontWeight": "normal"
                 },
                 {
                   "type": "frame",
@@ -5258,7 +5324,8 @@
                       "fill": "#94A3B8",
                       "content": "YY 배드민턴",
                       "fontFamily": "Gmarket Sans",
-                      "fontSize": 12
+                      "fontSize": 12,
+                      "fontWeight": "normal"
                     },
                     {
                       "type": "text",
@@ -5267,7 +5334,8 @@
                       "fill": "#94A3B8",
                       "content": "완료일 02/10",
                       "fontFamily": "Gmarket Sans",
-                      "fontSize": 12
+                      "fontSize": 12,
+                      "fontWeight": "normal"
                     }
                   ]
                 }
@@ -5550,7 +5618,8 @@
                           "fill": "#475569",
                           "content": "minsu@email.com",
                           "fontFamily": "Gmarket Sans",
-                          "fontSize": 14
+                          "fontSize": 14,
+                          "fontWeight": "normal"
                         }
                       ]
                     },
@@ -5604,7 +5673,8 @@
                       "fill": "#0F172A",
                       "content": "푸시 알림",
                       "fontFamily": "Gmarket Sans",
-                      "fontSize": 15
+                      "fontSize": 15,
+                      "fontWeight": "normal"
                     },
                     {
                       "type": "frame",
@@ -5654,7 +5724,8 @@
                       "fill": "#0F172A",
                       "content": "연락처",
                       "fontFamily": "Gmarket Sans",
-                      "fontSize": 15
+                      "fontSize": 15,
+                      "fontWeight": "normal"
                     },
                     {
                       "type": "text",
@@ -5663,7 +5734,8 @@
                       "fill": "#475569",
                       "content": "010-1234-5678",
                       "fontFamily": "Gmarket Sans",
-                      "fontSize": 14
+                      "fontSize": 14,
+                      "fontWeight": "normal"
                     }
                   ]
                 }
@@ -5695,7 +5767,8 @@
                       "fill": "#0F172A",
                       "content": "앱 버전",
                       "fontFamily": "Gmarket Sans",
-                      "fontSize": 15
+                      "fontSize": 15,
+                      "fontWeight": "normal"
                     },
                     {
                       "type": "text",
@@ -5704,7 +5777,8 @@
                       "fill": "#94A3B8",
                       "content": "1.0.0",
                       "fontFamily": "Gmarket Sans",
-                      "fontSize": 14
+                      "fontSize": 14,
+                      "fontWeight": "normal"
                     }
                   ]
                 }
@@ -5948,7 +6022,8 @@
                   "fill": "#94A3B8",
                   "content": "32명",
                   "fontFamily": "Gmarket Sans",
-                  "fontSize": 12
+                  "fontSize": 12,
+                  "fontWeight": "normal"
                 }
               ]
             }
@@ -5996,7 +6071,8 @@
                   "fill": "#94A3B8",
                   "content": "회원 이름 또는 연락처 검색",
                   "fontFamily": "Gmarket Sans",
-                  "fontSize": 14
+                  "fontSize": 14,
+                  "fontWeight": "normal"
                 }
               ]
             }
@@ -6080,7 +6156,8 @@
                           "fill": "#475569",
                           "content": "010-1234-5678",
                           "fontFamily": "Gmarket Sans",
-                          "fontSize": 14
+                          "fontSize": 14,
+                          "fontWeight": "normal"
                         },
                         {
                           "type": "text",
@@ -6089,7 +6166,8 @@
                           "fill": "#94A3B8",
                           "content": "최근 방문 02/20",
                           "fontFamily": "Gmarket Sans",
-                          "fontSize": 12
+                          "fontSize": 12,
+                          "fontWeight": "normal"
                         }
                       ]
                     },
@@ -6164,7 +6242,8 @@
                           "fill": "#475569",
                           "content": "010-9876-5432",
                           "fontFamily": "Gmarket Sans",
-                          "fontSize": 14
+                          "fontSize": 14,
+                          "fontWeight": "normal"
                         },
                         {
                           "type": "text",
@@ -6173,7 +6252,8 @@
                           "fill": "#94A3B8",
                           "content": "최근 방문 02/18",
                           "fontFamily": "Gmarket Sans",
-                          "fontSize": 12
+                          "fontSize": 12,
+                          "fontWeight": "normal"
                         }
                       ]
                     },
@@ -6248,7 +6328,8 @@
                           "fill": "#475569",
                           "content": "010-5555-1234",
                           "fontFamily": "Gmarket Sans",
-                          "fontSize": 14
+                          "fontSize": 14,
+                          "fontWeight": "normal"
                         },
                         {
                           "type": "text",
@@ -6257,7 +6338,8 @@
                           "fill": "#94A3B8",
                           "content": "최근 방문 02/15",
                           "fontFamily": "Gmarket Sans",
-                          "fontSize": 12
+                          "fontSize": 12,
+                          "fontWeight": "normal"
                         }
                       ]
                     },
@@ -6361,7 +6443,8 @@
                   "fill": "#94A3B8",
                   "content": "대시보드",
                   "fontFamily": "Gmarket Sans",
-                  "fontSize": 10
+                  "fontSize": 10,
+                  "fontWeight": "normal"
                 }
               ]
             },
@@ -6393,7 +6476,8 @@
                   "fill": "#94A3B8",
                   "content": "작업관리",
                   "fontFamily": "Gmarket Sans",
-                  "fontSize": 10
+                  "fontSize": 10,
+                  "fontWeight": "normal"
                 }
               ]
             },
@@ -6458,7 +6542,8 @@
                   "fill": "#94A3B8",
                   "content": "설정",
                   "fontFamily": "Gmarket Sans",
-                  "fontSize": 10
+                  "fontSize": 10,
+                  "fontWeight": "normal"
                 }
               ]
             }
@@ -6577,7 +6662,8 @@
                       "fill": "#64748B",
                       "content": "샵 이름",
                       "fontFamily": "Gmarket Sans",
-                      "fontSize": 12
+                      "fontSize": 12,
+                      "fontWeight": "normal"
                     },
                     {
                       "type": "frame",
@@ -6600,7 +6686,8 @@
                           "fill": "#0F172A",
                           "content": "OO 거트 스트링샵",
                           "fontFamily": "Gmarket Sans",
-                          "fontSize": 14
+                          "fontSize": 14,
+                          "fontWeight": "normal"
                         }
                       ]
                     }
@@ -6621,7 +6708,8 @@
                       "fill": "#64748B",
                       "content": "주소",
                       "fontFamily": "Gmarket Sans",
-                      "fontSize": 12
+                      "fontSize": 12,
+                      "fontWeight": "normal"
                     },
                     {
                       "type": "frame",
@@ -6644,7 +6732,8 @@
                           "fill": "#0F172A",
                           "content": "서울시 강남구 테헤란로 123",
                           "fontFamily": "Gmarket Sans",
-                          "fontSize": 14
+                          "fontSize": 14,
+                          "fontWeight": "normal"
                         }
                       ]
                     }
@@ -6665,7 +6754,8 @@
                       "fill": "#64748B",
                       "content": "연락처",
                       "fontFamily": "Gmarket Sans",
-                      "fontSize": 12
+                      "fontSize": 12,
+                      "fontWeight": "normal"
                     },
                     {
                       "type": "frame",
@@ -6688,7 +6778,8 @@
                           "fill": "#0F172A",
                           "content": "02-1234-5678",
                           "fontFamily": "Gmarket Sans",
-                          "fontSize": 14
+                          "fontSize": 14,
+                          "fontWeight": "normal"
                         }
                       ]
                     }
@@ -6709,7 +6800,8 @@
                       "fill": "#64748B",
                       "content": "소개글",
                       "fontFamily": "Gmarket Sans",
-                      "fontSize": 12
+                      "fontSize": 12,
+                      "fontWeight": "normal"
                     },
                     {
                       "type": "frame",
@@ -6735,7 +6827,8 @@
                           "content": "배드민턴 거트 전문 매장입니다. 정확한 텐션과 빠른 작업을 약속드립니다.",
                           "lineHeight": 1.5,
                           "fontFamily": "Gmarket Sans",
-                          "fontSize": 14
+                          "fontSize": 14,
+                          "fontWeight": "normal"
                         }
                       ]
                     }
@@ -6798,7 +6891,8 @@
                       "fill": "#64748B",
                       "content": "이름",
                       "fontFamily": "Gmarket Sans",
-                      "fontSize": 12
+                      "fontSize": 12,
+                      "fontWeight": "normal"
                     },
                     {
                       "type": "frame",
@@ -6821,7 +6915,8 @@
                           "fill": "#0F172A",
                           "content": "홍길동",
                           "fontFamily": "Gmarket Sans",
-                          "fontSize": 14
+                          "fontSize": 14,
+                          "fontWeight": "normal"
                         }
                       ]
                     }
@@ -6842,7 +6937,8 @@
                       "fill": "#64748B",
                       "content": "연락처",
                       "fontFamily": "Gmarket Sans",
-                      "fontSize": 12
+                      "fontSize": 12,
+                      "fontWeight": "normal"
                     },
                     {
                       "type": "frame",
@@ -6865,7 +6961,8 @@
                           "fill": "#0F172A",
                           "content": "010-1234-5678",
                           "fontFamily": "Gmarket Sans",
-                          "fontSize": 14
+                          "fontSize": 14,
+                          "fontWeight": "normal"
                         }
                       ]
                     }
@@ -6947,7 +7044,8 @@
                   "fill": "#94A3B8",
                   "content": "대시보드",
                   "fontFamily": "Gmarket Sans",
-                  "fontSize": 10
+                  "fontSize": 10,
+                  "fontWeight": "normal"
                 }
               ]
             },
@@ -6979,7 +7077,8 @@
                   "fill": "#94A3B8",
                   "content": "작업관리",
                   "fontFamily": "Gmarket Sans",
-                  "fontSize": 10
+                  "fontSize": 10,
+                  "fontWeight": "normal"
                 }
               ]
             },
@@ -7011,7 +7110,8 @@
                   "fill": "#94A3B8",
                   "content": "회원관리",
                   "fontFamily": "Gmarket Sans",
-                  "fontSize": 10
+                  "fontSize": 10,
+                  "fontWeight": "normal"
                 }
               ]
             },
@@ -7319,7 +7419,8 @@
               "fill": "#94A3B8",
               "content": "2/2",
               "fontFamily": "Gmarket Sans",
-              "fontSize": 14
+              "fontSize": 14,
+              "fontWeight": "normal"
             }
           ]
         },
@@ -7338,20 +7439,50 @@
           "alignItems": "center",
           "children": [
             {
+              "type": "icon_font",
+              "id": "z0Bnd",
+              "name": "checkIcon",
+              "width": 16,
+              "height": 16,
+              "iconFontName": "check_circle",
+              "iconFontFamily": "Material Symbols Rounded",
+              "fill": "#16A34A"
+            },
+            {
+              "type": "text",
+              "id": "hVqw3",
+              "name": "stepLabel1",
+              "fill": "#16A34A",
+              "content": "정보 입력 ",
+              "fontFamily": "Gmarket Sans",
+              "fontSize": 12,
+              "fontWeight": "500"
+            },
+            {
+              "type": "frame",
+              "id": "0sPeJ",
+              "name": "stepLine",
+              "width": 40,
+              "height": 2,
+              "fill": "#16A34A"
+            },
+            {
               "type": "ellipse",
-              "id": "gHgp5",
-              "name": "dot1",
-              "fill": "#E2E8F0",
+              "id": "GFDNt",
+              "name": "dot2Active",
+              "fill": "#16A34A",
               "width": 10,
               "height": 10
             },
             {
-              "type": "ellipse",
-              "id": "FMjkh",
-              "name": "dot2",
+              "type": "text",
+              "id": "Xa666",
+              "name": "stepLabel2",
               "fill": "#16A34A",
-              "width": 10,
-              "height": 10
+              "content": " 샵 등록",
+              "fontFamily": "Gmarket Sans",
+              "fontSize": 12,
+              "fontWeight": "600"
             }
           ]
         },
