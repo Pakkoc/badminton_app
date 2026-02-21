@@ -5236,7 +5236,7 @@
       "y": 2248,
       "name": "Shop Settings",
       "width": 390,
-      "height": 981,
+      "height": 1160,
       "fill": "#F8FAFC",
       "layout": "vertical",
       "children": [
@@ -5622,6 +5622,7 @@
                         0,
                         16
                       ],
+                      "justifyContent": "space_between",
                       "alignItems": "center",
                       "children": [
                         {
@@ -5633,8 +5634,42 @@
                           "fontFamily": "Gmarket Sans",
                           "fontSize": 14,
                           "fontWeight": "normal"
+                        },
+                        {
+                          "type": "icon_font",
+                          "id": "qy8oA",
+                          "name": "searchIcon",
+                          "width": 20,
+                          "height": 20,
+                          "iconFontName": "search",
+                          "iconFontFamily": "lucide",
+                          "fill": "#94A3B8"
                         }
                       ]
+                    },
+                    {
+                      "type": "frame",
+                      "id": "4yXzx",
+                      "name": "mapPreview",
+                      "metadata": {
+                        "type": "unsplash",
+                        "username": "nlee02",
+                        "link": "https://unsplash.com/@nlee02",
+                        "author": "NK Lee"
+                      },
+                      "width": "fill_container",
+                      "height": 150,
+                      "fill": {
+                        "type": "image",
+                        "enabled": true,
+                        "url": "https://images.unsplash.com/photo-1651836173049-20e19f9d1e37?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w4NDM0ODN8MHwxfHJhbmRvbXx8fHx8fHx8fDE3NzE2ODQwNDh8&ixlib=rb-4.1.0&q=80&w=1080",
+                        "mode": "fill"
+                      },
+                      "cornerRadius": 8,
+                      "layout": "vertical",
+                      "gap": 8,
+                      "justifyContent": "center",
+                      "alignItems": "center"
                     }
                   ]
                 },
