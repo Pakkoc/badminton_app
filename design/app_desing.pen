@@ -8926,6 +8926,604 @@
       "fontFamily": "Gmarket Sans",
       "fontSize": 14,
       "fontWeight": "normal"
+    },
+    {
+      "type": "frame",
+      "id": "KTMja",
+      "x": 2820,
+      "y": 1174,
+      "name": "Shop Detail - Inventory Tab",
+      "clip": true,
+      "width": 390,
+      "height": 844,
+      "fill": "#F8FAFC",
+      "layout": "vertical",
+      "children": [
+        {
+          "type": "frame",
+          "id": "9lscx",
+          "name": "App Bar",
+          "width": "fill_container",
+          "height": 56,
+          "fill": "#FFFFFF",
+          "stroke": {
+            "align": "inside",
+            "thickness": {
+              "bottom": 0.5
+            },
+            "fill": "#E2E8F0"
+          },
+          "gap": 8,
+          "padding": [
+            0,
+            16,
+            0,
+            8
+          ],
+          "alignItems": "center",
+          "children": [
+            {
+              "type": "icon_font",
+              "id": "SBfiu",
+              "name": "abBack",
+              "width": 24,
+              "height": 24,
+              "iconFontName": "arrow_back_ios",
+              "iconFontFamily": "Material Symbols Outlined",
+              "fill": "#0F172A"
+            },
+            {
+              "type": "text",
+              "id": "1PQwe",
+              "name": "abTitle",
+              "fill": "#0F172A",
+              "content": "샵 상세",
+              "fontFamily": "Gmarket Sans",
+              "fontSize": 18,
+              "fontWeight": "600"
+            }
+          ]
+        },
+        {
+          "type": "frame",
+          "id": "HLf4A",
+          "name": "Shop Info",
+          "width": "fill_container",
+          "layout": "vertical",
+          "gap": 8,
+          "padding": [
+            16,
+            16,
+            12,
+            16
+          ],
+          "children": [
+            {
+              "type": "frame",
+              "id": "N5fC3",
+              "name": "Name Row",
+              "gap": 8,
+              "alignItems": "center",
+              "children": [
+                {
+                  "type": "icon_font",
+                  "id": "3ohez",
+                  "name": "shopIcon",
+                  "width": 24,
+                  "height": 24,
+                  "iconFontName": "storefront",
+                  "iconFontFamily": "Material Symbols Outlined",
+                  "fill": "#16A34A"
+                },
+                {
+                  "type": "text",
+                  "id": "t5cJ4",
+                  "name": "shopName",
+                  "fill": "#0F172A",
+                  "content": "OO 거트 스트링샵",
+                  "fontFamily": "Gmarket Sans",
+                  "fontSize": 20,
+                  "fontWeight": "700"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "frame",
+          "id": "Xdseb",
+          "name": "Category Tabs",
+          "width": "fill_container",
+          "height": 44,
+          "stroke": {
+            "align": "inside",
+            "thickness": {
+              "bottom": 0.5
+            },
+            "fill": "#E2E8F0"
+          },
+          "justifyContent": "space_around",
+          "alignItems": "center",
+          "children": [
+            {
+              "type": "frame",
+              "id": "z0rgh",
+              "name": "Tab 1",
+              "width": "fill_container",
+              "height": "fill_container",
+              "layout": "vertical",
+              "justifyContent": "center",
+              "alignItems": "center",
+              "children": [
+                {
+                  "type": "text",
+                  "id": "i779W",
+                  "name": "tab1t",
+                  "fill": "#94A3B8",
+                  "content": "공지사항",
+                  "fontFamily": "Gmarket Sans",
+                  "fontSize": 14,
+                  "fontWeight": "500"
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "WiQYy",
+              "name": "Tab 2",
+              "width": "fill_container",
+              "height": "fill_container",
+              "layout": "vertical",
+              "justifyContent": "center",
+              "alignItems": "center",
+              "children": [
+                {
+                  "type": "text",
+                  "id": "RF5zc",
+                  "name": "tab2t",
+                  "fill": "#94A3B8",
+                  "content": "이벤트",
+                  "fontFamily": "Gmarket Sans",
+                  "fontSize": 14,
+                  "fontWeight": "500"
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "WK9Be",
+              "name": "Tab 3 Active",
+              "width": "fill_container",
+              "height": "fill_container",
+              "stroke": {
+                "align": "inside",
+                "thickness": {
+                  "bottom": 2
+                },
+                "fill": "#16A34A"
+              },
+              "layout": "vertical",
+              "justifyContent": "center",
+              "alignItems": "center",
+              "children": [
+                {
+                  "type": "text",
+                  "id": "Yo0uk",
+                  "name": "tab3t",
+                  "fill": "#16A34A",
+                  "content": "가게 재고",
+                  "fontFamily": "Gmarket Sans",
+                  "fontSize": 14,
+                  "fontWeight": "600"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "frame",
+          "id": "t9g4w",
+          "name": "Inventory Grid",
+          "width": "fill_container",
+          "height": "fill_container",
+          "layout": "none",
+          "children": [
+            {
+              "type": "frame",
+              "id": "3srXP",
+              "x": 16,
+              "y": 580,
+              "name": "Navigate Button",
+              "width": 358,
+              "height": 48,
+              "fill": "#16A34A",
+              "cornerRadius": 12,
+              "layout": "none",
+              "children": [
+                {
+                  "type": "icon_font",
+                  "id": "rWiog",
+                  "x": 140,
+                  "y": 14,
+                  "name": "navIcon",
+                  "width": 20,
+                  "height": 20,
+                  "iconFontName": "directions",
+                  "iconFontFamily": "Material Symbols Outlined",
+                  "fill": "#FFFFFF"
+                },
+                {
+                  "type": "text",
+                  "id": "1wz8j",
+                  "x": 168,
+                  "y": 13,
+                  "name": "navText",
+                  "fill": "#FFFFFF",
+                  "content": "길찾기",
+                  "fontFamily": "Gmarket Sans",
+                  "fontSize": 16,
+                  "fontWeight": "600"
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "cmwlK",
+              "x": 16,
+              "y": 16,
+              "name": "Grid Wrap",
+              "width": 358,
+              "gap": 12,
+              "children": [
+                {
+                  "type": "frame",
+                  "id": "hAgLm",
+                  "name": "Col 1",
+                  "width": "fill_container",
+                  "layout": "vertical",
+                  "gap": 12,
+                  "children": [
+                    {
+                      "type": "frame",
+                      "id": "PTq7g",
+                      "name": "Item Card 1",
+                      "width": "fill_container",
+                      "height": 170,
+                      "fill": "#FFFFFF",
+                      "cornerRadius": 12,
+                      "stroke": {
+                        "align": "inside",
+                        "thickness": 1,
+                        "fill": "#E2E8F0"
+                      },
+                      "layout": "vertical",
+                      "gap": 6,
+                      "padding": [
+                        12,
+                        8,
+                        8,
+                        8
+                      ],
+                      "alignItems": "center",
+                      "children": [
+                        {
+                          "type": "frame",
+                          "id": "hT6q7",
+                          "name": "Icon Area",
+                          "width": "fill_container",
+                          "height": 76,
+                          "fill": "#F1F5F9",
+                          "cornerRadius": 8,
+                          "justifyContent": "center",
+                          "alignItems": "center",
+                          "children": [
+                            {
+                              "type": "icon_font",
+                              "id": "f9OR2",
+                              "name": "c1ii",
+                              "width": 32,
+                              "height": 32,
+                              "iconFontName": "sports_tennis",
+                              "iconFontFamily": "Material Symbols Rounded",
+                              "fill": "#94A3B8"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "id": "TpIYo",
+                          "name": "c1nn",
+                          "fill": "#0F172A",
+                          "content": "YONEX AX99 Pro",
+                          "fontFamily": "Gmarket Sans",
+                          "fontSize": 13,
+                          "fontWeight": "500"
+                        },
+                        {
+                          "type": "text",
+                          "id": "pR0Jx",
+                          "name": "c1cc",
+                          "fill": "#94A3B8",
+                          "content": "라켓",
+                          "fontFamily": "Gmarket Sans",
+                          "fontSize": 11,
+                          "fontWeight": "normal"
+                        },
+                        {
+                          "type": "text",
+                          "id": "Ayv50",
+                          "name": "c1qq",
+                          "fill": "#475569",
+                          "content": "재고: 3개",
+                          "fontFamily": "Gmarket Sans",
+                          "fontSize": 11,
+                          "fontWeight": "SemiBold"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "frame",
+                      "id": "oJTAi",
+                      "name": "Item Card 3",
+                      "width": "fill_container",
+                      "height": 170,
+                      "fill": "#FFFFFF",
+                      "cornerRadius": 12,
+                      "stroke": {
+                        "align": "inside",
+                        "thickness": 1,
+                        "fill": "#E2E8F0"
+                      },
+                      "layout": "vertical",
+                      "gap": 6,
+                      "padding": [
+                        12,
+                        8,
+                        8,
+                        8
+                      ],
+                      "alignItems": "center",
+                      "children": [
+                        {
+                          "type": "frame",
+                          "id": "w1xwK",
+                          "name": "Icon Area",
+                          "width": "fill_container",
+                          "height": 76,
+                          "fill": "#F1F5F9",
+                          "cornerRadius": 8,
+                          "justifyContent": "center",
+                          "alignItems": "center",
+                          "children": [
+                            {
+                              "type": "icon_font",
+                              "id": "5v0Qv",
+                              "name": "c3ii",
+                              "width": 32,
+                              "height": 32,
+                              "iconFontName": "checkroom",
+                              "iconFontFamily": "Material Symbols Rounded",
+                              "fill": "#94A3B8"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "id": "uDGbl",
+                          "name": "c3nn",
+                          "fill": "#0F172A",
+                          "content": "요넥스 반팔 티셔츠",
+                          "fontFamily": "Gmarket Sans",
+                          "fontSize": 13,
+                          "fontWeight": "500"
+                        },
+                        {
+                          "type": "text",
+                          "id": "G97d7",
+                          "name": "c3cc",
+                          "fill": "#94A3B8",
+                          "content": "상의",
+                          "fontFamily": "Gmarket Sans",
+                          "fontSize": 11,
+                          "fontWeight": "normal"
+                        },
+                        {
+                          "type": "text",
+                          "id": "MeWfR",
+                          "name": "c3qq",
+                          "fill": "#475569",
+                          "content": "재고: 5개",
+                          "fontFamily": "Gmarket Sans",
+                          "fontSize": 11,
+                          "fontWeight": "SemiBold"
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "eKUrx",
+                  "name": "Col 2",
+                  "width": "fill_container",
+                  "layout": "vertical",
+                  "gap": 12,
+                  "children": [
+                    {
+                      "type": "frame",
+                      "id": "J5Dy0",
+                      "name": "Item Card 2",
+                      "width": "fill_container",
+                      "height": 170,
+                      "fill": "#FFFFFF",
+                      "cornerRadius": 12,
+                      "stroke": {
+                        "align": "inside",
+                        "thickness": 1,
+                        "fill": "#E2E8F0"
+                      },
+                      "layout": "vertical",
+                      "gap": 6,
+                      "padding": [
+                        12,
+                        8,
+                        8,
+                        8
+                      ],
+                      "alignItems": "center",
+                      "children": [
+                        {
+                          "type": "frame",
+                          "id": "u1A5x",
+                          "name": "Icon Area",
+                          "width": "fill_container",
+                          "height": 76,
+                          "fill": "#F1F5F9",
+                          "cornerRadius": 8,
+                          "justifyContent": "center",
+                          "alignItems": "center",
+                          "children": [
+                            {
+                              "type": "icon_font",
+                              "id": "2kWem",
+                              "name": "c2ii",
+                              "width": 32,
+                              "height": 32,
+                              "iconFontName": "sports_tennis",
+                              "iconFontFamily": "Material Symbols Rounded",
+                              "fill": "#94A3B8"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "id": "vqp0C",
+                          "name": "c2nn",
+                          "fill": "#0F172A",
+                          "content": "YONEX MAVIS 350",
+                          "fontFamily": "Gmarket Sans",
+                          "fontSize": 13,
+                          "fontWeight": "500"
+                        },
+                        {
+                          "type": "text",
+                          "id": "RlZnX",
+                          "name": "c2cc",
+                          "fill": "#94A3B8",
+                          "content": "셔틀콕",
+                          "fontFamily": "Gmarket Sans",
+                          "fontSize": 11,
+                          "fontWeight": "normal"
+                        },
+                        {
+                          "type": "text",
+                          "id": "9yACw",
+                          "name": "c2qq",
+                          "fill": "#475569",
+                          "content": "재고: 12통",
+                          "fontFamily": "Gmarket Sans",
+                          "fontSize": 11,
+                          "fontWeight": "SemiBold"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "frame",
+                      "id": "2t1zc",
+                      "name": "Item Card 4",
+                      "width": "fill_container",
+                      "height": 170,
+                      "fill": "#FFFFFF",
+                      "cornerRadius": 12,
+                      "stroke": {
+                        "align": "inside",
+                        "thickness": 1,
+                        "fill": "#E2E8F0"
+                      },
+                      "layout": "vertical",
+                      "gap": 6,
+                      "padding": [
+                        12,
+                        8,
+                        8,
+                        8
+                      ],
+                      "alignItems": "center",
+                      "children": [
+                        {
+                          "type": "frame",
+                          "id": "UqoOS",
+                          "name": "Icon Area",
+                          "width": "fill_container",
+                          "height": 76,
+                          "fill": "#F1F5F9",
+                          "cornerRadius": 8,
+                          "justifyContent": "center",
+                          "alignItems": "center",
+                          "children": [
+                            {
+                              "type": "icon_font",
+                              "id": "hJMJL",
+                              "name": "c4ii",
+                              "width": 32,
+                              "height": 32,
+                              "iconFontName": "backpack",
+                              "iconFontFamily": "Material Symbols Rounded",
+                              "fill": "#94A3B8"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "id": "m1gsF",
+                          "name": "c4nn",
+                          "fill": "#0F172A",
+                          "content": "배드민턴 가방",
+                          "fontFamily": "Gmarket Sans",
+                          "fontSize": 13,
+                          "fontWeight": "500"
+                        },
+                        {
+                          "type": "text",
+                          "id": "ajJh1",
+                          "name": "c4cc",
+                          "fill": "#94A3B8",
+                          "content": "가방",
+                          "fontFamily": "Gmarket Sans",
+                          "fontSize": 11,
+                          "fontWeight": "normal"
+                        },
+                        {
+                          "type": "text",
+                          "id": "brIqO",
+                          "name": "c4qq",
+                          "fill": "#EF4444",
+                          "content": "품절",
+                          "fontFamily": "Gmarket Sans",
+                          "fontSize": 11,
+                          "fontWeight": "SemiBold"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "text",
+      "id": "vwujX",
+      "x": 2880,
+      "y": 2034,
+      "name": "invLabel",
+      "fill": "#94A3B8",
+      "content": "샵 상세 (가게 재고 탭)",
+      "fontFamily": "Gmarket Sans",
+      "fontSize": 14,
+      "fontWeight": "normal"
     }
   ],
   "variables": {
