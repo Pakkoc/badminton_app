@@ -5275,6 +5275,227 @@
           "children": [
             {
               "type": "frame",
+              "id": "6ZBWv",
+              "name": "Menu Section Header",
+              "gap": 6,
+              "alignItems": "center",
+              "children": [
+                {
+                  "type": "icon_font",
+                  "id": "DzhBS",
+                  "name": "menuIcon",
+                  "width": 20,
+                  "height": 20,
+                  "iconFontName": "menu",
+                  "iconFontFamily": "Material Symbols Rounded",
+                  "fill": "#16A34A"
+                },
+                {
+                  "type": "text",
+                  "id": "GM34x",
+                  "name": "menuTitle",
+                  "fill": "#0F172A",
+                  "content": "관리 메뉴",
+                  "fontFamily": "Gmarket Sans",
+                  "fontSize": 16,
+                  "fontWeight": "SemiBold"
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "JZXtp",
+              "name": "Menu Card",
+              "width": "fill_container",
+              "fill": "#FFFFFF",
+              "cornerRadius": 16,
+              "stroke": {
+                "align": "inside",
+                "thickness": 1,
+                "fill": "#E2E8F0"
+              },
+              "layout": "vertical",
+              "children": [
+                {
+                  "type": "frame",
+                  "id": "N2oVY",
+                  "name": "Menu QR",
+                  "width": "fill_container",
+                  "height": 52,
+                  "stroke": {
+                    "align": "inside",
+                    "thickness": {
+                      "bottom": 1
+                    },
+                    "fill": "#F1F5F9"
+                  },
+                  "padding": [
+                    0,
+                    16
+                  ],
+                  "justifyContent": "space_between",
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "frame",
+                      "id": "vrl62",
+                      "name": "m1 left",
+                      "gap": 12,
+                      "alignItems": "center",
+                      "children": [
+                        {
+                          "type": "icon_font",
+                          "id": "0IJ4H",
+                          "name": "m1icon",
+                          "width": 22,
+                          "height": 22,
+                          "iconFontName": "qr_code_2",
+                          "iconFontFamily": "Material Symbols Rounded",
+                          "fill": "#475569"
+                        },
+                        {
+                          "type": "text",
+                          "id": "3h0pu",
+                          "name": "m1text",
+                          "fill": "#0F172A",
+                          "content": "내 샵 QR코드",
+                          "fontFamily": "Gmarket Sans",
+                          "fontSize": 14,
+                          "fontWeight": "normal"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "icon_font",
+                      "id": "vn0Px",
+                      "name": "m1arrow",
+                      "width": 20,
+                      "height": 20,
+                      "iconFontName": "chevron_right",
+                      "iconFontFamily": "Material Symbols Rounded",
+                      "fill": "#94A3B8"
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "WXaHy",
+                  "name": "Menu Post",
+                  "width": "fill_container",
+                  "height": 52,
+                  "stroke": {
+                    "align": "inside",
+                    "thickness": {
+                      "bottom": 1
+                    },
+                    "fill": "#F1F5F9"
+                  },
+                  "padding": [
+                    0,
+                    16
+                  ],
+                  "justifyContent": "space_between",
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "frame",
+                      "id": "jrbo7",
+                      "name": "m2 left",
+                      "gap": 12,
+                      "alignItems": "center",
+                      "children": [
+                        {
+                          "type": "icon_font",
+                          "id": "V7w5E",
+                          "name": "m2icon",
+                          "width": 22,
+                          "height": 22,
+                          "iconFontName": "edit_note",
+                          "iconFontFamily": "Material Symbols Rounded",
+                          "fill": "#475569"
+                        },
+                        {
+                          "type": "text",
+                          "id": "q0N5p",
+                          "name": "m2text",
+                          "fill": "#0F172A",
+                          "content": "게시글 작성",
+                          "fontFamily": "Gmarket Sans",
+                          "fontSize": 14,
+                          "fontWeight": "normal"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "icon_font",
+                      "id": "QcYhi",
+                      "name": "m2arrow",
+                      "width": 20,
+                      "height": 20,
+                      "iconFontName": "chevron_right",
+                      "iconFontFamily": "Material Symbols Rounded",
+                      "fill": "#94A3B8"
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "AOdiz",
+                  "name": "Menu Inventory",
+                  "width": "fill_container",
+                  "height": 52,
+                  "padding": [
+                    0,
+                    16
+                  ],
+                  "justifyContent": "space_between",
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "frame",
+                      "id": "OvKkq",
+                      "name": "m3 left",
+                      "gap": 12,
+                      "alignItems": "center",
+                      "children": [
+                        {
+                          "type": "icon_font",
+                          "id": "VYjzv",
+                          "name": "m3icon",
+                          "width": 22,
+                          "height": 22,
+                          "iconFontName": "inventory_2",
+                          "iconFontFamily": "Material Symbols Rounded",
+                          "fill": "#475569"
+                        },
+                        {
+                          "type": "text",
+                          "id": "MWMno",
+                          "name": "m3text",
+                          "fill": "#0F172A",
+                          "content": "재고 관리",
+                          "fontFamily": "Gmarket Sans",
+                          "fontSize": 14,
+                          "fontWeight": "normal"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "icon_font",
+                      "id": "8W8Iy",
+                      "name": "m3arrow",
+                      "width": 20,
+                      "height": 20,
+                      "iconFontName": "chevron_right",
+                      "iconFontFamily": "Material Symbols Rounded",
+                      "fill": "#94A3B8"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "frame",
               "id": "Lz1aU",
               "name": "Section Header 1",
               "gap": 6,
