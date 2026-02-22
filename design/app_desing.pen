@@ -13020,23 +13020,439 @@
       ]
     },
     {
-      "type": "frame",
-      "id": "lZB3x",
+      "type": "group",
+      "id": "nAfQv",
       "x": 1880,
       "y": 100,
       "name": "Address Search BottomSheet",
-      "clip": true,
-      "width": 390,
-      "height": 844,
-      "fill": "rgba(0,0,0,0.5)",
-      "layout": "vertical",
-      "justifyContent": "end",
       "children": [
         {
           "type": "frame",
-          "id": "Bk1eK",
+          "id": "60b7q",
+          "x": 0,
+          "y": 0,
+          "name": "bgScreen",
+          "width": 390,
+          "height": 844,
+          "fill": "$--background",
+          "layout": "vertical",
+          "children": [
+            {
+              "type": "frame",
+              "id": "R436x",
+              "name": "appBar",
+              "width": "fill_container",
+              "height": 56,
+              "padding": [
+                0,
+                16
+              ],
+              "justifyContent": "space_between",
+              "alignItems": "center",
+              "children": [
+                {
+                  "type": "icon_font",
+                  "id": "0v3FV",
+                  "name": "backArrow",
+                  "width": 24,
+                  "height": 24,
+                  "iconFontName": "arrow-left",
+                  "iconFontFamily": "lucide",
+                  "fill": "#0F172A"
+                },
+                {
+                  "type": "text",
+                  "id": "M1GAB",
+                  "name": "appBarTitle",
+                  "fill": "#0F172A",
+                  "content": "샵 등록",
+                  "fontFamily": "Gmarket Sans",
+                  "fontSize": 18,
+                  "fontWeight": "500"
+                },
+                {
+                  "type": "text",
+                  "id": "rlFHA",
+                  "name": "stepIndicator",
+                  "fill": "#94A3B8",
+                  "content": "2/2",
+                  "fontFamily": "Gmarket Sans",
+                  "fontSize": 14,
+                  "fontWeight": "normal"
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "lkVnU",
+              "name": "progressRow",
+              "width": "fill_container",
+              "height": 40,
+              "gap": 6,
+              "padding": [
+                0,
+                60
+              ],
+              "justifyContent": "center",
+              "alignItems": "center",
+              "children": [
+                {
+                  "type": "frame",
+                  "id": "vmqKl",
+                  "name": "checkCircle",
+                  "width": 18,
+                  "height": 18,
+                  "fill": "#16A34A",
+                  "cornerRadius": 9,
+                  "justifyContent": "center",
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "C1bmD",
+                      "name": "checkMark",
+                      "fill": "#FFFFFF",
+                      "content": "✓",
+                      "fontFamily": "Inter",
+                      "fontSize": 11,
+                      "fontWeight": "bold"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "id": "RshKV",
+                  "name": "stepLabel1",
+                  "fill": "#16A34A",
+                  "content": "정보 입력",
+                  "fontFamily": "Gmarket Sans",
+                  "fontSize": 12,
+                  "fontWeight": "500"
+                },
+                {
+                  "type": "frame",
+                  "id": "gVxOr",
+                  "name": "stepLine",
+                  "width": 40,
+                  "height": 2,
+                  "fill": "#16A34A"
+                },
+                {
+                  "type": "ellipse",
+                  "id": "LbPfI",
+                  "name": "dot2Active",
+                  "fill": "#16A34A",
+                  "width": 10,
+                  "height": 10
+                },
+                {
+                  "type": "text",
+                  "id": "O4hRe",
+                  "name": "stepLabel2",
+                  "fill": "#16A34A",
+                  "content": "샵 등록",
+                  "fontFamily": "Gmarket Sans",
+                  "fontSize": 12,
+                  "fontWeight": "500"
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "nY5XT",
+              "name": "formSection",
+              "width": "fill_container",
+              "height": "fill_container",
+              "layout": "vertical",
+              "gap": 16,
+              "padding": 16,
+              "children": [
+                {
+                  "type": "text",
+                  "id": "09ll4",
+                  "name": "sectionTitle",
+                  "fill": "#0F172A",
+                  "content": "샵 정보",
+                  "fontFamily": "Gmarket Sans",
+                  "fontSize": 16,
+                  "fontWeight": "700"
+                },
+                {
+                  "type": "frame",
+                  "id": "HgcC6",
+                  "name": "nameInput",
+                  "width": "fill_container",
+                  "layout": "vertical",
+                  "gap": 6,
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "88Sy3",
+                      "name": "nameLabel",
+                      "fill": "#0F172A",
+                      "content": "샵 이름 *",
+                      "fontFamily": "Gmarket Sans",
+                      "fontSize": 13,
+                      "fontWeight": "500"
+                    },
+                    {
+                      "type": "frame",
+                      "id": "Stqju",
+                      "name": "nameField",
+                      "width": "fill_container",
+                      "height": 44,
+                      "fill": "#F1F5F9",
+                      "cornerRadius": 8,
+                      "padding": [
+                        0,
+                        14
+                      ],
+                      "alignItems": "center",
+                      "children": [
+                        {
+                          "type": "text",
+                          "id": "8Xe6Z",
+                          "name": "namePlaceholder",
+                          "fill": "#94A3B8",
+                          "content": "샵 이름을 입력하세요",
+                          "fontFamily": "Gmarket Sans",
+                          "fontSize": 14,
+                          "fontWeight": "normal"
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "nVeBz",
+                  "name": "addrInput",
+                  "width": "fill_container",
+                  "layout": "vertical",
+                  "gap": 6,
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "d48Oh",
+                      "name": "addrLabel",
+                      "fill": "#0F172A",
+                      "content": "주소 *",
+                      "fontFamily": "Gmarket Sans",
+                      "fontSize": 13,
+                      "fontWeight": "500"
+                    },
+                    {
+                      "type": "frame",
+                      "id": "94jZF",
+                      "name": "addrField",
+                      "width": "fill_container",
+                      "height": 44,
+                      "fill": "#F1F5F9",
+                      "cornerRadius": 8,
+                      "padding": [
+                        0,
+                        14
+                      ],
+                      "justifyContent": "space_between",
+                      "alignItems": "center",
+                      "children": [
+                        {
+                          "type": "text",
+                          "id": "rfrr7",
+                          "name": "addrPlaceholder",
+                          "fill": "#94A3B8",
+                          "content": "주소를 검색하세요",
+                          "fontFamily": "Gmarket Sans",
+                          "fontSize": 14,
+                          "fontWeight": "normal"
+                        },
+                        {
+                          "type": "icon_font",
+                          "id": "lw0a3",
+                          "name": "searchIcon",
+                          "width": 20,
+                          "height": 20,
+                          "iconFontName": "search",
+                          "iconFontFamily": "lucide",
+                          "fill": "#94A3B8"
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "tKW2c",
+                  "name": "mapPreview",
+                  "width": "fill_container",
+                  "height": 150,
+                  "fill": {
+                    "type": "image",
+                    "enabled": true,
+                    "url": "./images/generated-1771596621205.png",
+                    "mode": "fill"
+                  },
+                  "cornerRadius": 8,
+                  "layout": "vertical",
+                  "gap": 8,
+                  "justifyContent": "center",
+                  "alignItems": "center"
+                },
+                {
+                  "type": "frame",
+                  "id": "g6mTW",
+                  "name": "contactInput",
+                  "width": "fill_container",
+                  "layout": "vertical",
+                  "gap": 6,
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "TJnWS",
+                      "name": "contactLabel",
+                      "fill": "#0F172A",
+                      "content": "연락처 *",
+                      "fontFamily": "Gmarket Sans",
+                      "fontSize": 13,
+                      "fontWeight": "500"
+                    },
+                    {
+                      "type": "frame",
+                      "id": "tyEsH",
+                      "name": "contactField",
+                      "width": "fill_container",
+                      "height": 44,
+                      "fill": "#F1F5F9",
+                      "cornerRadius": 8,
+                      "padding": [
+                        0,
+                        14
+                      ],
+                      "alignItems": "center",
+                      "children": [
+                        {
+                          "type": "text",
+                          "id": "T8R1t",
+                          "name": "contactPlaceholder",
+                          "fill": "#94A3B8",
+                          "content": "연락처를 입력하세요",
+                          "fontFamily": "Gmarket Sans",
+                          "fontSize": 14,
+                          "fontWeight": "normal"
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "41U05",
+                  "name": "introInput",
+                  "width": "fill_container",
+                  "layout": "vertical",
+                  "gap": 6,
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "jwaoQ",
+                      "name": "introLabel",
+                      "fill": "#475569",
+                      "content": "소개글",
+                      "fontFamily": "Gmarket Sans",
+                      "fontSize": 13,
+                      "fontWeight": "500"
+                    },
+                    {
+                      "type": "frame",
+                      "id": "YYJpf",
+                      "name": "introFieldWrap",
+                      "width": "fill_container",
+                      "height": 80,
+                      "fill": "#F1F5F9",
+                      "cornerRadius": 8,
+                      "layout": "vertical",
+                      "padding": 14,
+                      "justifyContent": "space_between",
+                      "children": [
+                        {
+                          "type": "text",
+                          "id": "gHimy",
+                          "name": "introPlaceholder",
+                          "fill": "#94A3B8",
+                          "content": "샵에 대한 소개글을 작성해 주세요",
+                          "fontFamily": "Gmarket Sans",
+                          "fontSize": 14,
+                          "fontWeight": "normal"
+                        },
+                        {
+                          "type": "text",
+                          "id": "REzD8",
+                          "name": "introCount",
+                          "fill": "#94A3B8",
+                          "content": "0/200",
+                          "fontFamily": "Gmarket Sans",
+                          "fontSize": 12,
+                          "fontWeight": "normal"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "Je1Vj",
+              "name": "bottomArea",
+              "width": "fill_container",
+              "layout": "vertical",
+              "padding": 16,
+              "children": [
+                {
+                  "type": "frame",
+                  "id": "YixrD",
+                  "name": "submitBtn",
+                  "width": "fill_container",
+                  "height": 48,
+                  "fill": "#16A34A",
+                  "cornerRadius": 12,
+                  "justifyContent": "center",
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "03uga",
+                      "name": "submitText",
+                      "fill": "#FFFFFF",
+                      "content": "등록 완료",
+                      "fontFamily": "Gmarket Sans",
+                      "fontSize": 16,
+                      "fontWeight": "700"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "rectangle",
+          "id": "eli1i",
+          "x": 0,
+          "y": 0,
+          "name": "dimOverlay",
+          "opacity": 0.4,
+          "fill": "#000000",
+          "width": 390,
+          "height": 844
+        },
+        {
+          "type": "frame",
+          "id": "8RvPf",
+          "x": 0,
+          "y": 54,
           "name": "bottomSheet",
-          "width": "fill_container",
+          "width": 390,
           "height": 790,
           "fill": "#FFFFFF",
           "cornerRadius": [
@@ -13049,7 +13465,7 @@
           "children": [
             {
               "type": "frame",
-              "id": "YZUYT",
+              "id": "X1ngq",
               "name": "handleArea",
               "width": "fill_container",
               "height": 28,
@@ -13059,7 +13475,7 @@
                 {
                   "type": "rectangle",
                   "cornerRadius": 2,
-                  "id": "1YWGh",
+                  "id": "LjYIv",
                   "name": "handle",
                   "fill": "#CBD5E1",
                   "width": 40,
@@ -13069,7 +13485,7 @@
             },
             {
               "type": "frame",
-              "id": "zg153",
+              "id": "OCqGv",
               "name": "titleRow",
               "width": "fill_container",
               "height": 44,
@@ -13082,7 +13498,7 @@
               "children": [
                 {
                   "type": "text",
-                  "id": "YOJMU",
+                  "id": "lRj3H",
                   "name": "sheetTitle",
                   "fill": "#0F172A",
                   "content": "주소 검색",
@@ -13092,7 +13508,7 @@
                 },
                 {
                   "type": "icon_font",
-                  "id": "gluay",
+                  "id": "4AYl1",
                   "name": "closeBtn",
                   "width": 24,
                   "height": 24,
@@ -13104,7 +13520,7 @@
             },
             {
               "type": "frame",
-              "id": "hSDYO",
+              "id": "IpFap",
               "name": "searchRow",
               "width": "fill_container",
               "height": 52,
@@ -13116,7 +13532,7 @@
               "children": [
                 {
                   "type": "frame",
-                  "id": "Lm9u8",
+                  "id": "jmh8G",
                   "name": "searchInput",
                   "width": "fill_container",
                   "height": 40,
@@ -13131,7 +13547,7 @@
                   "children": [
                     {
                       "type": "icon_font",
-                      "id": "247eZ",
+                      "id": "e6o4t",
                       "name": "searchIcon",
                       "width": 20,
                       "height": 20,
@@ -13141,7 +13557,7 @@
                     },
                     {
                       "type": "text",
-                      "id": "aZB1Y",
+                      "id": "RLsOp",
                       "name": "searchHint",
                       "fill": "#94A3B8",
                       "content": "도로명, 건물명 또는 지번으로 검색",
@@ -13155,7 +13571,7 @@
             },
             {
               "type": "rectangle",
-              "id": "rwp8B",
+              "id": "JZB5K",
               "name": "divider",
               "fill": "#E2E8F0",
               "width": "fill_container",
@@ -13163,7 +13579,7 @@
             },
             {
               "type": "frame",
-              "id": "qP2fh",
+              "id": "skIzV",
               "name": "webviewPlaceholder",
               "width": "fill_container",
               "height": "fill_container",
@@ -13175,7 +13591,7 @@
               "children": [
                 {
                   "type": "text",
-                  "id": "NNKF3",
+                  "id": "pcdQ1",
                   "name": "infoText",
                   "fill": "#94A3B8",
                   "content": "Kakao 주소 API (Daum 우편번호 서비스)",
@@ -13185,14 +13601,14 @@
                 },
                 {
                   "type": "frame",
-                  "id": "Iu3AP",
-                  "name": "spacer1",
+                  "id": "qM1qm",
+                  "name": "spacer",
                   "width": "fill_container",
                   "height": 12
                 },
                 {
                   "type": "frame",
-                  "id": "4apBS",
+                  "id": "9usGJ",
                   "name": "result1",
                   "width": "fill_container",
                   "stroke": {
@@ -13211,8 +13627,8 @@
                   "children": [
                     {
                       "type": "frame",
-                      "id": "KaoBP",
-                      "name": "badge1",
+                      "id": "SZjBz",
+                      "name": "r1b",
                       "height": 18,
                       "fill": "#3B82F6",
                       "cornerRadius": 2,
@@ -13225,8 +13641,8 @@
                       "children": [
                         {
                           "type": "text",
-                          "id": "GAkIb",
-                          "name": "badgeText1",
+                          "id": "hn9fb",
+                          "name": "r1bt",
                           "fill": "#FFFFFF",
                           "content": "도로명",
                           "fontFamily": "Inter",
@@ -13237,8 +13653,8 @@
                     },
                     {
                       "type": "text",
-                      "id": "fRu3E",
-                      "name": "roadAddr1",
+                      "id": "gX0OP",
+                      "name": "r1r",
                       "fill": "#0F172A",
                       "content": "서울특별시 강남구 테헤란로 212",
                       "fontFamily": "Inter",
@@ -13247,8 +13663,8 @@
                     },
                     {
                       "type": "text",
-                      "id": "TIAV8",
-                      "name": "jibunAddr1",
+                      "id": "O7IB2",
+                      "name": "r1j",
                       "fill": "#94A3B8",
                       "content": "[지번] 역삼동 718-5",
                       "fontFamily": "Inter",
@@ -13257,8 +13673,8 @@
                     },
                     {
                       "type": "text",
-                      "id": "Ehi1B",
-                      "name": "zipcode1",
+                      "id": "9IGhk",
+                      "name": "r1z",
                       "fill": "#64748B",
                       "content": "06220",
                       "fontFamily": "Inter",
@@ -13269,7 +13685,7 @@
                 },
                 {
                   "type": "frame",
-                  "id": "whahV",
+                  "id": "yXSSg",
                   "name": "result2",
                   "width": "fill_container",
                   "stroke": {
@@ -13288,8 +13704,8 @@
                   "children": [
                     {
                       "type": "frame",
-                      "id": "zGspC",
-                      "name": "badge2",
+                      "id": "u2DRR",
+                      "name": "r2b",
                       "height": 18,
                       "fill": "#3B82F6",
                       "cornerRadius": 2,
@@ -13302,8 +13718,8 @@
                       "children": [
                         {
                           "type": "text",
-                          "id": "7LPJv",
-                          "name": "badgeText2",
+                          "id": "WVArK",
+                          "name": "r2bt",
                           "fill": "#FFFFFF",
                           "content": "도로명",
                           "fontFamily": "Inter",
@@ -13314,8 +13730,8 @@
                     },
                     {
                       "type": "text",
-                      "id": "oK34y",
-                      "name": "roadAddr2",
+                      "id": "7j6rT",
+                      "name": "r2r",
                       "fill": "#0F172A",
                       "content": "서울특별시 강남구 테헤란로 212길 5",
                       "fontFamily": "Inter",
@@ -13324,8 +13740,8 @@
                     },
                     {
                       "type": "text",
-                      "id": "7op01",
-                      "name": "jibunAddr2",
+                      "id": "ON6DW",
+                      "name": "r2j",
                       "fill": "#94A3B8",
                       "content": "[지번] 역삼동 719-2",
                       "fontFamily": "Inter",
@@ -13334,8 +13750,8 @@
                     },
                     {
                       "type": "text",
-                      "id": "Liy4Z",
-                      "name": "zipcode2",
+                      "id": "rTJBP",
+                      "name": "r2z",
                       "fill": "#64748B",
                       "content": "06220",
                       "fontFamily": "Inter",
@@ -13346,7 +13762,7 @@
                 },
                 {
                   "type": "frame",
-                  "id": "0Bj13",
+                  "id": "efH6i",
                   "name": "result3",
                   "width": "fill_container",
                   "stroke": {
@@ -13365,8 +13781,8 @@
                   "children": [
                     {
                       "type": "frame",
-                      "id": "lPsPJ",
-                      "name": "badge3",
+                      "id": "KQEZt",
+                      "name": "r3b",
                       "height": 18,
                       "fill": "#3B82F6",
                       "cornerRadius": 2,
@@ -13379,8 +13795,8 @@
                       "children": [
                         {
                           "type": "text",
-                          "id": "ASjvR",
-                          "name": "badgeText3",
+                          "id": "QxVwj",
+                          "name": "r3bt",
                           "fill": "#FFFFFF",
                           "content": "도로명",
                           "fontFamily": "Inter",
@@ -13391,8 +13807,8 @@
                     },
                     {
                       "type": "text",
-                      "id": "kLUoq",
-                      "name": "roadAddr3",
+                      "id": "lroW5",
+                      "name": "r3r",
                       "fill": "#0F172A",
                       "content": "서울특별시 강남구 역삼로 180",
                       "fontFamily": "Inter",
@@ -13401,8 +13817,8 @@
                     },
                     {
                       "type": "text",
-                      "id": "ZZf3I",
-                      "name": "jibunAddr3",
+                      "id": "GEmgo",
+                      "name": "r3j",
                       "fill": "#94A3B8",
                       "content": "[지번] 역삼동 720-1",
                       "fontFamily": "Inter",
@@ -13411,8 +13827,8 @@
                     },
                     {
                       "type": "text",
-                      "id": "gGquS",
-                      "name": "zipcode3",
+                      "id": "HgoML",
+                      "name": "r3z",
                       "fill": "#64748B",
                       "content": "06248",
                       "fontFamily": "Inter",
@@ -13423,7 +13839,7 @@
                 },
                 {
                   "type": "frame",
-                  "id": "ultA3",
+                  "id": "QLo1M",
                   "name": "result4",
                   "width": "fill_container",
                   "stroke": {
@@ -13442,8 +13858,8 @@
                   "children": [
                     {
                       "type": "frame",
-                      "id": "eLBwf",
-                      "name": "badge4",
+                      "id": "X0ygR",
+                      "name": "r4b",
                       "height": 18,
                       "fill": "#3B82F6",
                       "cornerRadius": 2,
@@ -13456,8 +13872,8 @@
                       "children": [
                         {
                           "type": "text",
-                          "id": "mViOI",
-                          "name": "badgeText4",
+                          "id": "s8655",
+                          "name": "r4bt",
                           "fill": "#FFFFFF",
                           "content": "도로명",
                           "fontFamily": "Inter",
@@ -13468,8 +13884,8 @@
                     },
                     {
                       "type": "text",
-                      "id": "j0xCw",
-                      "name": "roadAddr4",
+                      "id": "4XuA3",
+                      "name": "r4r",
                       "fill": "#0F172A",
                       "content": "서울특별시 강남구 테헤란로 152",
                       "fontFamily": "Inter",
@@ -13478,8 +13894,8 @@
                     },
                     {
                       "type": "text",
-                      "id": "H7Fpu",
-                      "name": "jibunAddr4",
+                      "id": "sUxke",
+                      "name": "r4j",
                       "fill": "#94A3B8",
                       "content": "[지번] 역삼동 737",
                       "fontFamily": "Inter",
@@ -13488,8 +13904,8 @@
                     },
                     {
                       "type": "text",
-                      "id": "qdzD1",
-                      "name": "zipcode4",
+                      "id": "YFwAN",
+                      "name": "r4z",
                       "fill": "#64748B",
                       "content": "06236",
                       "fontFamily": "Inter",
@@ -13500,7 +13916,7 @@
                 },
                 {
                   "type": "frame",
-                  "id": "n5q4O",
+                  "id": "xCucx",
                   "name": "result5",
                   "width": "fill_container",
                   "stroke": {
@@ -13519,8 +13935,8 @@
                   "children": [
                     {
                       "type": "frame",
-                      "id": "1pdBh",
-                      "name": "badge5",
+                      "id": "vKTBz",
+                      "name": "r5b",
                       "height": 18,
                       "fill": "#3B82F6",
                       "cornerRadius": 2,
@@ -13533,8 +13949,8 @@
                       "children": [
                         {
                           "type": "text",
-                          "id": "Ng0zy",
-                          "name": "badgeText5",
+                          "id": "TsENU",
+                          "name": "r5bt",
                           "fill": "#FFFFFF",
                           "content": "도로명",
                           "fontFamily": "Inter",
@@ -13545,8 +13961,8 @@
                     },
                     {
                       "type": "text",
-                      "id": "KKzzS",
-                      "name": "roadAddr5",
+                      "id": "5ft4Q",
+                      "name": "r5r",
                       "fill": "#0F172A",
                       "content": "서울특별시 강남구 테헤란로 212 멀티캠퍼스",
                       "fontFamily": "Inter",
@@ -13555,8 +13971,8 @@
                     },
                     {
                       "type": "text",
-                      "id": "RZAKL",
-                      "name": "jibunAddr5",
+                      "id": "DCEkP",
+                      "name": "r5j",
                       "fill": "#94A3B8",
                       "content": "[지번] 역삼동 718-5 멀티캠퍼스",
                       "fontFamily": "Inter",
@@ -13565,8 +13981,8 @@
                     },
                     {
                       "type": "text",
-                      "id": "CYjDK",
-                      "name": "zipcode5",
+                      "id": "kkbes",
+                      "name": "r5z",
                       "fill": "#64748B",
                       "content": "06220",
                       "fontFamily": "Inter",
