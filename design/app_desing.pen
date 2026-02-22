@@ -5659,34 +5659,17 @@
                       },
                       "width": "fill_container",
                       "height": 150,
-                      "fill": "#E2E8F0",
+                      "fill": {
+                        "type": "image",
+                        "enabled": true,
+                        "url": "./images/generated-1771748285705.png",
+                        "mode": "fill"
+                      },
                       "cornerRadius": 8,
                       "layout": "vertical",
                       "gap": 8,
                       "justifyContent": "center",
-                      "alignItems": "center",
-                      "children": [
-                        {
-                          "type": "icon_font",
-                          "id": "f2ari",
-                          "name": "mapIcon",
-                          "width": 32,
-                          "height": 32,
-                          "iconFontName": "map",
-                          "iconFontFamily": "Material Symbols Rounded",
-                          "fill": "#94A3B8"
-                        },
-                        {
-                          "type": "text",
-                          "id": "UFAOC",
-                          "name": "mapText",
-                          "fill": "#94A3B8",
-                          "content": "주소를 검색하면 위치가 표시됩니다",
-                          "fontFamily": "Gmarket Sans",
-                          "fontSize": 12,
-                          "fontWeight": "normal"
-                        }
-                      ]
+                      "alignItems": "center"
                     }
                   ]
                 },
