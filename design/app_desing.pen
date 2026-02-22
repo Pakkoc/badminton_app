@@ -4003,12 +4003,24 @@
             {
               "type": "ellipse",
               "id": "3Glqr",
-              "x": 177,
-              "y": 72,
+              "x": 181,
+              "y": 76,
               "name": "mapMarker",
               "fill": "#16A34A",
-              "width": 36,
-              "height": 36
+              "width": 28,
+              "height": 28
+            },
+            {
+              "type": "icon_font",
+              "id": "ipABl",
+              "x": 188,
+              "y": 83,
+              "name": "markerIcon",
+              "width": 14,
+              "height": 14,
+              "iconFontName": "storefront",
+              "iconFontFamily": "Material Symbols Outlined",
+              "fill": "#FFFFFF"
             }
           ]
         },
@@ -5662,14 +5674,35 @@
                       "fill": {
                         "type": "image",
                         "enabled": true,
-                        "url": "./images/generated-1771748285705.png",
+                        "url": "./images/generated-1771785451206.png",
                         "mode": "fill"
                       },
                       "cornerRadius": 8,
-                      "layout": "vertical",
-                      "gap": 8,
-                      "justifyContent": "center",
-                      "alignItems": "center"
+                      "layout": "none",
+                      "children": [
+                        {
+                          "type": "ellipse",
+                          "id": "mBEJo",
+                          "x": 160,
+                          "y": 55,
+                          "name": "marker",
+                          "fill": "#16A34A",
+                          "width": 28,
+                          "height": 28
+                        },
+                        {
+                          "type": "icon_font",
+                          "id": "LIhKO",
+                          "x": 167,
+                          "y": 62,
+                          "name": "mIcon",
+                          "width": 14,
+                          "height": 14,
+                          "iconFontName": "storefront",
+                          "iconFontFamily": "Material Symbols Outlined",
+                          "fill": "#FFFFFF"
+                        }
+                      ]
                     }
                   ]
                 },
