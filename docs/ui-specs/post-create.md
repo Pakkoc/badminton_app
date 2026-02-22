@@ -153,7 +153,7 @@
 | 섹션 타이틀 | Text | "이미지 (선택, 최대 5장)" (`bodyMedium`, 14sp, `#475569`) | 항상 표시 |
 | 이미지 추가 버튼 | Container (탭 가능) | 카메라/갤러리 선택 | 테두리 `#E2E8F0` 1.5px (점선), 배경 `#F8FAFC`, 80x80px, 모서리 8px |
 | 첨부된 이미지 | Image (반복) | 첨부된 이미지 썸네일 | 80x80px, 모서리 8px, `BoxFit.cover` |
-| 삭제 버튼 | IconButton | 이미지 삭제 | 이미지 우측 상단, `close` 아이콘, 20px, 배경 `#00000060`, 색상 `#FFFFFF` |
+| 삭제 버튼 | IconButton | 이미지 삭제 | 이미지 우측 상단, `close` 아이콘 14px, 원형 배경 `#0F172A` 20x20px, 색상 `#FFFFFF` |
 
 **레이아웃:**
 - 가로 스크롤 리스트 (ListView, horizontal)
