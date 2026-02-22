@@ -7339,7 +7339,7 @@
                         {
                           "type": "frame",
                           "id": "fwqG8",
-                          "x": 56,
+                          "x": 65,
                           "y": -4,
                           "name": "deleteBtn",
                           "width": 20,
@@ -7352,6 +7352,31 @@
                             {
                               "type": "icon_font",
                               "id": "ct0Bg",
+                              "name": "deleteIcon",
+                              "width": 14,
+                              "height": 14,
+                              "iconFontName": "close",
+                              "iconFontFamily": "Material Symbols Rounded",
+                              "fill": "#FFFFFF"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "frame",
+                          "id": "o2CzU",
+                          "x": 65,
+                          "y": -4,
+                          "name": "deleteBtn",
+                          "width": 20,
+                          "height": 20,
+                          "fill": "#0F172A",
+                          "cornerRadius": 10,
+                          "justifyContent": "center",
+                          "alignItems": "center",
+                          "children": [
+                            {
+                              "type": "icon_font",
+                              "id": "49uuv",
                               "name": "deleteIcon",
                               "width": 14,
                               "height": 14,
@@ -9104,71 +9129,34 @@
                   "children": [
                     {
                       "type": "text",
-                      "id": "ZUNWG",
+                      "id": "pMVzC",
                       "name": "eiLabel",
                       "fill": "#475569",
-                      "content": "이미지",
+                      "content": "이미지 (선택)",
                       "fontFamily": "Gmarket Sans",
                       "fontSize": 14,
                       "fontWeight": "SemiBold"
                     },
                     {
                       "type": "frame",
-                      "id": "z699c",
-                      "name": "uploadedImg",
-                      "metadata": {
-                        "type": "unsplash",
-                        "username": "saif71",
-                        "link": "https://unsplash.com/@saif71",
-                        "author": "Saif71.com"
-                      },
-                      "width": 80,
-                      "height": 80,
-                      "fill": {
-                        "type": "image",
-                        "enabled": true,
-                        "url": "https://images.unsplash.com/photo-1617696616247-4016daad0df6?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w4NDM0ODN8MHwxfHJhbmRvbXx8fHx8fHx8fDE3NzE3OTcyMDh8&ixlib=rb-4.1.0&q=80&w=1080",
-                        "mode": "fill"
-                      },
+                      "id": "W9iJv",
+                      "name": "Thumbnail",
+                      "width": 64,
+                      "height": 64,
+                      "fill": "#F1F5F9",
                       "cornerRadius": 8,
-                      "layout": "none",
+                      "justifyContent": "center",
+                      "alignItems": "center",
                       "children": [
                         {
                           "type": "icon_font",
-                          "id": "AofwO",
-                          "x": 24,
-                          "y": 24,
-                          "name": "imgPlaceholderIcon",
+                          "id": "TSzzH",
+                          "name": "eiIcon",
                           "width": 32,
                           "height": 32,
-                          "iconFontName": "image",
+                          "iconFontName": "sports_tennis",
                           "iconFontFamily": "Material Symbols Rounded",
                           "fill": "#94A3B8"
-                        },
-                        {
-                          "type": "frame",
-                          "id": "Rxlq5",
-                          "x": 56,
-                          "y": -4,
-                          "name": "deleteBtn",
-                          "width": 20,
-                          "height": 20,
-                          "fill": "#0F172A",
-                          "cornerRadius": 10,
-                          "justifyContent": "center",
-                          "alignItems": "center",
-                          "children": [
-                            {
-                              "type": "icon_font",
-                              "id": "uDy6b",
-                              "name": "deleteIcon",
-                              "width": 14,
-                              "height": 14,
-                              "iconFontName": "close",
-                              "iconFontFamily": "Material Symbols Rounded",
-                              "fill": "#FFFFFF"
-                            }
-                          ]
                         }
                       ]
                     }
