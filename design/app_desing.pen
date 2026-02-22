@@ -13037,7 +13037,7 @@
           "id": "Bk1eK",
           "name": "bottomSheet",
           "width": "fill_container",
-          "height": 560,
+          "height": 790,
           "fill": "#FFFFFF",
           "cornerRadius": [
             20,
