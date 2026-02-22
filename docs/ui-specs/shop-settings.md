@@ -107,7 +107,7 @@
 | 모서리 둥글기 | 12px |
 | 줌 레벨 | 16 |
 | 인터랙션 | 비활성 (Static) |
-| 마커 | 커스텀 아이콘: `storefront`, 배경 `#16A34A`, 크기 40x40px |
+| 마커 | 커스텀 아이콘: `storefront` 14px, 원형 배경 `#16A34A`, 크기 28x28px |
 | 주소 미입력 시 | "주소를 검색하면 위치가 표시됩니다" 안내 텍스트 + 배경 `#F1F5F9` |
 | 주소-지도 간격 | 12px |
 
@@ -162,6 +162,8 @@
 | 대시보드 탭 | BottomNavItem | 아이콘 `dashboard` + "대시보드" | 비활성 (`#94A3B8`) |
 | 작업관리 탭 | BottomNavItem | 아이콘 `assignment` + "작업관리" | 비활성 (`#94A3B8`) |
 | 설정 탭 | BottomNavItem | 아이콘 `settings` + "설정" | 활성 (`#16A34A`) |
+
+**아이콘 폰트:** Material Symbols Rounded / **라벨:** 10sp / **아이콘-라벨 간격:** 4px / **높이:** 80px
 
 ---
 

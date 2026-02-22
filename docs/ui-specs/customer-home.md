@@ -196,7 +196,7 @@
 
 ### 3.5 하단 네비게이션 바 (Bottom Navigation)
 
-| 탭 | 아이콘 (Material Symbols Outlined) | 라벨 | 상태 |
+| 탭 | 아이콘 (Material Symbols Rounded) | 라벨 | 상태 |
 |-----|-----|------|------|
 | 홈 | `home` | 홈 | **활성** (현재 화면) |
 | 샵검색 | `search` | 샵검색 | 비활성 |
@@ -208,15 +208,16 @@
 
 | 속성 | 값 |
 |------|-----|
-| 바 배경 | `#FFFFFF` |
+| 바 배경 | `#FFFFFF` (`$--surface`) |
 | 바 높이 | 80px (Safe Area 포함) |
-| 상단 테두리 | `#E2E8F0` 0.5px |
-| 활성 아이콘 색상 | `#16A34A` (Court Green) |
-| 활성 라벨 색상 | `#16A34A` |
-| 비활성 아이콘 색상 | `#94A3B8` |
-| 비활성 라벨 색상 | `#94A3B8` |
+| 상단 테두리 | `#E2E8F0` (`$--border`) 0.5px |
+| 활성 아이콘 색상 | `#16A34A` (`$--primary`) |
+| 활성 라벨 색상 | `#16A34A` (`$--primary`) |
+| 비활성 아이콘 색상 | `#94A3B8` (`$--text-tertiary`) |
+| 비활성 라벨 색상 | `#94A3B8` (`$--text-tertiary`) |
 | 아이콘 크기 | 24px |
-| 라벨 폰트 | `labelMedium` (12sp, Medium) |
+| 라벨 폰트 | 10sp |
+| 아이콘-라벨 간격 | 4px |
 
 ### 3.6 빈 상태 (Empty State)
 

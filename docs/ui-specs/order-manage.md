@@ -138,6 +138,8 @@
 | 작업관리 탭 | BottomNavItem | `assignment` + "작업관리" | 활성 (`#16A34A`) |
 | 설정 탭 | BottomNavItem | `settings` + "설정" | 비활성 (`#94A3B8`) |
 
+**아이콘 폰트:** Material Symbols Rounded / **라벨:** 10sp / **아이콘-라벨 간격:** 4px / **높이:** 80px
+
 ---
 
 ## 4. 필드 정의

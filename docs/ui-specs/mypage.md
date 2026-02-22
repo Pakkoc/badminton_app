@@ -142,9 +142,12 @@
 | 컴포넌트 | 타입 | 설명 | 상태 |
 |----------|------|------|------|
 | 홈 탭 | BottomNavItem | 아이콘 `home` + "홈" | 비활성 (`#94A3B8`) |
-| 주변 샵 탭 | BottomNavItem | 아이콘 `search` + "주변 샵" | 비활성 (`#94A3B8`) |
-| 작업 이력 탭 | BottomNavItem | 아이콘 `history` + "작업 이력" | 비활성 (`#94A3B8`) |
-| 마이페이지 탭 | BottomNavItem | 아이콘 `person` + "마이페이지" | 활성 (`#16A34A`) |
+| 샵검색 탭 | BottomNavItem | 아이콘 `search` + "샵검색" | 비활성 (`#94A3B8`) |
+| QR 탭 | BottomNavItem | 아이콘 `qr_code_2` + "QR" | 비활성 (`#94A3B8`) |
+| 이력 탭 | BottomNavItem | 아이콘 `history` + "이력" | 비활성 (`#94A3B8`) |
+| MY 탭 | BottomNavItem | 아이콘 `person` + "MY" | 활성 (`#16A34A`) |
+
+**아이콘 폰트:** Material Symbols Rounded / **라벨:** 10sp / **아이콘-라벨 간격:** 4px / **높이:** 80px
 
 ---
 
