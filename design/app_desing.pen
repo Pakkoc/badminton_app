@@ -9114,23 +9114,41 @@
                     },
                     {
                       "type": "frame",
-                      "id": "hSgQ4",
+                      "id": "z699c",
                       "name": "uploadedImg",
-                      "width": 64,
-                      "height": 64,
+                      "metadata": {
+                        "type": "unsplash",
+                        "username": "saif71",
+                        "link": "https://unsplash.com/@saif71",
+                        "author": "Saif71.com"
+                      },
+                      "width": 80,
+                      "height": 80,
                       "fill": {
                         "type": "image",
                         "enabled": true,
-                        "url": "https://images.unsplash.com/photo-1559310487-491546e37f17?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w4NDM0ODN8MHwxfHJhbmRvbXx8fHx8fHx8fDE3NzE3OTU2NDN8&ixlib=rb-4.1.0&q=80&w=1080",
+                        "url": "https://images.unsplash.com/photo-1617696616247-4016daad0df6?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w4NDM0ODN8MHwxfHJhbmRvbXx8fHx8fHx8fDE3NzE3OTcyMDh8&ixlib=rb-4.1.0&q=80&w=1080",
                         "mode": "fill"
                       },
                       "cornerRadius": 8,
                       "layout": "none",
                       "children": [
                         {
+                          "type": "icon_font",
+                          "id": "AofwO",
+                          "x": 24,
+                          "y": 24,
+                          "name": "imgPlaceholderIcon",
+                          "width": 32,
+                          "height": 32,
+                          "iconFontName": "image",
+                          "iconFontFamily": "Material Symbols Rounded",
+                          "fill": "#94A3B8"
+                        },
+                        {
                           "type": "frame",
-                          "id": "U9BKd",
-                          "x": 48,
+                          "id": "Rxlq5",
+                          "x": 56,
                           "y": -4,
                           "name": "deleteBtn",
                           "width": 20,
@@ -9142,7 +9160,7 @@
                           "children": [
                             {
                               "type": "icon_font",
-                              "id": "TxP13",
+                              "id": "uDy6b",
                               "name": "deleteIcon",
                               "width": 14,
                               "height": 14,
