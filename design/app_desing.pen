@@ -9113,37 +9113,25 @@
                       "fontWeight": "SemiBold"
                     },
                     {
-                      "type": "group",
-                      "id": "AAAAa",
-                      "name": "thumbWrap",
+                      "type": "frame",
+                      "id": "hSgQ4",
+                      "name": "uploadedImg",
+                      "width": 64,
+                      "height": 64,
+                      "fill": {
+                        "type": "image",
+                        "enabled": true,
+                        "url": "https://images.unsplash.com/photo-1559310487-491546e37f17?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w4NDM0ODN8MHwxfHJhbmRvbXx8fHx8fHx8fDE3NzE3OTU2NDN8&ixlib=rb-4.1.0&q=80&w=1080",
+                        "mode": "fill"
+                      },
+                      "cornerRadius": 8,
+                      "layout": "none",
                       "children": [
                         {
                           "type": "frame",
-                          "id": "Eze5k",
-                          "x": 0,
+                          "id": "U9BKd",
+                          "x": 42,
                           "y": 0,
-                          "name": "Thumbnail",
-                          "metadata": {
-                            "type": "unsplash",
-                            "username": "xuanming",
-                            "link": "https://unsplash.com/@xuanming",
-                            "author": "炫铭"
-                          },
-                          "width": 64,
-                          "height": 64,
-                          "fill": {
-                            "type": "image",
-                            "enabled": true,
-                            "url": "https://images.unsplash.com/photo-1559310487-491546e37f17?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w4NDM0ODN8MHwxfHJhbmRvbXx8fHx8fHx8fDE3NzE3OTU2NDN8&ixlib=rb-4.1.0&q=80&w=1080",
-                            "mode": "fill"
-                          },
-                          "cornerRadius": 8
-                        },
-                        {
-                          "type": "frame",
-                          "id": "QDsR1",
-                          "x": 48,
-                          "y": -2,
                           "name": "deleteBtn",
                           "width": 20,
                           "height": 20,
@@ -9154,7 +9142,7 @@
                           "children": [
                             {
                               "type": "icon_font",
-                              "id": "yvLsf",
+                              "id": "TxP13",
                               "name": "deleteIcon",
                               "width": 12,
                               "height": 12,
