@@ -5659,17 +5659,34 @@
                       },
                       "width": "fill_container",
                       "height": 150,
-                      "fill": {
-                        "type": "image",
-                        "enabled": true,
-                        "url": "https://images.unsplash.com/photo-1651836173049-20e19f9d1e37?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w4NDM0ODN8MHwxfHJhbmRvbXx8fHx8fHx8fDE3NzE2ODQwNDh8&ixlib=rb-4.1.0&q=80&w=1080",
-                        "mode": "fill"
-                      },
+                      "fill": "#E2E8F0",
                       "cornerRadius": 8,
                       "layout": "vertical",
                       "gap": 8,
                       "justifyContent": "center",
-                      "alignItems": "center"
+                      "alignItems": "center",
+                      "children": [
+                        {
+                          "type": "icon_font",
+                          "id": "f2ari",
+                          "name": "mapIcon",
+                          "width": 32,
+                          "height": 32,
+                          "iconFontName": "map",
+                          "iconFontFamily": "Material Symbols Rounded",
+                          "fill": "#94A3B8"
+                        },
+                        {
+                          "type": "text",
+                          "id": "UFAOC",
+                          "name": "mapText",
+                          "fill": "#94A3B8",
+                          "content": "주소를 검색하면 위치가 표시됩니다",
+                          "fontFamily": "Gmarket Sans",
+                          "fontSize": 12,
+                          "fontWeight": "normal"
+                        }
+                      ]
                     }
                   ]
                 },
