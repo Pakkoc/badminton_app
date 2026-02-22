@@ -318,6 +318,7 @@ allowed-tools: Read, Glob, Grep, Write, Edit, Bash, Task
 | writing-plans | 계획 수립 및 문서화 | Phase 1, 6 |
 | ui-ux-pro-max | 디자인 시스템 생성, UX 가이드라인 | Phase 2, 3 |
 | ui-screen-spec | 화면별 UI 스펙 작성 | Phase 3 |
+| design-sync | 디자인 수정 후 스펙 동기화 및 일관성 체크 | Phase 4 |
 | verification-before-completion | 완료 전 검증 | Phase 5 |
 
 ## 핵심 원칙
@@ -329,5 +330,5 @@ allowed-tools: Read, Glob, Grep, Write, Edit, Bash, Task
 5. **즉시 반영** — 디자인 중 발견된 이슈는 즉시 기획/스펙에 반영한다.
 6. **검증 필수** — 구현 후에는 반드시 스펙 대비 검증을 수행한다.
 7. **프로젝트 무관** — 이 워크플로우는 특정 프로젝트에 종속되지 않는다. 어떤 앱 프로젝트에도 동일하게 적용할 수 있다.
-8. **디자인 ↔ 스펙 동기화** — UI 스펙이 변경되면 Pencil 디자인도 반영하고, 디자인이 변경되면 스펙도 반영한다. 한쪽만 변경하지 않는다.
+8. **디자인 ↔ 스펙 동기화** — UI 스펙이 변경되면 Pencil 디자인도 반영하고, 디자인이 변경되면 스펙도 반영한다. 한쪽만 변경하지 않는다. Pencil 디자인 수정 후에는 반드시 `/design-sync`를 실행한다.
 9. **수정 시 연관 화면 일괄 확인** — 한 화면의 디자인 요소를 수정할 때, 같은 요소가 존재하는 모든 화면을 찾아 함께 수정한다. 한 화면만 수정하고 넘어가지 않는다.
