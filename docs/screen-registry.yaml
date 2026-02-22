@@ -30,7 +30,7 @@ screens:
     pencil_id: hI7MJ
     spec_file: docs/ui-specs/login.md
     nav_to: [customer-home, owner-dashboard, profile-setup]
-    nav_from: [splash]
+    nav_from: [splash, customer-mypage]
 
   profile-setup:
     name: "프로필 설정"

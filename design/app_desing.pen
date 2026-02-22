@@ -7075,7 +7075,7 @@
       "clip": true,
       "width": 390,
       "height": 844,
-      "fill": "#F8FAFC",
+      "fill": "$--background",
       "layout": "vertical",
       "children": [
         {
@@ -7449,7 +7449,7 @@
       "clip": true,
       "width": 390,
       "height": 844,
-      "fill": "#F8FAFC",
+      "fill": "$--background",
       "layout": "vertical",
       "children": [
         {
