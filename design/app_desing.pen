@@ -2714,7 +2714,7 @@
       "name": "Order Detail",
       "width": 390,
       "height": 844,
-      "fill": "#F8FAFC",
+      "fill": "$--background",
       "layout": "vertical",
       "children": [
         {
@@ -2723,13 +2723,13 @@
           "name": "App Bar",
           "width": "fill_container",
           "height": 56,
-          "fill": "#FFFFFF",
+          "fill": "$--surface",
           "stroke": {
             "align": "inside",
             "thickness": {
               "bottom": 0.5
             },
-            "fill": "#E2E8F0"
+            "fill": "$--border"
           },
           "gap": 8,
           "padding": [
@@ -3294,7 +3294,7 @@
       "name": "Shop Search",
       "width": 390,
       "height": 844,
-      "fill": "#F8FAFC",
+      "fill": "$--background",
       "layout": "vertical",
       "children": [
         {
@@ -3303,13 +3303,13 @@
           "name": "App Bar",
           "width": "fill_container",
           "height": 56,
-          "fill": "#FFFFFF",
+          "fill": "$--surface",
           "stroke": {
             "align": "inside",
             "thickness": {
               "bottom": 0.5
             },
-            "fill": "#E2E8F0"
+            "fill": "$--border"
           },
           "padding": [
             0,
@@ -3322,11 +3322,11 @@
               "type": "text",
               "id": "PHKyH",
               "name": "Title",
-              "fill": "#0F172A",
+              "fill": "$--text-primary",
               "content": "주변 샵 검색",
               "fontFamily": "Gmarket Sans",
-              "fontSize": 18,
-              "fontWeight": "600"
+              "fontSize": 20,
+              "fontWeight": "Bold"
             },
             {
               "type": "frame",
@@ -3938,7 +3938,7 @@
       "name": "Shop Detail",
       "width": 390,
       "height": 844,
-      "fill": "#F8FAFC",
+      "fill": "$--background",
       "layout": "vertical",
       "children": [
         {
@@ -3947,13 +3947,13 @@
           "name": "App Bar",
           "width": "fill_container",
           "height": 56,
-          "fill": "#FFFFFF",
+          "fill": "$--surface",
           "stroke": {
             "align": "inside",
             "thickness": {
               "bottom": 0.5
             },
-            "fill": "#E2E8F0"
+            "fill": "$--border"
           },
           "gap": 8,
           "padding": [
@@ -4341,7 +4341,7 @@
       "name": "Order History",
       "width": 390,
       "height": 844,
-      "fill": "#F8FAFC",
+      "fill": "$--background",
       "layout": "vertical",
       "children": [
         {
@@ -4350,17 +4350,17 @@
           "name": "App Bar",
           "width": "fill_container",
           "height": 56,
-          "fill": "#FFFFFF",
+          "fill": "$--surface",
           "stroke": {
             "align": "inside",
             "thickness": {
               "bottom": 0.5
             },
-            "fill": "#E2E8F0"
+            "fill": "$--border"
           },
           "padding": [
             0,
-            20
+            16
           ],
           "alignItems": "center",
           "children": [
@@ -4368,11 +4368,11 @@
               "type": "text",
               "id": "cdlqK",
               "name": "appbarTitle",
-              "fill": "#0F172A",
+              "fill": "$--text-primary",
               "content": "작업 이력",
               "fontFamily": "Gmarket Sans",
-              "fontSize": 18,
-              "fontWeight": "600"
+              "fontSize": 20,
+              "fontWeight": "Bold"
             }
           ]
         },
@@ -4785,7 +4785,7 @@
       "name": "Mypage",
       "width": 390,
       "height": 844,
-      "fill": "#F8FAFC",
+      "fill": "$--background",
       "layout": "vertical",
       "children": [
         {
@@ -4794,17 +4794,17 @@
           "name": "App Bar",
           "width": "fill_container",
           "height": 56,
-          "fill": "#FFFFFF",
+          "fill": "$--surface",
           "stroke": {
             "align": "inside",
             "thickness": {
               "bottom": 0.5
             },
-            "fill": "#E2E8F0"
+            "fill": "$--border"
           },
           "padding": [
             0,
-            20
+            16
           ],
           "alignItems": "center",
           "children": [
@@ -4812,11 +4812,11 @@
               "type": "text",
               "id": "QFXjt",
               "name": "appbar2Title",
-              "fill": "#0F172A",
+              "fill": "$--text-primary",
               "content": "마이페이지",
               "fontFamily": "Gmarket Sans",
-              "fontSize": 18,
-              "fontWeight": "600"
+              "fontSize": 20,
+              "fontWeight": "Bold"
             }
           ]
         },
@@ -5249,7 +5249,7 @@
       "name": "Shop Settings",
       "width": 390,
       "height": 1160,
-      "fill": "#F8FAFC",
+      "fill": "$--background",
       "layout": "vertical",
       "children": [
         {
@@ -5258,17 +5258,17 @@
           "name": "App Bar",
           "width": "fill_container",
           "height": 56,
-          "fill": "#FFFFFF",
+          "fill": "$--surface",
           "stroke": {
             "align": "inside",
             "thickness": {
               "bottom": 0.5
             },
-            "fill": "#E2E8F0"
+            "fill": "$--border"
           },
           "padding": [
             0,
-            20
+            16
           ],
           "alignItems": "center",
           "children": [
@@ -5276,11 +5276,11 @@
               "type": "text",
               "id": "c5H7b",
               "name": "appTitle2",
-              "fill": "#0F172A",
+              "fill": "$--text-primary",
               "content": "샵 설정",
               "fontFamily": "Gmarket Sans",
-              "fontSize": 18,
-              "fontWeight": "600"
+              "fontSize": 20,
+              "fontWeight": "Bold"
             }
           ]
         },
@@ -6276,7 +6276,7 @@
       "name": "Shop Signup Step2",
       "width": 390,
       "height": 844,
-      "fill": "#F8FAFC",
+      "fill": "$--background",
       "layout": "vertical",
       "children": [
         {
@@ -6697,7 +6697,7 @@
       "name": "Shop QR Code",
       "width": 390,
       "height": 844,
-      "fill": "#F8FAFC",
+      "fill": "$--background",
       "layout": "vertical",
       "children": [
         {
@@ -9225,7 +9225,7 @@
       "clip": true,
       "width": 390,
       "height": 844,
-      "fill": "#F8FAFC",
+      "fill": "$--background",
       "layout": "vertical",
       "children": [
         {
@@ -9234,13 +9234,13 @@
           "name": "App Bar",
           "width": "fill_container",
           "height": 56,
-          "fill": "#FFFFFF",
+          "fill": "$--surface",
           "stroke": {
             "align": "inside",
             "thickness": {
               "bottom": 0.5
             },
-            "fill": "#E2E8F0"
+            "fill": "$--border"
           },
           "gap": 8,
           "padding": [
@@ -9823,7 +9823,7 @@
       "clip": true,
       "width": 390,
       "height": 844,
-      "fill": "#F8FAFC",
+      "fill": "$--background",
       "layout": "vertical",
       "children": [
         {
@@ -9832,7 +9832,7 @@
           "name": "App Bar",
           "width": "fill_container",
           "height": 56,
-          "fill": "#FFFFFF",
+          "fill": "$--surface",
           "padding": [
             0,
             16
@@ -10061,7 +10061,7 @@
       "clip": true,
       "width": 390,
       "height": 844,
-      "fill": "#F8FAFC",
+      "fill": "$--background",
       "layout": "vertical",
       "children": [
         {
@@ -10070,17 +10070,17 @@
           "name": "App Bar",
           "width": "fill_container",
           "height": 56,
-          "fill": "#FFFFFF",
+          "fill": "$--surface",
           "stroke": {
             "align": "inside",
             "thickness": {
               "bottom": 0.5
             },
-            "fill": "#E2E8F0"
+            "fill": "$--border"
           },
           "padding": [
             0,
-            20
+            16
           ],
           "alignItems": "center",
           "children": [
@@ -10088,11 +10088,11 @@
               "type": "text",
               "id": "sK2IU",
               "name": "e2title",
-              "fill": "#0F172A",
+              "fill": "$--text-primary",
               "content": "작업 이력",
               "fontFamily": "Gmarket Sans",
-              "fontSize": 18,
-              "fontWeight": "600"
+              "fontSize": 20,
+              "fontWeight": "Bold"
             }
           ]
         },
@@ -10287,7 +10287,7 @@
       "clip": true,
       "width": 390,
       "height": 844,
-      "fill": "#F8FAFC",
+      "fill": "$--background",
       "layout": "vertical",
       "children": [
         {
@@ -10296,7 +10296,7 @@
           "name": "App Bar",
           "width": "fill_container",
           "height": 56,
-          "fill": "#FFFFFF",
+          "fill": "$--surface",
           "padding": [
             0,
             16
@@ -10624,7 +10624,7 @@
       "clip": true,
       "width": 390,
       "height": 844,
-      "fill": "#F8FAFC",
+      "fill": "$--background",
       "layout": "vertical",
       "children": [
         {
@@ -10633,7 +10633,7 @@
           "name": "App Bar",
           "width": "fill_container",
           "height": 56,
-          "fill": "#FFFFFF",
+          "fill": "$--surface",
           "padding": [
             0,
             16
@@ -10949,7 +10949,7 @@
       "clip": true,
       "width": 390,
       "height": 844,
-      "fill": "#F8FAFC",
+      "fill": "$--background",
       "layout": "vertical",
       "children": [
         {
@@ -10958,7 +10958,7 @@
           "name": "App Bar",
           "width": "fill_container",
           "height": 56,
-          "fill": "#FFFFFF",
+          "fill": "$--surface",
           "padding": [
             0,
             16
