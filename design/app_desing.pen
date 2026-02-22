@@ -2394,7 +2394,7 @@
                   "name": "Action Button",
                   "width": "fill_container",
                   "height": 36,
-                  "fill": "$--primary",
+                  "fill": "$--status-progress",
                   "cornerRadius": 8,
                   "justifyContent": "center",
                   "alignItems": "center",
