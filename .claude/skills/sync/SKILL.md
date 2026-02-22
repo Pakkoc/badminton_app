@@ -1,6 +1,6 @@
 ---
 name: sync
-description: "화면 레지스트리(SOT) 기준으로 UI 스펙, Pencil 디자인, cross-reference의 정합성을 검사하고 자동 수정한다. 화면 추가/변경/삭제 후 실행한다."
+description: "You MUST use this after any screen structure change - adding new screens, removing screens, renaming screens, or modifying navigation flow. 화면 레지스트리(SOT) 기준으로 UI 스펙, Pencil 디자인, cross-reference의 정합성을 검사하고 자동 수정한다."
 user-invocable: true
 allowed-tools:
   - Read
