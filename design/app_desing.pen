@@ -9104,34 +9104,65 @@
                   "children": [
                     {
                       "type": "text",
-                      "id": "pMVzC",
+                      "id": "ZUNWG",
                       "name": "eiLabel",
                       "fill": "#475569",
-                      "content": "이미지 (선택)",
+                      "content": "이미지",
                       "fontFamily": "Gmarket Sans",
                       "fontSize": 14,
                       "fontWeight": "SemiBold"
                     },
                     {
-                      "type": "frame",
-                      "id": "W9iJv",
-                      "name": "Thumbnail",
-                      "width": 64,
-                      "height": 64,
-                      "fill": "#F1F5F9",
-                      "cornerRadius": 8,
-                      "justifyContent": "center",
-                      "alignItems": "center",
+                      "type": "group",
+                      "id": "AAAAa",
+                      "name": "thumbWrap",
                       "children": [
                         {
-                          "type": "icon_font",
-                          "id": "TSzzH",
-                          "name": "eiIcon",
-                          "width": 32,
-                          "height": 32,
-                          "iconFontName": "sports_tennis",
-                          "iconFontFamily": "Material Symbols Rounded",
-                          "fill": "#94A3B8"
+                          "type": "frame",
+                          "id": "Eze5k",
+                          "x": 0,
+                          "y": 0,
+                          "name": "Thumbnail",
+                          "metadata": {
+                            "type": "unsplash",
+                            "username": "xuanming",
+                            "link": "https://unsplash.com/@xuanming",
+                            "author": "炫铭"
+                          },
+                          "width": 64,
+                          "height": 64,
+                          "fill": {
+                            "type": "image",
+                            "enabled": true,
+                            "url": "https://images.unsplash.com/photo-1559310487-491546e37f17?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w4NDM0ODN8MHwxfHJhbmRvbXx8fHx8fHx8fDE3NzE3OTU2NDN8&ixlib=rb-4.1.0&q=80&w=1080",
+                            "mode": "fill"
+                          },
+                          "cornerRadius": 8
+                        },
+                        {
+                          "type": "frame",
+                          "id": "QDsR1",
+                          "x": 50,
+                          "y": -6,
+                          "name": "deleteBtn",
+                          "width": 20,
+                          "height": 20,
+                          "fill": "rgba(0,0,0,0.6)",
+                          "cornerRadius": 10,
+                          "justifyContent": "center",
+                          "alignItems": "center",
+                          "children": [
+                            {
+                              "type": "icon_font",
+                              "id": "yvLsf",
+                              "name": "deleteIcon",
+                              "width": 12,
+                              "height": 12,
+                              "iconFontName": "close",
+                              "iconFontFamily": "Material Symbols Rounded",
+                              "fill": "#FFFFFF"
+                            }
+                          ]
                         }
                       ]
                     }
