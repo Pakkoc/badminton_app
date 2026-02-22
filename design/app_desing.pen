@@ -13018,6 +13018,414 @@
           ]
         }
       ]
+    },
+    {
+      "type": "frame",
+      "id": "lZB3x",
+      "x": 1880,
+      "y": 100,
+      "name": "Address Search BottomSheet",
+      "clip": true,
+      "width": 390,
+      "height": 844,
+      "fill": "rgba(0,0,0,0.5)",
+      "layout": "vertical",
+      "justifyContent": "end",
+      "children": [
+        {
+          "type": "frame",
+          "id": "Bk1eK",
+          "name": "bottomSheet",
+          "width": "fill_container",
+          "height": 560,
+          "fill": "#FFFFFF",
+          "cornerRadius": [
+            20,
+            20,
+            0,
+            0
+          ],
+          "layout": "vertical",
+          "children": [
+            {
+              "type": "frame",
+              "id": "YZUYT",
+              "name": "handleArea",
+              "width": "fill_container",
+              "height": 28,
+              "justifyContent": "center",
+              "alignItems": "center",
+              "children": [
+                {
+                  "type": "rectangle",
+                  "cornerRadius": 2,
+                  "id": "1YWGh",
+                  "name": "handle",
+                  "fill": "#CBD5E1",
+                  "width": 40,
+                  "height": 4
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "zg153",
+              "name": "titleRow",
+              "width": "fill_container",
+              "height": 44,
+              "padding": [
+                0,
+                20
+              ],
+              "justifyContent": "space_between",
+              "alignItems": "center",
+              "children": [
+                {
+                  "type": "text",
+                  "id": "YOJMU",
+                  "name": "sheetTitle",
+                  "fill": "#0F172A",
+                  "content": "주소 검색",
+                  "fontFamily": "Inter",
+                  "fontSize": 18,
+                  "fontWeight": "700"
+                },
+                {
+                  "type": "icon_font",
+                  "id": "gluay",
+                  "name": "closeBtn",
+                  "width": 24,
+                  "height": 24,
+                  "iconFontName": "close",
+                  "iconFontFamily": "Material Symbols Rounded",
+                  "fill": "#64748B"
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "hSDYO",
+              "name": "searchRow",
+              "width": "fill_container",
+              "height": 52,
+              "padding": [
+                6,
+                16
+              ],
+              "alignItems": "center",
+              "children": [
+                {
+                  "type": "frame",
+                  "id": "Lm9u8",
+                  "name": "searchInput",
+                  "width": "fill_container",
+                  "height": 40,
+                  "fill": "#F1F5F9",
+                  "cornerRadius": 8,
+                  "gap": 8,
+                  "padding": [
+                    0,
+                    12
+                  ],
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "icon_font",
+                      "id": "247eZ",
+                      "name": "searchIcon",
+                      "width": 20,
+                      "height": 20,
+                      "iconFontName": "search",
+                      "iconFontFamily": "Material Symbols Rounded",
+                      "fill": "#94A3B8"
+                    },
+                    {
+                      "type": "text",
+                      "id": "aZB1Y",
+                      "name": "searchHint",
+                      "fill": "#94A3B8",
+                      "content": "도로명, 건물명 또는 지번으로 검색",
+                      "fontFamily": "Inter",
+                      "fontSize": 13,
+                      "fontWeight": "normal"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "rectangle",
+              "id": "rwp8B",
+              "name": "divider",
+              "fill": "#E2E8F0",
+              "width": "fill_container",
+              "height": 1
+            },
+            {
+              "type": "frame",
+              "id": "qP2fh",
+              "name": "webviewPlaceholder",
+              "width": "fill_container",
+              "height": "fill_container",
+              "layout": "vertical",
+              "padding": [
+                12,
+                16
+              ],
+              "children": [
+                {
+                  "type": "text",
+                  "id": "NNKF3",
+                  "name": "infoText",
+                  "fill": "#94A3B8",
+                  "content": "Kakao 주소 API (Daum 우편번호 서비스)",
+                  "fontFamily": "Inter",
+                  "fontSize": 11,
+                  "fontWeight": "normal"
+                },
+                {
+                  "type": "frame",
+                  "id": "Iu3AP",
+                  "name": "spacer1",
+                  "width": "fill_container",
+                  "height": 12
+                },
+                {
+                  "type": "frame",
+                  "id": "4apBS",
+                  "name": "result1",
+                  "width": "fill_container",
+                  "stroke": {
+                    "align": "inside",
+                    "thickness": {
+                      "bottom": 1
+                    },
+                    "fill": "#E2E8F0"
+                  },
+                  "layout": "vertical",
+                  "gap": 4,
+                  "padding": [
+                    12,
+                    0
+                  ],
+                  "children": [
+                    {
+                      "type": "frame",
+                      "id": "KaoBP",
+                      "name": "badge1",
+                      "height": 18,
+                      "fill": "#3B82F6",
+                      "cornerRadius": 2,
+                      "padding": [
+                        0,
+                        6
+                      ],
+                      "justifyContent": "center",
+                      "alignItems": "center",
+                      "children": [
+                        {
+                          "type": "text",
+                          "id": "GAkIb",
+                          "name": "badgeText1",
+                          "fill": "#FFFFFF",
+                          "content": "도로명",
+                          "fontFamily": "Inter",
+                          "fontSize": 10,
+                          "fontWeight": "500"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "text",
+                      "id": "fRu3E",
+                      "name": "roadAddr1",
+                      "fill": "#0F172A",
+                      "content": "서울특별시 강남구 테헤란로 212",
+                      "fontFamily": "Inter",
+                      "fontSize": 14,
+                      "fontWeight": "500"
+                    },
+                    {
+                      "type": "text",
+                      "id": "TIAV8",
+                      "name": "jibunAddr1",
+                      "fill": "#94A3B8",
+                      "content": "[지번] 역삼동 718-5",
+                      "fontFamily": "Inter",
+                      "fontSize": 12,
+                      "fontWeight": "normal"
+                    },
+                    {
+                      "type": "text",
+                      "id": "Ehi1B",
+                      "name": "zipcode1",
+                      "fill": "#64748B",
+                      "content": "06220",
+                      "fontFamily": "Inter",
+                      "fontSize": 12,
+                      "fontWeight": "normal"
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "whahV",
+                  "name": "result2",
+                  "width": "fill_container",
+                  "stroke": {
+                    "align": "inside",
+                    "thickness": {
+                      "bottom": 1
+                    },
+                    "fill": "#E2E8F0"
+                  },
+                  "layout": "vertical",
+                  "gap": 4,
+                  "padding": [
+                    12,
+                    0
+                  ],
+                  "children": [
+                    {
+                      "type": "frame",
+                      "id": "zGspC",
+                      "name": "badge2",
+                      "height": 18,
+                      "fill": "#3B82F6",
+                      "cornerRadius": 2,
+                      "padding": [
+                        0,
+                        6
+                      ],
+                      "justifyContent": "center",
+                      "alignItems": "center",
+                      "children": [
+                        {
+                          "type": "text",
+                          "id": "7LPJv",
+                          "name": "badgeText2",
+                          "fill": "#FFFFFF",
+                          "content": "도로명",
+                          "fontFamily": "Inter",
+                          "fontSize": 10,
+                          "fontWeight": "500"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "text",
+                      "id": "oK34y",
+                      "name": "roadAddr2",
+                      "fill": "#0F172A",
+                      "content": "서울특별시 강남구 테헤란로 212길 5",
+                      "fontFamily": "Inter",
+                      "fontSize": 14,
+                      "fontWeight": "500"
+                    },
+                    {
+                      "type": "text",
+                      "id": "7op01",
+                      "name": "jibunAddr2",
+                      "fill": "#94A3B8",
+                      "content": "[지번] 역삼동 719-2",
+                      "fontFamily": "Inter",
+                      "fontSize": 12,
+                      "fontWeight": "normal"
+                    },
+                    {
+                      "type": "text",
+                      "id": "Liy4Z",
+                      "name": "zipcode2",
+                      "fill": "#64748B",
+                      "content": "06220",
+                      "fontFamily": "Inter",
+                      "fontSize": 12,
+                      "fontWeight": "normal"
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "0Bj13",
+                  "name": "result3",
+                  "width": "fill_container",
+                  "stroke": {
+                    "align": "inside",
+                    "thickness": {
+                      "bottom": 1
+                    },
+                    "fill": "#E2E8F0"
+                  },
+                  "layout": "vertical",
+                  "gap": 4,
+                  "padding": [
+                    12,
+                    0
+                  ],
+                  "children": [
+                    {
+                      "type": "frame",
+                      "id": "lPsPJ",
+                      "name": "badge3",
+                      "height": 18,
+                      "fill": "#3B82F6",
+                      "cornerRadius": 2,
+                      "padding": [
+                        0,
+                        6
+                      ],
+                      "justifyContent": "center",
+                      "alignItems": "center",
+                      "children": [
+                        {
+                          "type": "text",
+                          "id": "ASjvR",
+                          "name": "badgeText3",
+                          "fill": "#FFFFFF",
+                          "content": "도로명",
+                          "fontFamily": "Inter",
+                          "fontSize": 10,
+                          "fontWeight": "500"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "text",
+                      "id": "kLUoq",
+                      "name": "roadAddr3",
+                      "fill": "#0F172A",
+                      "content": "서울특별시 강남구 역삼로 180",
+                      "fontFamily": "Inter",
+                      "fontSize": 14,
+                      "fontWeight": "500"
+                    },
+                    {
+                      "type": "text",
+                      "id": "ZZf3I",
+                      "name": "jibunAddr3",
+                      "fill": "#94A3B8",
+                      "content": "[지번] 역삼동 720-1",
+                      "fontFamily": "Inter",
+                      "fontSize": 12,
+                      "fontWeight": "normal"
+                    },
+                    {
+                      "type": "text",
+                      "id": "gGquS",
+                      "name": "zipcode3",
+                      "fill": "#64748B",
+                      "content": "06248",
+                      "fontFamily": "Inter",
+                      "fontSize": 12,
+                      "fontWeight": "normal"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
     }
   ],
   "variables": {
