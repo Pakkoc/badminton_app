@@ -13420,6 +13420,160 @@
                       "fontWeight": "normal"
                     }
                   ]
+                },
+                {
+                  "type": "frame",
+                  "id": "ultA3",
+                  "name": "result4",
+                  "width": "fill_container",
+                  "stroke": {
+                    "align": "inside",
+                    "thickness": {
+                      "bottom": 1
+                    },
+                    "fill": "#E2E8F0"
+                  },
+                  "layout": "vertical",
+                  "gap": 4,
+                  "padding": [
+                    12,
+                    0
+                  ],
+                  "children": [
+                    {
+                      "type": "frame",
+                      "id": "eLBwf",
+                      "name": "badge4",
+                      "height": 18,
+                      "fill": "#3B82F6",
+                      "cornerRadius": 2,
+                      "padding": [
+                        0,
+                        6
+                      ],
+                      "justifyContent": "center",
+                      "alignItems": "center",
+                      "children": [
+                        {
+                          "type": "text",
+                          "id": "mViOI",
+                          "name": "badgeText4",
+                          "fill": "#FFFFFF",
+                          "content": "도로명",
+                          "fontFamily": "Inter",
+                          "fontSize": 10,
+                          "fontWeight": "500"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "text",
+                      "id": "j0xCw",
+                      "name": "roadAddr4",
+                      "fill": "#0F172A",
+                      "content": "서울특별시 강남구 테헤란로 152",
+                      "fontFamily": "Inter",
+                      "fontSize": 14,
+                      "fontWeight": "500"
+                    },
+                    {
+                      "type": "text",
+                      "id": "H7Fpu",
+                      "name": "jibunAddr4",
+                      "fill": "#94A3B8",
+                      "content": "[지번] 역삼동 737",
+                      "fontFamily": "Inter",
+                      "fontSize": 12,
+                      "fontWeight": "normal"
+                    },
+                    {
+                      "type": "text",
+                      "id": "qdzD1",
+                      "name": "zipcode4",
+                      "fill": "#64748B",
+                      "content": "06236",
+                      "fontFamily": "Inter",
+                      "fontSize": 12,
+                      "fontWeight": "normal"
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "n5q4O",
+                  "name": "result5",
+                  "width": "fill_container",
+                  "stroke": {
+                    "align": "inside",
+                    "thickness": {
+                      "bottom": 1
+                    },
+                    "fill": "#E2E8F0"
+                  },
+                  "layout": "vertical",
+                  "gap": 4,
+                  "padding": [
+                    12,
+                    0
+                  ],
+                  "children": [
+                    {
+                      "type": "frame",
+                      "id": "1pdBh",
+                      "name": "badge5",
+                      "height": 18,
+                      "fill": "#3B82F6",
+                      "cornerRadius": 2,
+                      "padding": [
+                        0,
+                        6
+                      ],
+                      "justifyContent": "center",
+                      "alignItems": "center",
+                      "children": [
+                        {
+                          "type": "text",
+                          "id": "Ng0zy",
+                          "name": "badgeText5",
+                          "fill": "#FFFFFF",
+                          "content": "도로명",
+                          "fontFamily": "Inter",
+                          "fontSize": 10,
+                          "fontWeight": "500"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "text",
+                      "id": "KKzzS",
+                      "name": "roadAddr5",
+                      "fill": "#0F172A",
+                      "content": "서울특별시 강남구 테헤란로 212 멀티캠퍼스",
+                      "fontFamily": "Inter",
+                      "fontSize": 14,
+                      "fontWeight": "500"
+                    },
+                    {
+                      "type": "text",
+                      "id": "RZAKL",
+                      "name": "jibunAddr5",
+                      "fill": "#94A3B8",
+                      "content": "[지번] 역삼동 718-5 멀티캠퍼스",
+                      "fontFamily": "Inter",
+                      "fontSize": 12,
+                      "fontWeight": "normal"
+                    },
+                    {
+                      "type": "text",
+                      "id": "CYjDK",
+                      "name": "zipcode5",
+                      "fill": "#64748B",
+                      "content": "06220",
+                      "fontFamily": "Inter",
+                      "fontSize": 12,
+                      "fontWeight": "normal"
+                    }
+                  ]
                 }
               ]
             }
