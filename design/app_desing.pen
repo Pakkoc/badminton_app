@@ -14066,6 +14066,1502 @@
           ]
         }
       ]
+    },
+    {
+      "type": "frame",
+      "id": "0htm7",
+      "x": 4230,
+      "y": 1174,
+      "name": "Post List",
+      "clip": true,
+      "width": 390,
+      "height": 844,
+      "fill": "$--background",
+      "layout": "vertical",
+      "children": [
+        {
+          "type": "frame",
+          "id": "nqfjB",
+          "name": "App Bar",
+          "width": "fill_container",
+          "height": 56,
+          "fill": "$--surface",
+          "stroke": {
+            "align": "inside",
+            "thickness": {
+              "bottom": 0.5
+            },
+            "fill": "$--border"
+          },
+          "gap": 8,
+          "padding": [
+            0,
+            16
+          ],
+          "alignItems": "center",
+          "children": [
+            {
+              "type": "icon_font",
+              "id": "p9qKL",
+              "name": "plBackIcon",
+              "width": 24,
+              "height": 24,
+              "iconFontName": "arrow_back_ios",
+              "iconFontFamily": "Material Symbols Outlined",
+              "fill": "$--text-primary"
+            },
+            {
+              "type": "text",
+              "id": "K3fq7",
+              "name": "plTitle",
+              "fill": "$--text-primary",
+              "content": "게시판",
+              "fontFamily": "Gmarket Sans",
+              "fontSize": 20,
+              "fontWeight": "Bold"
+            }
+          ]
+        },
+        {
+          "type": "frame",
+          "id": "oXNsG",
+          "name": "Category Tabs",
+          "width": "fill_container",
+          "height": 44,
+          "stroke": {
+            "align": "inside",
+            "thickness": {
+              "bottom": 0.5
+            },
+            "fill": "#E2E8F0"
+          },
+          "justifyContent": "space_around",
+          "alignItems": "center",
+          "children": [
+            {
+              "type": "frame",
+              "id": "sLu3p",
+              "name": "Tab Active",
+              "width": "fill_container",
+              "height": "fill_container",
+              "stroke": {
+                "align": "inside",
+                "thickness": {
+                  "bottom": 2
+                },
+                "fill": "#16A34A"
+              },
+              "justifyContent": "center",
+              "alignItems": "center",
+              "children": [
+                {
+                  "type": "text",
+                  "id": "UVkXd",
+                  "name": "plTab1Txt",
+                  "fill": "#16A34A",
+                  "content": "공지사항",
+                  "fontFamily": "Gmarket Sans",
+                  "fontSize": 14,
+                  "fontWeight": "600"
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "jmTGN",
+              "name": "Tab Inactive",
+              "width": "fill_container",
+              "height": "fill_container",
+              "justifyContent": "center",
+              "alignItems": "center",
+              "children": [
+                {
+                  "type": "text",
+                  "id": "dIW84",
+                  "name": "plTab2Txt",
+                  "fill": "#94A3B8",
+                  "content": "이벤트",
+                  "fontFamily": "Gmarket Sans",
+                  "fontSize": 14,
+                  "fontWeight": "500"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "frame",
+          "id": "xI6rf",
+          "name": "Post List Content",
+          "width": "fill_container",
+          "height": "fill_container",
+          "layout": "vertical",
+          "gap": 12,
+          "padding": [
+            12,
+            16
+          ],
+          "children": [
+            {
+              "type": "frame",
+              "id": "BmhRC",
+              "name": "Post Card 1",
+              "width": "fill_container",
+              "fill": "#FFFFFF",
+              "cornerRadius": 12,
+              "stroke": {
+                "align": "inside",
+                "thickness": 1,
+                "fill": "$--border"
+              },
+              "layout": "vertical",
+              "gap": 8,
+              "padding": 16,
+              "children": [
+                {
+                  "type": "frame",
+                  "id": "4nTMp",
+                  "name": "Badge",
+                  "fill": "#DCFCE7",
+                  "cornerRadius": 999,
+                  "padding": [
+                    4,
+                    10
+                  ],
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "rrbUV",
+                      "name": "c1badgeTxt",
+                      "fill": "#166534",
+                      "content": "공지사항",
+                      "fontFamily": "Gmarket Sans",
+                      "fontSize": 11,
+                      "fontWeight": "500"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "id": "fSziP",
+                  "name": "Card Title",
+                  "fill": "#0F172A",
+                  "content": "2월 영업시간 변경 안내",
+                  "fontFamily": "Gmarket Sans",
+                  "fontSize": 14,
+                  "fontWeight": "Bold"
+                },
+                {
+                  "type": "text",
+                  "id": "UO8KL",
+                  "name": "Card Preview",
+                  "fill": "#475569",
+                  "textGrowth": "fixed-width",
+                  "width": "fill_container",
+                  "content": "안녕하세요. 2월부터 영업시간이 변경됩니다. 평일 10:00~20:00, 주말 10:00~18:00...",
+                  "lineHeight": 1.5,
+                  "fontFamily": "Gmarket Sans",
+                  "fontSize": 13,
+                  "fontWeight": "normal"
+                },
+                {
+                  "type": "text",
+                  "id": "D0PM3",
+                  "name": "Card Date",
+                  "fill": "#94A3B8",
+                  "content": "2026.02.20",
+                  "fontFamily": "Gmarket Sans",
+                  "fontSize": 12,
+                  "fontWeight": "normal"
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "MIh4y",
+              "name": "Post Card 2",
+              "width": "fill_container",
+              "fill": "#FFFFFF",
+              "cornerRadius": 12,
+              "stroke": {
+                "align": "inside",
+                "thickness": 1,
+                "fill": "$--border"
+              },
+              "layout": "vertical",
+              "gap": 8,
+              "padding": 16,
+              "children": [
+                {
+                  "type": "frame",
+                  "id": "XXGvG",
+                  "name": "Badge",
+                  "fill": "#DCFCE7",
+                  "cornerRadius": 999,
+                  "padding": [
+                    4,
+                    10
+                  ],
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "zx9xT",
+                      "name": "c2badgeTxt",
+                      "fill": "#166534",
+                      "content": "공지사항",
+                      "fontFamily": "Gmarket Sans",
+                      "fontSize": 11,
+                      "fontWeight": "500"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "id": "lyMkW",
+                  "name": "Card Title",
+                  "fill": "#0F172A",
+                  "content": "스트링 가격 인상 안내",
+                  "fontFamily": "Gmarket Sans",
+                  "fontSize": 14,
+                  "fontWeight": "Bold"
+                },
+                {
+                  "type": "text",
+                  "id": "tkcR2",
+                  "name": "Card Preview",
+                  "fill": "#475569",
+                  "textGrowth": "fixed-width",
+                  "width": "fill_container",
+                  "content": "원자재 가격 상승으로 인해 3월부터 스트링 서비스 가격이 일부 조정됩니다...",
+                  "lineHeight": 1.5,
+                  "fontFamily": "Gmarket Sans",
+                  "fontSize": 13,
+                  "fontWeight": "normal"
+                },
+                {
+                  "type": "text",
+                  "id": "QflGl",
+                  "name": "Card Date",
+                  "fill": "#94A3B8",
+                  "content": "2026.02.15",
+                  "fontFamily": "Gmarket Sans",
+                  "fontSize": 12,
+                  "fontWeight": "normal"
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "e0r8N",
+              "name": "Post Card 3",
+              "width": "fill_container",
+              "fill": "#FFFFFF",
+              "cornerRadius": 12,
+              "stroke": {
+                "align": "inside",
+                "thickness": 1,
+                "fill": "$--border"
+              },
+              "layout": "vertical",
+              "gap": 8,
+              "padding": 16,
+              "children": [
+                {
+                  "type": "frame",
+                  "id": "KGxM0",
+                  "name": "Badge",
+                  "fill": "#FEF3C7",
+                  "cornerRadius": 999,
+                  "padding": [
+                    4,
+                    10
+                  ],
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "QKuQB",
+                      "name": "c3badgeTxt",
+                      "fill": "#92400E",
+                      "content": "이벤트",
+                      "fontFamily": "Gmarket Sans",
+                      "fontSize": 11,
+                      "fontWeight": "500"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "id": "MgjEz",
+                  "name": "Card Title",
+                  "fill": "#0F172A",
+                  "content": "설 연휴 할인 이벤트",
+                  "fontFamily": "Gmarket Sans",
+                  "fontSize": 14,
+                  "fontWeight": "Bold"
+                },
+                {
+                  "type": "text",
+                  "id": "x9pYp",
+                  "name": "Card Preview",
+                  "fill": "#475569",
+                  "textGrowth": "fixed-width",
+                  "width": "fill_container",
+                  "content": "설 연휴를 맞아 스트링 서비스 20% 할인 이벤트를 진행합니다. 기간: 2/1~2/5",
+                  "lineHeight": 1.5,
+                  "fontFamily": "Gmarket Sans",
+                  "fontSize": 13,
+                  "fontWeight": "normal"
+                },
+                {
+                  "type": "text",
+                  "id": "EHO9h",
+                  "name": "Card Date",
+                  "fill": "#94A3B8",
+                  "content": "2026.01.28",
+                  "fontFamily": "Gmarket Sans",
+                  "fontSize": 12,
+                  "fontWeight": "normal"
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "8XmtJ",
+              "name": "Spacer",
+              "width": "fill_container",
+              "height": "fill_container"
+            }
+          ]
+        },
+        {
+          "type": "frame",
+          "id": "wn5P7",
+          "name": "Bottom Nav",
+          "width": "fill_container",
+          "height": 80,
+          "fill": "$--surface",
+          "stroke": {
+            "align": "inside",
+            "thickness": {
+              "top": 1
+            },
+            "fill": "$--border"
+          },
+          "padding": [
+            8,
+            0,
+            24,
+            0
+          ],
+          "justifyContent": "space_around",
+          "alignItems": "center",
+          "children": [
+            {
+              "type": "frame",
+              "id": "UraCs",
+              "name": "Tab Home",
+              "width": "fill_container",
+              "height": "fill_container",
+              "layout": "vertical",
+              "gap": 4,
+              "justifyContent": "center",
+              "alignItems": "center",
+              "children": [
+                {
+                  "type": "icon_font",
+                  "id": "Ve37I",
+                  "name": "t1i",
+                  "width": 24,
+                  "height": 24,
+                  "iconFontName": "home",
+                  "iconFontFamily": "Material Symbols Rounded",
+                  "fill": "$--text-tertiary"
+                },
+                {
+                  "type": "text",
+                  "id": "1ctts",
+                  "name": "t1t",
+                  "fill": "$--text-tertiary",
+                  "content": "홈",
+                  "fontFamily": "Gmarket Sans",
+                  "fontSize": 10,
+                  "fontWeight": "normal"
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "rY2Av",
+              "name": "Tab Search",
+              "width": "fill_container",
+              "height": "fill_container",
+              "layout": "vertical",
+              "gap": 4,
+              "justifyContent": "center",
+              "alignItems": "center",
+              "children": [
+                {
+                  "type": "icon_font",
+                  "id": "TZEft",
+                  "name": "t2i",
+                  "width": 24,
+                  "height": 24,
+                  "iconFontName": "search",
+                  "iconFontFamily": "Material Symbols Rounded",
+                  "fill": "$--text-tertiary"
+                },
+                {
+                  "type": "text",
+                  "id": "WsW2A",
+                  "name": "t2t",
+                  "fill": "$--text-tertiary",
+                  "content": "샵검색",
+                  "fontFamily": "Gmarket Sans",
+                  "fontSize": 10,
+                  "fontWeight": "normal"
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "q5lXY",
+              "name": "Tab History",
+              "width": "fill_container",
+              "height": "fill_container",
+              "layout": "vertical",
+              "gap": 4,
+              "justifyContent": "center",
+              "alignItems": "center",
+              "children": [
+                {
+                  "type": "icon_font",
+                  "id": "WST8v",
+                  "name": "t3i",
+                  "width": 24,
+                  "height": 24,
+                  "iconFontName": "history",
+                  "iconFontFamily": "Material Symbols Rounded",
+                  "fill": "$--text-tertiary"
+                },
+                {
+                  "type": "text",
+                  "id": "5kuyU",
+                  "name": "t3t",
+                  "fill": "$--text-tertiary",
+                  "content": "이력",
+                  "fontFamily": "Gmarket Sans",
+                  "fontSize": 10,
+                  "fontWeight": "normal"
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "gKPBX",
+              "name": "Tab MY",
+              "width": "fill_container",
+              "height": "fill_container",
+              "layout": "vertical",
+              "gap": 4,
+              "justifyContent": "center",
+              "alignItems": "center",
+              "children": [
+                {
+                  "type": "icon_font",
+                  "id": "gCcmJ",
+                  "name": "t4i",
+                  "width": 24,
+                  "height": 24,
+                  "iconFontName": "person",
+                  "iconFontFamily": "Material Symbols Rounded",
+                  "fill": "$--text-tertiary"
+                },
+                {
+                  "type": "text",
+                  "id": "m64Nb",
+                  "name": "t4t",
+                  "fill": "$--text-tertiary",
+                  "content": "MY",
+                  "fontFamily": "Gmarket Sans",
+                  "fontSize": 10,
+                  "fontWeight": "normal"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "frame",
+      "id": "gkn1s",
+      "x": 4700,
+      "y": 1174,
+      "name": "Post Detail",
+      "clip": true,
+      "width": 390,
+      "height": 844,
+      "fill": "$--background",
+      "layout": "vertical",
+      "children": [
+        {
+          "type": "frame",
+          "id": "9fk6x",
+          "name": "App Bar",
+          "width": "fill_container",
+          "height": 56,
+          "fill": "$--surface",
+          "stroke": {
+            "align": "inside",
+            "thickness": {
+              "bottom": 0.5
+            },
+            "fill": "$--border"
+          },
+          "gap": 8,
+          "padding": [
+            0,
+            16
+          ],
+          "alignItems": "center",
+          "children": [
+            {
+              "type": "icon_font",
+              "id": "UxO2c",
+              "name": "pdBack",
+              "width": 24,
+              "height": 24,
+              "iconFontName": "arrow_back_ios",
+              "iconFontFamily": "Material Symbols Outlined",
+              "fill": "$--text-primary"
+            },
+            {
+              "type": "text",
+              "id": "dbK8q",
+              "name": "pdTitle",
+              "fill": "$--text-primary",
+              "content": "게시글",
+              "fontFamily": "Gmarket Sans",
+              "fontSize": 20,
+              "fontWeight": "Bold"
+            }
+          ]
+        },
+        {
+          "type": "frame",
+          "id": "pu9Aj",
+          "name": "Scroll Content",
+          "width": "fill_container",
+          "height": "fill_container",
+          "layout": "vertical",
+          "gap": 16,
+          "padding": [
+            20,
+            16,
+            32,
+            16
+          ],
+          "children": [
+            {
+              "type": "frame",
+              "id": "Vbie5",
+              "name": "Badge",
+              "fill": "#DCFCE7",
+              "cornerRadius": 999,
+              "padding": [
+                4,
+                10
+              ],
+              "children": [
+                {
+                  "type": "text",
+                  "id": "CgxyW",
+                  "name": "pdBadgeTxt",
+                  "fill": "#166534",
+                  "content": "공지사항",
+                  "fontFamily": "Gmarket Sans",
+                  "fontSize": 11,
+                  "fontWeight": "500"
+                }
+              ]
+            },
+            {
+              "type": "text",
+              "id": "tKf8s",
+              "name": "Post Title",
+              "fill": "#0F172A",
+              "content": "2월 영업시간 변경 안내",
+              "fontFamily": "Gmarket Sans",
+              "fontSize": 20,
+              "fontWeight": "Bold"
+            },
+            {
+              "type": "frame",
+              "id": "wiUX4",
+              "name": "Meta Row",
+              "gap": 8,
+              "alignItems": "center",
+              "children": [
+                {
+                  "type": "text",
+                  "id": "B615g",
+                  "name": "pdAuthor",
+                  "fill": "#94A3B8",
+                  "content": "OO 거트 스트링샵",
+                  "fontFamily": "Gmarket Sans",
+                  "fontSize": 12,
+                  "fontWeight": "normal"
+                },
+                {
+                  "type": "text",
+                  "id": "7lZJG",
+                  "name": "pdDot",
+                  "fill": "#94A3B8",
+                  "content": "·",
+                  "fontFamily": "Gmarket Sans",
+                  "fontSize": 12,
+                  "fontWeight": "normal"
+                },
+                {
+                  "type": "text",
+                  "id": "V4bWS",
+                  "name": "pdDate",
+                  "fill": "#94A3B8",
+                  "content": "2026.02.20",
+                  "fontFamily": "Gmarket Sans",
+                  "fontSize": 12,
+                  "fontWeight": "normal"
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "VVbtc",
+              "name": "Divider",
+              "width": "fill_container",
+              "height": 1,
+              "fill": "#E2E8F0"
+            },
+            {
+              "type": "text",
+              "id": "O5z5a",
+              "name": "Body Text",
+              "fill": "#0F172A",
+              "textGrowth": "fixed-width",
+              "width": "fill_container",
+              "content": "안녕하세요, OO 거트 스트링샵입니다.\n\n2월부터 영업시간이 아래와 같이 변경됩니다.\n\n평일: 10:00 ~ 20:00\n주말: 10:00 ~ 18:00\n\n변경된 시간에 맞춰 방문 부탁드립니다.\n감사합니다.",
+              "lineHeight": 1.6,
+              "fontFamily": "Gmarket Sans",
+              "fontSize": 14,
+              "fontWeight": "normal"
+            },
+            {
+              "type": "frame",
+              "id": "asj6S",
+              "name": "Post Image",
+              "width": "fill_container",
+              "height": 200,
+              "fill": "#E2E8F0",
+              "cornerRadius": 8,
+              "justifyContent": "center",
+              "alignItems": "center",
+              "children": [
+                {
+                  "type": "icon_font",
+                  "id": "2FOcg",
+                  "name": "pdImgIcon",
+                  "width": 48,
+                  "height": 48,
+                  "iconFontName": "image",
+                  "iconFontFamily": "Material Symbols Rounded",
+                  "fill": "#94A3B8"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "frame",
+      "id": "fKRz8",
+      "x": 5170,
+      "y": 1174,
+      "name": "Notifications",
+      "clip": true,
+      "width": 390,
+      "height": 844,
+      "fill": "$--background",
+      "layout": "vertical",
+      "children": [
+        {
+          "type": "frame",
+          "id": "pmwQW",
+          "name": "App Bar",
+          "width": "fill_container",
+          "height": 56,
+          "fill": "$--surface",
+          "stroke": {
+            "align": "inside",
+            "thickness": {
+              "bottom": 0.5
+            },
+            "fill": "$--border"
+          },
+          "gap": 8,
+          "padding": [
+            0,
+            16
+          ],
+          "alignItems": "center",
+          "children": [
+            {
+              "type": "icon_font",
+              "id": "7BJWT",
+              "name": "nBack",
+              "width": 24,
+              "height": 24,
+              "iconFontName": "arrow_back_ios",
+              "iconFontFamily": "Material Symbols Outlined",
+              "fill": "$--text-primary"
+            },
+            {
+              "type": "text",
+              "id": "MPk1i",
+              "name": "nTitle",
+              "fill": "$--text-primary",
+              "content": "알림",
+              "fontFamily": "Gmarket Sans",
+              "fontSize": 20,
+              "fontWeight": "Bold"
+            }
+          ]
+        },
+        {
+          "type": "frame",
+          "id": "InWgX",
+          "name": "Notification List",
+          "width": "fill_container",
+          "height": "fill_container",
+          "layout": "vertical",
+          "children": [
+            {
+              "type": "frame",
+              "id": "sh3Ls",
+              "name": "Noti Item 1",
+              "width": "fill_container",
+              "stroke": {
+                "align": "inside",
+                "thickness": {
+                  "bottom": 1
+                },
+                "fill": "#F1F5F9"
+              },
+              "gap": 12,
+              "padding": 16,
+              "children": [
+                {
+                  "type": "frame",
+                  "id": "TJXdk",
+                  "name": "Icon Wrap",
+                  "width": 40,
+                  "height": 40,
+                  "fill": "#DBEAFE",
+                  "cornerRadius": 20,
+                  "justifyContent": "center",
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "icon_font",
+                      "id": "vFmXi",
+                      "name": "n1i",
+                      "width": 20,
+                      "height": 20,
+                      "iconFontName": "build",
+                      "iconFontFamily": "Material Symbols Rounded",
+                      "fill": "#3B82F6"
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "Dyon4",
+                  "name": "Text Wrap",
+                  "width": "fill_container",
+                  "layout": "vertical",
+                  "gap": 4,
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "Le6NX",
+                      "name": "n1t",
+                      "fill": "#0F172A",
+                      "content": "작업 상태 변경",
+                      "fontFamily": "Gmarket Sans",
+                      "fontSize": 14,
+                      "fontWeight": "500"
+                    },
+                    {
+                      "type": "text",
+                      "id": "hN7t7",
+                      "name": "n1desc",
+                      "fill": "#475569",
+                      "textGrowth": "fixed-width",
+                      "width": "fill_container",
+                      "content": "요청하신 작업이 '작업중' 상태로 변경되었습니다.",
+                      "fontFamily": "Gmarket Sans",
+                      "fontSize": 13,
+                      "fontWeight": "normal"
+                    },
+                    {
+                      "type": "text",
+                      "id": "CFbSe",
+                      "name": "n1time",
+                      "fill": "#94A3B8",
+                      "content": "10분 전",
+                      "fontFamily": "Gmarket Sans",
+                      "fontSize": 12,
+                      "fontWeight": "normal"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "HnSjv",
+              "name": "Noti Item 2",
+              "width": "fill_container",
+              "stroke": {
+                "align": "inside",
+                "thickness": {
+                  "bottom": 1
+                },
+                "fill": "#F1F5F9"
+              },
+              "gap": 12,
+              "padding": 16,
+              "children": [
+                {
+                  "type": "frame",
+                  "id": "ElwbZ",
+                  "name": "Icon Wrap",
+                  "width": 40,
+                  "height": 40,
+                  "fill": "#DCFCE7",
+                  "cornerRadius": 20,
+                  "justifyContent": "center",
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "icon_font",
+                      "id": "y1Pvy",
+                      "name": "n2i",
+                      "width": 20,
+                      "height": 20,
+                      "iconFontName": "check_circle",
+                      "iconFontFamily": "Material Symbols Rounded",
+                      "fill": "#16A34A"
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "TVlSN",
+                  "name": "Text Wrap",
+                  "width": "fill_container",
+                  "layout": "vertical",
+                  "gap": 4,
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "4NrXa",
+                      "name": "n2t",
+                      "fill": "#0F172A",
+                      "content": "작업 완료",
+                      "fontFamily": "Gmarket Sans",
+                      "fontSize": 14,
+                      "fontWeight": "500"
+                    },
+                    {
+                      "type": "text",
+                      "id": "okp1Y",
+                      "name": "n2desc",
+                      "fill": "#475569",
+                      "textGrowth": "fixed-width",
+                      "width": "fill_container",
+                      "content": "스트링 교체 작업이 완료되었습니다. 매장에서 수령해주세요.",
+                      "fontFamily": "Gmarket Sans",
+                      "fontSize": 13,
+                      "fontWeight": "normal"
+                    },
+                    {
+                      "type": "text",
+                      "id": "IP57I",
+                      "name": "n2time",
+                      "fill": "#94A3B8",
+                      "content": "1시간 전",
+                      "fontFamily": "Gmarket Sans",
+                      "fontSize": 12,
+                      "fontWeight": "normal"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "v6hr8",
+              "name": "Noti Item 3",
+              "width": "fill_container",
+              "stroke": {
+                "align": "inside",
+                "thickness": {
+                  "bottom": 1
+                },
+                "fill": "#F1F5F9"
+              },
+              "gap": 12,
+              "padding": 16,
+              "children": [
+                {
+                  "type": "frame",
+                  "id": "px6Tt",
+                  "name": "Icon Wrap",
+                  "width": 40,
+                  "height": 40,
+                  "fill": "#FEF3C7",
+                  "cornerRadius": 20,
+                  "justifyContent": "center",
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "icon_font",
+                      "id": "4ejwz",
+                      "name": "n3i",
+                      "width": 20,
+                      "height": 20,
+                      "iconFontName": "campaign",
+                      "iconFontFamily": "Material Symbols Rounded",
+                      "fill": "#F59E0B"
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "gR25n",
+                  "name": "Text Wrap",
+                  "width": "fill_container",
+                  "layout": "vertical",
+                  "gap": 4,
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "mE4K6",
+                      "name": "n3t",
+                      "fill": "#0F172A",
+                      "content": "새 공지사항",
+                      "fontFamily": "Gmarket Sans",
+                      "fontSize": 14,
+                      "fontWeight": "500"
+                    },
+                    {
+                      "type": "text",
+                      "id": "qn7dv",
+                      "name": "n3desc",
+                      "fill": "#475569",
+                      "textGrowth": "fixed-width",
+                      "width": "fill_container",
+                      "content": "OO 거트 스트링샵에서 새 공지사항을 등록했습니다.",
+                      "fontFamily": "Gmarket Sans",
+                      "fontSize": 13,
+                      "fontWeight": "normal"
+                    },
+                    {
+                      "type": "text",
+                      "id": "3Kp5n",
+                      "name": "n3time",
+                      "fill": "#94A3B8",
+                      "content": "3시간 전",
+                      "fontFamily": "Gmarket Sans",
+                      "fontSize": 12,
+                      "fontWeight": "normal"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "QG08X",
+              "name": "Noti Item 4",
+              "width": "fill_container",
+              "fill": "#F8FAFC",
+              "stroke": {
+                "align": "inside",
+                "thickness": {
+                  "bottom": 1
+                },
+                "fill": "#F1F5F9"
+              },
+              "gap": 12,
+              "padding": 16,
+              "children": [
+                {
+                  "type": "frame",
+                  "id": "2MB2L",
+                  "name": "Icon Wrap",
+                  "width": 40,
+                  "height": 40,
+                  "fill": "#DBEAFE",
+                  "cornerRadius": 20,
+                  "justifyContent": "center",
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "icon_font",
+                      "id": "0kIne",
+                      "name": "n4i",
+                      "width": 20,
+                      "height": 20,
+                      "iconFontName": "assignment",
+                      "iconFontFamily": "Material Symbols Rounded",
+                      "fill": "#3B82F6"
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "bRlUl",
+                  "name": "Text Wrap",
+                  "width": "fill_container",
+                  "layout": "vertical",
+                  "gap": 4,
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "40XfT",
+                      "name": "n4t",
+                      "fill": "#0F172A",
+                      "content": "접수 확인",
+                      "fontFamily": "Gmarket Sans",
+                      "fontSize": 14,
+                      "fontWeight": "500"
+                    },
+                    {
+                      "type": "text",
+                      "id": "2AQQX",
+                      "name": "n4desc",
+                      "fill": "#475569",
+                      "textGrowth": "fixed-width",
+                      "width": "fill_container",
+                      "content": "작업 요청이 접수되었습니다. 사장님이 확인 중입니다.",
+                      "fontFamily": "Gmarket Sans",
+                      "fontSize": 13,
+                      "fontWeight": "normal"
+                    },
+                    {
+                      "type": "text",
+                      "id": "c63UG",
+                      "name": "n4time",
+                      "fill": "#94A3B8",
+                      "content": "어제",
+                      "fontFamily": "Gmarket Sans",
+                      "fontSize": 12,
+                      "fontWeight": "normal"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "frame",
+      "id": "eHCxi",
+      "x": 5640,
+      "y": 1174,
+      "name": "Profile Edit",
+      "clip": true,
+      "width": 390,
+      "height": 844,
+      "fill": "$--background",
+      "layout": "vertical",
+      "children": [
+        {
+          "type": "frame",
+          "id": "uVUQ5",
+          "name": "App Bar",
+          "width": "fill_container",
+          "height": 56,
+          "fill": "$--surface",
+          "stroke": {
+            "align": "inside",
+            "thickness": {
+              "bottom": 0.5
+            },
+            "fill": "$--border"
+          },
+          "gap": 8,
+          "padding": [
+            0,
+            16
+          ],
+          "alignItems": "center",
+          "children": [
+            {
+              "type": "icon_font",
+              "id": "pQWaQ",
+              "name": "peBack",
+              "width": 24,
+              "height": 24,
+              "iconFontName": "arrow_back_ios",
+              "iconFontFamily": "Material Symbols Outlined",
+              "fill": "$--text-primary"
+            },
+            {
+              "type": "text",
+              "id": "CVPSL",
+              "name": "peTitle",
+              "fill": "$--text-primary",
+              "content": "프로필 수정",
+              "fontFamily": "Gmarket Sans",
+              "fontSize": 20,
+              "fontWeight": "Bold"
+            }
+          ]
+        },
+        {
+          "type": "frame",
+          "id": "6giu8",
+          "name": "Scroll Content",
+          "width": "fill_container",
+          "height": "fill_container",
+          "layout": "vertical",
+          "gap": 20,
+          "padding": 16,
+          "alignItems": "center",
+          "children": [
+            {
+              "type": "frame",
+              "id": "9dtfM",
+              "name": "Avatar Wrap",
+              "width": 80,
+              "height": 80,
+              "layout": "none",
+              "children": [
+                {
+                  "type": "ellipse",
+                  "id": "HupEP",
+                  "x": 0,
+                  "y": 0,
+                  "name": "Avatar",
+                  "fill": "#DCFCE7",
+                  "width": 80,
+                  "height": 80
+                },
+                {
+                  "type": "icon_font",
+                  "id": "GF5O8",
+                  "x": 20,
+                  "y": 20,
+                  "name": "peAvatarIcon",
+                  "width": 40,
+                  "height": 40,
+                  "iconFontName": "person",
+                  "iconFontFamily": "Material Symbols Rounded",
+                  "fill": "#16A34A"
+                },
+                {
+                  "type": "frame",
+                  "id": "SUeix",
+                  "x": 56,
+                  "y": 56,
+                  "name": "Camera Btn",
+                  "width": 28,
+                  "height": 28,
+                  "fill": "#FFFFFF",
+                  "cornerRadius": 14,
+                  "stroke": {
+                    "align": "inside",
+                    "thickness": 1,
+                    "fill": "#E2E8F0"
+                  },
+                  "justifyContent": "center",
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "icon_font",
+                      "id": "7QKdf",
+                      "name": "peCamIcon",
+                      "width": 16,
+                      "height": 16,
+                      "iconFontName": "photo_camera",
+                      "iconFontFamily": "Material Symbols Rounded",
+                      "fill": "#475569"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "aPA1U",
+              "name": "Form Area",
+              "width": "fill_container",
+              "layout": "vertical",
+              "gap": 16,
+              "children": [
+                {
+                  "type": "frame",
+                  "id": "RJozq",
+                  "name": "Field Name",
+                  "width": "fill_container",
+                  "layout": "vertical",
+                  "gap": 6,
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "XHCxt",
+                      "name": "f1l",
+                      "fill": "#64748B",
+                      "content": "이름",
+                      "fontFamily": "Gmarket Sans",
+                      "fontSize": 12,
+                      "fontWeight": "normal"
+                    },
+                    {
+                      "type": "frame",
+                      "id": "2LuD9",
+                      "name": "Name Input",
+                      "width": "fill_container",
+                      "height": 48,
+                      "fill": "#FFFFFF",
+                      "cornerRadius": 8,
+                      "stroke": {
+                        "align": "inside",
+                        "thickness": 1,
+                        "fill": "#E2E8F0"
+                      },
+                      "padding": [
+                        0,
+                        16
+                      ],
+                      "alignItems": "center",
+                      "children": [
+                        {
+                          "type": "text",
+                          "id": "vuS4A",
+                          "name": "f1v",
+                          "fill": "#0F172A",
+                          "content": "홍길동",
+                          "fontFamily": "Gmarket Sans",
+                          "fontSize": 14,
+                          "fontWeight": "normal"
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "yrnYv",
+                  "name": "Field Email",
+                  "width": "fill_container",
+                  "layout": "vertical",
+                  "gap": 6,
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "PChcj",
+                      "name": "f2l",
+                      "fill": "#64748B",
+                      "content": "이메일",
+                      "fontFamily": "Gmarket Sans",
+                      "fontSize": 12,
+                      "fontWeight": "normal"
+                    },
+                    {
+                      "type": "frame",
+                      "id": "X2jvI",
+                      "name": "Email Display",
+                      "width": "fill_container",
+                      "height": 48,
+                      "fill": "#F1F5F9",
+                      "cornerRadius": 8,
+                      "padding": [
+                        0,
+                        16
+                      ],
+                      "alignItems": "center",
+                      "children": [
+                        {
+                          "type": "text",
+                          "id": "ylPwe",
+                          "name": "f2v",
+                          "fill": "#94A3B8",
+                          "content": "hong@email.com",
+                          "fontFamily": "Gmarket Sans",
+                          "fontSize": 14,
+                          "fontWeight": "normal"
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "feALM",
+                  "name": "Field Phone",
+                  "width": "fill_container",
+                  "layout": "vertical",
+                  "gap": 6,
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "n7zI4",
+                      "name": "f3l",
+                      "fill": "#64748B",
+                      "content": "연락처",
+                      "fontFamily": "Gmarket Sans",
+                      "fontSize": 12,
+                      "fontWeight": "normal"
+                    },
+                    {
+                      "type": "frame",
+                      "id": "fohA6",
+                      "name": "Phone Input",
+                      "width": "fill_container",
+                      "height": 48,
+                      "fill": "#FFFFFF",
+                      "cornerRadius": 8,
+                      "stroke": {
+                        "align": "inside",
+                        "thickness": 1,
+                        "fill": "#E2E8F0"
+                      },
+                      "padding": [
+                        0,
+                        16
+                      ],
+                      "alignItems": "center",
+                      "children": [
+                        {
+                          "type": "text",
+                          "id": "KW3LY",
+                          "name": "f3v",
+                          "fill": "#0F172A",
+                          "content": "010-1234-5678",
+                          "fontFamily": "Gmarket Sans",
+                          "fontSize": 14,
+                          "fontWeight": "normal"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "clP2K",
+              "name": "Spacer",
+              "width": "fill_container",
+              "height": "fill_container"
+            }
+          ]
+        },
+        {
+          "type": "frame",
+          "id": "lt3Ve",
+          "name": "Bottom Bar",
+          "width": "fill_container",
+          "fill": "$--surface",
+          "stroke": {
+            "align": "inside",
+            "thickness": {
+              "top": 1
+            },
+            "fill": "$--border"
+          },
+          "padding": 16,
+          "children": [
+            {
+              "type": "frame",
+              "id": "TjmY7",
+              "name": "Save Button",
+              "width": "fill_container",
+              "height": 48,
+              "fill": "#16A34A",
+              "cornerRadius": 12,
+              "justifyContent": "center",
+              "alignItems": "center",
+              "children": [
+                {
+                  "type": "text",
+                  "id": "Y2jEg",
+                  "name": "peSaveTxt",
+                  "fill": "#FFFFFF",
+                  "content": "저장",
+                  "fontFamily": "Gmarket Sans",
+                  "fontSize": 16,
+                  "fontWeight": "600"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "text",
+      "id": "6kuEA",
+      "x": 4360,
+      "y": 2034,
+      "name": "plLabel",
+      "fill": "#94A3B8",
+      "content": "게시글 목록",
+      "fontFamily": "Gmarket Sans",
+      "fontSize": 14,
+      "fontWeight": "normal"
+    },
+    {
+      "type": "text",
+      "id": "GvGnf",
+      "x": 4830,
+      "y": 2034,
+      "name": "pdLabel",
+      "fill": "#94A3B8",
+      "content": "게시글 상세",
+      "fontFamily": "Gmarket Sans",
+      "fontSize": 14,
+      "fontWeight": "normal"
+    },
+    {
+      "type": "text",
+      "id": "w942S",
+      "x": 5320,
+      "y": 2034,
+      "name": "notiLabel",
+      "fill": "#94A3B8",
+      "content": "알림",
+      "fontFamily": "Gmarket Sans",
+      "fontSize": 14,
+      "fontWeight": "normal"
+    },
+    {
+      "type": "text",
+      "id": "rQHIe",
+      "x": 5770,
+      "y": 2034,
+      "name": "peLabel",
+      "fill": "#94A3B8",
+      "content": "프로필 수정",
+      "fontFamily": "Gmarket Sans",
+      "fontSize": 14,
+      "fontWeight": "normal"
     }
   ],
   "variables": {
