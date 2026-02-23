@@ -5936,10 +5936,31 @@
                   ]
                 }
               ]
+            }
+          ]
+        },
+        {
+          "type": "frame",
+          "id": "maAAQ",
+          "name": "Save Bar",
+          "width": "fill_container",
+          "fill": "$--surface",
+          "stroke": {
+            "align": "inside",
+            "thickness": {
+              "top": 1
             },
+            "fill": "$--border"
+          },
+          "layout": "vertical",
+          "padding": [
+            12,
+            16
+          ],
+          "children": [
             {
               "type": "frame",
-              "id": "bhtiV",
+              "id": "jbcAQ",
               "name": "Save Button",
               "width": "fill_container",
               "height": 48,
@@ -5950,8 +5971,8 @@
               "children": [
                 {
                   "type": "text",
-                  "id": "IYGCv",
-                  "name": "saveBtnText",
+                  "id": "9G232",
+                  "name": "saveTxt",
                   "fill": "#FFFFFF",
                   "content": "저장하기",
                   "fontFamily": "Gmarket Sans",
@@ -9145,18 +9166,44 @@
                       "height": 64,
                       "fill": "#F1F5F9",
                       "cornerRadius": 8,
-                      "justifyContent": "center",
-                      "alignItems": "center",
+                      "layout": "none",
                       "children": [
                         {
                           "type": "icon_font",
                           "id": "TSzzH",
+                          "x": 16,
+                          "y": 16,
                           "name": "eiIcon",
                           "width": 32,
                           "height": 32,
                           "iconFontName": "sports_tennis",
                           "iconFontFamily": "Material Symbols Rounded",
                           "fill": "#94A3B8"
+                        },
+                        {
+                          "type": "frame",
+                          "id": "7dzL5",
+                          "x": 48,
+                          "y": -4,
+                          "name": "deleteBtn",
+                          "width": 20,
+                          "height": 20,
+                          "fill": "#0F172A",
+                          "cornerRadius": 10,
+                          "justifyContent": "center",
+                          "alignItems": "center",
+                          "children": [
+                            {
+                              "type": "icon_font",
+                              "id": "u9Dzq",
+                              "name": "delIco",
+                              "width": 14,
+                              "height": 14,
+                              "iconFontName": "close",
+                              "iconFontFamily": "Material Symbols Rounded",
+                              "fill": "#FFFFFF"
+                            }
+                          ]
                         }
                       ]
                     }
