@@ -67,7 +67,7 @@ screens:
     pencil_id: l7Ghq
     spec_file: docs/ui-specs/order-detail.md
     nav_to: []
-    nav_from: [customer-home, customer-order-history]
+    nav_from: [customer-home, customer-order-history, customer-notifications]
 
   customer-order-history:
     name: "작업 이력"

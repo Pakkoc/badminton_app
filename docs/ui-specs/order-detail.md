@@ -315,6 +315,7 @@ supabase
 |-----------|------|---------------|
 | 고객 홈 (`customer-home`) | 작업 카드 탭 | `order_id` (String, UUID) |
 | 작업 이력 (`customer-order-history`) | 이력 카드 탭 | `order_id` (String, UUID) |
+| 알림 (`customer-notifications`) | 주문 관련 알림 탭 | `order_id` (String, UUID) |
 | 푸시 알림 | 알림 탭 시 딥링크 | `order_id` (String, UUID) |
 
 ### 8.2 이동 가능 화면
