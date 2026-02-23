@@ -1,6 +1,6 @@
 # 고객 홈 — UI 화면 스펙
 
-> 최종 수정일: 2026-02-21
+> 최종 수정일: 2026-02-23
 
 ---
 
@@ -400,6 +400,7 @@ supabase
 | 주변 샵 검색 | `customer-shop-search` | 하단 "샵검색" 탭 또는 빈 상태 CTA 버튼 탭 | 없음 |
 | 작업 이력 | `customer-order-history` | 하단 "이력" 탭 | 없음 |
 | 마이페이지 | `customer-mypage` | 하단 "MY" 탭 | 없음 |
+| 알림 | `customer-notifications` | 앱바 알림 아이콘 탭 | 없음 |
 
 ---
 

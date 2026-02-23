@@ -57,7 +57,7 @@ screens:
     role: customer
     pencil_id: 0b6dS
     spec_file: docs/ui-specs/customer-home.md
-    nav_to: [customer-order-detail, customer-shop-search, customer-order-history, customer-mypage]
+    nav_to: [customer-order-detail, customer-shop-search, customer-order-history, customer-mypage, customer-notifications]
     nav_from: [login, profile-setup, splash]
 
   customer-order-detail:
@@ -93,8 +93,35 @@ screens:
     role: customer
     pencil_id: S4mUF
     spec_file: docs/ui-specs/shop-detail.md
-    nav_to: []
+    nav_to: [customer-post-list, customer-post-detail]
     nav_from: [customer-shop-search]
+
+  customer-notifications:
+    name: "알림"
+    description: "주문 상태 변경, 새 게시글 등 알림 목록"
+    role: customer
+    pencil_id: fKRz8
+    spec_file: docs/ui-specs/notifications.md
+    nav_to: [customer-order-detail]
+    nav_from: [customer-home]
+
+  customer-post-list:
+    name: "게시글 목록"
+    description: "샵의 공지사항/이벤트 게시글 목록"
+    role: customer
+    pencil_id: 0htm7
+    spec_file: docs/ui-specs/post-list.md
+    nav_to: [customer-post-detail]
+    nav_from: [customer-shop-detail]
+
+  customer-post-detail:
+    name: "게시글 상세"
+    description: "게시글 전문 보기 (공지사항/이벤트)"
+    role: customer
+    pencil_id: gkn1s
+    spec_file: docs/ui-specs/post-detail.md
+    nav_to: []
+    nav_from: [customer-post-list, customer-shop-detail]
 
   customer-mypage:
     name: "마이페이지"
@@ -102,8 +129,17 @@ screens:
     role: customer
     pencil_id: xz11L
     spec_file: docs/ui-specs/mypage.md
-    nav_to: [login]
+    nav_to: [login, customer-profile-edit]
     nav_from: [customer-home]
+
+  customer-profile-edit:
+    name: "프로필 수정"
+    description: "이름, 연락처 등 프로필 정보 수정"
+    role: customer
+    pencil_id: eHCxi
+    spec_file: docs/ui-specs/profile-edit.md
+    nav_to: []
+    nav_from: [customer-mypage]
 
   # ─── 사장님 흐름 ───
   owner-dashboard:
