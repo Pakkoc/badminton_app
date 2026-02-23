@@ -28,8 +28,11 @@ model: sonnet
 5. `docs/pages/{N}-{name}/state.md` — 상태 관리 설계
 6. `docs/pages/{N}-{name}/plan.md` — 구현 계획
 7. `docs/ui-specs/{name}.md` — UI 스펙
+8. `*.pen` 파일 — Pencil 디자인 (해당 화면의 시각 디자인 참조)
 
 **모든 문서를 읽기 전에 코드를 작성하지 않는다.**
+
+> **Pencil 디자인 활용**: UI 위젯 구현 시 Pencil MCP 도구(`batch_get`, `get_screenshot`)로 해당 화면의 디자인을 확인하고, 레이아웃·색상·간격·컴포넌트 구조를 실제 디자인과 일치시킨다.
 
 ### 2단계: 체크리스트 생성
 
@@ -39,7 +42,7 @@ model: sonnet
 예시:
 □ Repository 클래스 생성 (database.md 기반)
 □ State/Notifier 클래스 생성 (state.md 기반)
-□ UI 위젯 구현 (ui-specs 기반)
+□ UI 위젯 구현 (ui-specs + Pencil 디자인 기반)
 □ 에러 처리 (usecase 예외 흐름 기반)
 □ 단위 테스트 작성
 ```
@@ -62,6 +65,7 @@ TaskCreate를 사용하여 각 항목을 태스크로 등록한다.
 | 검증 축 | 확인 내용 |
 |---------|----------|
 | 범위 | usecase의 기본/대안/예외 흐름이 모두 구현되었는가? |
+| 디자인 | Pencil 디자인과 UI 구현이 일치하는가? (레이아웃, 색상, 간격, 컴포넌트) |
 | 보안 | RLS 정책이 반영되었는가? 사용자 입력 검증이 있는가? |
 | 에러 | usecase의 에러 코드가 모두 처리되었는가? |
 | 테스트 | usecase의 테스트 시나리오가 모두 테스트로 작성되었는가? |
