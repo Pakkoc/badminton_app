@@ -5248,7 +5248,6 @@
       "y": 2248,
       "name": "Shop Settings",
       "width": 390,
-      "height": 1160,
       "fill": "$--background",
       "layout": "vertical",
       "children": [
@@ -5289,7 +5288,6 @@
           "id": "a8MFS",
           "name": "Scroll Content",
           "width": "fill_container",
-          "height": 913,
           "layout": "vertical",
           "gap": 12,
           "padding": [
