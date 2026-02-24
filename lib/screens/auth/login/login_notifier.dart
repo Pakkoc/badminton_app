@@ -18,9 +18,8 @@ class LoginNotifier extends Notifier<LoginState> {
   Future<void> signInWithNaver() async {
     state = const LoginState.authenticating('naver');
     try {
-      // 네이버는 Supabase OAuthProvider에 없으므로
-      // flutter_naver_login을 통해 별도 처리한다.
-      // TODO: NaverLoginService 연동
+      final authRepository = ref.read(authRepositoryProvider);
+      await authRepository.signInWithNaver();
       state = const LoginState.idle();
     } on AppException catch (e) {
       state = LoginState.error(e.userMessage);

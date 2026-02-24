@@ -12,8 +12,21 @@ final storageRepositoryProvider = Provider<StorageRepository>((ref) {
 /// 스토리지 리포지토리.
 ///
 /// Supabase Storage에 이미지를 업로드/삭제한다.
-/// 버킷: profile-images, post-images, inventory-images
 /// 파일 경로 규칙: {userId}/{uuid}.jpg
+///
+/// ## 필요한 Supabase Storage 버킷 (Dashboard에서 수동 생성)
+///
+/// | 버킷 이름          | 공개 여부 | 용도                     |
+/// |-------------------|----------|--------------------------|
+/// | profile-images    | public   | 사용자 프로필 이미지        |
+/// | post-images       | public   | 소식/공지 게시글 이미지      |
+/// | inventory-images  | public   | 재고 아이템 이미지          |
+///
+/// ### 버킷 설정
+/// - 허용 MIME: image/jpeg, image/png, image/webp
+/// - 최대 파일 크기: 5MB
+/// - RLS 정책: 인증된 사용자만 업로드/삭제 가능,
+///   공개 읽기 허용
 class StorageRepository {
   final SupabaseClient client;
 

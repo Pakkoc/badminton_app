@@ -1,4 +1,5 @@
 import 'package:badminton_app/core/error/error_handler.dart';
+import 'package:flutter_naver_login/flutter_naver_login.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
@@ -14,6 +15,28 @@ class AuthRepository {
   Future<bool> signInWithOAuth(OAuthProvider provider) async {
     try {
       return await _client.auth.signInWithOAuth(provider);
+    } catch (e) {
+      throw ErrorHandler.handle(e);
+    }
+  }
+
+  /// 네이버 소셜 로그인을 수행한다.
+  ///
+  /// flutter_naver_login으로 네이버 토큰을 받은 뒤,
+  /// Supabase signInWithIdToken으로 세션을 생성한다.
+  Future<void> signInWithNaver() async {
+    try {
+      final result = await FlutterNaverLogin.logIn();
+      if (result.status == NaverLoginStatus.error) {
+        throw ErrorHandler.handle(
+          Exception(result.errorMessage ?? '네이버 로그인 실패'),
+        );
+      }
+      final token = await FlutterNaverLogin.currentAccessToken;
+      await _client.auth.signInWithIdToken(
+        provider: OAuthProvider.apple,
+        idToken: token.accessToken,
+      );
     } catch (e) {
       throw ErrorHandler.handle(e);
     }
