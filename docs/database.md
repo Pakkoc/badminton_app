@@ -374,6 +374,9 @@ $$;
 -- Best Practices 적용
 -- ============================================
 
+-- 타임존을 한국 시간(KST)으로 설정
+alter database postgres set timezone to 'Asia/Seoul';
+
 -- UUIDv7 확장 활성화 (시간순 UUID, 인덱스 단편화 방지)
 create extension if not exists pg_uuidv7;
 
@@ -802,6 +805,16 @@ create policy "notifications_update_own" on notifications
 ### 8. `to authenticated` 명시
 
 모든 RLS 정책에 `to authenticated`를 명시하여, 인증된 사용자에게만 정책이 적용됨을 보장한다. `anon` 역할은 어떤 테이블에도 접근할 수 없다.
+
+### 9. 타임존: Asia/Seoul (KST)
+
+| 적용 전 | 적용 후 | 효과 |
+|---------|---------|------|
+| Supabase 기본 UTC | `Asia/Seoul` (KST, UTC+9) | `now()` 호출 시 한국 시간 기준으로 기록. "오늘의 작업" 등 날짜 기반 조회가 사용자 기대와 일치 |
+
+- `alter database postgres set timezone to 'Asia/Seoul'`로 DB 전역 설정
+- TIMESTAMPTZ 컬럼은 내부적으로 UTC 저장하되, 읽기 시 KST로 변환됨
+- Flutter 클라이언트에서 별도 타임존 변환 불필요
 
 ---
 
