@@ -29,8 +29,7 @@ allowed-tools:
 
 ## 실행 절차
 
-### Step 1: 프로젝트 컨텍스트 파악
-
+### Step 1: 프로젝트 컨텍스트
 1. **기획 문서 읽기** — 다음 파일을 탐색하여 읽는다:
    - `docs/service-overview*` 또는 `docs/requirements*`
    - `docs/plans/*.md`
