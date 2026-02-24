@@ -1,5 +1,19 @@
+import 'package:badminton_app/models/enums.dart';
 import 'package:badminton_app/screens/auth/profile_setup/profile_setup_screen.dart';
 import 'package:badminton_app/screens/auth/shop_signup/shop_signup_screen.dart';
+import 'package:badminton_app/screens/customer/home/customer_home_screen.dart';
+import 'package:badminton_app/screens/customer/order_detail/order_detail_screen.dart';
+import 'package:badminton_app/screens/customer/order_history/order_history_screen.dart';
+import 'package:badminton_app/screens/customer/post_detail/post_detail_screen.dart';
+import 'package:badminton_app/screens/customer/post_list/post_list_screen.dart';
+import 'package:badminton_app/screens/customer/shop_detail/shop_detail_screen.dart';
+import 'package:badminton_app/screens/customer/shop_search/shop_search_screen.dart';
+import 'package:badminton_app/screens/customer/mypage/mypage_screen.dart';
+import 'package:badminton_app/screens/customer/notifications/notifications_screen.dart';
+import 'package:badminton_app/screens/customer/profile_edit/profile_edit_screen.dart';
+import 'package:badminton_app/screens/owner/inventory/inventory_screen.dart';
+import 'package:badminton_app/screens/owner/post_create/post_create_screen.dart';
+import 'package:badminton_app/screens/owner/shop_settings/shop_settings_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -32,52 +46,65 @@ final routerProvider = Provider<GoRouter>((ref) {
           GoRoute(
             path: '/customer/home',
             builder: (context, state) =>
-                const _PlaceholderScreen('Customer Home'),
+                const CustomerHomeScreen(),
           ),
           GoRoute(
             path: '/customer/order/:orderId',
-            builder: (context, state) =>
-                const _PlaceholderScreen('Order Detail'),
+            builder: (context, state) => OrderDetailScreen(
+              orderId: state.pathParameters['orderId']!,
+            ),
           ),
           GoRoute(
             path: '/customer/order-history',
             builder: (context, state) =>
-                const _PlaceholderScreen('Order History'),
+                const OrderHistoryScreen(),
           ),
           GoRoute(
             path: '/customer/shop-search',
             builder: (context, state) =>
-                const _PlaceholderScreen('Shop Search'),
+                const ShopSearchScreen(),
           ),
           GoRoute(
             path: '/customer/shop/:shopId',
-            builder: (context, state) =>
-                const _PlaceholderScreen('Shop Detail'),
+            builder: (context, state) => ShopDetailScreen(
+              shopId: state.pathParameters['shopId']!,
+            ),
           ),
           GoRoute(
             path: '/customer/shop/:shopId/posts/:category',
-            builder: (context, state) =>
-                const _PlaceholderScreen('Post List'),
+            builder: (context, state) {
+              final category =
+                  state.pathParameters['category']!;
+              final label =
+                  PostCategory.fromJson(category).label;
+              return PostListScreen(
+                shopId: state.pathParameters['shopId']!,
+                category: category,
+                categoryLabel: label,
+              );
+            },
           ),
           GoRoute(
             path: '/customer/shop/:shopId/post/:postId',
-            builder: (context, state) =>
-                const _PlaceholderScreen('Post Detail'),
+            builder: (context, state) => PostDetailScreen(
+              shopId: state.pathParameters['shopId']!,
+              postId: state.pathParameters['postId']!,
+            ),
           ),
           GoRoute(
             path: '/customer/notifications',
             builder: (context, state) =>
-                const _PlaceholderScreen('Notifications'),
+                const NotificationsScreen(),
           ),
           GoRoute(
             path: '/customer/mypage',
             builder: (context, state) =>
-                const _PlaceholderScreen('My Page'),
+                const MypageScreen(),
           ),
           GoRoute(
             path: '/customer/profile-edit',
             builder: (context, state) =>
-                const _PlaceholderScreen('Profile Edit'),
+                const ProfileEditScreen(),
           ),
         ],
       ),
@@ -108,18 +135,21 @@ final routerProvider = Provider<GoRouter>((ref) {
           ),
           GoRoute(
             path: '/owner/post-create',
-            builder: (context, state) =>
-                const _PlaceholderScreen('Post Create'),
+            builder: (context, state) {
+              final shopId =
+                  state.uri.queryParameters['shopId'] ?? '';
+              return PostCreateScreen(shopId: shopId);
+            },
           ),
           GoRoute(
             path: '/owner/inventory',
             builder: (context, state) =>
-                const _PlaceholderScreen('Inventory'),
+                const InventoryScreen(),
           ),
           GoRoute(
             path: '/owner/settings',
             builder: (context, state) =>
-                const _PlaceholderScreen('Shop Settings'),
+                const ShopSettingsScreen(),
           ),
         ],
       ),
