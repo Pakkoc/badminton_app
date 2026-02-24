@@ -1,1 +1,33 @@
+# Design files
 *.excalidraw
+
+# 임시 스크린샷/이미지
+/image.png
+/screenshot*.png
+
+# OS 생성 파일
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# IDE
+.vscode/
+.idea/
+*.iml
+
+# 환경 변수
+.env
+.env.*
+!.env.example
+
+# Flutter / Dart
+.dart_tool/
+.flutter-plugins
+.flutter-plugins-dependencies
+.packages
+build/
+*.g.dart
+*.freezed.dart
+
+# 로그
+*.log
