@@ -1,3 +1,5 @@
+import 'package:badminton_app/screens/auth/profile_setup/profile_setup_screen.dart';
+import 'package:badminton_app/screens/auth/shop_signup/shop_signup_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -16,13 +18,11 @@ final routerProvider = Provider<GoRouter>((ref) {
       ),
       GoRoute(
         path: '/profile-setup',
-        builder: (context, state) =>
-            const _PlaceholderScreen('Profile Setup'),
+        builder: (context, state) => const ProfileSetupScreen(),
       ),
       GoRoute(
         path: '/shop-register',
-        builder: (context, state) =>
-            const _PlaceholderScreen('Shop Register'),
+        builder: (context, state) => const ShopSignupScreen(),
       ),
 
       // 고객 라우트
