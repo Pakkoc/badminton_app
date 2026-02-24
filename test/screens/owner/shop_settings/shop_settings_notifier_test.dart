@@ -253,13 +253,16 @@ void main() {
         // Arrange
         when(() => mockRepo.getByOwner(any()))
             .thenAnswer((_) async => testShop);
-        when(() => mockRepo.update(any(), any()))
-            .thenThrow(AppException.server());
 
         final notifier = container.read(
           shopSettingsNotifierProvider.notifier,
         );
         await notifier.loadShop();
+        // 빌드 시 스케줄된 microtask 완료 대기
+        await Future<void>.delayed(Duration.zero);
+
+        when(() => mockRepo.update(any(), any()))
+            .thenThrow(AppException.server());
 
         // Act
         final result = await notifier.submit();

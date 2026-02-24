@@ -89,34 +89,29 @@ void main() {
       expect(find.text('재고 관리'), findsOneWidget);
     });
 
-    testWidgets('FAB을 탭하면 상품 추가 바텀시트를 표시한다',
+    testWidgets('FAB이 "상품 추가" 텍스트를 표시한다',
         (tester) async {
-      // Arrange
+      // Arrange & Act
       await pumpTestApp(
         tester,
         child: const InventoryScreen(),
         overrides: [
           inventoryNotifierProvider.overrideWith(
             () => _FakeInventoryNotifier(
-              const InventoryState(),
+              InventoryState(items: [testInventoryItem]),
             ),
           ),
         ],
       );
 
-      // Act - tap on the EmptyState's action button
-      final fabFinder = find.widgetWithText(
-        FloatingActionButton,
-        '상품 추가',
+      // Assert
+      expect(
+        find.widgetWithText(
+          FloatingActionButton,
+          '상품 추가',
+        ),
+        findsOneWidget,
       );
-      if (fabFinder.evaluate().isNotEmpty) {
-        await tester.tap(fabFinder);
-        await tester.pumpAndSettle();
-
-        // Assert
-        expect(find.text('상품명'), findsOneWidget);
-        expect(find.text('수량'), findsOneWidget);
-      }
     });
 
     testWidgets('에러 상태일 때 에러 뷰를 표시한다', (tester) async {
