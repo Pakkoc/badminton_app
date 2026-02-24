@@ -63,10 +63,10 @@ allowed-tools: Read, Glob, Grep, Write, Edit, Bash, Task
    → 없으면: Phase 7 (공통 모듈 설계) 필요
    ※ 동기화 장벽: 이 단계 완료 전 화면별 구현 불가
 
-8. 화면별 설계 확인
+8. 화면별 상태/로직 설계 확인
    - docs/pages/*/state.md
    - docs/pages/*/plan.md
-   → 없거나 부족하면: Phase 8 (화면별 설계) 필요
+   → 없거나 부족하면: Phase 8 (화면별 상태/로직 설계) 필요
 
 9. 코드 구현 확인
    - src/ 또는 lib/ 등 소스 코드
@@ -299,9 +299,9 @@ allowed-tools: Read, Glob, Grep, Write, Edit, Bash, Task
 
 ---
 
-### Phase 8: 화면별 설계
+### Phase 8: 화면별 상태/로직 설계
 
-**목표**: 각 화면의 상태 관리와 구현 계획을 수립한다.
+**목표**: 각 화면의 내부 동작(상태 관리, 비즈니스 로직)과 구현 계획을 수립한다.
 
 **수행 작업**:
 - `/state-plan` 스킬로 화면별 상태 관리 설계
