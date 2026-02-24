@@ -75,6 +75,20 @@ class ShopRepository {
     }
   }
 
+  /// 매장 이름으로 검색한다.
+  Future<List<Shop>> searchByName(String query) async {
+    try {
+      final data = await _client
+          .from(_table)
+          .select()
+          .ilike('name', '%$query%')
+          .order('name');
+      return data.map(Shop.fromJson).toList();
+    } catch (e) {
+      throw ErrorHandler.handle(e);
+    }
+  }
+
   /// 지도 영역(bounds) 내의 매장 목록을 조회한다.
   Future<List<Shop>> searchByBounds({
     required double swLat,
