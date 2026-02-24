@@ -29,5 +29,11 @@ build/
 *.g.dart
 *.freezed.dart
 
+# Firebase 설정 파일 (API 키 포함)
+google-services.json
+GoogleService-Info.plist
+**/google-services.json
+**/GoogleService-Info.plist
+
 # 로그
 *.log
