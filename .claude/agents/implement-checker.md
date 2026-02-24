@@ -1,7 +1,7 @@
 ---
 name: implement-checker
-description: |
-  구현 검증 에이전트. 설계 문서(usecase, state-plan)와 실제 코드를 교차 검증하여 스펙 준수 여부를 확인하고, 누락이나 오류를 발견하면 직접 수정한다. code-reviewer와 역할이 다르다: code-reviewer는 코드 품질/아키텍처를, implement-checker는 스펙 준수/기능 완전성을 검증한다.
+description:
+  구현 검증 에이전트. 설계 문서(usecase, state-plan)와 실제 코드를 교차 검증하여 스펙 준수 여부를 확인하고, 누락이나 오류를 발견하면 직접 수정한다. code-reviewer와 역할이 다르다. code-reviewer는 코드 품질/아키텍처를, implement-checker는 스펙 준수/기능 완전성을 검증한다.
 model: sonnet
 ---
 

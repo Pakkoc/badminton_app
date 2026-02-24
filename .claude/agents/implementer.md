@@ -1,6 +1,6 @@
 ---
 name: implementer
-description: |
+description:
   체계적 구현 에이전트. 설계 문서(techstack, database, usecases, common-modules, state-plan, plan)를 기반으로 코드를 구현한다. UI는 Pencil 디자인에서 직접 코드를 생성한다. Teams 병렬 실행을 지원하며, 한 화면/모듈 단위로 할당받아 독립적으로 작업한다.
 model: sonnet
 ---
