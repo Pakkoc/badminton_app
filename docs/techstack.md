@@ -10,8 +10,8 @@
 
 | 계층 | 기술 | 버전 | 선택 이유 |
 |------|------|------|----------|
-| 프론트엔드 | Flutter | 3.27.x (stable) | iOS/Android 단일 코드베이스, Material 3 지원 |
-| 프로그래밍 언어 | Dart | 3.6.x | Flutter 기본 언어 |
+| 프론트엔드 | Flutter | 3.38.x (stable) | iOS/Android 단일 코드베이스, Material 3 지원 |
+| 프로그래밍 언어 | Dart | 3.10.x | Flutter 기본 언어 |
 | BaaS / DB | Supabase (PostgreSQL) | 최신 stable | Auth, Realtime, Edge Function, Storage 통합 제공 |
 | 인증 | Supabase Auth | - | 소셜 로그인 4종(카카오, 네이버, Google, Apple) 지원 |
 | 상태 관리 | Riverpod | 2.6.x | 컴파일 타임 안전성, Supabase와 궁합 좋음, 커뮤니티 주류 |
@@ -133,8 +133,8 @@
 
 | 도구 | 버전/설정 |
 |------|----------|
-| Flutter SDK | 3.27.x (stable) |
-| Dart SDK | 3.6.x |
+| Flutter SDK | 3.38.x (stable) |
+| Dart SDK | 3.10.x |
 | IDE | VS Code + Flutter/Dart 확장 또는 Android Studio |
 | Supabase CLI | 최신 stable (로컬 개발 환경) |
 | Node.js | 18+ (Supabase Edge Function 로컬 테스트) |
