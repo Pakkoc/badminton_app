@@ -9889,3 +9889,3463 @@ git commit -m "feat: 샵 상세 화면 구현 (탭 카테고리 + 공지/이벤�
 ```
 
 ---
+
+## Phase 3: 사장님 핵심 화면
+
+> **의존성**: Phase 1 (공통 모듈 M1~M12), Phase 2 (인증 플로우) 완료 필수
+>
+> **화면 목록**: 대시보드(3.1), 작업 접수(3.2), 작업 관리(3.3), 샵 QR(3.4)
+
+---
+
+### Task 3.1: 사장님 대시보드 (Owner Dashboard)
+
+> 참조: `docs/pages/owner-dashboard/state.md`, `docs/ui-specs/owner-dashboard.md`
+
+#### Task 3.1.1: 대시보드 상태 클래스 + Notifier + 테스트
+
+**Files:**
+- Create: `lib/screens/owner/dashboard/owner_dashboard_state.dart`
+- Create: `lib/screens/owner/dashboard/owner_dashboard_notifier.dart`
+- Create: `test/screens/owner/dashboard/owner_dashboard_notifier_test.dart`
+
+**Step 1 (Red): 테스트 작성**
+
+```dart
+// test/screens/owner/dashboard/owner_dashboard_notifier_test.dart
+import 'package:flutter_test/flutter_test.dart';
+import 'package:mocktail/mocktail.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:badminton_app/models/order.dart';
+import 'package:badminton_app/models/enums.dart';
+import 'package:badminton_app/repositories/order_repository.dart';
+import 'package:badminton_app/repositories/shop_repository.dart';
+import 'package:badminton_app/models/shop.dart';
+import 'package:badminton_app/screens/owner/dashboard/owner_dashboard_notifier.dart';
+import 'package:badminton_app/screens/owner/dashboard/owner_dashboard_state.dart';
+import 'package:badminton_app/core/error/app_exception.dart';
+
+class MockOrderRepository extends Mock implements OrderRepository {}
+class MockShopRepository extends Mock implements ShopRepository {}
+
+void main() {
+  late MockOrderRepository mockOrderRepo;
+  late MockShopRepository mockShopRepo;
+  late ProviderContainer container;
+
+  final testShop = Shop(
+    id: 'shop-1',
+    ownerId: 'user-1',
+    name: '테스트 샵',
+    address: '서울시 강남구',
+    phone: '010-1234-5678',
+    createdAt: DateTime.now(),
+  );
+
+  final testOrders = [
+    Order(
+      id: 'order-1',
+      shopId: 'shop-1',
+      memberId: 'member-1',
+      memberName: '홍길동',
+      status: OrderStatus.received,
+      memo: '테스트 메모',
+      createdAt: DateTime.now(),
+    ),
+    Order(
+      id: 'order-2',
+      shopId: 'shop-1',
+      memberId: 'member-2',
+      memberName: '김철수',
+      status: OrderStatus.inProgress,
+      memo: '',
+      createdAt: DateTime.now(),
+      inProgressAt: DateTime.now(),
+    ),
+    Order(
+      id: 'order-3',
+      shopId: 'shop-1',
+      memberId: 'member-3',
+      memberName: '이영희',
+      status: OrderStatus.completed,
+      memo: '',
+      createdAt: DateTime.now(),
+      completedAt: DateTime.now(),
+    ),
+  ];
+
+  setUp(() {
+    mockOrderRepo = MockOrderRepository();
+    mockShopRepo = MockShopRepository();
+  });
+
+  tearDown(() {
+    container.dispose();
+  });
+
+  group('OwnerDashboardNotifier', () {
+    test('초기 로드 시 오늘 작업 카운트와 최근 목록을 조회한다', () async {
+      // Arrange
+      when(() => mockShopRepo.getByOwner(any()))
+          .thenAnswer((_) async => testShop);
+      when(() => mockOrderRepo.getTodayCountsByShop('shop-1'))
+          .thenAnswer((_) async => {
+                OrderStatus.received: 1,
+                OrderStatus.inProgress: 1,
+                OrderStatus.completed: 1,
+              });
+      when(() => mockOrderRepo.getRecentByShop('shop-1', limit: 5))
+          .thenAnswer((_) async => testOrders);
+
+      container = ProviderContainer(overrides: [
+        orderRepositoryProvider.overrideWithValue(mockOrderRepo),
+        shopRepositoryProvider.overrideWithValue(mockShopRepo),
+      ]);
+
+      // Act
+      final notifier = container.read(ownerDashboardProvider.notifier);
+      await notifier.loadDashboard('user-1');
+
+      // Assert
+      final state = container.read(ownerDashboardProvider);
+      expect(state.receivedCount, 1);
+      expect(state.inProgressCount, 1);
+      expect(state.completedCount, 1);
+      expect(state.recentOrders.length, 3);
+      expect(state.isLoading, false);
+      expect(state.error, isNull);
+    });
+
+    test('데이터 로드 실패 시 error 상태가 설정된다', () async {
+      // Arrange
+      when(() => mockShopRepo.getByOwner(any()))
+          .thenThrow(AppException.network('네트워크 오류'));
+
+      container = ProviderContainer(overrides: [
+        orderRepositoryProvider.overrideWithValue(mockOrderRepo),
+        shopRepositoryProvider.overrideWithValue(mockShopRepo),
+      ]);
+
+      // Act
+      final notifier = container.read(ownerDashboardProvider.notifier);
+      await notifier.loadDashboard('user-1');
+
+      // Assert
+      final state = container.read(ownerDashboardProvider);
+      expect(state.isLoading, false);
+      expect(state.error, isNotNull);
+    });
+
+    test('상태 변경 시 낙관적 UI를 적용하고 API를 호출한다', () async {
+      // Arrange
+      when(() => mockShopRepo.getByOwner(any()))
+          .thenAnswer((_) async => testShop);
+      when(() => mockOrderRepo.getTodayCountsByShop('shop-1'))
+          .thenAnswer((_) async => {
+                OrderStatus.received: 1,
+                OrderStatus.inProgress: 1,
+                OrderStatus.completed: 1,
+              });
+      when(() => mockOrderRepo.getRecentByShop('shop-1', limit: 5))
+          .thenAnswer((_) async => testOrders);
+      when(() => mockOrderRepo.updateStatus(
+            'order-1',
+            OrderStatus.inProgress,
+          )).thenAnswer((_) async => {});
+
+      container = ProviderContainer(overrides: [
+        orderRepositoryProvider.overrideWithValue(mockOrderRepo),
+        shopRepositoryProvider.overrideWithValue(mockShopRepo),
+      ]);
+
+      final notifier = container.read(ownerDashboardProvider.notifier);
+      await notifier.loadDashboard('user-1');
+
+      // Act
+      await notifier.changeOrderStatus('order-1', OrderStatus.inProgress);
+
+      // Assert
+      final state = container.read(ownerDashboardProvider);
+      final updatedOrder = state.recentOrders.firstWhere(
+        (o) => o.id == 'order-1',
+      );
+      expect(updatedOrder.status, OrderStatus.inProgress);
+      expect(state.changingOrderId, isNull);
+      verify(() => mockOrderRepo.updateStatus(
+            'order-1',
+            OrderStatus.inProgress,
+          )).called(1);
+    });
+
+    test('상태 변경 실패 시 이전 상태로 롤백한다', () async {
+      // Arrange
+      when(() => mockShopRepo.getByOwner(any()))
+          .thenAnswer((_) async => testShop);
+      when(() => mockOrderRepo.getTodayCountsByShop('shop-1'))
+          .thenAnswer((_) async => {
+                OrderStatus.received: 1,
+                OrderStatus.inProgress: 0,
+                OrderStatus.completed: 0,
+              });
+      when(() => mockOrderRepo.getRecentByShop('shop-1', limit: 5))
+          .thenAnswer((_) async => [testOrders[0]]);
+      when(() => mockOrderRepo.updateStatus(
+            'order-1',
+            OrderStatus.inProgress,
+          )).thenThrow(AppException.network('네트워크 오류'));
+
+      container = ProviderContainer(overrides: [
+        orderRepositoryProvider.overrideWithValue(mockOrderRepo),
+        shopRepositoryProvider.overrideWithValue(mockShopRepo),
+      ]);
+
+      final notifier = container.read(ownerDashboardProvider.notifier);
+      await notifier.loadDashboard('user-1');
+
+      // Act
+      await notifier.changeOrderStatus('order-1', OrderStatus.inProgress);
+
+      // Assert
+      final state = container.read(ownerDashboardProvider);
+      final order = state.recentOrders.firstWhere(
+        (o) => o.id == 'order-1',
+      );
+      expect(order.status, OrderStatus.received); // 롤백됨
+      expect(state.error, isNotNull);
+    });
+
+    test('refresh() 호출 시 카운트와 목록을 재조회한다', () async {
+      // Arrange
+      when(() => mockShopRepo.getByOwner(any()))
+          .thenAnswer((_) async => testShop);
+      when(() => mockOrderRepo.getTodayCountsByShop('shop-1'))
+          .thenAnswer((_) async => {
+                OrderStatus.received: 2,
+                OrderStatus.inProgress: 3,
+                OrderStatus.completed: 5,
+              });
+      when(() => mockOrderRepo.getRecentByShop('shop-1', limit: 5))
+          .thenAnswer((_) async => testOrders);
+
+      container = ProviderContainer(overrides: [
+        orderRepositoryProvider.overrideWithValue(mockOrderRepo),
+        shopRepositoryProvider.overrideWithValue(mockShopRepo),
+      ]);
+
+      final notifier = container.read(ownerDashboardProvider.notifier);
+      await notifier.loadDashboard('user-1');
+
+      // Act
+      await notifier.refresh();
+
+      // Assert
+      verify(() => mockOrderRepo.getTodayCountsByShop('shop-1')).called(2);
+      verify(() => mockOrderRepo.getRecentByShop('shop-1', limit: 5))
+          .called(2);
+    });
+
+    test('undoStatusChange() 호출 시 이전 상태로 복원한다', () async {
+      // Arrange
+      when(() => mockShopRepo.getByOwner(any()))
+          .thenAnswer((_) async => testShop);
+      when(() => mockOrderRepo.getTodayCountsByShop('shop-1'))
+          .thenAnswer((_) async => {
+                OrderStatus.received: 1,
+                OrderStatus.inProgress: 0,
+                OrderStatus.completed: 0,
+              });
+      when(() => mockOrderRepo.getRecentByShop('shop-1', limit: 5))
+          .thenAnswer((_) async => [testOrders[0]]);
+      when(() => mockOrderRepo.updateStatus(any(), any()))
+          .thenAnswer((_) async => {});
+
+      container = ProviderContainer(overrides: [
+        orderRepositoryProvider.overrideWithValue(mockOrderRepo),
+        shopRepositoryProvider.overrideWithValue(mockShopRepo),
+      ]);
+
+      final notifier = container.read(ownerDashboardProvider.notifier);
+      await notifier.loadDashboard('user-1');
+      await notifier.changeOrderStatus('order-1', OrderStatus.inProgress);
+
+      // Act
+      await notifier.undoStatusChange('order-1', OrderStatus.received);
+
+      // Assert
+      verify(() => mockOrderRepo.updateStatus(
+            'order-1',
+            OrderStatus.received,
+          )).called(1);
+    });
+  });
+}
+```
+
+Run: `flutter test test/screens/owner/dashboard/owner_dashboard_notifier_test.dart`
+Expected: FAIL (클래스 미존재)
+
+**Step 2 (Green): 상태 클래스 구현**
+
+```dart
+// lib/screens/owner/dashboard/owner_dashboard_state.dart
+import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:badminton_app/models/order.dart';
+import 'package:badminton_app/core/error/app_exception.dart';
+
+part 'owner_dashboard_state.freezed.dart';
+
+@freezed
+class OwnerDashboardState with _$OwnerDashboardState {
+  const factory OwnerDashboardState({
+    @Default(0) int receivedCount,
+    @Default(0) int inProgressCount,
+    @Default(0) int completedCount,
+    @Default([]) List<Order> recentOrders,
+    @Default(true) bool isLoading,
+    AppException? error,
+    String? changingOrderId,
+  }) = _OwnerDashboardState;
+}
+```
+
+**Step 3 (Green): Notifier 구현**
+
+```dart
+// lib/screens/owner/dashboard/owner_dashboard_notifier.dart
+import 'dart:async';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:badminton_app/models/order.dart';
+import 'package:badminton_app/models/enums.dart';
+import 'package:badminton_app/repositories/order_repository.dart';
+import 'package:badminton_app/repositories/shop_repository.dart';
+import 'package:badminton_app/core/error/app_exception.dart';
+import 'package:badminton_app/core/error/error_handler.dart';
+import 'package:badminton_app/screens/owner/dashboard/owner_dashboard_state.dart';
+
+final ownerDashboardProvider =
+    NotifierProvider<OwnerDashboardNotifier, OwnerDashboardState>(
+  OwnerDashboardNotifier.new,
+);
+
+class OwnerDashboardNotifier extends Notifier<OwnerDashboardState> {
+  late final OrderRepository _orderRepo;
+  late final ShopRepository _shopRepo;
+  String? _shopId;
+  StreamSubscription<List<Order>>? _realtimeSub;
+
+  @override
+  OwnerDashboardState build() {
+    _orderRepo = ref.read(orderRepositoryProvider);
+    _shopRepo = ref.read(shopRepositoryProvider);
+
+    ref.onDispose(() {
+      _realtimeSub?.cancel();
+    });
+
+    return const OwnerDashboardState();
+  }
+
+  Future<void> loadDashboard(String userId) async {
+    state = state.copyWith(isLoading: true, error: null);
+
+    try {
+      final shop = await _shopRepo.getByOwner(userId);
+      _shopId = shop.id;
+
+      final counts = await _orderRepo.getTodayCountsByShop(shop.id);
+      final recent = await _orderRepo.getRecentByShop(shop.id, limit: 5);
+
+      state = state.copyWith(
+        receivedCount: counts[OrderStatus.received] ?? 0,
+        inProgressCount: counts[OrderStatus.inProgress] ?? 0,
+        completedCount: counts[OrderStatus.completed] ?? 0,
+        recentOrders: recent,
+        isLoading: false,
+      );
+
+      _subscribeToRealtime(shop.id);
+    } on AppException catch (e) {
+      state = state.copyWith(isLoading: false, error: e);
+    } catch (e, st) {
+      state = state.copyWith(
+        isLoading: false,
+        error: ErrorHandler.handle(e, st),
+      );
+    }
+  }
+
+  void _subscribeToRealtime(String shopId) {
+    _realtimeSub?.cancel();
+    _realtimeSub = _orderRepo.streamByShop(shopId).listen(
+      (orders) => _recalculateCounts(orders),
+      onError: (e) {/* Realtime 에러는 무시 — 다음 refresh에서 복구 */},
+    );
+  }
+
+  void _recalculateCounts(List<Order> allOrders) {
+    final today = DateTime.now();
+    final todayStart = DateTime(today.year, today.month, today.day);
+    final todayOrders = allOrders
+        .where((o) => o.createdAt.isAfter(todayStart))
+        .toList();
+
+    int received = 0, inProgress = 0, completed = 0;
+    for (final order in todayOrders) {
+      switch (order.status) {
+        case OrderStatus.received:
+          received++;
+        case OrderStatus.inProgress:
+          inProgress++;
+        case OrderStatus.completed:
+          completed++;
+      }
+    }
+
+    state = state.copyWith(
+      receivedCount: received,
+      inProgressCount: inProgress,
+      completedCount: completed,
+      recentOrders: todayOrders.take(5).toList(),
+    );
+  }
+
+  Future<void> refresh() async {
+    if (_shopId == null) return;
+    state = state.copyWith(isLoading: true);
+    try {
+      final counts = await _orderRepo.getTodayCountsByShop(_shopId!);
+      final recent = await _orderRepo.getRecentByShop(_shopId!, limit: 5);
+      state = state.copyWith(
+        receivedCount: counts[OrderStatus.received] ?? 0,
+        inProgressCount: counts[OrderStatus.inProgress] ?? 0,
+        completedCount: counts[OrderStatus.completed] ?? 0,
+        recentOrders: recent,
+        isLoading: false,
+        error: null,
+      );
+    } on AppException catch (e) {
+      state = state.copyWith(isLoading: false, error: e);
+    }
+  }
+
+  Future<void> changeOrderStatus(
+    String orderId, OrderStatus newStatus,
+  ) async {
+    final previousOrders = List<Order>.from(state.recentOrders);
+    final idx = previousOrders.indexWhere((o) => o.id == orderId);
+    if (idx == -1) return;
+
+    final previousOrder = previousOrders[idx];
+    // 낙관적 UI
+    state = state.copyWith(changingOrderId: orderId);
+    final updated = List<Order>.from(state.recentOrders);
+    updated[idx] = previousOrder.copyWith(status: newStatus);
+    state = state.copyWith(recentOrders: updated);
+
+    try {
+      await _orderRepo.updateStatus(orderId, newStatus);
+      state = state.copyWith(changingOrderId: null);
+      await _refreshCounts();
+    } on AppException catch (e) {
+      state = state.copyWith(
+        recentOrders: previousOrders, changingOrderId: null, error: e,
+      );
+    } catch (e, st) {
+      state = state.copyWith(
+        recentOrders: previousOrders,
+        changingOrderId: null,
+        error: ErrorHandler.handle(e, st),
+      );
+    }
+  }
+
+  Future<void> undoStatusChange(
+    String orderId, OrderStatus previousStatus,
+  ) async {
+    await changeOrderStatus(orderId, previousStatus);
+  }
+
+  Future<void> _refreshCounts() async {
+    if (_shopId == null) return;
+    final counts = await _orderRepo.getTodayCountsByShop(_shopId!);
+    state = state.copyWith(
+      receivedCount: counts[OrderStatus.received] ?? 0,
+      inProgressCount: counts[OrderStatus.inProgress] ?? 0,
+      completedCount: counts[OrderStatus.completed] ?? 0,
+    );
+  }
+}
+```
+
+Run: `flutter test test/screens/owner/dashboard/owner_dashboard_notifier_test.dart`
+Expected: ALL PASS
+
+**Step 4: build_runner 실행**
+
+```bash
+dart run build_runner build --delete-conflicting-outputs
+```
+
+**Step 5: Commit**
+
+```bash
+git add lib/screens/owner/dashboard/owner_dashboard_state.dart \
+        lib/screens/owner/dashboard/owner_dashboard_notifier.dart \
+        test/screens/owner/dashboard/owner_dashboard_notifier_test.dart
+git commit -m "feat: 사장님 대시보드 상태 관리 및 Notifier 구현"
+```
+
+---
+
+#### Task 3.1.2: 대시보드 화면 위젯 + 위젯 테스트
+
+**Files:**
+- Create: `lib/screens/owner/dashboard/owner_dashboard_screen.dart`
+- Create: `test/screens/owner/dashboard/owner_dashboard_screen_test.dart`
+
+**Step 1 (Red): 위젯 테스트 작성**
+
+```dart
+// test/screens/owner/dashboard/owner_dashboard_screen_test.dart
+import 'package:flutter/material.dart';
+import 'package:flutter_test/flutter_test.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:badminton_app/models/order.dart';
+import 'package:badminton_app/models/enums.dart';
+import 'package:badminton_app/core/error/app_exception.dart';
+import 'package:badminton_app/widgets/skeleton_shimmer.dart';
+import 'package:badminton_app/screens/owner/dashboard/owner_dashboard_screen.dart';
+import 'package:badminton_app/screens/owner/dashboard/owner_dashboard_state.dart';
+import 'package:badminton_app/screens/owner/dashboard/owner_dashboard_notifier.dart';
+
+class FakeDashboardNotifier extends Notifier<OwnerDashboardState>
+    implements OwnerDashboardNotifier {
+  final OwnerDashboardState initialState;
+  FakeDashboardNotifier(this.initialState);
+
+  @override
+  OwnerDashboardState build() => initialState;
+
+  @override
+  Future<void> loadDashboard(String userId) async {}
+  @override
+  Future<void> refresh() async {}
+  @override
+  Future<void> changeOrderStatus(String id, OrderStatus s) async {}
+  @override
+  Future<void> undoStatusChange(String id, OrderStatus s) async {}
+}
+
+Widget buildTestWidget(OwnerDashboardState state) {
+  return ProviderScope(
+    overrides: [
+      ownerDashboardProvider.overrideWith(
+        () => FakeDashboardNotifier(state),
+      ),
+    ],
+    child: const MaterialApp(
+      home: OwnerDashboardScreen(),
+    ),
+  );
+}
+
+void main() {
+  group('OwnerDashboardScreen', () {
+    testWidgets('로딩 중일 때 스켈레톤 shimmer를 표시한다', (tester) async {
+      // Arrange
+      const state = OwnerDashboardState(isLoading: true);
+
+      // Act
+      await tester.pumpWidget(buildTestWidget(state));
+
+      // Assert
+      expect(find.byType(SkeletonShimmer), findsWidgets);
+    });
+
+    testWidgets('카운트 카드 3개를 올바르게 표시한다', (tester) async {
+      // Arrange
+      const state = OwnerDashboardState(
+        receivedCount: 3,
+        inProgressCount: 2,
+        completedCount: 5,
+        isLoading: false,
+      );
+
+      // Act
+      await tester.pumpWidget(buildTestWidget(state));
+
+      // Assert
+      expect(find.text('3'), findsOneWidget);
+      expect(find.text('접수됨'), findsOneWidget);
+      expect(find.text('2'), findsOneWidget);
+      expect(find.text('작업중'), findsOneWidget);
+      expect(find.text('5'), findsOneWidget);
+      expect(find.text('완료'), findsOneWidget);
+    });
+
+    testWidgets('최근 작업 목록을 표시한다', (tester) async {
+      // Arrange
+      final state = OwnerDashboardState(
+        recentOrders: [
+          Order(
+            id: 'order-1', shopId: 'shop-1', memberId: 'member-1',
+            memberName: '홍길동', status: OrderStatus.received,
+            memo: '', createdAt: DateTime.now(),
+          ),
+        ],
+        isLoading: false,
+      );
+
+      // Act
+      await tester.pumpWidget(buildTestWidget(state));
+
+      // Assert
+      expect(find.text('홍길동'), findsOneWidget);
+    });
+
+    testWidgets('작업이 0건이면 EmptyState를 표시한다', (tester) async {
+      // Arrange & Act
+      await tester.pumpWidget(buildTestWidget(
+        const OwnerDashboardState(recentOrders: [], isLoading: false),
+      ));
+
+      // Assert
+      expect(find.text('오늘 접수된 작업이 없습니다'), findsOneWidget);
+    });
+
+    testWidgets('에러 상태에서 ErrorView와 재시도 버튼을 표시한다', (tester) async {
+      // Arrange
+      final state = OwnerDashboardState(
+        isLoading: false,
+        error: AppException.network('네트워크 오류'),
+      );
+
+      // Act
+      await tester.pumpWidget(buildTestWidget(state));
+
+      // Assert
+      expect(find.text('데이터를 불러올 수 없습니다'), findsOneWidget);
+      expect(find.text('재시도'), findsOneWidget);
+    });
+
+    testWidgets('FAB이 존재한다', (tester) async {
+      // Arrange & Act
+      await tester.pumpWidget(buildTestWidget(
+        const OwnerDashboardState(isLoading: false),
+      ));
+
+      // Assert
+      expect(find.byType(FloatingActionButton), findsOneWidget);
+    });
+  });
+}
+```
+
+Run: `flutter test test/screens/owner/dashboard/owner_dashboard_screen_test.dart`
+Expected: FAIL (화면 위젯 미존재)
+
+**Step 2 (Green): 화면 위젯 구현**
+
+```dart
+// lib/screens/owner/dashboard/owner_dashboard_screen.dart
+import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
+import 'package:badminton_app/models/enums.dart';
+import 'package:badminton_app/widgets/skeleton_shimmer.dart';
+import 'package:badminton_app/widgets/empty_state.dart';
+import 'package:badminton_app/widgets/error_view.dart';
+import 'package:badminton_app/widgets/status_badge.dart';
+import 'package:badminton_app/widgets/toast.dart';
+import 'package:badminton_app/core/utils/formatters.dart';
+import 'package:badminton_app/providers/auth_provider.dart';
+import 'package:badminton_app/screens/owner/dashboard/owner_dashboard_notifier.dart';
+
+class OwnerDashboardScreen extends ConsumerStatefulWidget {
+  const OwnerDashboardScreen({super.key});
+
+  @override
+  ConsumerState<OwnerDashboardScreen> createState() =>
+      _OwnerDashboardScreenState();
+}
+
+class _OwnerDashboardScreenState
+    extends ConsumerState<OwnerDashboardScreen> {
+  @override
+  void initState() {
+    super.initState();
+    final userId = ref.read(currentUserProvider)?.id;
+    if (userId != null) {
+      ref.read(ownerDashboardProvider.notifier).loadDashboard(userId);
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final state = ref.watch(ownerDashboardProvider);
+
+    return Scaffold(
+      appBar: AppBar(
+        title: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              '거트알림',
+              style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                    fontWeight: FontWeight.w600,
+                  ),
+            ),
+          ],
+        ),
+        bottom: PreferredSize(
+          preferredSize: const Size.fromHeight(0.5),
+          child: Container(height: 0.5, color: const Color(0xFFE2E8F0)),
+        ),
+      ),
+      body: state.error != null && state.recentOrders.isEmpty
+          ? ErrorView(
+              message: '데이터를 불러올 수 없습니다',
+              onRetry: () {
+                final userId = ref.read(currentUserProvider)?.id;
+                if (userId != null) {
+                  ref.read(ownerDashboardProvider.notifier)
+                      .loadDashboard(userId);
+                }
+              },
+            )
+          : RefreshIndicator(
+              onRefresh: () =>
+                  ref.read(ownerDashboardProvider.notifier).refresh(),
+              child: ListView(
+                padding: const EdgeInsets.all(16),
+                children: [
+                  Text(
+                    '오늘의 작업 현황',
+                    style: Theme.of(context).textTheme.headlineMedium
+                        ?.copyWith(fontWeight: FontWeight.w600),
+                  ),
+                  const SizedBox(height: 16),
+                  if (state.isLoading)
+                    const SkeletonShimmer(height: 100)
+                  else
+                    _buildCountCards(context, state),
+                  const SizedBox(height: 24),
+                  Text(
+                    '최근 작업',
+                    style: Theme.of(context).textTheme.titleMedium
+                        ?.copyWith(fontWeight: FontWeight.w600),
+                  ),
+                  const SizedBox(height: 12),
+                  if (state.isLoading)
+                    ...List.generate(5, (_) => const Padding(
+                      padding: EdgeInsets.only(bottom: 8),
+                      child: SkeletonShimmer(height: 72),
+                    ))
+                  else if (state.recentOrders.isEmpty)
+                    const EmptyState(
+                      message: '오늘 접수된 작업이 없습니다',
+                      subMessage: '작업 접수 버튼으로 새 작업을 등록하세요',
+                    )
+                  else
+                    ...state.recentOrders.map(
+                      (order) => _buildOrderCard(context, order, state),
+                    ),
+                ],
+              ),
+            ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () => context.push('/owner/order-create'),
+        backgroundColor: const Color(0xFFF97316),
+        child: const Icon(Icons.add),
+      ),
+    );
+  }
+
+  Widget _buildCountCards(BuildContext context, dynamic state) {
+    return Row(
+      children: [
+        Expanded(child: _CountCard(
+          count: state.receivedCount, label: '접수됨',
+          backgroundColor: const Color(0xFFFEF3C7),
+          textColor: const Color(0xFF92400E),
+          onTap: () => context.push('/owner/order-manage?statusFilter=received'),
+        )),
+        const SizedBox(width: 12),
+        Expanded(child: _CountCard(
+          count: state.inProgressCount, label: '작업중',
+          backgroundColor: const Color(0xFFDBEAFE),
+          textColor: const Color(0xFF1E40AF),
+          onTap: () => context.push('/owner/order-manage?statusFilter=inProgress'),
+        )),
+        const SizedBox(width: 12),
+        Expanded(child: _CountCard(
+          count: state.completedCount, label: '완료',
+          backgroundColor: const Color(0xFFDCFCE7),
+          textColor: const Color(0xFF166534),
+          onTap: () => context.push('/owner/order-manage?statusFilter=completed'),
+        )),
+      ],
+    );
+  }
+
+  Widget _buildOrderCard(BuildContext context, dynamic order, dynamic state) {
+    final isChanging = state.changingOrderId == order.id;
+    final nextStatus = _getNextStatus(order.status);
+
+    return Card(
+      margin: const EdgeInsets.only(bottom: 8),
+      child: ListTile(
+        title: Text(order.memberName ?? '알 수 없음'),
+        subtitle: Text(Formatters.dateTime(order.createdAt)),
+        trailing: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            StatusBadge(status: order.status),
+            if (nextStatus != null) ...[
+              const SizedBox(width: 8),
+              isChanging
+                  ? const SizedBox(
+                      width: 24, height: 24,
+                      child: CircularProgressIndicator(strokeWidth: 2),
+                    )
+                  : IconButton(
+                      icon: const Icon(Icons.arrow_forward),
+                      onPressed: () => _onStatusChange(
+                        context, order.id, order.status, nextStatus,
+                      ),
+                    ),
+            ],
+          ],
+        ),
+      ),
+    );
+  }
+
+  OrderStatus? _getNextStatus(OrderStatus current) {
+    switch (current) {
+      case OrderStatus.received:
+        return OrderStatus.inProgress;
+      case OrderStatus.inProgress:
+        return OrderStatus.completed;
+      case OrderStatus.completed:
+        return null;
+    }
+  }
+
+  Future<void> _onStatusChange(
+    BuildContext context, String orderId,
+    OrderStatus previousStatus, OrderStatus newStatus,
+  ) async {
+    await ref.read(ownerDashboardProvider.notifier)
+        .changeOrderStatus(orderId, newStatus);
+    if (context.mounted) {
+      AppToast.showUndo(context,
+        message: '상태가 변경되었습니다',
+        onUndo: () => ref.read(ownerDashboardProvider.notifier)
+            .undoStatusChange(orderId, previousStatus),
+      );
+    }
+  }
+}
+
+class _CountCard extends StatelessWidget {
+  final int count;
+  final String label;
+  final Color backgroundColor;
+  final Color textColor;
+  final VoidCallback? onTap;
+
+  const _CountCard({
+    required this.count, required this.label,
+    required this.backgroundColor, required this.textColor, this.onTap,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: onTap,
+      child: Container(
+        padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 12),
+        decoration: BoxDecoration(
+          color: backgroundColor,
+          borderRadius: BorderRadius.circular(12),
+        ),
+        child: Column(children: [
+          Text('$count', style: TextStyle(
+            fontSize: 32, fontWeight: FontWeight.bold, color: textColor,
+          )),
+          const SizedBox(height: 4),
+          Text(label, style: TextStyle(fontSize: 14, color: textColor)),
+        ]),
+      ),
+    );
+  }
+}
+```
+
+Run: `flutter test test/screens/owner/dashboard/owner_dashboard_screen_test.dart`
+Expected: ALL PASS
+
+**Step 3: Commit**
+
+```bash
+git add lib/screens/owner/dashboard/owner_dashboard_screen.dart \
+        test/screens/owner/dashboard/owner_dashboard_screen_test.dart
+git commit -m "feat: 사장님 대시보드 화면 위젯 및 위젯 테스트 구현"
+```
+
+---
+
+### Task 3.2: 작업 접수 (Order Create)
+
+> 참조: `docs/pages/order-create/state.md`, `docs/ui-specs/order-create.md`, UC-3, UC-4
+
+#### Task 3.2.1: 작업 접수 상태 클래스 + Notifier + 테스트
+
+**Files:**
+- Create: `lib/screens/owner/order_create/order_create_state.dart`
+- Create: `lib/screens/owner/order_create/order_create_notifier.dart`
+- Create: `test/screens/owner/order_create/order_create_notifier_test.dart`
+
+**Step 1 (Red): 테스트 작성**
+
+```dart
+// test/screens/owner/order_create/order_create_notifier_test.dart
+import 'package:flutter_test/flutter_test.dart';
+import 'package:mocktail/mocktail.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:badminton_app/models/member.dart';
+import 'package:badminton_app/models/order.dart';
+import 'package:badminton_app/models/shop.dart';
+import 'package:badminton_app/models/user.dart' as app;
+import 'package:badminton_app/models/enums.dart';
+import 'package:badminton_app/repositories/member_repository.dart';
+import 'package:badminton_app/repositories/order_repository.dart';
+import 'package:badminton_app/repositories/user_repository.dart';
+import 'package:badminton_app/repositories/shop_repository.dart';
+import 'package:badminton_app/screens/owner/order_create/order_create_notifier.dart';
+import 'package:badminton_app/screens/owner/order_create/order_create_state.dart';
+import 'package:badminton_app/core/error/app_exception.dart';
+
+class MockMemberRepository extends Mock implements MemberRepository {}
+class MockOrderRepository extends Mock implements OrderRepository {}
+class MockUserRepository extends Mock implements UserRepository {}
+class MockShopRepository extends Mock implements ShopRepository {}
+
+void main() {
+  late MockMemberRepository mockMemberRepo;
+  late MockOrderRepository mockOrderRepo;
+  late MockUserRepository mockUserRepo;
+  late MockShopRepository mockShopRepo;
+  late ProviderContainer container;
+
+  final testShop = Shop(
+    id: 'shop-1', ownerId: 'user-1', name: '테스트 샵',
+    address: '서울시', phone: '010-0000-0000', createdAt: DateTime.now(),
+  );
+
+  final testMember = Member(
+    id: 'member-1', shopId: 'shop-1', userId: 'customer-1',
+    name: '홍길동', phone: '010-1234-5678', visitCount: 3,
+    createdAt: DateTime.now(),
+  );
+
+  final testUser = app.User(
+    id: 'customer-1', name: '홍길동', phone: '010-1234-5678',
+    role: UserRole.customer, createdAt: DateTime.now(),
+  );
+
+  setUp(() {
+    mockMemberRepo = MockMemberRepository();
+    mockOrderRepo = MockOrderRepository();
+    mockUserRepo = MockUserRepository();
+    mockShopRepo = MockShopRepository();
+
+    when(() => mockShopRepo.getByOwner(any()))
+        .thenAnswer((_) async => testShop);
+  });
+
+  tearDown(() => container.dispose());
+
+  ProviderContainer createContainer() {
+    return ProviderContainer(overrides: [
+      memberRepositoryProvider.overrideWithValue(mockMemberRepo),
+      orderRepositoryProvider.overrideWithValue(mockOrderRepo),
+      userRepositoryProvider.overrideWithValue(mockUserRepo),
+      shopRepositoryProvider.overrideWithValue(mockShopRepo),
+    ]);
+  }
+
+  group('OrderCreateNotifier', () {
+    test('QR 스캔 — 기존 회원이면 selectedMember에 설정된다', () async {
+      // Arrange
+      when(() => mockMemberRepo.getByUserAndShop('customer-1', 'shop-1'))
+          .thenAnswer((_) async => testMember);
+
+      container = createContainer();
+      final notifier = container.read(orderCreateProvider.notifier);
+      await notifier.init('user-1');
+
+      // Act
+      await notifier.onQrScanned('customer-1');
+
+      // Assert
+      final state = container.read(orderCreateProvider);
+      expect(state.selectedMember, testMember);
+      expect(state.isScanning, false);
+    });
+
+    test('QR 스캔 — 신규 회원이면 자동 등록 후 selectedMember에 설정된다', () async {
+      // Arrange
+      when(() => mockMemberRepo.getByUserAndShop('customer-1', 'shop-1'))
+          .thenAnswer((_) async => null);
+      when(() => mockUserRepo.getById('customer-1'))
+          .thenAnswer((_) async => testUser);
+      when(() => mockMemberRepo.create(
+            shopId: 'shop-1', userId: 'customer-1',
+            name: '홍길동', phone: '010-1234-5678',
+          )).thenAnswer((_) async => testMember);
+
+      container = createContainer();
+      final notifier = container.read(orderCreateProvider.notifier);
+      await notifier.init('user-1');
+
+      // Act
+      await notifier.onQrScanned('customer-1');
+
+      // Assert
+      final state = container.read(orderCreateProvider);
+      expect(state.selectedMember, isNotNull);
+      expect(state.selectedMember!.name, '홍길동');
+    });
+
+    test('QR 스캔 실패 시 error가 설정된다', () async {
+      // Arrange
+      when(() => mockMemberRepo.getByUserAndShop(any(), any()))
+          .thenThrow(AppException.network('네트워크 오류'));
+
+      container = createContainer();
+      final notifier = container.read(orderCreateProvider.notifier);
+      await notifier.init('user-1');
+
+      // Act
+      await notifier.onQrScanned('invalid-id');
+
+      // Assert
+      final state = container.read(orderCreateProvider);
+      expect(state.error, isNotNull);
+      expect(state.isScanning, false);
+    });
+
+    test('회원 검색 — 2글자 이상이면 검색 결과를 반환한다', () async {
+      // Arrange
+      when(() => mockMemberRepo.search('shop-1', '홍길'))
+          .thenAnswer((_) async => [testMember]);
+
+      container = createContainer();
+      final notifier = container.read(orderCreateProvider.notifier);
+      await notifier.init('user-1');
+
+      // Act
+      await notifier.searchMembers('홍길');
+
+      // Assert
+      final state = container.read(orderCreateProvider);
+      expect(state.searchResults.value, isNotNull);
+      expect(state.searchResults.value!.length, 1);
+    });
+
+    test('selectMember() 호출 시 selectedMember와 searchQuery가 갱신된다', () async {
+      // Arrange
+      container = createContainer();
+      final notifier = container.read(orderCreateProvider.notifier);
+      await notifier.init('user-1');
+
+      // Act
+      notifier.selectMember(testMember);
+
+      // Assert
+      final state = container.read(orderCreateProvider);
+      expect(state.selectedMember, testMember);
+      expect(state.searchQuery, '');
+    });
+
+    test('clearMember() 호출 시 선택이 초기화된다', () async {
+      // Arrange
+      container = createContainer();
+      final notifier = container.read(orderCreateProvider.notifier);
+      await notifier.init('user-1');
+      notifier.selectMember(testMember);
+      notifier.updateMemo('테스트 메모');
+
+      // Act
+      notifier.clearMember();
+
+      // Assert
+      final state = container.read(orderCreateProvider);
+      expect(state.selectedMember, isNull);
+      expect(state.memo, '');
+    });
+
+    test('submit() 성공 시 isSubmitting이 true→false로 변경된다', () async {
+      // Arrange
+      when(() => mockOrderRepo.create(
+            shopId: any(named: 'shopId'),
+            memberId: any(named: 'memberId'),
+            memo: any(named: 'memo'),
+          )).thenAnswer((_) async => Order(
+            id: 'order-new', shopId: 'shop-1', memberId: 'member-1',
+            memberName: '홍길동', status: OrderStatus.received,
+            memo: '테스트', createdAt: DateTime.now(),
+          ));
+
+      container = createContainer();
+      final notifier = container.read(orderCreateProvider.notifier);
+      await notifier.init('user-1');
+      notifier.selectMember(testMember);
+      notifier.updateMemo('테스트');
+
+      // Act
+      final result = await notifier.submit();
+
+      // Assert
+      expect(result, true);
+      final state = container.read(orderCreateProvider);
+      expect(state.isSubmitting, false);
+    });
+
+    test('submit() 실패 시 error가 설정되고 입력 데이터가 유지된다', () async {
+      // Arrange
+      when(() => mockOrderRepo.create(
+            shopId: any(named: 'shopId'),
+            memberId: any(named: 'memberId'),
+            memo: any(named: 'memo'),
+          )).thenThrow(AppException.network('네트워크 오류'));
+
+      container = createContainer();
+      final notifier = container.read(orderCreateProvider.notifier);
+      await notifier.init('user-1');
+      notifier.selectMember(testMember);
+      notifier.updateMemo('테스트');
+
+      // Act
+      final result = await notifier.submit();
+
+      // Assert
+      expect(result, false);
+      final state = container.read(orderCreateProvider);
+      expect(state.isSubmitting, false);
+      expect(state.error, isNotNull);
+      expect(state.selectedMember, testMember); // 입력 유지
+      expect(state.memo, '테스트');
+    });
+
+    test('canSubmit — 회원 선택 + 미제출 시 true', () async {
+      // Arrange
+      container = createContainer();
+      final notifier = container.read(orderCreateProvider.notifier);
+      await notifier.init('user-1');
+
+      // Act
+      notifier.selectMember(testMember);
+
+      // Assert
+      final state = container.read(orderCreateProvider);
+      expect(state.canSubmit, true);
+    });
+
+    test('isFormDirty — 회원 선택 시 true', () async {
+      // Arrange
+      container = createContainer();
+      final notifier = container.read(orderCreateProvider.notifier);
+      await notifier.init('user-1');
+
+      // Act
+      notifier.selectMember(testMember);
+
+      // Assert
+      final state = container.read(orderCreateProvider);
+      expect(state.isFormDirty, true);
+    });
+  });
+}
+```
+
+Run: `flutter test test/screens/owner/order_create/order_create_notifier_test.dart`
+Expected: FAIL (클래스 미존재)
+
+**Step 2 (Green): 상태 클래스 구현**
+
+```dart
+// lib/screens/owner/order_create/order_create_state.dart
+import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:badminton_app/models/member.dart';
+import 'package:badminton_app/core/error/app_exception.dart';
+
+part 'order_create_state.freezed.dart';
+
+@freezed
+class OrderCreateState with _$OrderCreateState {
+  const OrderCreateState._();
+
+  const factory OrderCreateState({
+    Member? selectedMember,
+    @Default('') String memo,
+    @Default('') String searchQuery,
+    @Default(AsyncValue.data([])) AsyncValue<List<Member>> searchResults,
+    @Default(false) bool isSubmitting,
+    @Default(false) bool isScanning,
+    AppException? error,
+  }) = _OrderCreateState;
+
+  bool get canSubmit => selectedMember != null && !isSubmitting;
+  bool get isFormDirty => selectedMember != null || memo.isNotEmpty;
+}
+```
+
+**Step 3 (Green): Notifier 구현**
+
+```dart
+// lib/screens/owner/order_create/order_create_notifier.dart
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:badminton_app/models/member.dart';
+import 'package:badminton_app/models/enums.dart';
+import 'package:badminton_app/repositories/member_repository.dart';
+import 'package:badminton_app/repositories/order_repository.dart';
+import 'package:badminton_app/repositories/user_repository.dart';
+import 'package:badminton_app/repositories/shop_repository.dart';
+import 'package:badminton_app/core/error/app_exception.dart';
+import 'package:badminton_app/core/error/error_handler.dart';
+import 'package:badminton_app/screens/owner/order_create/order_create_state.dart';
+
+final orderCreateProvider =
+    NotifierProvider<OrderCreateNotifier, OrderCreateState>(
+  OrderCreateNotifier.new,
+);
+
+class OrderCreateNotifier extends Notifier<OrderCreateState> {
+  late final MemberRepository _memberRepo;
+  late final OrderRepository _orderRepo;
+  late final UserRepository _userRepo;
+  late final ShopRepository _shopRepo;
+  String? _shopId;
+
+  @override
+  OrderCreateState build() {
+    _memberRepo = ref.read(memberRepositoryProvider);
+    _orderRepo = ref.read(orderRepositoryProvider);
+    _userRepo = ref.read(userRepositoryProvider);
+    _shopRepo = ref.read(shopRepositoryProvider);
+    return const OrderCreateState();
+  }
+
+  Future<void> init(String userId) async {
+    try {
+      final shop = await _shopRepo.getByOwner(userId);
+      _shopId = shop.id;
+    } catch (e, st) {
+      state = state.copyWith(error: ErrorHandler.handle(e, st));
+    }
+  }
+
+  Future<void> onQrScanned(String userId) async {
+    if (_shopId == null) return;
+    state = state.copyWith(isScanning: true, error: null);
+
+    try {
+      // 기존 회원 확인
+      var member = await _memberRepo.getByUserAndShop(userId, _shopId!);
+
+      if (member == null) {
+        // 신규 회원 자동 등록
+        final user = await _userRepo.getById(userId);
+        member = await _memberRepo.create(
+          shopId: _shopId!,
+          userId: userId,
+          name: user.name,
+          phone: user.phone,
+        );
+      }
+
+      state = state.copyWith(
+        selectedMember: member,
+        isScanning: false,
+      );
+    } on AppException catch (e) {
+      state = state.copyWith(isScanning: false, error: e);
+    } catch (e, st) {
+      state = state.copyWith(
+        isScanning: false,
+        error: ErrorHandler.handle(e, st),
+      );
+    }
+  }
+
+  Future<void> searchMembers(String query) async {
+    if (_shopId == null || query.length < 2) {
+      state = state.copyWith(
+        searchQuery: query,
+        searchResults: const AsyncValue.data([]),
+      );
+      return;
+    }
+
+    state = state.copyWith(
+      searchQuery: query,
+      searchResults: const AsyncValue.loading(),
+    );
+
+    try {
+      final results = await _memberRepo.search(_shopId!, query);
+      state = state.copyWith(
+        searchResults: AsyncValue.data(results),
+      );
+    } catch (e, st) {
+      state = state.copyWith(
+        searchResults: AsyncValue.error(e, st),
+      );
+    }
+  }
+
+  void selectMember(Member member) {
+    state = state.copyWith(
+      selectedMember: member,
+      searchQuery: '',
+      searchResults: const AsyncValue.data([]),
+    );
+  }
+
+  void clearMember() {
+    state = state.copyWith(
+      selectedMember: null,
+      memo: '',
+    );
+  }
+
+  void updateMemo(String memo) {
+    state = state.copyWith(memo: memo);
+  }
+
+  Future<bool> submit() async {
+    if (!state.canSubmit || _shopId == null) return false;
+
+    state = state.copyWith(isSubmitting: true, error: null);
+
+    try {
+      await _orderRepo.create(
+        shopId: _shopId!,
+        memberId: state.selectedMember!.id,
+        memo: state.memo,
+      );
+      state = state.copyWith(isSubmitting: false);
+      return true;
+    } on AppException catch (e) {
+      state = state.copyWith(isSubmitting: false, error: e);
+      return false;
+    } catch (e, st) {
+      state = state.copyWith(
+        isSubmitting: false,
+        error: ErrorHandler.handle(e, st),
+      );
+      return false;
+    }
+  }
+}
+```
+
+Run: `flutter test test/screens/owner/order_create/order_create_notifier_test.dart`
+Expected: ALL PASS
+
+**Step 4: build_runner 실행**
+
+```bash
+dart run build_runner build --delete-conflicting-outputs
+```
+
+**Step 5: Commit**
+
+```bash
+git add lib/screens/owner/order_create/order_create_state.dart \
+        lib/screens/owner/order_create/order_create_notifier.dart \
+        test/screens/owner/order_create/order_create_notifier_test.dart
+git commit -m "feat: 작업 접수 상태 관리 및 Notifier 구현"
+```
+
+---
+
+#### Task 3.2.2: 작업 접수 화면 위젯 + 위젯 테스트
+
+**Files:**
+- Create: `lib/screens/owner/order_create/order_create_screen.dart`
+- Create: `test/screens/owner/order_create/order_create_screen_test.dart`
+
+**Step 1 (Red): 위젯 테스트 작성**
+
+```dart
+// test/screens/owner/order_create/order_create_screen_test.dart
+import 'package:flutter/material.dart';
+import 'package:flutter_test/flutter_test.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:badminton_app/models/member.dart';
+import 'package:badminton_app/models/enums.dart';
+import 'package:badminton_app/core/error/app_exception.dart';
+import 'package:badminton_app/screens/owner/order_create/order_create_screen.dart';
+import 'package:badminton_app/screens/owner/order_create/order_create_state.dart';
+import 'package:badminton_app/screens/owner/order_create/order_create_notifier.dart';
+
+class FakeOrderCreateNotifier extends Notifier<OrderCreateState>
+    implements OrderCreateNotifier {
+  final OrderCreateState initialState;
+  FakeOrderCreateNotifier(this.initialState);
+
+  @override
+  OrderCreateState build() => initialState;
+
+  @override
+  Future<void> init(String userId) async {}
+  @override
+  Future<void> onQrScanned(String userId) async {}
+  @override
+  Future<void> searchMembers(String query) async {}
+  @override
+  void selectMember(Member member) {}
+  @override
+  void clearMember() {}
+  @override
+  void updateMemo(String memo) {}
+  @override
+  Future<bool> submit() async => true;
+}
+
+Widget buildTestWidget(OrderCreateState state) {
+  return ProviderScope(
+    overrides: [
+      orderCreateProvider.overrideWith(
+        () => FakeOrderCreateNotifier(state),
+      ),
+    ],
+    child: const MaterialApp(home: OrderCreateScreen()),
+  );
+}
+
+void main() {
+  group('OrderCreateScreen', () {
+    testWidgets('초기 상태에서 QR 스캔 버튼과 검색 영역을 표시한다', (tester) async {
+      // Arrange & Act
+      await tester.pumpWidget(buildTestWidget(const OrderCreateState()));
+
+      // Assert
+      expect(find.text('QR 스캔하기'), findsOneWidget);
+      expect(find.byType(TextField), findsOneWidget); // 검색 필드
+    });
+
+    testWidgets('회원 선택 시 회원 정보 카드와 메모 입력 폼을 표시한다', (tester) async {
+      // Arrange
+      final state = OrderCreateState(
+        selectedMember: Member(
+          id: 'member-1', shopId: 'shop-1', userId: 'user-1',
+          name: '홍길동', phone: '010-1234-5678', visitCount: 3,
+          createdAt: DateTime.now(),
+        ),
+      );
+
+      // Act
+      await tester.pumpWidget(buildTestWidget(state));
+
+      // Assert
+      expect(find.text('홍길동'), findsOneWidget);
+      expect(find.text('010-1234-5678'), findsOneWidget);
+      expect(find.text('작업 접수하기'), findsOneWidget);
+    });
+
+    testWidgets('canSubmit이 false이면 접수 버튼이 비활성화된다', (tester) async {
+      // Arrange — 회원 미선택
+      await tester.pumpWidget(buildTestWidget(const OrderCreateState()));
+
+      // Assert
+      final button = tester.widget<ElevatedButton>(
+        find.widgetWithText(ElevatedButton, '작업 접수하기'),
+      );
+      expect(button.onPressed, isNull);
+    });
+
+    testWidgets('isSubmitting이 true이면 버튼에 로딩 인디케이터를 표시한다',
+        (tester) async {
+      // Arrange
+      final state = OrderCreateState(
+        selectedMember: Member(
+          id: 'm1', shopId: 's1', userId: 'u1',
+          name: '홍길동', phone: '010-0000-0000', visitCount: 1,
+          createdAt: DateTime.now(),
+        ),
+        isSubmitting: true,
+      );
+
+      // Act
+      await tester.pumpWidget(buildTestWidget(state));
+
+      // Assert
+      expect(find.byType(CircularProgressIndicator), findsOneWidget);
+    });
+
+    testWidgets('isScanning이 true이면 QR 스캔 영역에 로딩을 표시한다',
+        (tester) async {
+      // Arrange
+      const state = OrderCreateState(isScanning: true);
+
+      // Act
+      await tester.pumpWidget(buildTestWidget(state));
+
+      // Assert
+      expect(find.byType(CircularProgressIndicator), findsOneWidget);
+    });
+  });
+}
+```
+
+Run: `flutter test test/screens/owner/order_create/order_create_screen_test.dart`
+Expected: FAIL
+
+**Step 2 (Green): 화면 위젯 구현**
+
+```dart
+// lib/screens/owner/order_create/order_create_screen.dart
+import 'dart:async';
+import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
+import 'package:badminton_app/providers/auth_provider.dart';
+import 'package:badminton_app/widgets/toast.dart';
+import 'package:badminton_app/screens/owner/order_create/order_create_notifier.dart';
+
+class OrderCreateScreen extends ConsumerStatefulWidget {
+  const OrderCreateScreen({super.key});
+
+  @override
+  ConsumerState<OrderCreateScreen> createState() => _OrderCreateScreenState();
+}
+
+class _OrderCreateScreenState extends ConsumerState<OrderCreateScreen> {
+  final _searchController = TextEditingController();
+  final _memoController = TextEditingController();
+  Timer? _debounceTimer;
+
+  @override
+  void initState() {
+    super.initState();
+    final userId = ref.read(currentUserProvider)?.id;
+    if (userId != null) {
+      ref.read(orderCreateProvider.notifier).init(userId);
+    }
+  }
+
+  @override
+  void dispose() {
+    _searchController.dispose();
+    _memoController.dispose();
+    _debounceTimer?.cancel();
+    super.dispose();
+  }
+
+  void _onSearchChanged(String query) {
+    _debounceTimer?.cancel();
+    _debounceTimer = Timer(const Duration(milliseconds: 300), () {
+      ref.read(orderCreateProvider.notifier).searchMembers(query);
+    });
+  }
+
+  Future<void> _onSubmit() async {
+    final success = await ref.read(orderCreateProvider.notifier).submit();
+    if (success && mounted) {
+      AppToast.show(context, message: '작업이 접수되었습니다');
+      context.pop();
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final state = ref.watch(orderCreateProvider);
+
+    return PopScope(
+      canPop: !state.isFormDirty,
+      onPopInvokedWithResult: (didPop, _) {
+        if (!didPop && state.isFormDirty) {
+          showDialog<bool>(
+            context: context,
+            builder: (ctx) => AlertDialog(
+              title: const Text('나가시겠습니까?'),
+              content: const Text('작성 중인 내용이 있습니다. 나가시겠습니까?'),
+              actions: [
+                TextButton(
+                  onPressed: () => Navigator.pop(ctx, false),
+                  child: const Text('취소'),
+                ),
+                TextButton(
+                  onPressed: () {
+                    Navigator.pop(ctx, true);
+                    context.pop();
+                  },
+                  child: const Text('나가기'),
+                ),
+              ],
+            ),
+          );
+        }
+      },
+      child: Scaffold(
+        appBar: AppBar(title: const Text('작업 접수')),
+        body: SingleChildScrollView(
+          padding: const EdgeInsets.all(16),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              // QR 스캔 영역
+              if (state.selectedMember == null) ...[
+                _buildQrSection(state),
+                const Padding(
+                  padding: EdgeInsets.symmetric(vertical: 16),
+                  child: Row(children: [
+                    Expanded(child: Divider()),
+                    Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 12),
+                      child: Text('또는',
+                          style: TextStyle(color: Color(0xFF94A3B8))),
+                    ),
+                    Expanded(child: Divider()),
+                  ]),
+                ),
+                // 회원 검색 영역
+                TextField(
+                  controller: _searchController,
+                  decoration: const InputDecoration(
+                    hintText: '이름 또는 연락처 검색',
+                    prefixIcon: Icon(Icons.search),
+                    border: OutlineInputBorder(),
+                  ),
+                  onChanged: _onSearchChanged,
+                ),
+                // 검색 결과 드롭다운
+                state.searchResults.when(
+                  data: (members) => members.isEmpty
+                      ? const SizedBox.shrink()
+                      : Card(
+                          child: Column(
+                            children: members
+                                .map((m) => ListTile(
+                                      title: Text(m.name),
+                                      subtitle: Text(m.phone),
+                                      onTap: () {
+                                        ref.read(orderCreateProvider.notifier)
+                                            .selectMember(m);
+                                        _searchController.clear();
+                                      },
+                                    ))
+                                .toList(),
+                          ),
+                        ),
+                  loading: () => const Padding(
+                    padding: EdgeInsets.all(16),
+                    child: Center(child: CircularProgressIndicator()),
+                  ),
+                  error: (e, _) => const SizedBox.shrink(),
+                ),
+              ],
+
+              // 회원 정보 카드 (선택 후)
+              if (state.selectedMember != null) ...[
+                Card(
+                  color: const Color(0xFFF8FAFC),
+                  child: Padding(
+                    padding: const EdgeInsets.all(16),
+                    child: Row(
+                      children: [
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                state.selectedMember!.name,
+                                style: Theme.of(context).textTheme.titleMedium
+                                    ?.copyWith(fontWeight: FontWeight.w600),
+                              ),
+                              const SizedBox(height: 4),
+                              Text(state.selectedMember!.phone,
+                                  style: const TextStyle(
+                                      color: Color(0xFF64748B))),
+                            ],
+                          ),
+                        ),
+                        TextButton(
+                          onPressed: () {
+                            ref.read(orderCreateProvider.notifier)
+                                .clearMember();
+                            _memoController.clear();
+                          },
+                          child: const Text('변경'),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 16),
+
+                // 메모 입력
+                TextField(
+                  controller: _memoController,
+                  decoration: const InputDecoration(
+                    labelText: '메모 (선택)',
+                    hintText: '작업 관련 메모를 입력하세요',
+                    border: OutlineInputBorder(),
+                  ),
+                  maxLines: 3,
+                  maxLength: 500,
+                  onChanged: (v) =>
+                      ref.read(orderCreateProvider.notifier).updateMemo(v),
+                ),
+              ],
+              const SizedBox(height: 24),
+
+              // 접수 버튼
+              ElevatedButton(
+                onPressed: state.canSubmit ? _onSubmit : null,
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: const Color(0xFFF97316),
+                  foregroundColor: Colors.white,
+                  minimumSize: const Size.fromHeight(52),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                ),
+                child: state.isSubmitting
+                    ? const SizedBox(
+                        width: 24, height: 24,
+                        child: CircularProgressIndicator(
+                          color: Colors.white, strokeWidth: 2,
+                        ),
+                      )
+                    : const Text('작업 접수하기',
+                        style: TextStyle(
+                            fontSize: 16, fontWeight: FontWeight.w600)),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildQrSection(dynamic state) {
+    return Container(
+      padding: const EdgeInsets.all(24),
+      decoration: BoxDecoration(
+        color: const Color(0xFFF1F5F9),
+        borderRadius: BorderRadius.circular(16),
+      ),
+      child: Column(children: [
+        const Icon(Icons.qr_code_scanner, size: 48, color: Color(0xFF475569)),
+        const SizedBox(height: 12),
+        const Text('고객 QR코드를 스캔하면\n자동으로 회원이 등록됩니다',
+            textAlign: TextAlign.center,
+            style: TextStyle(color: Color(0xFF475569))),
+        const SizedBox(height: 16),
+        if (state.isScanning)
+          const CircularProgressIndicator()
+        else
+          ElevatedButton.icon(
+            onPressed: () async {
+              // QR 스캔 화면으로 이동하여 결과 수신
+              final scannedUserId = await context.push<String>(
+                '/owner/qr-scan',
+              );
+              if (scannedUserId != null) {
+                ref.read(orderCreateProvider.notifier)
+                    .onQrScanned(scannedUserId);
+              }
+            },
+            icon: const Icon(Icons.qr_code_scanner),
+            label: const Text('QR 스캔하기'),
+            style: ElevatedButton.styleFrom(
+              backgroundColor: const Color(0xFF16A34A),
+              foregroundColor: Colors.white,
+            ),
+          ),
+      ]),
+    );
+  }
+}
+```
+
+Run: `flutter test test/screens/owner/order_create/order_create_screen_test.dart`
+Expected: ALL PASS
+
+**Step 3: Commit**
+
+```bash
+git add lib/screens/owner/order_create/order_create_screen.dart \
+        test/screens/owner/order_create/order_create_screen_test.dart
+git commit -m "feat: 작업 접수 화면 위젯 및 위젯 테스트 구현"
+```
+
+---
+
+### Task 3.3: 작업 관리 (Order Manage)
+
+> 참조: `docs/pages/order-manage/state.md`, `docs/ui-specs/order-manage.md`, UC-5
+
+#### Task 3.3.1: 작업 관리 상태 클래스 + Notifier + 테스트
+
+**Files:**
+- Create: `lib/screens/owner/order_manage/order_manage_state.dart`
+- Create: `lib/screens/owner/order_manage/order_manage_notifier.dart`
+- Create: `test/screens/owner/order_manage/order_manage_notifier_test.dart`
+
+**Step 1 (Red): 테스트 작성**
+
+```dart
+// test/screens/owner/order_manage/order_manage_notifier_test.dart
+import 'package:flutter_test/flutter_test.dart';
+import 'package:mocktail/mocktail.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:badminton_app/models/order.dart';
+import 'package:badminton_app/models/shop.dart';
+import 'package:badminton_app/models/enums.dart';
+import 'package:badminton_app/repositories/order_repository.dart';
+import 'package:badminton_app/repositories/shop_repository.dart';
+import 'package:badminton_app/screens/owner/order_manage/order_manage_notifier.dart';
+import 'package:badminton_app/screens/owner/order_manage/order_manage_state.dart';
+import 'package:badminton_app/core/error/app_exception.dart';
+
+class MockOrderRepository extends Mock implements OrderRepository {}
+class MockShopRepository extends Mock implements ShopRepository {}
+
+void main() {
+  late MockOrderRepository mockOrderRepo;
+  late MockShopRepository mockShopRepo;
+  late ProviderContainer container;
+
+  final testShop = Shop(
+    id: 'shop-1', ownerId: 'user-1', name: '테스트 샵',
+    address: '서울시', phone: '010-0000-0000', createdAt: DateTime.now(),
+  );
+
+  final testOrders = [
+    Order(
+      id: 'order-1', shopId: 'shop-1', memberId: 'member-1',
+      memberName: '홍길동', status: OrderStatus.received,
+      memo: '메모1', createdAt: DateTime.now(),
+    ),
+    Order(
+      id: 'order-2', shopId: 'shop-1', memberId: 'member-2',
+      memberName: '김철수', status: OrderStatus.inProgress,
+      memo: '', createdAt: DateTime.now(), inProgressAt: DateTime.now(),
+    ),
+    Order(
+      id: 'order-3', shopId: 'shop-1', memberId: 'member-3',
+      memberName: '이영희', status: OrderStatus.completed,
+      memo: '', createdAt: DateTime.now(), completedAt: DateTime.now(),
+    ),
+  ];
+
+  setUp(() {
+    mockOrderRepo = MockOrderRepository();
+    mockShopRepo = MockShopRepository();
+
+    when(() => mockShopRepo.getByOwner(any()))
+        .thenAnswer((_) async => testShop);
+  });
+
+  tearDown(() => container.dispose());
+
+  ProviderContainer createContainer() {
+    return ProviderContainer(overrides: [
+      orderRepositoryProvider.overrideWithValue(mockOrderRepo),
+      shopRepositoryProvider.overrideWithValue(mockShopRepo),
+    ]);
+  }
+
+  group('OrderManageNotifier', () {
+    test('초기 로드 시 작업 목록과 상태별 건수를 조회한다', () async {
+      // Arrange
+      when(() => mockOrderRepo.getByShop('shop-1', limit: 50, offset: 0))
+          .thenAnswer((_) async => testOrders);
+
+      container = createContainer();
+      final notifier = container.read(orderManageProvider.notifier);
+
+      // Act
+      await notifier.loadOrders('user-1');
+
+      // Assert
+      final state = container.read(orderManageProvider);
+      expect(state.orders.length, 3);
+      expect(state.statusCounts[null], 3); // 전체
+      expect(state.statusCounts[OrderStatus.received], 1);
+      expect(state.statusCounts[OrderStatus.inProgress], 1);
+      expect(state.statusCounts[OrderStatus.completed], 1);
+      expect(state.isLoading, false);
+    });
+
+    test('데이터 로드 실패 시 error가 설정된다', () async {
+      // Arrange
+      when(() => mockShopRepo.getByOwner(any()))
+          .thenThrow(AppException.network('네트워크 오류'));
+
+      container = createContainer();
+      final notifier = container.read(orderManageProvider.notifier);
+
+      // Act
+      await notifier.loadOrders('user-1');
+
+      // Assert
+      final state = container.read(orderManageProvider);
+      expect(state.isLoading, false);
+      expect(state.error, isNotNull);
+    });
+
+    test('setFilter() 호출 시 selectedFilter가 변경된다', () async {
+      // Arrange
+      when(() => mockOrderRepo.getByShop('shop-1', limit: 50, offset: 0))
+          .thenAnswer((_) async => testOrders);
+
+      container = createContainer();
+      final notifier = container.read(orderManageProvider.notifier);
+      await notifier.loadOrders('user-1');
+
+      // Act
+      notifier.setFilter(OrderStatus.received);
+
+      // Assert
+      final state = container.read(orderManageProvider);
+      expect(state.selectedFilter, OrderStatus.received);
+    });
+
+    test('filteredOrders — 필터 적용 시 해당 상태만 반환한다', () async {
+      // Arrange
+      when(() => mockOrderRepo.getByShop('shop-1', limit: 50, offset: 0))
+          .thenAnswer((_) async => testOrders);
+
+      container = createContainer();
+      final notifier = container.read(orderManageProvider.notifier);
+      await notifier.loadOrders('user-1');
+      notifier.setFilter(OrderStatus.received);
+
+      // Assert
+      final state = container.read(orderManageProvider);
+      final filtered = state.filteredOrders;
+      expect(filtered.length, 1);
+      expect(filtered.first.status, OrderStatus.received);
+    });
+
+    test('filteredOrders — 검색어 적용 시 회원명으로 필터링한다', () async {
+      // Arrange
+      when(() => mockOrderRepo.getByShop('shop-1', limit: 50, offset: 0))
+          .thenAnswer((_) async => testOrders);
+
+      container = createContainer();
+      final notifier = container.read(orderManageProvider.notifier);
+      await notifier.loadOrders('user-1');
+
+      // Act
+      notifier.setSearchQuery('홍길');
+
+      // Assert
+      final state = container.read(orderManageProvider);
+      expect(state.filteredOrders.length, 1);
+      expect(state.filteredOrders.first.memberName, '홍길동');
+    });
+
+    test('changeOrderStatus() — 낙관적 UI 후 API 호출', () async {
+      // Arrange
+      when(() => mockOrderRepo.getByShop('shop-1', limit: 50, offset: 0))
+          .thenAnswer((_) async => [testOrders[0]]);
+      when(() => mockOrderRepo.updateStatus(
+            'order-1', OrderStatus.inProgress,
+          )).thenAnswer((_) async => {});
+
+      container = createContainer();
+      final notifier = container.read(orderManageProvider.notifier);
+      await notifier.loadOrders('user-1');
+
+      // Act
+      await notifier.changeOrderStatus('order-1', OrderStatus.inProgress);
+
+      // Assert
+      final state = container.read(orderManageProvider);
+      final order = state.orders.firstWhere((o) => o.id == 'order-1');
+      expect(order.status, OrderStatus.inProgress);
+      expect(state.changingOrderId, isNull);
+    });
+
+    test('changeOrderStatus() 실패 시 롤백한다', () async {
+      // Arrange
+      when(() => mockOrderRepo.getByShop('shop-1', limit: 50, offset: 0))
+          .thenAnswer((_) async => [testOrders[0]]);
+      when(() => mockOrderRepo.updateStatus(
+            'order-1', OrderStatus.inProgress,
+          )).thenThrow(AppException.network('네트워크 오류'));
+
+      container = createContainer();
+      final notifier = container.read(orderManageProvider.notifier);
+      await notifier.loadOrders('user-1');
+
+      // Act
+      await notifier.changeOrderStatus('order-1', OrderStatus.inProgress);
+
+      // Assert
+      final state = container.read(orderManageProvider);
+      final order = state.orders.firstWhere((o) => o.id == 'order-1');
+      expect(order.status, OrderStatus.received); // 롤백
+      expect(state.error, isNotNull);
+    });
+
+    test('deleteOrder() — 접수됨 상태에서만 삭제 가능', () async {
+      // Arrange
+      when(() => mockOrderRepo.getByShop('shop-1', limit: 50, offset: 0))
+          .thenAnswer((_) async => testOrders);
+      when(() => mockOrderRepo.delete('order-1'))
+          .thenAnswer((_) async => {});
+
+      container = createContainer();
+      final notifier = container.read(orderManageProvider.notifier);
+      await notifier.loadOrders('user-1');
+
+      // Act
+      await notifier.deleteOrder('order-1');
+
+      // Assert
+      final state = container.read(orderManageProvider);
+      expect(state.orders.any((o) => o.id == 'order-1'), false);
+      expect(state.statusCounts[null], 2);
+    });
+
+    test('loadMore() — 다음 50건을 추가 로드한다', () async {
+      // Arrange
+      final moreOrders = List.generate(50, (i) => Order(
+        id: 'order-$i', shopId: 'shop-1', memberId: 'member-$i',
+        memberName: '회원$i', status: OrderStatus.received,
+        memo: '', createdAt: DateTime.now(),
+      ));
+      when(() => mockOrderRepo.getByShop('shop-1', limit: 50, offset: 0))
+          .thenAnswer((_) async => moreOrders);
+      when(() => mockOrderRepo.getByShop('shop-1', limit: 50, offset: 50))
+          .thenAnswer((_) async => [testOrders[0]]);
+
+      container = createContainer();
+      final notifier = container.read(orderManageProvider.notifier);
+      await notifier.loadOrders('user-1');
+
+      // Act
+      await notifier.loadMore();
+
+      // Assert
+      final state = container.read(orderManageProvider);
+      expect(state.orders.length, 51);
+    });
+
+    test('setSearchMode() — 검색바 활성/비활성 전환', () async {
+      // Arrange
+      when(() => mockOrderRepo.getByShop('shop-1', limit: 50, offset: 0))
+          .thenAnswer((_) async => testOrders);
+
+      container = createContainer();
+      final notifier = container.read(orderManageProvider.notifier);
+      await notifier.loadOrders('user-1');
+
+      // Act
+      notifier.setSearchMode(true);
+
+      // Assert
+      expect(container.read(orderManageProvider).isSearchMode, true);
+
+      // Act
+      notifier.setSearchMode(false);
+
+      // Assert
+      final state = container.read(orderManageProvider);
+      expect(state.isSearchMode, false);
+      expect(state.searchQuery, '');
+    });
+  });
+}
+```
+
+Run: `flutter test test/screens/owner/order_manage/order_manage_notifier_test.dart`
+Expected: FAIL (클래스 미존재)
+
+**Step 2 (Green): 상태 클래스 구현**
+
+```dart
+// lib/screens/owner/order_manage/order_manage_state.dart
+import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:badminton_app/models/order.dart';
+import 'package:badminton_app/models/enums.dart';
+import 'package:badminton_app/core/error/app_exception.dart';
+
+part 'order_manage_state.freezed.dart';
+
+@freezed
+class OrderManageState with _$OrderManageState {
+  const OrderManageState._();
+
+  const factory OrderManageState({
+    @Default([]) List<Order> orders,
+    @Default({}) Map<OrderStatus?, int> statusCounts,
+    OrderStatus? selectedFilter,
+    @Default('') String searchQuery,
+    @Default(false) bool isSearchMode,
+    @Default(true) bool isLoading,
+    AppException? error,
+    String? changingOrderId,
+    @Default(true) bool hasMore,
+  }) = _OrderManageState;
+
+  List<Order> get filteredOrders {
+    var result = orders;
+
+    if (selectedFilter != null) {
+      result = result.where((o) => o.status == selectedFilter).toList();
+    }
+
+    if (searchQuery.isNotEmpty) {
+      final query = searchQuery.toLowerCase();
+      result = result
+          .where((o) =>
+              (o.memberName ?? '').toLowerCase().contains(query))
+          .toList();
+    }
+
+    return result;
+  }
+}
+```
+
+**Step 3 (Green): Notifier 구현**
+
+```dart
+// lib/screens/owner/order_manage/order_manage_notifier.dart
+import 'dart:async';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:badminton_app/models/order.dart';
+import 'package:badminton_app/models/enums.dart';
+import 'package:badminton_app/repositories/order_repository.dart';
+import 'package:badminton_app/repositories/shop_repository.dart';
+import 'package:badminton_app/core/error/app_exception.dart';
+import 'package:badminton_app/core/error/error_handler.dart';
+import 'package:badminton_app/screens/owner/order_manage/order_manage_state.dart';
+
+final orderManageProvider =
+    NotifierProvider<OrderManageNotifier, OrderManageState>(
+  OrderManageNotifier.new,
+);
+
+class OrderManageNotifier extends Notifier<OrderManageState> {
+  late final OrderRepository _orderRepo;
+  late final ShopRepository _shopRepo;
+  String? _shopId;
+  StreamSubscription<List<Order>>? _realtimeSub;
+
+  @override
+  OrderManageState build() {
+    _orderRepo = ref.read(orderRepositoryProvider);
+    _shopRepo = ref.read(shopRepositoryProvider);
+
+    ref.onDispose(() {
+      _realtimeSub?.cancel();
+    });
+
+    return const OrderManageState();
+  }
+
+  Future<void> loadOrders(String userId, {OrderStatus? initialFilter}) async {
+    state = state.copyWith(
+      isLoading: true, error: null,
+      selectedFilter: initialFilter,
+    );
+
+    try {
+      final shop = await _shopRepo.getByOwner(userId);
+      _shopId = shop.id;
+
+      final orders = await _orderRepo.getByShop(
+        shop.id, limit: 50, offset: 0,
+      );
+
+      state = state.copyWith(
+        orders: orders,
+        statusCounts: _calculateCounts(orders),
+        isLoading: false,
+        hasMore: orders.length >= 50,
+      );
+
+      _subscribeToRealtime(shop.id);
+    } on AppException catch (e) {
+      state = state.copyWith(isLoading: false, error: e);
+    } catch (e, st) {
+      state = state.copyWith(
+        isLoading: false,
+        error: ErrorHandler.handle(e, st),
+      );
+    }
+  }
+
+  void _subscribeToRealtime(String shopId) {
+    _realtimeSub?.cancel();
+    _realtimeSub = _orderRepo.streamByShop(shopId).listen(
+      (updatedOrders) {
+        // Realtime 이벤트로 목록 갱신
+        state = state.copyWith(
+          orders: updatedOrders,
+          statusCounts: _calculateCounts(updatedOrders),
+        );
+      },
+      onError: (e) {/* 무시 — 다음 refresh에서 복구 */},
+    );
+  }
+
+  Map<OrderStatus?, int> _calculateCounts(List<Order> orders) {
+    final counts = <OrderStatus?, int>{null: orders.length};
+    for (final order in orders) {
+      counts[order.status] = (counts[order.status] ?? 0) + 1;
+    }
+    return counts;
+  }
+
+  Future<void> refresh() async {
+    if (_shopId == null) return;
+    state = state.copyWith(isLoading: true);
+
+    try {
+      final orders = await _orderRepo.getByShop(
+        _shopId!, limit: 50, offset: 0,
+      );
+      state = state.copyWith(
+        orders: orders,
+        statusCounts: _calculateCounts(orders),
+        isLoading: false,
+        hasMore: orders.length >= 50,
+        error: null,
+      );
+    } on AppException catch (e) {
+      state = state.copyWith(isLoading: false, error: e);
+    }
+  }
+
+  Future<void> loadMore() async {
+    if (_shopId == null || !state.hasMore) return;
+
+    try {
+      final moreOrders = await _orderRepo.getByShop(
+        _shopId!, limit: 50, offset: state.orders.length,
+      );
+      final allOrders = [...state.orders, ...moreOrders];
+      state = state.copyWith(
+        orders: allOrders,
+        statusCounts: _calculateCounts(allOrders),
+        hasMore: moreOrders.length >= 50,
+      );
+    } catch (e) {
+      // 추가 로드 실패는 무시
+    }
+  }
+
+  void setFilter(OrderStatus? status) {
+    state = state.copyWith(selectedFilter: status);
+  }
+
+  void setSearchMode(bool enabled) {
+    state = state.copyWith(
+      isSearchMode: enabled,
+      searchQuery: enabled ? state.searchQuery : '',
+    );
+  }
+
+  void setSearchQuery(String query) {
+    state = state.copyWith(searchQuery: query);
+  }
+
+  Future<void> changeOrderStatus(
+    String orderId, OrderStatus newStatus,
+  ) async {
+    final previousOrders = List<Order>.from(state.orders);
+    final idx = previousOrders.indexWhere((o) => o.id == orderId);
+    if (idx == -1) return;
+
+    final previousOrder = previousOrders[idx];
+    // 낙관적 UI
+    state = state.copyWith(changingOrderId: orderId);
+    final updated = List<Order>.from(state.orders);
+    updated[idx] = previousOrder.copyWith(status: newStatus);
+    state = state.copyWith(
+      orders: updated,
+      statusCounts: _calculateCounts(updated),
+    );
+
+    try {
+      await _orderRepo.updateStatus(orderId, newStatus);
+      state = state.copyWith(changingOrderId: null);
+    } on AppException catch (e) {
+      state = state.copyWith(
+        orders: previousOrders,
+        statusCounts: _calculateCounts(previousOrders),
+        changingOrderId: null,
+        error: e,
+      );
+    } catch (e, st) {
+      state = state.copyWith(
+        orders: previousOrders,
+        statusCounts: _calculateCounts(previousOrders),
+        changingOrderId: null,
+        error: ErrorHandler.handle(e, st),
+      );
+    }
+  }
+
+  Future<void> undoStatusChange(
+    String orderId, OrderStatus previousStatus,
+  ) async {
+    await changeOrderStatus(orderId, previousStatus);
+  }
+
+  Future<void> deleteOrder(String orderId) async {
+    final order = state.orders.firstWhere(
+      (o) => o.id == orderId,
+      orElse: () => throw AppException.validation('작업을 찾을 수 없습니다'),
+    );
+
+    if (order.status != OrderStatus.received) {
+      throw AppException.validation('접수됨 상태의 작업만 삭제할 수 있습니다');
+    }
+
+    try {
+      await _orderRepo.delete(orderId);
+      final updated = state.orders.where((o) => o.id != orderId).toList();
+      state = state.copyWith(
+        orders: updated,
+        statusCounts: _calculateCounts(updated),
+      );
+    } on AppException catch (e) {
+      state = state.copyWith(error: e);
+    }
+  }
+}
+```
+
+Run: `flutter test test/screens/owner/order_manage/order_manage_notifier_test.dart`
+Expected: ALL PASS
+
+**Step 4: build_runner 실행**
+
+```bash
+dart run build_runner build --delete-conflicting-outputs
+```
+
+**Step 5: Commit**
+
+```bash
+git add lib/screens/owner/order_manage/order_manage_state.dart \
+        lib/screens/owner/order_manage/order_manage_notifier.dart \
+        test/screens/owner/order_manage/order_manage_notifier_test.dart
+git commit -m "feat: 작업 관리 상태 관리 및 Notifier 구현"
+```
+
+---
+
+#### Task 3.3.2: 작업 관리 화면 위젯 + 위젯 테스트
+
+**Files:**
+- Create: `lib/screens/owner/order_manage/order_manage_screen.dart`
+- Create: `test/screens/owner/order_manage/order_manage_screen_test.dart`
+
+**Step 1 (Red): 위젯 테스트 작성**
+
+```dart
+// test/screens/owner/order_manage/order_manage_screen_test.dart
+import 'package:flutter/material.dart';
+import 'package:flutter_test/flutter_test.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:badminton_app/models/order.dart';
+import 'package:badminton_app/models/enums.dart';
+import 'package:badminton_app/core/error/app_exception.dart';
+import 'package:badminton_app/widgets/skeleton_shimmer.dart';
+import 'package:badminton_app/screens/owner/order_manage/order_manage_screen.dart';
+import 'package:badminton_app/screens/owner/order_manage/order_manage_state.dart';
+import 'package:badminton_app/screens/owner/order_manage/order_manage_notifier.dart';
+
+class FakeOrderManageNotifier extends Notifier<OrderManageState>
+    implements OrderManageNotifier {
+  final OrderManageState initialState;
+  FakeOrderManageNotifier(this.initialState);
+
+  @override
+  OrderManageState build() => initialState;
+
+  @override
+  Future<void> loadOrders(String userId, {OrderStatus? initialFilter}) async {}
+  @override
+  Future<void> refresh() async {}
+  @override
+  Future<void> loadMore() async {}
+  @override
+  void setFilter(OrderStatus? status) {}
+  @override
+  void setSearchMode(bool enabled) {}
+  @override
+  void setSearchQuery(String query) {}
+  @override
+  Future<void> changeOrderStatus(String id, OrderStatus s) async {}
+  @override
+  Future<void> undoStatusChange(String id, OrderStatus s) async {}
+  @override
+  Future<void> deleteOrder(String id) async {}
+}
+
+Widget buildTestWidget(OrderManageState state) {
+  return ProviderScope(
+    overrides: [
+      orderManageProvider.overrideWith(
+        () => FakeOrderManageNotifier(state),
+      ),
+    ],
+    child: const MaterialApp(home: OrderManageScreen()),
+  );
+}
+
+void main() {
+  group('OrderManageScreen', () {
+    testWidgets('로딩 중일 때 스켈레톤을 표시한다', (tester) async {
+      // Arrange & Act
+      await tester.pumpWidget(buildTestWidget(
+        const OrderManageState(isLoading: true),
+      ));
+
+      // Assert
+      expect(find.byType(SkeletonShimmer), findsWidgets);
+    });
+
+    testWidgets('필터 탭 4개를 표시한다 (전체/접수됨/작업중/완료)', (tester) async {
+      // Arrange
+      final state = OrderManageState(
+        isLoading: false,
+        statusCounts: {
+          null: 10,
+          OrderStatus.received: 3,
+          OrderStatus.inProgress: 4,
+          OrderStatus.completed: 3,
+        },
+      );
+
+      // Act
+      await tester.pumpWidget(buildTestWidget(state));
+
+      // Assert
+      expect(find.text('전체'), findsOneWidget);
+      expect(find.text('접수됨'), findsOneWidget);
+      expect(find.text('작업중'), findsOneWidget);
+      expect(find.text('완료'), findsOneWidget);
+    });
+
+    testWidgets('작업 목록을 올바르게 표시한다', (tester) async {
+      // Arrange
+      final state = OrderManageState(
+        isLoading: false,
+        orders: [
+          Order(
+            id: 'order-1', shopId: 'shop-1', memberId: 'm1',
+            memberName: '홍길동', status: OrderStatus.received,
+            memo: '', createdAt: DateTime.now(),
+          ),
+          Order(
+            id: 'order-2', shopId: 'shop-1', memberId: 'm2',
+            memberName: '김철수', status: OrderStatus.inProgress,
+            memo: '', createdAt: DateTime.now(),
+          ),
+        ],
+        statusCounts: {null: 2, OrderStatus.received: 1, OrderStatus.inProgress: 1},
+      );
+
+      // Act
+      await tester.pumpWidget(buildTestWidget(state));
+
+      // Assert
+      expect(find.text('홍길동'), findsOneWidget);
+      expect(find.text('김철수'), findsOneWidget);
+    });
+
+    testWidgets('작업 0건이면 EmptyState를 표시한다', (tester) async {
+      // Arrange & Act
+      await tester.pumpWidget(buildTestWidget(
+        const OrderManageState(isLoading: false, orders: [],
+            statusCounts: {null: 0}),
+      ));
+
+      // Assert
+      expect(find.text('등록된 작업이 없습니다'), findsOneWidget);
+    });
+
+    testWidgets('에러 상태에서 ErrorView를 표시한다', (tester) async {
+      // Arrange
+      final state = OrderManageState(
+        isLoading: false,
+        error: AppException.network('오류'),
+      );
+
+      // Act
+      await tester.pumpWidget(buildTestWidget(state));
+
+      // Assert
+      expect(find.text('데이터를 불러올 수 없습니다'), findsOneWidget);
+    });
+
+    testWidgets('검색 아이콘 탭 시 검색바가 표시된다', (tester) async {
+      // Arrange
+      await tester.pumpWidget(buildTestWidget(
+        const OrderManageState(isLoading: false, isSearchMode: true),
+      ));
+
+      // Assert
+      expect(find.byType(TextField), findsOneWidget);
+    });
+  });
+}
+```
+
+Run: `flutter test test/screens/owner/order_manage/order_manage_screen_test.dart`
+Expected: FAIL
+
+**Step 2 (Green): 화면 위젯 구현**
+
+```dart
+// lib/screens/owner/order_manage/order_manage_screen.dart
+import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:badminton_app/models/enums.dart';
+import 'package:badminton_app/widgets/skeleton_shimmer.dart';
+import 'package:badminton_app/widgets/empty_state.dart';
+import 'package:badminton_app/widgets/error_view.dart';
+import 'package:badminton_app/widgets/status_badge.dart';
+import 'package:badminton_app/widgets/toast.dart';
+import 'package:badminton_app/widgets/confirm_dialog.dart';
+import 'package:badminton_app/core/utils/formatters.dart';
+import 'package:badminton_app/providers/auth_provider.dart';
+import 'package:badminton_app/screens/owner/order_manage/order_manage_notifier.dart';
+
+class OrderManageScreen extends ConsumerStatefulWidget {
+  final String? initialStatusFilter;
+
+  const OrderManageScreen({super.key, this.initialStatusFilter});
+
+  @override
+  ConsumerState<OrderManageScreen> createState() => _OrderManageScreenState();
+}
+
+class _OrderManageScreenState extends ConsumerState<OrderManageScreen> {
+  final _scrollController = ScrollController();
+  final _searchController = TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+    final userId = ref.read(currentUserProvider)?.id;
+    if (userId != null) {
+      OrderStatus? initialFilter;
+      if (widget.initialStatusFilter != null) {
+        initialFilter = OrderStatus.values.firstWhere(
+          (s) => s.name == widget.initialStatusFilter,
+          orElse: () => OrderStatus.received,
+        );
+      }
+      ref.read(orderManageProvider.notifier)
+          .loadOrders(userId, initialFilter: initialFilter);
+    }
+
+    _scrollController.addListener(_onScroll);
+  }
+
+  @override
+  void dispose() {
+    _scrollController.dispose();
+    _searchController.dispose();
+    super.dispose();
+  }
+
+  void _onScroll() {
+    if (_scrollController.position.pixels >=
+        _scrollController.position.maxScrollExtent - 200) {
+      ref.read(orderManageProvider.notifier).loadMore();
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final state = ref.watch(orderManageProvider);
+
+    return Scaffold(
+      appBar: state.isSearchMode
+          ? AppBar(
+              title: TextField(
+                controller: _searchController,
+                autofocus: true,
+                decoration: const InputDecoration(
+                  hintText: '회원명 검색',
+                  border: InputBorder.none,
+                ),
+                onChanged: (v) =>
+                    ref.read(orderManageProvider.notifier).setSearchQuery(v),
+              ),
+              actions: [
+                IconButton(
+                  icon: const Icon(Icons.close),
+                  onPressed: () {
+                    ref.read(orderManageProvider.notifier).setSearchMode(false);
+                    _searchController.clear();
+                  },
+                ),
+              ],
+            )
+          : AppBar(
+              title: const Text('작업 관리'),
+              actions: [
+                IconButton(
+                  icon: const Icon(Icons.search),
+                  onPressed: () =>
+                      ref.read(orderManageProvider.notifier).setSearchMode(true),
+                ),
+              ],
+            ),
+      body: state.error != null && state.orders.isEmpty
+          ? ErrorView(
+              message: '데이터를 불러올 수 없습니다',
+              onRetry: () {
+                final userId = ref.read(currentUserProvider)?.id;
+                if (userId != null) {
+                  ref.read(orderManageProvider.notifier).loadOrders(userId);
+                }
+              },
+            )
+          : Column(
+              children: [
+                // 필터 탭
+                if (!state.isLoading) _buildFilterTabs(state),
+                // 작업 목록
+                Expanded(
+                  child: state.isLoading
+                      ? ListView(children: List.generate(5, (_) =>
+                          const Padding(
+                            padding: EdgeInsets.all(8),
+                            child: SkeletonShimmer(height: 80),
+                          )))
+                      : RefreshIndicator(
+                          onRefresh: () => ref
+                              .read(orderManageProvider.notifier)
+                              .refresh(),
+                          child: state.filteredOrders.isEmpty
+                              ? ListView(children: [
+                                  SizedBox(
+                                    height: MediaQuery.of(context).size.height * 0.5,
+                                    child: state.selectedFilter == null
+                                        ? const EmptyState(
+                                            message: '등록된 작업이 없습니다',
+                                            subMessage: '작업 접수 버튼으로 새 작업을 등록하세요',
+                                          )
+                                        : const EmptyState(
+                                            message: '해당 상태의 작업이 없습니다',
+                                          ),
+                                  ),
+                                ])
+                              : ListView.builder(
+                                  controller: _scrollController,
+                                  padding: const EdgeInsets.all(8),
+                                  itemCount: state.filteredOrders.length +
+                                      (state.hasMore ? 1 : 0),
+                                  itemBuilder: (context, index) {
+                                    if (index >= state.filteredOrders.length) {
+                                      return const Center(
+                                        child: Padding(
+                                          padding: EdgeInsets.all(16),
+                                          child: CircularProgressIndicator(),
+                                        ),
+                                      );
+                                    }
+                                    return _buildOrderCard(
+                                      context,
+                                      state.filteredOrders[index],
+                                      state,
+                                    );
+                                  },
+                                ),
+                        ),
+                ),
+              ],
+            ),
+    );
+  }
+
+  Widget _buildFilterTabs(dynamic state) {
+    final filters = <OrderStatus?>[
+      null,
+      OrderStatus.received,
+      OrderStatus.inProgress,
+      OrderStatus.completed,
+    ];
+    final labels = ['전체', '접수됨', '작업중', '완료'];
+
+    return SingleChildScrollView(
+      scrollDirection: Axis.horizontal,
+      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+      child: Row(
+        children: List.generate(filters.length, (i) {
+          final isSelected = state.selectedFilter == filters[i];
+          final count = state.statusCounts[filters[i]] ?? 0;
+
+          return Padding(
+            padding: const EdgeInsets.only(right: 8),
+            child: FilterChip(
+              selected: isSelected,
+              label: Text('${labels[i]} ($count)'),
+              onSelected: (_) =>
+                  ref.read(orderManageProvider.notifier).setFilter(filters[i]),
+              selectedColor: const Color(0xFF16A34A).withOpacity(0.1),
+              checkmarkColor: const Color(0xFF16A34A),
+            ),
+          );
+        }),
+      ),
+    );
+  }
+
+  Widget _buildOrderCard(BuildContext context, dynamic order, dynamic state) {
+    final isChanging = state.changingOrderId == order.id;
+    final nextStatus = _getNextStatus(order.status);
+
+    return Dismissible(
+      key: Key(order.id),
+      direction: order.status == OrderStatus.received
+          ? DismissDirection.endToStart
+          : DismissDirection.none,
+      background: Container(
+        alignment: Alignment.centerRight,
+        padding: const EdgeInsets.only(right: 20),
+        color: Colors.red,
+        child: const Icon(Icons.delete, color: Colors.white),
+      ),
+      confirmDismiss: (_) async {
+        return await ConfirmDialog.show(
+          context,
+          title: '작업 삭제',
+          message: '이 작업을 삭제하시겠습니까?',
+        );
+      },
+      onDismissed: (_) =>
+          ref.read(orderManageProvider.notifier).deleteOrder(order.id),
+      child: Card(
+        margin: const EdgeInsets.only(bottom: 8),
+        child: ListTile(
+          title: Text(order.memberName ?? '알 수 없음'),
+          subtitle: Text(Formatters.dateTime(order.createdAt)),
+          trailing: Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              StatusBadge(status: order.status),
+              if (nextStatus != null) ...[
+                const SizedBox(width: 8),
+                isChanging
+                    ? const SizedBox(
+                        width: 24, height: 24,
+                        child: CircularProgressIndicator(strokeWidth: 2),
+                      )
+                    : IconButton(
+                        icon: const Icon(Icons.arrow_forward),
+                        onPressed: () => _onStatusChange(
+                          context, order.id, order.status, nextStatus,
+                        ),
+                      ),
+              ],
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  OrderStatus? _getNextStatus(OrderStatus current) {
+    switch (current) {
+      case OrderStatus.received:
+        return OrderStatus.inProgress;
+      case OrderStatus.inProgress:
+        return OrderStatus.completed;
+      case OrderStatus.completed:
+        return null;
+    }
+  }
+
+  Future<void> _onStatusChange(
+    BuildContext context, String orderId,
+    OrderStatus previousStatus, OrderStatus newStatus,
+  ) async {
+    await ref.read(orderManageProvider.notifier)
+        .changeOrderStatus(orderId, newStatus);
+    if (context.mounted) {
+      AppToast.showUndo(context,
+        message: '상태가 변경되었습니다',
+        onUndo: () => ref.read(orderManageProvider.notifier)
+            .undoStatusChange(orderId, previousStatus),
+      );
+    }
+  }
+}
+```
+
+Run: `flutter test test/screens/owner/order_manage/order_manage_screen_test.dart`
+Expected: ALL PASS
+
+**Step 3: Commit**
+
+```bash
+git add lib/screens/owner/order_manage/order_manage_screen.dart \
+        test/screens/owner/order_manage/order_manage_screen_test.dart
+git commit -m "feat: 작업 관리 화면 위젯 및 위젯 테스트 구현"
+```
+
+---
+
+### Task 3.4: 샵 QR코드 (Shop QR)
+
+> 참조: `docs/pages/shop-qr/state.md`, `docs/ui-specs/shop-qr.md`
+
+#### Task 3.4.1: 샵 QR 상태 클래스 + Notifier + 테스트
+
+**Files:**
+- Create: `lib/screens/owner/shop_qr/shop_qr_state.dart`
+- Create: `lib/screens/owner/shop_qr/shop_qr_notifier.dart`
+- Create: `test/screens/owner/shop_qr/shop_qr_notifier_test.dart`
+
+**Step 1 (Red): 테스트 작성**
+
+```dart
+// test/screens/owner/shop_qr/shop_qr_notifier_test.dart
+import 'package:flutter_test/flutter_test.dart';
+import 'package:mocktail/mocktail.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:badminton_app/models/shop.dart';
+import 'package:badminton_app/repositories/shop_repository.dart';
+import 'package:badminton_app/screens/owner/shop_qr/shop_qr_notifier.dart';
+import 'package:badminton_app/screens/owner/shop_qr/shop_qr_state.dart';
+import 'package:badminton_app/core/error/app_exception.dart';
+
+class MockShopRepository extends Mock implements ShopRepository {}
+
+void main() {
+  late MockShopRepository mockShopRepo;
+  late ProviderContainer container;
+
+  final testShop = Shop(
+    id: 'shop-1', ownerId: 'user-1', name: '테스트 샵',
+    address: '서울시 강남구', phone: '010-1234-5678',
+    createdAt: DateTime.now(),
+  );
+
+  setUp(() {
+    mockShopRepo = MockShopRepository();
+  });
+
+  tearDown(() => container.dispose());
+
+  ProviderContainer createContainer() {
+    return ProviderContainer(overrides: [
+      shopRepositoryProvider.overrideWithValue(mockShopRepo),
+    ]);
+  }
+
+  group('ShopQrNotifier', () {
+    test('초기 로드 시 샵 정보를 조회하여 shopInfo에 설정한다', () async {
+      // Arrange
+      when(() => mockShopRepo.getByOwner('user-1'))
+          .thenAnswer((_) async => testShop);
+
+      container = createContainer();
+      final notifier = container.read(shopQrProvider.notifier);
+
+      // Act
+      await notifier.loadShopInfo('user-1');
+
+      // Assert
+      final state = container.read(shopQrProvider);
+      expect(state.shopInfo.value, testShop);
+    });
+
+    test('샵 정보 로드 실패 시 AsyncError가 설정된다', () async {
+      // Arrange
+      when(() => mockShopRepo.getByOwner('user-1'))
+          .thenThrow(AppException.network('네트워크 오류'));
+
+      container = createContainer();
+      final notifier = container.read(shopQrProvider.notifier);
+
+      // Act
+      await notifier.loadShopInfo('user-1');
+
+      // Assert
+      final state = container.read(shopQrProvider);
+      expect(state.shopInfo.hasError, true);
+    });
+
+    test('qrData는 shopId로부터 딥링크 URL을 생성한다', () async {
+      // Arrange
+      when(() => mockShopRepo.getByOwner('user-1'))
+          .thenAnswer((_) async => testShop);
+
+      container = createContainer();
+      final notifier = container.read(shopQrProvider.notifier);
+      await notifier.loadShopInfo('user-1');
+
+      // Assert
+      final state = container.read(shopQrProvider);
+      expect(state.qrData, 'https://gutalarm.app/shop/shop-1');
+    });
+
+    test('retry() 호출 시 샵 정보를 재조회한다', () async {
+      // Arrange — 첫 호출 실패, 두 번째 성공
+      var callCount = 0;
+      when(() => mockShopRepo.getByOwner('user-1')).thenAnswer((_) async {
+        callCount++;
+        if (callCount == 1) throw AppException.network('오류');
+        return testShop;
+      });
+
+      container = createContainer();
+      final notifier = container.read(shopQrProvider.notifier);
+      await notifier.loadShopInfo('user-1');
+      expect(container.read(shopQrProvider).shopInfo.hasError, true);
+
+      // Act
+      await notifier.retry();
+
+      // Assert
+      final state = container.read(shopQrProvider);
+      expect(state.shopInfo.hasValue, true);
+      expect(state.shopInfo.value!.name, '테스트 샵');
+    });
+
+    test('shareQr() 호출 시 isSharing이 true→false로 변경된다', () async {
+      // Arrange
+      when(() => mockShopRepo.getByOwner('user-1'))
+          .thenAnswer((_) async => testShop);
+
+      container = createContainer();
+      final notifier = container.read(shopQrProvider.notifier);
+      await notifier.loadShopInfo('user-1');
+
+      // Act — shareQr는 내부적으로 플랫폼 API를 호출하므로
+      // 여기서는 상태 변화만 검증
+      // (실제 공유 기능은 통합 테스트에서 검증)
+      expect(container.read(shopQrProvider).isSharing, false);
+    });
+
+    test('downloadPrintableQr() 호출 시 isSaving이 true→false로 변경된다',
+        () async {
+      // Arrange
+      when(() => mockShopRepo.getByOwner('user-1'))
+          .thenAnswer((_) async => testShop);
+
+      container = createContainer();
+      final notifier = container.read(shopQrProvider.notifier);
+      await notifier.loadShopInfo('user-1');
+
+      // Assert — 초기 상태 확인
+      expect(container.read(shopQrProvider).isSaving, false);
+    });
+  });
+}
+```
+
+Run: `flutter test test/screens/owner/shop_qr/shop_qr_notifier_test.dart`
+Expected: FAIL (클래스 미존재)
+
+**Step 2 (Green): 상태 클래스 구현**
+
+```dart
+// lib/screens/owner/shop_qr/shop_qr_state.dart
+import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:badminton_app/models/shop.dart';
+
+part 'shop_qr_state.freezed.dart';
+
+@freezed
+class ShopQrState with _$ShopQrState {
+  const ShopQrState._();
+
+  const factory ShopQrState({
+    @Default(AsyncValue<Shop>.loading()) AsyncValue<Shop> shopInfo,
+    @Default(false) bool isSaving,
+    @Default(false) bool isSharing,
+  }) = _ShopQrState;
+
+  String get qrData {
+    final shop = shopInfo.valueOrNull;
+    if (shop == null) return '';
+    return 'https://gutalarm.app/shop/${shop.id}';
+  }
+
+  String get shopName => shopInfo.valueOrNull?.name ?? '';
+}
+```
+
+**Step 3 (Green): Notifier 구현**
+
+```dart
+// lib/screens/owner/shop_qr/shop_qr_notifier.dart
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:badminton_app/models/shop.dart';
+import 'package:badminton_app/repositories/shop_repository.dart';
+import 'package:badminton_app/core/error/app_exception.dart';
+import 'package:badminton_app/core/error/error_handler.dart';
+import 'package:badminton_app/screens/owner/shop_qr/shop_qr_state.dart';
+
+final shopQrProvider =
+    NotifierProvider<ShopQrNotifier, ShopQrState>(
+  ShopQrNotifier.new,
+);
+
+class ShopQrNotifier extends Notifier<ShopQrState> {
+  late final ShopRepository _shopRepo;
+  String? _userId;
+
+  @override
+  ShopQrState build() {
+    _shopRepo = ref.read(shopRepositoryProvider);
+    return const ShopQrState();
+  }
+
+  Future<void> loadShopInfo(String userId) async {
+    _userId = userId;
+    state = state.copyWith(shopInfo: const AsyncValue.loading());
+
+    try {
+      final shop = await _shopRepo.getByOwner(userId);
+      state = state.copyWith(shopInfo: AsyncValue.data(shop));
+    } on AppException catch (e, st) {
+      state = state.copyWith(shopInfo: AsyncValue.error(e, st));
+    } catch (e, st) {
+      state = state.copyWith(shopInfo: AsyncValue.error(e, st));
+    }
+  }
+
+  Future<void> retry() async {
+    if (_userId != null) {
+      await loadShopInfo(_userId!);
+    }
+  }
+
+  Future<void> shareQr() async {
+    if (state.shopInfo.valueOrNull == null) return;
+    state = state.copyWith(isSharing: true);
+
+    try {
+      // 플랫폼 공유 API 호출 (Share.share 또는 커스텀 구현)
+      // QR 이미지를 PNG로 생성 후 시스템 공유 시트 표시
+      // 공유 텍스트: "거트알림 앱으로 QR을 스캔하면 회원 등록이 됩니다"
+      // TODO: 플랫폼 공유 구현
+    } finally {
+      state = state.copyWith(isSharing: false);
+    }
+  }
+
+  Future<void> downloadPrintableQr() async {
+    if (state.shopInfo.valueOrNull == null) return;
+    state = state.copyWith(isSaving: true);
+
+    try {
+      // 고해상도(1024x1024px) QR코드 이미지 생성
+      // 하단에 샵 이름 + "거트알림 앱으로 스캔하세요" 포함
+      // 갤러리에 저장
+      // TODO: 이미지 생성 및 갤러리 저장 구현
+    } finally {
+      state = state.copyWith(isSaving: false);
+    }
+  }
+}
+```
+
+Run: `flutter test test/screens/owner/shop_qr/shop_qr_notifier_test.dart`
+Expected: ALL PASS
+
+**Step 4: build_runner 실행**
+
+```bash
+dart run build_runner build --delete-conflicting-outputs
+```
+
+**Step 5: Commit**
+
+```bash
+git add lib/screens/owner/shop_qr/shop_qr_state.dart \
+        lib/screens/owner/shop_qr/shop_qr_notifier.dart \
+        test/screens/owner/shop_qr/shop_qr_notifier_test.dart
+git commit -m "feat: 샵 QR코드 상태 관리 및 Notifier 구현"
+```
+
+---
+
+#### Task 3.4.2: 샵 QR코드 화면 위젯 + 위젯 테스트
+
+**Files:**
+- Create: `lib/screens/owner/shop_qr/shop_qr_screen.dart`
+- Create: `test/screens/owner/shop_qr/shop_qr_screen_test.dart`
+
+**Step 1 (Red): 위젯 테스트 작성**
+
+```dart
+// test/screens/owner/shop_qr/shop_qr_screen_test.dart
+import 'package:flutter/material.dart';
+import 'package:flutter_test/flutter_test.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:badminton_app/models/shop.dart';
+import 'package:badminton_app/screens/owner/shop_qr/shop_qr_screen.dart';
+import 'package:badminton_app/screens/owner/shop_qr/shop_qr_state.dart';
+import 'package:badminton_app/screens/owner/shop_qr/shop_qr_notifier.dart';
+
+class FakeShopQrNotifier extends Notifier<ShopQrState>
+    implements ShopQrNotifier {
+  final ShopQrState initialState;
+  FakeShopQrNotifier(this.initialState);
+
+  @override
+  ShopQrState build() => initialState;
+
+  @override
+  Future<void> loadShopInfo(String userId) async {}
+  @override
+  Future<void> retry() async {}
+  @override
+  Future<void> shareQr() async {}
+  @override
+  Future<void> downloadPrintableQr() async {}
+}
+
+Widget buildTestWidget(ShopQrState state) {
+  return ProviderScope(
+    overrides: [
+      shopQrProvider.overrideWith(() => FakeShopQrNotifier(state)),
+    ],
+    child: const MaterialApp(home: ShopQrScreen()),
+  );
+}
+
+void main() {
+  final testShop = Shop(
+    id: 'shop-1', ownerId: 'user-1', name: '테스트 샵',
+    address: '서울시', phone: '010-0000-0000', createdAt: DateTime.now(),
+  );
+
+  group('ShopQrScreen', () {
+    testWidgets('로딩 중일 때 로딩 인디케이터를 표시한다', (tester) async {
+      // Arrange & Act
+      await tester.pumpWidget(buildTestWidget(const ShopQrState()));
+
+      // Assert
+      expect(find.byType(CircularProgressIndicator), findsOneWidget);
+    });
+
+    testWidgets('샵 정보 로드 후 QR코드와 샵 이름을 표시한다', (tester) async {
+      // Arrange
+      final state = ShopQrState(
+        shopInfo: AsyncValue.data(testShop),
+      );
+
+      // Act
+      await tester.pumpWidget(buildTestWidget(state));
+
+      // Assert
+      expect(find.text('테스트 샵'), findsOneWidget);
+      // QrImageView 위젯이 존재하는지 확인
+      expect(find.byType(QrImageView), findsOneWidget);
+    });
+
+    testWidgets('공유 버튼과 다운로드 버튼이 표시된다', (tester) async {
+      // Arrange
+      final state = ShopQrState(
+        shopInfo: AsyncValue.data(testShop),
+      );
+
+      // Act
+      await tester.pumpWidget(buildTestWidget(state));
+
+      // Assert
+      expect(find.text('공유'), findsOneWidget);
+      expect(find.text('인쇄용 다운로드'), findsOneWidget);
+    });
+
+    testWidgets('에러 시 에러 화면과 재시도 버튼을 표시한다', (tester) async {
+      // Arrange
+      final state = ShopQrState(
+        shopInfo: AsyncValue.error(
+          Exception('오류'), StackTrace.current,
+        ),
+      );
+
+      // Act
+      await tester.pumpWidget(buildTestWidget(state));
+
+      // Assert
+      expect(find.text('데이터를 불러올 수 없습니다'), findsOneWidget);
+      expect(find.text('재시도'), findsOneWidget);
+    });
+
+    testWidgets('isSharing이 true이면 공유 버튼에 로딩을 표시한다', (tester) async {
+      // Arrange
+      final state = ShopQrState(
+        shopInfo: AsyncValue.data(testShop),
+        isSharing: true,
+      );
+
+      // Act
+      await tester.pumpWidget(buildTestWidget(state));
+
+      // Assert
+      expect(find.byType(CircularProgressIndicator), findsWidgets);
+    });
+
+    testWidgets('isSaving이 true이면 다운로드 버튼에 로딩을 표시한다', (tester) async {
+      // Arrange
+      final state = ShopQrState(
+        shopInfo: AsyncValue.data(testShop),
+        isSaving: true,
+      );
+
+      // Act
+      await tester.pumpWidget(buildTestWidget(state));
+
+      // Assert
+      expect(find.byType(CircularProgressIndicator), findsWidgets);
+    });
+  });
+}
+```
+
+Run: `flutter test test/screens/owner/shop_qr/shop_qr_screen_test.dart`
+Expected: FAIL
+
+**Step 2 (Green): 화면 위젯 구현**
+
+```dart
+// lib/screens/owner/shop_qr/shop_qr_screen.dart
+import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:qr_flutter/qr_flutter.dart';
+import 'package:badminton_app/widgets/error_view.dart';
+import 'package:badminton_app/widgets/toast.dart';
+import 'package:badminton_app/providers/auth_provider.dart';
+import 'package:badminton_app/screens/owner/shop_qr/shop_qr_notifier.dart';
+
+class ShopQrScreen extends ConsumerStatefulWidget {
+  const ShopQrScreen({super.key});
+
+  @override
+  ConsumerState<ShopQrScreen> createState() => _ShopQrScreenState();
+}
+
+class _ShopQrScreenState extends ConsumerState<ShopQrScreen> {
+  @override
+  void initState() {
+    super.initState();
+    final userId = ref.read(currentUserProvider)?.id;
+    if (userId != null) {
+      ref.read(shopQrProvider.notifier).loadShopInfo(userId);
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final state = ref.watch(shopQrProvider);
+
+    return Scaffold(
+      appBar: AppBar(title: const Text('샵 QR코드')),
+      body: state.shopInfo.when(
+        loading: () => const Center(child: CircularProgressIndicator()),
+        error: (e, _) => ErrorView(
+          message: '데이터를 불러올 수 없습니다',
+          onRetry: () => ref.read(shopQrProvider.notifier).retry(),
+        ),
+        data: (shop) => SingleChildScrollView(
+          padding: const EdgeInsets.all(24),
+          child: Center(
+            child: Column(
+              children: [
+                const SizedBox(height: 32),
+
+                // QR코드
+                Container(
+                  padding: const EdgeInsets.all(16),
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(16),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.black.withOpacity(0.1),
+                        blurRadius: 10,
+                        offset: const Offset(0, 4),
+                      ),
+                    ],
+                  ),
+                  child: QrImageView(
+                    data: state.qrData,
+                    version: QrVersions.auto,
+                    size: 240,
+                    backgroundColor: Colors.white,
+                  ),
+                ),
+                const SizedBox(height: 24),
+
+                // 샵 이름
+                Text(
+                  shop.name,
+                  style: Theme.of(context).textTheme.headlineSmall?.copyWith(
+                        fontWeight: FontWeight.w600,
+                      ),
+                ),
+                const SizedBox(height: 8),
+                const Text(
+                  '고객이 이 QR코드를 스캔하면\n자동으로 회원 등록이 됩니다',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    color: Color(0xFF64748B),
+                    fontSize: 14,
+                  ),
+                ),
+                const SizedBox(height: 32),
+
+                // 공유 버튼
+                SizedBox(
+                  width: double.infinity,
+                  child: ElevatedButton.icon(
+                    onPressed: state.isSharing
+                        ? null
+                        : () async {
+                            await ref.read(shopQrProvider.notifier).shareQr();
+                          },
+                    icon: state.isSharing
+                        ? const SizedBox(
+                            width: 20, height: 20,
+                            child: CircularProgressIndicator(strokeWidth: 2),
+                          )
+                        : const Icon(Icons.share),
+                    label: const Text('공유'),
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: const Color(0xFF16A34A),
+                      foregroundColor: Colors.white,
+                      minimumSize: const Size.fromHeight(52),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 12),
+
+                // 인쇄용 다운로드 버튼
+                SizedBox(
+                  width: double.infinity,
+                  child: OutlinedButton.icon(
+                    onPressed: state.isSaving
+                        ? null
+                        : () async {
+                            await ref
+                                .read(shopQrProvider.notifier)
+                                .downloadPrintableQr();
+                            if (context.mounted) {
+                              AppToast.show(context,
+                                  message: 'QR코드가 저장되었습니다');
+                            }
+                          },
+                    icon: state.isSaving
+                        ? const SizedBox(
+                            width: 20, height: 20,
+                            child: CircularProgressIndicator(strokeWidth: 2),
+                          )
+                        : const Icon(Icons.download),
+                    label: const Text('인쇄용 다운로드'),
+                    style: OutlinedButton.styleFrom(
+                      foregroundColor: const Color(0xFF16A34A),
+                      side: const BorderSide(color: Color(0xFF16A34A)),
+                      minimumSize: const Size.fromHeight(52),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}
+```
+
+Run: `flutter test test/screens/owner/shop_qr/shop_qr_screen_test.dart`
+Expected: ALL PASS
+
+**Step 3: Commit**
+
+```bash
+git add lib/screens/owner/shop_qr/shop_qr_screen.dart \
+        test/screens/owner/shop_qr/shop_qr_screen_test.dart
+git commit -m "feat: 샵 QR코드 화면 위젯 및 위젯 테스트 구현"
+```
+
+---
+
+### Phase 3 파일 경로 요약
+
+| Task | 파일 경로 | 유형 |
+|------|-----------|------|
+| 3.1.1 | `lib/screens/owner/dashboard/owner_dashboard_state.dart` | State |
+| 3.1.1 | `lib/screens/owner/dashboard/owner_dashboard_notifier.dart` | Notifier |
+| 3.1.1 | `test/screens/owner/dashboard/owner_dashboard_notifier_test.dart` | Test |
+| 3.1.2 | `lib/screens/owner/dashboard/owner_dashboard_screen.dart` | Screen |
+| 3.1.2 | `test/screens/owner/dashboard/owner_dashboard_screen_test.dart` | Widget Test |
+| 3.2.1 | `lib/screens/owner/order_create/order_create_state.dart` | State |
+| 3.2.1 | `lib/screens/owner/order_create/order_create_notifier.dart` | Notifier |
+| 3.2.1 | `test/screens/owner/order_create/order_create_notifier_test.dart` | Test |
+| 3.2.2 | `lib/screens/owner/order_create/order_create_screen.dart` | Screen |
+| 3.2.2 | `test/screens/owner/order_create/order_create_screen_test.dart` | Widget Test |
+| 3.3.1 | `lib/screens/owner/order_manage/order_manage_state.dart` | State |
+| 3.3.1 | `lib/screens/owner/order_manage/order_manage_notifier.dart` | Notifier |
+| 3.3.1 | `test/screens/owner/order_manage/order_manage_notifier_test.dart` | Test |
+| 3.3.2 | `lib/screens/owner/order_manage/order_manage_screen.dart` | Screen |
+| 3.3.2 | `test/screens/owner/order_manage/order_manage_screen_test.dart` | Widget Test |
+| 3.4.1 | `lib/screens/owner/shop_qr/shop_qr_state.dart` | State |
+| 3.4.1 | `lib/screens/owner/shop_qr/shop_qr_notifier.dart` | Notifier |
+| 3.4.1 | `test/screens/owner/shop_qr/shop_qr_notifier_test.dart` | Test |
+| 3.4.2 | `lib/screens/owner/shop_qr/shop_qr_screen.dart` | Screen |
+| 3.4.2 | `test/screens/owner/shop_qr/shop_qr_screen_test.dart` | Widget Test |
+
+### Phase 3 커밋 순서
+
+| 순서 | Task | 커밋 메시지 |
+|------|------|------------|
+| 1 | 3.1.1 | `feat: 사장님 대시보드 상태 관리 및 Notifier 구현` |
+| 2 | 3.1.2 | `feat: 사장님 대시보드 화면 위젯 및 위젯 테스트 구현` |
+| 3 | 3.2.1 | `feat: 작업 접수 상태 관리 및 Notifier 구현` |
+| 4 | 3.2.2 | `feat: 작업 접수 화면 위젯 및 위젯 테스트 구현` |
+| 5 | 3.3.1 | `feat: 작업 관리 상태 관리 및 Notifier 구현` |
+| 6 | 3.3.2 | `feat: 작업 관리 화면 위젯 및 위젯 테스트 구현` |
+| 7 | 3.4.1 | `feat: 샵 QR코드 상태 관리 및 Notifier 구현` |
+| 8 | 3.4.2 | `feat: 샵 QR코드 화면 위젯 및 위젯 테스트 구현` |
+
+### Phase 3 의존 패키지
+
+| 패키지 | 용도 | Task |
+|--------|------|------|
+| `flutter_riverpod` | 상태 관리 | 전체 |
+| `freezed_annotation` | 불변 상태 클래스 | 전체 |
+| `go_router` | 네비게이션 | 3.1.2, 3.2.2, 3.3.2 |
+| `qr_flutter` | QR코드 생성 | 3.4.2 |
+| `mobile_scanner` | QR코드 스캔 | 3.2.2 |
+| `mocktail` | 테스트 Mock | 전체 테스트 |
+
+---
