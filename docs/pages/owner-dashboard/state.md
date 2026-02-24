@@ -26,7 +26,7 @@
 | `shopId` | `currentUserProvider` → `ShopRepository.getByOwner()` | 현재 사장님의 샵 ID. 인증 모듈(M3)에서 제공하는 사용자 정보로 조회 |
 | `shopName` | `ShopRepository.getByOwner()` | 앱바에 표시할 샵 이름 |
 | `supabaseClient` | `supabaseProvider` (M1) | Supabase 클라이언트 인스턴스 |
-| `todayStart` | 로컬 계산 | 오늘 00:00:00 UTC 기준 DateTime. 조회 조건으로 사용 |
+| `todayStart` | 로컬 계산 | 오늘 00:00:00 KST 기준 DateTime. DB 타임존이 Asia/Seoul이므로 클라이언트 로컬 시간 기준으로 계산 |
 
 ---
 

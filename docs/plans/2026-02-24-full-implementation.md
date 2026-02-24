@@ -318,6 +318,38 @@ git commit -m "chore: 환경 변수 템플릿 및 .gitignore 설정"
 
 ---
 
+### Task 0.6: Supabase DB 타임존 설정 (Asia/Seoul)
+
+**Files:**
+- Supabase Dashboard 또는 마이그레이션 SQL
+
+**Step 1: 타임존 변경 SQL 실행**
+
+Supabase SQL Editor 또는 마이그레이션 파일에서 실행:
+
+```sql
+-- DB 타임존을 한국 시간(KST)으로 설정
+alter database postgres set timezone to 'Asia/Seoul';
+```
+
+**Step 2: 설정 확인**
+
+```sql
+show timezone;
+-- Expected: Asia/Seoul
+```
+
+**Step 3: 효과 확인**
+
+```sql
+select now();
+-- Expected: 한국 시간(UTC+9) 기준 현재 시각 반환
+```
+
+> **참고**: TIMESTAMPTZ 컬럼은 내부적으로 UTC로 저장되며, 읽기 시 Asia/Seoul 기준으로 변환된다. Flutter 클라이언트에서 별도 타임존 변환이 불필요하다. "오늘의 작업" 등 날짜 기반 조회가 사용자 기대(KST)와 일치한다.
+
+---
+
 ## Phase 1: 공통 모듈 (M1~M12)
 
 ### Task 1.1: M4 데이터 모델 + Enum
@@ -10283,8 +10315,9 @@ class OwnerDashboardNotifier extends Notifier<OwnerDashboardState> {
   }
 
   void _recalculateCounts(List<Order> allOrders) {
-    final today = DateTime.now();
-    final todayStart = DateTime(today.year, today.month, today.day);
+    // DB 타임존이 Asia/Seoul(KST)이므로 로컬 시간 기준 오늘 자정
+    final now = DateTime.now();
+    final todayStart = DateTime(now.year, now.month, now.day); // KST 00:00:00
     final todayOrders = allOrders
         .where((o) => o.createdAt.isAfter(todayStart))
         .toList();
