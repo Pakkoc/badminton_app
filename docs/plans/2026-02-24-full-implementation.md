@@ -3808,3 +3808,5008 @@ Expected: PASS
 git add test/helpers/
 git commit -m "feat: M12 테스트 환경 (mocks, fixtures, test_app helper)"
 ```
+
+---
+
+## Phase 2: 인증 플로우
+
+### Task 2.1: Splash Screen (스플래시 화면)
+
+> 화면 ID: `splash`
+> UI 스펙: `docs/ui-specs/splash.md`
+> 상태 설계: `docs/pages/splash/state.md`
+> 유스케이스: UC-1 소셜 로그인 + 프로필 설정
+
+#### Step 1: 실패하는 단위 테스트 작성
+
+**파일: `test/screens/auth/splash/splash_notifier_test.dart`**
+
+```dart
+import 'package:flutter_test/flutter_test.dart';
+import 'package:mocktail/mocktail.dart';
+import 'package:riverpod/riverpod.dart';
+import 'package:supabase_flutter/supabase_flutter.dart' hide Provider;
+import 'package:gut_alarm/providers/auth_providers.dart';
+import 'package:gut_alarm/screens/auth/splash/splash_providers.dart';
+import 'package:gut_alarm/models/user.dart' as app;
+
+class MockSupabaseClient extends Mock implements SupabaseClient {}
+class MockGoTrueClient extends Mock implements GoTrueClient {}
+class MockUser extends Mock implements User {}
+
+void main() {
+  group('splashRouteProvider', () {
+    late ProviderContainer container;
+    late MockSupabaseClient mockSupabase;
+    late MockGoTrueClient mockAuth;
+
+    setUp(() {
+      mockSupabase = MockSupabaseClient();
+      mockAuth = MockGoTrueClient();
+      when(() => mockSupabase.auth).thenReturn(mockAuth);
+    });
+
+    tearDown(() => container.dispose());
+
+    test('세션이 없으면 SplashRoute.login을 반환한다', () async {
+      // Arrange
+      when(() => mockAuth.currentSession).thenReturn(null);
+      container = ProviderContainer(overrides: [
+        supabaseProvider.overrideWithValue(mockSupabase),
+      ]);
+
+      // Act
+      final route = await container.read(splashRouteProvider.future);
+
+      // Assert
+      expect(route, SplashRoute.login);
+    });
+
+    test('세션 있지만 users 테이블에 없으면 SplashRoute.profileSetup', () async {
+      // Arrange
+      final mockUser = MockUser();
+      when(() => mockUser.id).thenReturn('test-user-id');
+      when(() => mockAuth.currentSession).thenReturn(
+        Session(accessToken: 'token', tokenType: 'bearer', user: mockUser),
+      );
+      when(() => mockAuth.currentUser).thenReturn(mockUser);
+      container = ProviderContainer(overrides: [
+        supabaseProvider.overrideWithValue(mockSupabase),
+        isNewUserProvider.overrideWith((ref) => true),
+      ]);
+
+      // Act & Assert
+      expect(await container.read(splashRouteProvider.future),
+          SplashRoute.profileSetup);
+    });
+
+    test('기존 고객이면 SplashRoute.customerHome', () async {
+      final mockUser = MockUser();
+      when(() => mockUser.id).thenReturn('test-user-id');
+      when(() => mockAuth.currentSession).thenReturn(
+        Session(accessToken: 'token', tokenType: 'bearer', user: mockUser),
+      );
+      when(() => mockAuth.currentUser).thenReturn(mockUser);
+      container = ProviderContainer(overrides: [
+        supabaseProvider.overrideWithValue(mockSupabase),
+        isNewUserProvider.overrideWith((ref) => false),
+        userRoleProvider.overrideWith((ref) => app.UserRole.customer),
+      ]);
+
+      expect(await container.read(splashRouteProvider.future),
+          SplashRoute.customerHome);
+    });
+
+    test('기존 사장님이면 SplashRoute.ownerDashboard', () async {
+      final mockUser = MockUser();
+      when(() => mockUser.id).thenReturn('test-user-id');
+      when(() => mockAuth.currentSession).thenReturn(
+        Session(accessToken: 'token', tokenType: 'bearer', user: mockUser),
+      );
+      when(() => mockAuth.currentUser).thenReturn(mockUser);
+      container = ProviderContainer(overrides: [
+        supabaseProvider.overrideWithValue(mockSupabase),
+        isNewUserProvider.overrideWith((ref) => false),
+        userRoleProvider.overrideWith((ref) => app.UserRole.shopOwner),
+      ]);
+
+      expect(await container.read(splashRouteProvider.future),
+          SplashRoute.ownerDashboard);
+    });
+
+    test('5초 타임아웃 시 SplashRoute.login 폴백', () async {
+      when(() => mockAuth.currentSession).thenAnswer(
+        (_) => Future.delayed(const Duration(seconds: 6), () => null),
+      );
+      container = ProviderContainer(overrides: [
+        supabaseProvider.overrideWithValue(mockSupabase),
+      ]);
+
+      expect(await container.read(splashRouteProvider.future),
+          SplashRoute.login);
+    });
+  });
+}
+```
+
+#### Step 2: Provider 구현
+
+**파일: `lib/screens/auth/splash/splash_providers.dart`**
+
+```dart
+import 'package:riverpod_annotation/riverpod_annotation.dart';
+import 'package:gut_alarm/providers/auth_providers.dart';
+import 'package:gut_alarm/models/user.dart' as app;
+
+part 'splash_providers.g.dart';
+
+enum SplashRoute { login, customerHome, ownerDashboard, profileSetup }
+
+@riverpod
+Future<SplashRoute> splashRoute(SplashRouteRef ref) async {
+  try {
+    return await Future(() async {
+      final minDisplay = Future.delayed(const Duration(milliseconds: 1500));
+      final session = ref.read(supabaseProvider).auth.currentSession;
+
+      if (session == null) {
+        await minDisplay;
+        return SplashRoute.login;
+      }
+
+      final isNew = await ref.read(isNewUserProvider.future);
+      if (isNew) {
+        await minDisplay;
+        return SplashRoute.profileSetup;
+      }
+
+      final role = await ref.read(userRoleProvider.future);
+      await minDisplay;
+      return switch (role) {
+        app.UserRole.customer => SplashRoute.customerHome,
+        app.UserRole.shopOwner => SplashRoute.ownerDashboard,
+      };
+    }).timeout(const Duration(seconds: 5), onTimeout: () => SplashRoute.login);
+  } catch (_) {
+    return SplashRoute.login;
+  }
+}
+```
+
+#### Step 3: 위젯 테스트 작성
+
+**파일: `test/screens/auth/splash/splash_screen_test.dart`**
+
+```dart
+import 'package:flutter/material.dart';
+import 'package:flutter_test/flutter_test.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:gut_alarm/screens/auth/splash/splash_screen.dart';
+import 'package:gut_alarm/screens/auth/splash/splash_providers.dart';
+
+void main() {
+  group('SplashScreen', () {
+    testWidgets('앱 이름, 슬로건, 로딩 스피너가 표시된다', (tester) async {
+      await tester.pumpWidget(ProviderScope(
+        overrides: [
+          splashRouteProvider.overrideWith((ref) =>
+            Future.delayed(const Duration(seconds: 10), () => SplashRoute.login)),
+        ],
+        child: const MaterialApp(home: SplashScreen()),
+      ));
+      await tester.pump();
+
+      expect(find.text('거트알림'), findsOneWidget);
+      expect(find.text('배드민턴 거트 추적 서비스'), findsOneWidget);
+      expect(find.byType(CircularProgressIndicator), findsOneWidget);
+    });
+
+    testWidgets('로딩 스피너 색상이 #16A34A', (tester) async {
+      await tester.pumpWidget(ProviderScope(
+        overrides: [
+          splashRouteProvider.overrideWith((ref) =>
+            Future.delayed(const Duration(seconds: 10), () => SplashRoute.login)),
+        ],
+        child: const MaterialApp(home: SplashScreen()),
+      ));
+      await tester.pump(const Duration(milliseconds: 700));
+
+      final indicator = tester.widget<CircularProgressIndicator>(
+        find.byType(CircularProgressIndicator));
+      expect(indicator.color, const Color(0xFF16A34A));
+    });
+  });
+}
+```
+
+#### Step 4: 화면 위젯 구현
+
+**파일: `lib/screens/auth/splash/splash_screen.dart`**
+
+```dart
+import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
+import 'package:gut_alarm/screens/auth/splash/splash_providers.dart';
+
+class SplashScreen extends ConsumerStatefulWidget {
+  const SplashScreen({super.key});
+  @override
+  ConsumerState<SplashScreen> createState() => _SplashScreenState();
+}
+
+class _SplashScreenState extends ConsumerState<SplashScreen>
+    with SingleTickerProviderStateMixin {
+  late final AnimationController _ctrl;
+  late final Animation<double> _logoFade, _logoScale, _textFade, _spinnerFade;
+
+  @override
+  void initState() {
+    super.initState();
+    _ctrl = AnimationController(vsync: this,
+        duration: const Duration(milliseconds: 900));
+
+    _logoFade = Tween(begin: 0.0, end: 1.0).animate(CurvedAnimation(
+      parent: _ctrl, curve: const Interval(0.0, 0.556, curve: Curves.easeOut)));
+    _logoScale = Tween(begin: 0.8, end: 1.0).animate(CurvedAnimation(
+      parent: _ctrl, curve: const Interval(0.0, 0.556, curve: Curves.easeOut)));
+    _textFade = Tween(begin: 0.0, end: 1.0).animate(CurvedAnimation(
+      parent: _ctrl, curve: const Interval(0.222, 0.667, curve: Curves.easeOut)));
+    _spinnerFade = Tween(begin: 0.0, end: 1.0).animate(CurvedAnimation(
+      parent: _ctrl, curve: const Interval(0.667, 1.0, curve: Curves.easeOut)));
+
+    _ctrl.forward();
+  }
+
+  @override
+  void dispose() { _ctrl.dispose(); super.dispose(); }
+
+  @override
+  Widget build(BuildContext context) {
+    ref.listen(splashRouteProvider, (_, next) {
+      next.whenData((route) {
+        if (!mounted) return;
+        switch (route) {
+          case SplashRoute.login: context.go('/login');
+          case SplashRoute.profileSetup: context.go('/profile-setup');
+          case SplashRoute.customerHome: context.go('/customer/home');
+          case SplashRoute.ownerDashboard: context.go('/owner/dashboard');
+        }
+      });
+    });
+
+    return Scaffold(
+      backgroundColor: Colors.white,
+      body: Center(child: AnimatedBuilder(
+        animation: _ctrl,
+        builder: (context, _) => Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            FadeTransition(opacity: _logoFade, child: ScaleTransition(
+              scale: _logoScale,
+              child: const Icon(Icons.sports_tennis, size: 80,
+                  color: Color(0xFF16A34A)))),
+            const SizedBox(height: 16),
+            FadeTransition(opacity: _logoFade, child: const Text('거트알림',
+              style: TextStyle(fontSize: 32, fontWeight: FontWeight.bold,
+                  color: Color(0xFF1E293B)))),
+            const SizedBox(height: 8),
+            FadeTransition(opacity: _textFade,
+              child: const Text('배드민턴 거트 추적 서비스',
+                style: TextStyle(fontSize: 14, color: Color(0xFF94A3B8)))),
+            const SizedBox(height: 32),
+            FadeTransition(opacity: _spinnerFade, child: const SizedBox(
+              width: 24, height: 24,
+              child: CircularProgressIndicator(strokeWidth: 2.5,
+                  color: Color(0xFF16A34A)))),
+          ],
+        ),
+      )),
+    );
+  }
+}
+```
+
+#### Step 5: 테스트 실행
+
+```bash
+flutter test test/screens/auth/splash/
+```
+
+#### Step 6: 커밋
+
+```bash
+git add lib/screens/auth/splash/ test/screens/auth/splash/
+git commit -m "feat: 스플래시 화면 구현 (라우팅 분기 + 애니메이션)"
+```
+
+---
+
+### Task 2.2: Login Screen (로그인 화면)
+
+> 화면 ID: `login`
+> UI 스펙: `docs/ui-specs/login.md`
+> 상태 설계: `docs/pages/login/state.md`
+> 유스케이스: UC-1 소셜 로그인 + 프로필 설정
+
+#### Step 1: 실패하는 단위 테스트 작성
+
+**파일: `test/screens/auth/login/login_notifier_test.dart`**
+
+```dart
+import 'package:flutter_test/flutter_test.dart';
+import 'package:mocktail/mocktail.dart';
+import 'package:riverpod/riverpod.dart';
+import 'package:gut_alarm/screens/auth/login/login_state.dart';
+import 'package:gut_alarm/screens/auth/login/login_notifier.dart';
+import 'package:gut_alarm/repositories/auth_repository.dart';
+import 'package:gut_alarm/providers/auth_providers.dart';
+import 'package:gut_alarm/core/error/app_exception.dart';
+
+class MockAuthRepository extends Mock implements AuthRepository {}
+
+void main() {
+  group('LoginNotifier', () {
+    late ProviderContainer container;
+    late MockAuthRepository mockAuthRepo;
+
+    setUp(() { mockAuthRepo = MockAuthRepository(); });
+    tearDown(() => container.dispose());
+
+    ProviderContainer createContainer() => ProviderContainer(overrides: [
+      authRepositoryProvider.overrideWithValue(mockAuthRepo),
+    ]);
+
+    test('초기 상태는 LoginState.idle()', () {
+      container = createContainer();
+      expect(container.read(loginNotifierProvider), const LoginState.idle());
+    });
+
+    test('signInWithKakao → authenticating(kakao)', () async {
+      when(() => mockAuthRepo.signInWithOAuth(OAuthProvider.kakao))
+          .thenAnswer((_) async {});
+      container = createContainer();
+      final future = container.read(loginNotifierProvider.notifier)
+          .signInWithKakao();
+      expect(container.read(loginNotifierProvider),
+          const LoginState.authenticating(OAuthProvider.kakao));
+      await future;
+    });
+
+    test('signInWithNaver → authenticating(naver)', () async {
+      when(() => mockAuthRepo.signInWithOAuth(OAuthProvider.naver))
+          .thenAnswer((_) async {});
+      container = createContainer();
+      final future = container.read(loginNotifierProvider.notifier)
+          .signInWithNaver();
+      expect(container.read(loginNotifierProvider),
+          const LoginState.authenticating(OAuthProvider.naver));
+      await future;
+    });
+
+    test('signInWithGoogle → authenticating(google)', () async {
+      when(() => mockAuthRepo.signInWithOAuth(OAuthProvider.google))
+          .thenAnswer((_) async {});
+      container = createContainer();
+      final future = container.read(loginNotifierProvider.notifier)
+          .signInWithGoogle();
+      expect(container.read(loginNotifierProvider),
+          const LoginState.authenticating(OAuthProvider.google));
+      await future;
+    });
+
+    test('로그인 성공 → idle 복귀', () async {
+      when(() => mockAuthRepo.signInWithOAuth(OAuthProvider.kakao))
+          .thenAnswer((_) async {});
+      container = createContainer();
+      await container.read(loginNotifierProvider.notifier).signInWithKakao();
+      expect(container.read(loginNotifierProvider), const LoginState.idle());
+    });
+
+    test('사용자 취소 → idle (에러 없음)', () async {
+      when(() => mockAuthRepo.signInWithOAuth(OAuthProvider.kakao))
+          .thenThrow(const AppException.cancelled());
+      container = createContainer();
+      await container.read(loginNotifierProvider.notifier).signInWithKakao();
+      expect(container.read(loginNotifierProvider), const LoginState.idle());
+    });
+
+    test('네트워크 오류 → error("네트워크 연결을 확인해주세요")', () async {
+      when(() => mockAuthRepo.signInWithOAuth(OAuthProvider.kakao))
+          .thenThrow(const AppException.network());
+      container = createContainer();
+      await container.read(loginNotifierProvider.notifier).signInWithKakao();
+      expect(container.read(loginNotifierProvider),
+          const LoginState.error('네트워크 연결을 확인해주세요'));
+    });
+
+    test('기타 에러 → error("로그인에 실패했습니다. 다시 시도해주세요")', () async {
+      when(() => mockAuthRepo.signInWithOAuth(OAuthProvider.kakao))
+          .thenThrow(Exception('unknown'));
+      container = createContainer();
+      await container.read(loginNotifierProvider.notifier).signInWithKakao();
+      expect(container.read(loginNotifierProvider),
+          const LoginState.error('로그인에 실패했습니다. 다시 시도해주세요'));
+    });
+  });
+}
+```
+
+#### Step 2: 상태 클래스 및 Notifier 구현
+
+**파일: `lib/screens/auth/login/login_state.dart`**
+
+```dart
+import 'package:freezed_annotation/freezed_annotation.dart';
+
+part 'login_state.freezed.dart';
+
+enum OAuthProvider { kakao, naver, google }
+
+@freezed
+class LoginState with _$LoginState {
+  const factory LoginState.idle() = LoginStateIdle;
+  const factory LoginState.authenticating(OAuthProvider provider) =
+      LoginStateAuthenticating;
+  const factory LoginState.error(String message) = LoginStateError;
+}
+```
+
+**파일: `lib/screens/auth/login/login_notifier.dart`**
+
+```dart
+import 'package:riverpod_annotation/riverpod_annotation.dart';
+import 'package:gut_alarm/screens/auth/login/login_state.dart';
+import 'package:gut_alarm/repositories/auth_repository.dart';
+import 'package:gut_alarm/providers/auth_providers.dart';
+import 'package:gut_alarm/core/error/app_exception.dart';
+
+part 'login_notifier.g.dart';
+
+@riverpod
+class LoginNotifier extends _$LoginNotifier {
+  @override
+  LoginState build() => const LoginState.idle();
+
+  Future<void> signInWithKakao() => _signIn(OAuthProvider.kakao);
+  Future<void> signInWithNaver() => _signIn(OAuthProvider.naver);
+  Future<void> signInWithGoogle() => _signIn(OAuthProvider.google);
+
+  Future<void> _signIn(OAuthProvider provider) async {
+    state = LoginState.authenticating(provider);
+    try {
+      await ref.read(authRepositoryProvider).signInWithOAuth(provider);
+      state = const LoginState.idle();
+    } on AppException catch (e) {
+      state = e.maybeWhen(
+        cancelled: () => const LoginState.idle(),
+        network: () => const LoginState.error('네트워크 연결을 확인해주세요'),
+        orElse: () => const LoginState.error('로그인에 실패했습니다. 다시 시도해주세요'),
+      );
+    } catch (_) {
+      state = const LoginState.error('로그인에 실패했습니다. 다시 시도해주세요');
+    }
+  }
+}
+```
+
+#### Step 3: 위젯 테스트 작성
+
+**파일: `test/screens/auth/login/login_screen_test.dart`**
+
+```dart
+import 'package:flutter/material.dart';
+import 'package:flutter_test/flutter_test.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:gut_alarm/screens/auth/login/login_screen.dart';
+import 'package:gut_alarm/screens/auth/login/login_state.dart';
+import 'package:gut_alarm/screens/auth/login/login_notifier.dart';
+
+void main() {
+  group('LoginScreen', () {
+    testWidgets('카카오, 네이버, Google 로그인 버튼 표시', (tester) async {
+      await tester.pumpWidget(const ProviderScope(
+        child: MaterialApp(home: LoginScreen())));
+      expect(find.text('카카오로 시작하기'), findsOneWidget);
+      expect(find.text('네이버로 시작하기'), findsOneWidget);
+      expect(find.text('Google로 시작하기'), findsOneWidget);
+    });
+
+    testWidgets('로고와 환영 메시지 표시', (tester) async {
+      await tester.pumpWidget(const ProviderScope(
+        child: MaterialApp(home: LoginScreen())));
+      expect(find.text('거트알림'), findsOneWidget);
+      expect(find.text('반갑습니다!'), findsOneWidget);
+      expect(find.text('간편하게 시작하세요'), findsOneWidget);
+    });
+
+    testWidgets('authenticating 시 스피너 표시', (tester) async {
+      await tester.pumpWidget(ProviderScope(
+        overrides: [loginNotifierProvider.overrideWith(() =>
+          _FakeLoginNotifier(
+            const LoginState.authenticating(OAuthProvider.kakao)))],
+        child: const MaterialApp(home: LoginScreen())));
+      expect(find.byType(CircularProgressIndicator), findsOneWidget);
+    });
+
+    testWidgets('error 시 에러 스낵바 표시', (tester) async {
+      await tester.pumpWidget(ProviderScope(
+        overrides: [loginNotifierProvider.overrideWith(() =>
+          _FakeLoginNotifier(
+            const LoginState.error('네트워크 연결을 확인해주세요')))],
+        child: const MaterialApp(home: LoginScreen())));
+      await tester.pumpAndSettle();
+      expect(find.text('네트워크 연결을 확인해주세요'), findsOneWidget);
+    });
+  });
+}
+
+class _FakeLoginNotifier extends LoginNotifier {
+  final LoginState _initial;
+  _FakeLoginNotifier(this._initial);
+  @override
+  LoginState build() => _initial;
+}
+```
+
+#### Step 4: 화면 위젯 구현
+
+**파일: `lib/screens/auth/login/login_screen.dart`**
+
+```dart
+import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:gut_alarm/screens/auth/login/login_state.dart';
+import 'package:gut_alarm/screens/auth/login/login_notifier.dart';
+
+class LoginScreen extends ConsumerWidget {
+  const LoginScreen({super.key});
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final loginState = ref.watch(loginNotifierProvider);
+    final notifier = ref.read(loginNotifierProvider.notifier);
+    final isLoading = loginState is LoginStateAuthenticating;
+
+    ref.listen(loginNotifierProvider, (_, next) {
+      next.maybeWhen(
+        error: (msg) => ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          content: Text(msg, style: const TextStyle(color: Color(0xFFEF4444))),
+          backgroundColor: const Color(0xFFFEE2E2),
+          duration: const Duration(seconds: 3),
+        )),
+        orElse: () {},
+      );
+    });
+
+    return Scaffold(
+      backgroundColor: Colors.white,
+      body: SafeArea(child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 24),
+        child: Column(children: [
+          const Spacer(flex: 3),
+          const Icon(Icons.sports_tennis, size: 56, color: Color(0xFF16A34A)),
+          const SizedBox(height: 8),
+          const Text('거트알림', style: TextStyle(fontSize: 28,
+              fontWeight: FontWeight.bold, color: Color(0xFF1E293B))),
+          const SizedBox(height: 32),
+          const Text('반갑습니다!', style: TextStyle(fontSize: 22,
+              fontWeight: FontWeight.w600, color: Color(0xFF1E293B))),
+          const SizedBox(height: 8),
+          const Text('간편하게 시작하세요',
+              style: TextStyle(fontSize: 14, color: Color(0xFF94A3B8))),
+          const Spacer(flex: 2),
+          _SocialBtn(label: '카카오로 시작하기', bg: const Color(0xFFFEE500),
+            fg: const Color(0xFF191919),
+            loading: loginState == const LoginState.authenticating(OAuthProvider.kakao),
+            disabled: isLoading, onTap: notifier.signInWithKakao),
+          const SizedBox(height: 12),
+          _SocialBtn(label: '네이버로 시작하기', bg: const Color(0xFF03C75A),
+            fg: Colors.white,
+            loading: loginState == const LoginState.authenticating(OAuthProvider.naver),
+            disabled: isLoading, onTap: notifier.signInWithNaver),
+          const SizedBox(height: 12),
+          _SocialBtn(label: 'Google로 시작하기', bg: Colors.white,
+            fg: const Color(0xFF1E293B), border: const Color(0xFFE2E8F0),
+            loading: loginState == const LoginState.authenticating(OAuthProvider.google),
+            disabled: isLoading, onTap: notifier.signInWithGoogle),
+          const Spacer(),
+        ]),
+      )),
+    );
+  }
+}
+
+class _SocialBtn extends StatelessWidget {
+  final String label;
+  final Color bg, fg;
+  final Color? border;
+  final bool loading, disabled;
+  final VoidCallback onTap;
+
+  const _SocialBtn({required this.label, required this.bg, required this.fg,
+    this.border, required this.loading, required this.disabled,
+    required this.onTap});
+
+  @override
+  Widget build(BuildContext context) => SizedBox(
+    width: double.infinity, height: 48,
+    child: OutlinedButton(
+      onPressed: disabled ? null : onTap,
+      style: OutlinedButton.styleFrom(backgroundColor: bg,
+        side: BorderSide(color: border ?? bg),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12))),
+      child: loading
+          ? SizedBox(width: 20, height: 20,
+              child: CircularProgressIndicator(strokeWidth: 2, color: fg))
+          : Text(label, style: TextStyle(fontSize: 16,
+              fontWeight: FontWeight.w600, color: fg)),
+    ),
+  );
+}
+```
+
+#### Step 5: 테스트 실행
+
+```bash
+flutter test test/screens/auth/login/
+```
+
+#### Step 6: 커밋
+
+```bash
+git add lib/screens/auth/login/ test/screens/auth/login/
+git commit -m "feat: 로그인 화면 구현 (소셜 로그인 3종 + 에러 처리)"
+```
+
+---
+
+
+
+## Phase 4: 고객 핵심 화면 (customer-home, order-detail, order-history)
+
+> Phase 2 완료 후 진행. 고객 역할 사용자의 핵심 화면을 구현한다.
+
+### Task 4.1: Customer Home (고객 홈)
+
+> 고객이 현재 진행 중인 거트 작업 목록을 실시간으로 확인하는 메인 화면.
+> Supabase Realtime 구독으로 작업 상태 변경을 즉시 반영한다.
+
+**Files:**
+- Create: `lib/providers/customer_home_provider.dart`
+- Create: `lib/screens/customer/customer_home_screen.dart`
+- Create: `lib/screens/customer/customer_main_shell.dart`
+- Create: `test/providers/customer_home_provider_test.dart`
+- Create: `test/screens/customer/customer_home_screen_test.dart`
+
+**Step 1 (Red): Provider 테스트 작성**
+
+Create: `test/providers/customer_home_provider_test.dart`
+
+```dart
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_test/flutter_test.dart';
+import 'package:mocktail/mocktail.dart';
+import 'package:badminton_app/providers/customer_home_provider.dart';
+import 'package:badminton_app/models/order.dart';
+import 'package:badminton_app/models/enums.dart';
+import 'package:badminton_app/repositories/order_repository.dart';
+
+import '../helpers/mocks.dart';
+import '../helpers/fixtures.dart';
+
+void main() {
+  group('CustomerHomeNotifier', () {
+    late MockOrderRepository mockOrderRepository;
+    late ProviderContainer container;
+
+    setUp(() {
+      mockOrderRepository = MockOrderRepository();
+      container = ProviderContainer(
+        overrides: [
+          orderRepositoryProvider.overrideWithValue(mockOrderRepository),
+        ],
+      );
+    });
+
+    tearDown(() {
+      container.dispose();
+    });
+
+    test('초기 상태는 AsyncLoading이다', () {
+      // Arrange & Act
+      final state = container.read(customerHomeNotifierProvider);
+
+      // Assert
+      expect(state, isA<AsyncLoading>());
+    });
+
+    test('활성 작업 목록을 성공적으로 로드한다', () async {
+      // Arrange
+      final orders = [
+        testOrder.copyWith(status: OrderStatus.received),
+        testOrder.copyWith(status: OrderStatus.inProgress),
+      ];
+      when(() => mockOrderRepository.streamActiveByUser(any()))
+          .thenAnswer((_) => Stream.value(orders));
+
+      // Act
+      await container.read(customerHomeNotifierProvider.future);
+      final state = container.read(customerHomeNotifierProvider);
+
+      // Assert
+      expect(state.value, equals(orders));
+    });
+
+    test('에러 발생 시 AsyncError 상태가 된다', () async {
+      // Arrange
+      when(() => mockOrderRepository.streamActiveByUser(any()))
+          .thenAnswer((_) => Stream.error(Exception('네트워크 에러')));
+
+      // Act
+      await expectLater(
+        container.read(customerHomeNotifierProvider.future),
+        throwsA(isA<Exception>()),
+      );
+
+      // Assert
+      final state = container.read(customerHomeNotifierProvider);
+      expect(state, isA<AsyncError>());
+    });
+  });
+
+  group('receivedCountProvider', () {
+    test('received 상태 작업 건수를 정확히 계산한다', () async {
+      // Arrange
+      final orders = [
+        testOrder.copyWith(status: OrderStatus.received),
+        testOrder.copyWith(status: OrderStatus.received),
+        testOrder.copyWith(status: OrderStatus.inProgress),
+      ];
+      final container = ProviderContainer(
+        overrides: [
+          customerHomeNotifierProvider
+              .overrideWith(() => FakeCustomerHomeNotifier(orders)),
+        ],
+      );
+
+      // Act
+      await container.read(customerHomeNotifierProvider.future);
+      final count = container.read(receivedCountProvider);
+
+      // Assert
+      expect(count, equals(2));
+
+      container.dispose();
+    });
+  });
+
+  group('inProgressCountProvider', () {
+    test('inProgress 상태 작업 건수를 정확히 계산한다', () async {
+      // Arrange
+      final orders = [
+        testOrder.copyWith(status: OrderStatus.received),
+        testOrder.copyWith(status: OrderStatus.inProgress),
+        testOrder.copyWith(status: OrderStatus.inProgress),
+      ];
+      final container = ProviderContainer(
+        overrides: [
+          customerHomeNotifierProvider
+              .overrideWith(() => FakeCustomerHomeNotifier(orders)),
+        ],
+      );
+
+      // Act
+      await container.read(customerHomeNotifierProvider.future);
+      final count = container.read(inProgressCountProvider);
+
+      // Assert
+      expect(count, equals(2));
+
+      container.dispose();
+    });
+  });
+}
+```
+
+Run: `flutter test test/providers/customer_home_provider_test.dart`
+Expected: FAIL (컴파일 에러 — Provider 미구현)
+
+**Step 2 (Green): Provider 구현**
+
+Create: `lib/providers/customer_home_provider.dart`
+
+```dart
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:riverpod_annotation/riverpod_annotation.dart';
+import 'package:badminton_app/models/order.dart';
+import 'package:badminton_app/models/enums.dart';
+import 'package:badminton_app/repositories/order_repository.dart';
+import 'package:badminton_app/providers/auth_provider.dart';
+
+part 'customer_home_provider.g.dart';
+
+/// 고객 홈 — 활성 작업 목록 Realtime 스트림
+@riverpod
+Stream<List<Order>> activeOrdersStream(ActiveOrdersStreamRef ref) {
+  final currentUser = ref.watch(currentUserProvider).valueOrNull;
+  if (currentUser == null) return Stream.value([]);
+
+  final orderRepository = ref.watch(orderRepositoryProvider);
+  return orderRepository.streamActiveByUser(currentUser.id);
+}
+
+/// 고객 홈 — 메인 상태 관리 Notifier
+@riverpod
+class CustomerHomeNotifier extends _$CustomerHomeNotifier {
+  @override
+  Future<List<Order>> build() async {
+    final stream = ref.watch(activeOrdersStreamProvider.future);
+    return stream;
+  }
+
+  /// Pull-to-refresh
+  Future<void> refresh() async {
+    state = const AsyncLoading();
+    ref.invalidateSelf();
+  }
+
+  /// 에러 상태에서 재시도
+  Future<void> retry() async {
+    state = const AsyncLoading();
+    ref.invalidateSelf();
+  }
+}
+
+/// 접수됨 상태 건수 (파생)
+@riverpod
+int receivedCount(ReceivedCountRef ref) {
+  final orders = ref.watch(customerHomeNotifierProvider).valueOrNull ?? [];
+  return orders.where((o) => o.status == OrderStatus.received).length;
+}
+
+/// 작업중 상태 건수 (파생)
+@riverpod
+int inProgressCount(InProgressCountRef ref) {
+  final orders = ref.watch(customerHomeNotifierProvider).valueOrNull ?? [];
+  return orders.where((o) => o.status == OrderStatus.inProgress).length;
+}
+```
+
+Run: `flutter test test/providers/customer_home_provider_test.dart`
+Expected: PASS
+
+**Step 3 (Red): Widget 테스트 작성**
+
+Create: `test/screens/customer/customer_home_screen_test.dart`
+
+```dart
+import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_test/flutter_test.dart';
+import 'package:mocktail/mocktail.dart';
+import 'package:badminton_app/screens/customer/customer_home_screen.dart';
+import 'package:badminton_app/providers/customer_home_provider.dart';
+import 'package:badminton_app/models/order.dart';
+import 'package:badminton_app/models/enums.dart';
+
+import '../../helpers/mocks.dart';
+import '../../helpers/fixtures.dart';
+import '../../helpers/test_app.dart';
+
+void main() {
+  group('CustomerHomeScreen', () {
+    testWidgets('로딩 상태에서 스켈레톤 shimmer를 표시한다', (tester) async {
+      // Arrange
+      await tester.pumpWidget(
+        createTestApp(
+          overrides: [
+            customerHomeNotifierProvider.overrideWith(
+              () => FakeLoadingNotifier(),
+            ),
+          ],
+          child: const CustomerHomeScreen(),
+        ),
+      );
+
+      // Assert
+      expect(find.byType(SkeletonShimmer), findsWidgets);
+    });
+
+    testWidgets('빈 상태일 때 빈 상태 UI를 표시한다', (tester) async {
+      // Arrange
+      await tester.pumpWidget(
+        createTestApp(
+          overrides: [
+            customerHomeNotifierProvider.overrideWith(
+              () => FakeCustomerHomeNotifier([]),
+            ),
+          ],
+          child: const CustomerHomeScreen(),
+        ),
+      );
+      await tester.pumpAndSettle();
+
+      // Assert
+      expect(find.text('아직 진행 중인 작업이 없습니다'), findsOneWidget);
+      expect(find.text('주변 샵 검색하기'), findsOneWidget);
+    });
+
+    testWidgets('작업 목록을 카드 형태로 표시한다', (tester) async {
+      // Arrange
+      final orders = [
+        testOrder.copyWith(
+          status: OrderStatus.received,
+          shopName: 'OO 거트샵',
+        ),
+        testOrder.copyWith(
+          status: OrderStatus.inProgress,
+          shopName: 'XX 스트링',
+        ),
+      ];
+      await tester.pumpWidget(
+        createTestApp(
+          overrides: [
+            customerHomeNotifierProvider.overrideWith(
+              () => FakeCustomerHomeNotifier(orders),
+            ),
+            receivedCountProvider.overrideWithValue(1),
+            inProgressCountProvider.overrideWithValue(1),
+          ],
+          child: const CustomerHomeScreen(),
+        ),
+      );
+      await tester.pumpAndSettle();
+
+      // Assert
+      expect(find.text('OO 거트샵'), findsOneWidget);
+      expect(find.text('XX 스트링'), findsOneWidget);
+    });
+
+    testWidgets('요약 카드에 접수/작업중 건수를 표시한다', (tester) async {
+      // Arrange
+      await tester.pumpWidget(
+        createTestApp(
+          overrides: [
+            customerHomeNotifierProvider.overrideWith(
+              () => FakeCustomerHomeNotifier([testOrder]),
+            ),
+            receivedCountProvider.overrideWithValue(2),
+            inProgressCountProvider.overrideWithValue(1),
+          ],
+          child: const CustomerHomeScreen(),
+        ),
+      );
+      await tester.pumpAndSettle();
+
+      // Assert
+      expect(find.text('접수 2건'), findsOneWidget);
+      expect(find.text('작업중 1건'), findsOneWidget);
+    });
+
+    testWidgets('에러 상태에서 에러 UI와 재시도 버튼을 표시한다', (tester) async {
+      // Arrange
+      await tester.pumpWidget(
+        createTestApp(
+          overrides: [
+            customerHomeNotifierProvider.overrideWith(
+              () => FakeErrorNotifier(),
+            ),
+          ],
+          child: const CustomerHomeScreen(),
+        ),
+      );
+      await tester.pumpAndSettle();
+
+      // Assert
+      expect(find.text('데이터를 불러올 수 없습니다'), findsOneWidget);
+      expect(find.text('다시 시도'), findsOneWidget);
+    });
+
+    testWidgets('작업 카드 탭 시 작업 상세 화면으로 이동한다', (tester) async {
+      // Arrange
+      final orders = [
+        testOrder.copyWith(
+          id: 'order-1',
+          status: OrderStatus.received,
+          shopName: 'OO 거트샵',
+        ),
+      ];
+      final mockRouter = MockGoRouter();
+      await tester.pumpWidget(
+        createTestApp(
+          overrides: [
+            customerHomeNotifierProvider.overrideWith(
+              () => FakeCustomerHomeNotifier(orders),
+            ),
+            receivedCountProvider.overrideWithValue(1),
+            inProgressCountProvider.overrideWithValue(0),
+          ],
+          mockRouter: mockRouter,
+          child: const CustomerHomeScreen(),
+        ),
+      );
+      await tester.pumpAndSettle();
+
+      // Act
+      await tester.tap(find.text('OO 거트샵'));
+      await tester.pumpAndSettle();
+
+      // Assert
+      verify(() => mockRouter.go('/customer/order/order-1')).called(1);
+    });
+  });
+}
+```
+
+Run: `flutter test test/screens/customer/customer_home_screen_test.dart`
+Expected: FAIL (화면 미구현)
+
+**Step 4 (Green): 화면 구현**
+
+Create: `lib/screens/customer/customer_home_screen.dart`
+
+```dart
+import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
+import 'package:badminton_app/providers/customer_home_provider.dart';
+import 'package:badminton_app/models/order.dart';
+import 'package:badminton_app/models/enums.dart';
+import 'package:badminton_app/widgets/skeleton_shimmer.dart';
+import 'package:badminton_app/widgets/empty_state.dart';
+import 'package:badminton_app/widgets/error_view.dart';
+import 'package:badminton_app/widgets/status_badge.dart';
+import 'package:badminton_app/core/utils/formatters.dart';
+
+class CustomerHomeScreen extends ConsumerWidget {
+  const CustomerHomeScreen({super.key});
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final ordersAsync = ref.watch(customerHomeNotifierProvider);
+    final receivedCount = ref.watch(receivedCountProvider);
+    final inProgressCount = ref.watch(inProgressCountProvider);
+
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text(
+          '거트알림',
+          style: TextStyle(
+            fontSize: 18,
+            fontWeight: FontWeight.w600,
+            color: Color(0xFF0F172A),
+          ),
+        ),
+        backgroundColor: Colors.white,
+        elevation: 0,
+        bottom: PreferredSize(
+          preferredSize: const Size.fromHeight(0.5),
+          child: Container(height: 0.5, color: const Color(0xFFE2E8F0)),
+        ),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.notifications_outlined,
+                color: Color(0xFF0F172A), size: 24),
+            onPressed: () => context.go('/customer/notifications'),
+            tooltip: '알림',
+          ),
+        ],
+      ),
+      body: ordersAsync.when(
+        loading: () => const _SkeletonView(),
+        error: (error, _) => ErrorView(
+          message: '데이터를 불러올 수 없습니다',
+          onRetry: () => ref.read(customerHomeNotifierProvider.notifier).retry(),
+        ),
+        data: (orders) {
+          if (orders.isEmpty) {
+            return EmptyState(
+              icon: Icons.sports_tennis,
+              message: '아직 진행 중인 작업이 없습니다',
+              actionLabel: '주변 샵 검색하기',
+              onAction: () => context.go('/customer/shop-search'),
+            );
+          }
+          return RefreshIndicator(
+            color: const Color(0xFF16A34A),
+            onRefresh: () =>
+                ref.read(customerHomeNotifierProvider.notifier).refresh(),
+            child: ListView(
+              padding: const EdgeInsets.all(16),
+              children: [
+                if (receivedCount + inProgressCount > 0)
+                  _SummaryCard(
+                    receivedCount: receivedCount,
+                    inProgressCount: inProgressCount,
+                  ),
+                if (receivedCount + inProgressCount > 0)
+                  const SizedBox(height: 20),
+                const Text('내 작업',
+                    style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.w600,
+                        color: Color(0xFF0F172A))),
+                const SizedBox(height: 12),
+                ...orders.map((order) => Padding(
+                      padding: const EdgeInsets.only(bottom: 12),
+                      child: _OrderCard(
+                        order: order,
+                        onTap: () => context.go('/customer/order/${order.id}'),
+                      ),
+                    )),
+              ],
+            ),
+          );
+        },
+      ),
+    );
+  }
+}
+
+class _SummaryCard extends StatelessWidget {
+  const _SummaryCard({
+    required this.receivedCount,
+    required this.inProgressCount,
+  });
+  final int receivedCount;
+  final int inProgressCount;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: const Color(0xFFDCFCE7),
+        borderRadius: BorderRadius.circular(16),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const Text('진행 중인 작업',
+              style: TextStyle(fontSize: 14, color: Color(0xFF166534))),
+          const SizedBox(height: 8),
+          Row(children: [
+            Text('접수 $receivedCount건',
+                style: const TextStyle(
+                    fontSize: 20,
+                    fontWeight: FontWeight.w600,
+                    color: Color(0xFFF59E0B))),
+            const Text(' · ',
+                style: TextStyle(fontSize: 14, color: Color(0xFF166534))),
+            Text('작업중 $inProgressCount건',
+                style: const TextStyle(
+                    fontSize: 20,
+                    fontWeight: FontWeight.w600,
+                    color: Color(0xFF3B82F6))),
+          ]),
+        ],
+      ),
+    );
+  }
+}
+
+class _OrderCard extends StatelessWidget {
+  const _OrderCard({required this.order, required this.onTap});
+  final Order order;
+  final VoidCallback onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: onTap,
+      child: Container(
+        padding: const EdgeInsets.all(16),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(16),
+          border: Border.all(color: const Color(0xFFE2E8F0)),
+          boxShadow: [
+            BoxShadow(
+                color: Colors.black.withOpacity(0.04),
+                blurRadius: 4,
+                offset: const Offset(0, 1)),
+          ],
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            StatusBadge(status: order.status),
+            const SizedBox(height: 8),
+            Row(children: [
+              const Icon(Icons.storefront, size: 16, color: Color(0xFF94A3B8)),
+              const SizedBox(width: 4),
+              Expanded(
+                  child: Text(order.shopName ?? '',
+                      style: const TextStyle(
+                          fontSize: 14, color: Color(0xFF475569)))),
+            ]),
+            const SizedBox(height: 4),
+            Row(children: [
+              const Icon(Icons.schedule, size: 16, color: Color(0xFF94A3B8)),
+              const SizedBox(width: 4),
+              Text(Formatters.relativeTime(order.createdAt),
+                  style: const TextStyle(
+                      fontSize: 12, color: Color(0xFF94A3B8))),
+            ]),
+            if (order.memo != null && order.memo!.isNotEmpty) ...[
+              const SizedBox(height: 4),
+              Row(children: [
+                const Icon(Icons.notes, size: 16, color: Color(0xFF94A3B8)),
+                const SizedBox(width: 4),
+                Expanded(
+                    child: Text(order.memo!,
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                        style: const TextStyle(
+                            fontSize: 12, color: Color(0xFF94A3B8)))),
+              ]),
+            ],
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class _SkeletonView extends StatelessWidget {
+  const _SkeletonView();
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.all(16),
+      child: Column(children: [
+        const SkeletonShimmer(height: 80, borderRadius: 16),
+        const SizedBox(height: 20),
+        ...List.generate(
+            3,
+            (index) => const Padding(
+                  padding: EdgeInsets.only(bottom: 12),
+                  child: SkeletonShimmer(height: 140, borderRadius: 16),
+                )),
+      ]),
+    );
+  }
+}
+```
+
+Create: `lib/screens/customer/customer_main_shell.dart`
+
+```dart
+import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
+
+/// 고객 화면의 하단 네비게이션 바를 포함하는 Shell 위젯
+class CustomerMainShell extends StatelessWidget {
+  const CustomerMainShell({super.key, required this.child});
+  final Widget child;
+
+  static const _tabs = [
+    _TabItem(icon: Icons.home, label: '홈', path: '/customer/home'),
+    _TabItem(icon: Icons.search, label: '샵검색', path: '/customer/shop-search'),
+    _TabItem(icon: Icons.qr_code_2, label: 'QR', path: '/customer/qr'),
+    _TabItem(icon: Icons.history, label: '이력', path: '/customer/order-history'),
+    _TabItem(icon: Icons.person, label: 'MY', path: '/customer/mypage'),
+  ];
+
+  int _currentIndex(BuildContext context) {
+    final location = GoRouterState.of(context).uri.toString();
+    for (var i = 0; i < _tabs.length; i++) {
+      if (location.startsWith(_tabs[i].path)) return i;
+    }
+    return 0;
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final currentIndex = _currentIndex(context);
+    return Scaffold(
+      body: child,
+      bottomNavigationBar: Container(
+        decoration: const BoxDecoration(
+          border: Border(top: BorderSide(color: Color(0xFFE2E8F0), width: 0.5)),
+        ),
+        child: BottomNavigationBar(
+          currentIndex: currentIndex,
+          onTap: (index) => context.go(_tabs[index].path),
+          type: BottomNavigationBarType.fixed,
+          backgroundColor: Colors.white,
+          selectedItemColor: const Color(0xFF16A34A),
+          unselectedItemColor: const Color(0xFF94A3B8),
+          selectedFontSize: 10,
+          unselectedFontSize: 10,
+          iconSize: 24,
+          elevation: 0,
+          items: _tabs
+              .map((tab) => BottomNavigationBarItem(
+                  icon: Icon(tab.icon), label: tab.label))
+              .toList(),
+        ),
+      ),
+    );
+  }
+}
+
+class _TabItem {
+  const _TabItem({required this.icon, required this.label, required this.path});
+  final IconData icon;
+  final String label;
+  final String path;
+}
+```
+
+Run: `flutter test test/screens/customer/customer_home_screen_test.dart`
+Expected: PASS
+
+**Step 5: Commit**
+
+```bash
+git add lib/providers/customer_home_provider.dart \
+  lib/screens/customer/customer_home_screen.dart \
+  lib/screens/customer/customer_main_shell.dart \
+  test/providers/customer_home_provider_test.dart \
+  test/screens/customer/customer_home_screen_test.dart
+git commit -m "feat: 고객 홈 화면 구현 (Realtime 활성 작업 목록 + 하단 네비게이션)"
+```
+
+---
+
+
+### Task 4.2: Order Detail (작업 상세)
+
+> 고객이 개별 거트 작업의 상세 정보와 상태 타임라인을 확인하는 화면.
+> Supabase Realtime으로 해당 작업의 상태 변경을 즉시 반영한다.
+
+**Files:**
+- Create: `lib/providers/order_detail_provider.dart`
+- Create: `lib/screens/customer/order_detail_screen.dart`
+- Create: `lib/models/order_with_shop.dart`
+- Create: `lib/models/timeline_step.dart`
+- Create: `test/providers/order_detail_provider_test.dart`
+- Create: `test/screens/customer/order_detail_screen_test.dart`
+
+**Step 1 (Red): Provider 테스트 작성**
+
+Create: `test/providers/order_detail_provider_test.dart`
+
+```dart
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_test/flutter_test.dart';
+import 'package:mocktail/mocktail.dart';
+import 'package:badminton_app/providers/order_detail_provider.dart';
+import 'package:badminton_app/models/order_with_shop.dart';
+import 'package:badminton_app/models/timeline_step.dart';
+import 'package:badminton_app/models/enums.dart';
+import 'package:badminton_app/repositories/order_repository.dart';
+
+import '../helpers/mocks.dart';
+import '../helpers/fixtures.dart';
+
+void main() {
+  group('orderDetailStreamProvider', () {
+    late MockOrderRepository mockOrderRepository;
+    late ProviderContainer container;
+
+    setUp(() {
+      mockOrderRepository = MockOrderRepository();
+      container = ProviderContainer(
+        overrides: [
+          orderRepositoryProvider.overrideWithValue(mockOrderRepository),
+        ],
+      );
+    });
+
+    tearDown(() {
+      container.dispose();
+    });
+
+    test('orderId로 작업 상세를 스트리밍한다', () async {
+      // Arrange
+      final orderWithShop = testOrderWithShop;
+      when(() => mockOrderRepository.streamById(any()))
+          .thenAnswer((_) => Stream.value(orderWithShop));
+
+      // Act
+      final stream = container.read(
+        orderDetailStreamProvider('test-order-id').future,
+      );
+      final result = await stream;
+
+      // Assert
+      expect(result, equals(orderWithShop));
+    });
+
+    test('스트림 에러 시 AsyncError가 된다', () async {
+      // Arrange
+      when(() => mockOrderRepository.streamById(any()))
+          .thenAnswer((_) => Stream.error(Exception('Not found')));
+
+      // Act & Assert
+      await expectLater(
+        container.read(orderDetailStreamProvider('bad-id').future),
+        throwsA(isA<Exception>()),
+      );
+    });
+  });
+
+  group('timelineStepsProvider', () {
+    test('received 상태일 때 첫 번째 노드만 활성이다', () {
+      // Arrange
+      final orderWithShop = testOrderWithShop.copyWith(
+        status: OrderStatus.received,
+        createdAt: DateTime(2026, 2, 18, 14, 30),
+        inProgressAt: null,
+        completedAt: null,
+      );
+      final container = ProviderContainer(
+        overrides: [
+          orderDetailStreamProvider('test-id')
+              .overrideWith((ref) => Stream.value(orderWithShop)),
+        ],
+      );
+
+      // Act
+      final steps = container.read(timelineStepsProvider('test-id'));
+
+      // Assert
+      expect(steps.length, equals(3));
+      expect(steps[0].isActive, isTrue);
+      expect(steps[0].label, equals('접수됨'));
+      expect(steps[0].reachedAt, isNotNull);
+      expect(steps[1].isActive, isFalse);
+      expect(steps[2].isActive, isFalse);
+
+      container.dispose();
+    });
+
+    test('inProgress 상태일 때 첫 두 노드가 활성이다', () {
+      // Arrange
+      final orderWithShop = testOrderWithShop.copyWith(
+        status: OrderStatus.inProgress,
+        createdAt: DateTime(2026, 2, 18, 14, 30),
+        inProgressAt: DateTime(2026, 2, 18, 16, 0),
+        completedAt: null,
+      );
+      final container = ProviderContainer(
+        overrides: [
+          orderDetailStreamProvider('test-id')
+              .overrideWith((ref) => Stream.value(orderWithShop)),
+        ],
+      );
+
+      // Act
+      final steps = container.read(timelineStepsProvider('test-id'));
+
+      // Assert
+      expect(steps[0].isActive, isTrue);
+      expect(steps[1].isActive, isTrue);
+      expect(steps[1].label, equals('작업중'));
+      expect(steps[1].reachedAt, isNotNull);
+      expect(steps[2].isActive, isFalse);
+
+      container.dispose();
+    });
+
+    test('completed 상태일 때 모든 노드가 활성이다', () {
+      // Arrange
+      final orderWithShop = testOrderWithShop.copyWith(
+        status: OrderStatus.completed,
+        createdAt: DateTime(2026, 2, 18, 14, 30),
+        inProgressAt: DateTime(2026, 2, 18, 16, 0),
+        completedAt: DateTime(2026, 2, 18, 18, 0),
+      );
+      final container = ProviderContainer(
+        overrides: [
+          orderDetailStreamProvider('test-id')
+              .overrideWith((ref) => Stream.value(orderWithShop)),
+        ],
+      );
+
+      // Act
+      final steps = container.read(timelineStepsProvider('test-id'));
+
+      // Assert
+      expect(steps[0].isActive, isTrue);
+      expect(steps[1].isActive, isTrue);
+      expect(steps[2].isActive, isTrue);
+      expect(steps[2].label, equals('완료'));
+
+      container.dispose();
+    });
+  });
+}
+```
+
+Run: `flutter test test/providers/order_detail_provider_test.dart`
+Expected: FAIL (컴파일 에러)
+
+**Step 2 (Green): 모델 및 Provider 구현**
+
+Create: `lib/models/order_with_shop.dart`
+
+```dart
+import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:badminton_app/models/enums.dart';
+
+part 'order_with_shop.freezed.dart';
+part 'order_with_shop.g.dart';
+
+/// Order + Shop 조인 데이터
+@freezed
+class OrderWithShop with _$OrderWithShop {
+  const factory OrderWithShop({
+    required String id,
+    @JsonKey(name: 'shop_id') required String shopId,
+    @JsonKey(name: 'member_id') required String memberId,
+    required OrderStatus status,
+    String? memo,
+    @JsonKey(name: 'created_at') required DateTime createdAt,
+    @JsonKey(name: 'in_progress_at') DateTime? inProgressAt,
+    @JsonKey(name: 'completed_at') DateTime? completedAt,
+    @JsonKey(name: 'updated_at') required DateTime updatedAt,
+    // Shop 조인 필드
+    @JsonKey(name: 'shop_name') required String shopName,
+    @JsonKey(name: 'shop_address') required String shopAddress,
+    @JsonKey(name: 'shop_phone') required String shopPhone,
+    @JsonKey(name: 'shop_latitude') required double shopLatitude,
+    @JsonKey(name: 'shop_longitude') required double shopLongitude,
+  }) = _OrderWithShop;
+
+  factory OrderWithShop.fromJson(Map<String, dynamic> json) =>
+      _$OrderWithShopFromJson(json);
+}
+```
+
+Create: `lib/models/timeline_step.dart`
+
+```dart
+import 'package:badminton_app/models/enums.dart';
+
+/// 타임라인 단계 모델 (파생 데이터)
+class TimelineStep {
+  const TimelineStep({
+    required this.status,
+    required this.isActive,
+    this.reachedAt,
+    required this.label,
+  });
+
+  final OrderStatus status;
+  final bool isActive;
+  final DateTime? reachedAt;
+  final String label;
+}
+```
+
+Create: `lib/providers/order_detail_provider.dart`
+
+```dart
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:riverpod_annotation/riverpod_annotation.dart';
+import 'package:badminton_app/models/order_with_shop.dart';
+import 'package:badminton_app/models/timeline_step.dart';
+import 'package:badminton_app/models/enums.dart';
+import 'package:badminton_app/repositories/order_repository.dart';
+
+part 'order_detail_provider.g.dart';
+
+/// 작업 상세 — Realtime 스트림 (family: orderId)
+@riverpod
+Stream<OrderWithShop> orderDetailStream(
+  OrderDetailStreamRef ref,
+  String orderId,
+) {
+  final orderRepository = ref.watch(orderRepositoryProvider);
+  return orderRepository.streamById(orderId);
+}
+
+/// 타임라인 단계 목록 (파생 — orderDetail에서 계산)
+@riverpod
+List<TimelineStep> timelineSteps(
+  TimelineStepsRef ref,
+  String orderId,
+) {
+  final orderAsync = ref.watch(orderDetailStreamProvider(orderId));
+  final order = orderAsync.valueOrNull;
+  if (order == null) return [];
+
+  final statusIndex = OrderStatus.values.indexOf(order.status);
+
+  return [
+    TimelineStep(
+      status: OrderStatus.received,
+      isActive: statusIndex >= 0,
+      reachedAt: order.createdAt,
+      label: '접수됨',
+    ),
+    TimelineStep(
+      status: OrderStatus.inProgress,
+      isActive: statusIndex >= 1,
+      reachedAt: order.inProgressAt,
+      label: '작업중',
+    ),
+    TimelineStep(
+      status: OrderStatus.completed,
+      isActive: statusIndex >= 2,
+      reachedAt: order.completedAt,
+      label: '완료',
+    ),
+  ];
+}
+```
+
+Run: `flutter test test/providers/order_detail_provider_test.dart`
+Expected: PASS
+
+**Step 3 (Red): Widget 테스트 작성**
+
+Create: `test/screens/customer/order_detail_screen_test.dart`
+
+```dart
+import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_test/flutter_test.dart';
+import 'package:mocktail/mocktail.dart';
+import 'package:badminton_app/screens/customer/order_detail_screen.dart';
+import 'package:badminton_app/providers/order_detail_provider.dart';
+import 'package:badminton_app/models/order_with_shop.dart';
+import 'package:badminton_app/models/enums.dart';
+
+import '../../helpers/mocks.dart';
+import '../../helpers/fixtures.dart';
+import '../../helpers/test_app.dart';
+
+void main() {
+  group('OrderDetailScreen', () {
+    testWidgets('로딩 상태에서 스켈레톤을 표시한다', (tester) async {
+      // Arrange
+      await tester.pumpWidget(
+        createTestApp(
+          overrides: [
+            orderDetailStreamProvider('order-1')
+                .overrideWith((ref) => Stream.empty()),
+          ],
+          child: const OrderDetailScreen(orderId: 'order-1'),
+        ),
+      );
+
+      // Assert
+      expect(find.byType(SkeletonShimmer), findsWidgets);
+    });
+
+    testWidgets('작업 상세 정보를 정상 표시한다', (tester) async {
+      // Arrange
+      final order = testOrderWithShop.copyWith(
+        status: OrderStatus.inProgress,
+        shopName: 'OO 거트 스트링샵',
+        shopAddress: '서울시 강남구 역삼동 123-45',
+        shopPhone: '010-1234-5678',
+        memo: '크로스 텐션 1lbs 높게',
+      );
+      await tester.pumpWidget(
+        createTestApp(
+          overrides: [
+            orderDetailStreamProvider('order-1')
+                .overrideWith((ref) => Stream.value(order)),
+          ],
+          child: const OrderDetailScreen(orderId: 'order-1'),
+        ),
+      );
+      await tester.pumpAndSettle();
+
+      // Assert
+      expect(find.text('작업중'), findsOneWidget);
+      expect(find.text('OO 거트 스트링샵'), findsOneWidget);
+      expect(find.text('서울시 강남구 역삼동 123-45'), findsOneWidget);
+      expect(find.text('010-1234-5678'), findsOneWidget);
+      expect(find.text('크로스 텐션 1lbs 높게'), findsOneWidget);
+    });
+
+    testWidgets('메모가 없으면 메모 섹션을 숨긴다', (tester) async {
+      // Arrange
+      final order = testOrderWithShop.copyWith(memo: null);
+      await tester.pumpWidget(
+        createTestApp(
+          overrides: [
+            orderDetailStreamProvider('order-1')
+                .overrideWith((ref) => Stream.value(order)),
+          ],
+          child: const OrderDetailScreen(orderId: 'order-1'),
+        ),
+      );
+      await tester.pumpAndSettle();
+
+      // Assert
+      expect(find.text('작업 메모'), findsNothing);
+    });
+
+    testWidgets('타임라인에 활성/비활성 노드를 표시한다', (tester) async {
+      // Arrange
+      final order = testOrderWithShop.copyWith(
+        status: OrderStatus.inProgress,
+        createdAt: DateTime(2026, 2, 18, 14, 30),
+        inProgressAt: DateTime(2026, 2, 18, 16, 0),
+        completedAt: null,
+      );
+      await tester.pumpWidget(
+        createTestApp(
+          overrides: [
+            orderDetailStreamProvider('order-1')
+                .overrideWith((ref) => Stream.value(order)),
+          ],
+          child: const OrderDetailScreen(orderId: 'order-1'),
+        ),
+      );
+      await tester.pumpAndSettle();
+
+      // Assert
+      expect(find.text('접수됨'), findsWidgets);
+      expect(find.text('작업중'), findsWidgets);
+      expect(find.text('완료'), findsOneWidget);
+      // 접수됨, 작업중 시각이 표시되고 완료는 "—"
+      expect(find.text('02/18 14:30'), findsOneWidget);
+      expect(find.text('02/18 16:00'), findsOneWidget);
+      expect(find.text('—'), findsOneWidget);
+    });
+
+    testWidgets('에러 상태에서 에러 UI를 표시한다', (tester) async {
+      // Arrange
+      await tester.pumpWidget(
+        createTestApp(
+          overrides: [
+            orderDetailStreamProvider('order-1')
+                .overrideWith((ref) => Stream.error(Exception('에러'))),
+          ],
+          child: const OrderDetailScreen(orderId: 'order-1'),
+        ),
+      );
+      await tester.pumpAndSettle();
+
+      // Assert
+      expect(find.text('데이터를 불러올 수 없습니다'), findsOneWidget);
+      expect(find.text('다시 시도'), findsOneWidget);
+    });
+  });
+}
+```
+
+Run: `flutter test test/screens/customer/order_detail_screen_test.dart`
+Expected: FAIL (화면 미구현)
+
+**Step 4 (Green): 화면 구현**
+
+Create: `lib/screens/customer/order_detail_screen.dart`
+
+```dart
+import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
+import 'package:url_launcher/url_launcher.dart';
+import 'package:badminton_app/providers/order_detail_provider.dart';
+import 'package:badminton_app/models/order_with_shop.dart';
+import 'package:badminton_app/models/timeline_step.dart';
+import 'package:badminton_app/models/enums.dart';
+import 'package:badminton_app/widgets/skeleton_shimmer.dart';
+import 'package:badminton_app/widgets/error_view.dart';
+import 'package:badminton_app/widgets/status_badge.dart';
+import 'package:badminton_app/core/utils/formatters.dart';
+
+class OrderDetailScreen extends ConsumerWidget {
+  const OrderDetailScreen({super.key, required this.orderId});
+  final String orderId;
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final orderAsync = ref.watch(orderDetailStreamProvider(orderId));
+    final timelineSteps = ref.watch(timelineStepsProvider(orderId));
+
+    return Scaffold(
+      appBar: AppBar(
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back_ios, color: Color(0xFF0F172A)),
+          onPressed: () => context.pop(),
+        ),
+        title: const Text('작업 상세',
+            style: TextStyle(
+                fontSize: 18,
+                fontWeight: FontWeight.w600,
+                color: Color(0xFF0F172A))),
+        backgroundColor: Colors.white,
+        elevation: 0,
+        bottom: PreferredSize(
+          preferredSize: const Size.fromHeight(0.5),
+          child: Container(height: 0.5, color: const Color(0xFFE2E8F0)),
+        ),
+      ),
+      body: orderAsync.when(
+        loading: () => const _SkeletonView(),
+        error: (error, _) => ErrorView(
+          message: '데이터를 불러올 수 없습니다',
+          onRetry: () => ref.invalidate(orderDetailStreamProvider(orderId)),
+        ),
+        data: (order) => SingleChildScrollView(
+          padding: const EdgeInsets.all(16),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              _LargeStatusBadge(status: order.status),
+              const SizedBox(height: 24),
+              const Text('진행 상태',
+                  style: TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.w600,
+                      color: Color(0xFF0F172A))),
+              const SizedBox(height: 12),
+              _TimelineCard(steps: timelineSteps),
+              if (order.memo != null && order.memo!.isNotEmpty) ...[
+                const SizedBox(height: 24),
+                const Text('작업 메모',
+                    style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.w600,
+                        color: Color(0xFF0F172A))),
+                const SizedBox(height: 12),
+                Container(
+                  width: double.infinity,
+                  padding: const EdgeInsets.all(16),
+                  decoration: BoxDecoration(
+                    color: const Color(0xFFF8FAFC),
+                    borderRadius: BorderRadius.circular(16),
+                    border: Border.all(color: const Color(0xFFE2E8F0)),
+                  ),
+                  child: Text(order.memo!,
+                      style: const TextStyle(
+                          fontSize: 14,
+                          color: Color(0xFF475569),
+                          height: 1.5)),
+                ),
+              ],
+              const SizedBox(height: 24),
+              const Text('샵 정보',
+                  style: TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.w600,
+                      color: Color(0xFF0F172A))),
+              const SizedBox(height: 12),
+              _ShopInfoCard(order: order),
+              const SizedBox(height: 32),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class _LargeStatusBadge extends StatelessWidget {
+  const _LargeStatusBadge({required this.status});
+  final OrderStatus status;
+
+  @override
+  Widget build(BuildContext context) {
+    final config = _statusConfig(status);
+    return Container(
+      width: double.infinity,
+      padding: const EdgeInsets.all(24),
+      decoration: BoxDecoration(
+        color: config.bgColor,
+        borderRadius: BorderRadius.circular(16),
+      ),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Icon(config.icon, size: 32, color: config.textColor),
+          const SizedBox(width: 12),
+          Text(config.label,
+              style: TextStyle(
+                  fontSize: 24,
+                  fontWeight: FontWeight.bold,
+                  color: config.textColor)),
+        ],
+      ),
+    );
+  }
+
+  _StatusConfig _statusConfig(OrderStatus status) {
+    switch (status) {
+      case OrderStatus.received:
+        return const _StatusConfig(
+            icon: Icons.inventory_2,
+            label: '접수됨',
+            textColor: Color(0xFF92400E),
+            bgColor: Color(0xFFFEF3C7));
+      case OrderStatus.inProgress:
+        return const _StatusConfig(
+            icon: Icons.build_circle,
+            label: '작업중',
+            textColor: Color(0xFF1E40AF),
+            bgColor: Color(0xFFDBEAFE));
+      case OrderStatus.completed:
+        return const _StatusConfig(
+            icon: Icons.check_circle,
+            label: '완료',
+            textColor: Color(0xFF166534),
+            bgColor: Color(0xFFDCFCE7));
+    }
+  }
+}
+
+class _StatusConfig {
+  const _StatusConfig({
+    required this.icon,
+    required this.label,
+    required this.textColor,
+    required this.bgColor,
+  });
+  final IconData icon;
+  final String label;
+  final Color textColor;
+  final Color bgColor;
+}
+
+class _TimelineCard extends StatelessWidget {
+  const _TimelineCard({required this.steps});
+  final List<TimelineStep> steps;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(16),
+        border: Border.all(color: const Color(0xFFE2E8F0)),
+      ),
+      child: Column(
+        children: [
+          for (var i = 0; i < steps.length; i++) ...[
+            _TimelineNode(step: steps[i]),
+            if (i < steps.length - 1)
+              _TimelineConnector(
+                isActive: steps[i + 1].isActive,
+                color: steps[i + 1].isActive
+                    ? _nodeColor(steps[i + 1].status)
+                    : const Color(0xFFCBD5E1),
+              ),
+          ],
+        ],
+      ),
+    );
+  }
+
+  Color _nodeColor(OrderStatus status) {
+    switch (status) {
+      case OrderStatus.received:
+        return const Color(0xFFF59E0B);
+      case OrderStatus.inProgress:
+        return const Color(0xFF3B82F6);
+      case OrderStatus.completed:
+        return const Color(0xFF22C55E);
+    }
+  }
+}
+
+class _TimelineNode extends StatelessWidget {
+  const _TimelineNode({required this.step});
+  final TimelineStep step;
+
+  @override
+  Widget build(BuildContext context) {
+    final color = step.isActive ? _activeColor(step.status) : const Color(0xFFCBD5E1);
+    return Row(
+      children: [
+        Icon(
+          step.isActive ? Icons.check_circle : Icons.radio_button_unchecked,
+          size: 24,
+          color: color,
+        ),
+        const SizedBox(width: 12),
+        Expanded(
+          child: Text(
+            step.label,
+            style: TextStyle(
+              fontSize: 16,
+              fontWeight: step.isActive ? FontWeight.w600 : FontWeight.normal,
+              color: color,
+            ),
+          ),
+        ),
+        Text(
+          step.reachedAt != null
+              ? Formatters.dateTime(step.reachedAt!)
+              : '—',
+          style: const TextStyle(fontSize: 12, color: Color(0xFF94A3B8)),
+        ),
+      ],
+    );
+  }
+
+  Color _activeColor(OrderStatus status) {
+    switch (status) {
+      case OrderStatus.received:
+        return const Color(0xFFF59E0B);
+      case OrderStatus.inProgress:
+        return const Color(0xFF3B82F6);
+      case OrderStatus.completed:
+        return const Color(0xFF22C55E);
+    }
+  }
+}
+
+class _TimelineConnector extends StatelessWidget {
+  const _TimelineConnector({required this.isActive, required this.color});
+  final bool isActive;
+  final Color color;
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.only(left: 11),
+      child: Container(width: 2, height: 32, color: color),
+    );
+  }
+}
+
+class _ShopInfoCard extends StatelessWidget {
+  const _ShopInfoCard({required this.order});
+  final OrderWithShop order;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(16),
+        border: Border.all(color: const Color(0xFFE2E8F0)),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(children: [
+            const Icon(Icons.storefront, size: 20, color: Color(0xFF16A34A)),
+            const SizedBox(width: 8),
+            Expanded(
+                child: Text(order.shopName,
+                    style: const TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.w600,
+                        color: Color(0xFF0F172A)))),
+          ]),
+          const SizedBox(height: 12),
+          Row(children: [
+            const Icon(Icons.location_on, size: 20, color: Color(0xFF94A3B8)),
+            const SizedBox(width: 8),
+            Expanded(
+                child: Text(order.shopAddress,
+                    style: const TextStyle(
+                        fontSize: 14, color: Color(0xFF475569)))),
+          ]),
+          const SizedBox(height: 12),
+          GestureDetector(
+            onTap: () => launchUrl(Uri.parse('tel:${order.shopPhone}')),
+            child: Row(children: [
+              const Icon(Icons.phone, size: 20, color: Color(0xFF94A3B8)),
+              const SizedBox(width: 8),
+              Text(order.shopPhone,
+                  style: const TextStyle(
+                      fontSize: 14, color: Color(0xFF475569))),
+            ]),
+          ),
+          const SizedBox(height: 16),
+          SizedBox(
+            width: double.infinity,
+            height: 48,
+            child: FilledButton.icon(
+              onPressed: () => _openNaverMapRoute(order),
+              icon: const Icon(Icons.directions, size: 20),
+              label: const Text('길찾기'),
+              style: FilledButton.styleFrom(
+                backgroundColor: const Color(0xFF16A34A),
+                foregroundColor: Colors.white,
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(12)),
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Future<void> _openNaverMapRoute(OrderWithShop order) async {
+    final uri = Uri.parse(
+      'nmap://route/public?dlat=${order.shopLatitude}'
+      '&dlng=${order.shopLongitude}&dname=${Uri.encodeComponent(order.shopName)}',
+    );
+    if (await canLaunchUrl(uri)) {
+      await launchUrl(uri);
+    } else {
+      final webUri = Uri.parse(
+        'https://map.naver.com/v5/directions/-/${order.shopLongitude},${order.shopLatitude},${Uri.encodeComponent(order.shopName)}',
+      );
+      await launchUrl(webUri, mode: LaunchMode.externalApplication);
+    }
+  }
+}
+
+class _SkeletonView extends StatelessWidget {
+  const _SkeletonView();
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.all(16),
+      child: Column(children: [
+        const SkeletonShimmer(height: 72, borderRadius: 16),
+        const SizedBox(height: 24),
+        const SkeletonShimmer(height: 160, borderRadius: 16),
+        const SizedBox(height: 24),
+        const SkeletonShimmer(height: 180, borderRadius: 16),
+      ]),
+    );
+  }
+}
+```
+
+Run: `flutter test test/screens/customer/order_detail_screen_test.dart`
+Expected: PASS
+
+**Step 5: Commit**
+
+```bash
+git add lib/models/order_with_shop.dart \
+  lib/models/timeline_step.dart \
+  lib/providers/order_detail_provider.dart \
+  lib/screens/customer/order_detail_screen.dart \
+  test/providers/order_detail_provider_test.dart \
+  test/screens/customer/order_detail_screen_test.dart
+git commit -m "feat: 작업 상세 화면 구현 (Realtime 상태 스트림 + 타임라인 UI)"
+```
+
+---
+
+### Task 4.3: Order History (작업 이력)
+
+> 고객이 완료된 과거 작업 목록을 확인하는 화면.
+> 커서 기반 페이지네이션(무한 스크롤)으로 대량 데이터를 효율적으로 로드한다.
+
+**Files:**
+- Create: `lib/providers/order_history_provider.dart`
+- Create: `lib/screens/customer/order_history_screen.dart`
+- Create: `test/providers/order_history_provider_test.dart`
+- Create: `test/screens/customer/order_history_screen_test.dart`
+
+**Step 1 (Red): Provider 테스트 작성**
+
+Create: `test/providers/order_history_provider_test.dart`
+
+```dart
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_test/flutter_test.dart';
+import 'package:mocktail/mocktail.dart';
+import 'package:badminton_app/providers/order_history_provider.dart';
+import 'package:badminton_app/models/order.dart';
+import 'package:badminton_app/models/enums.dart';
+import 'package:badminton_app/repositories/order_repository.dart';
+
+import '../helpers/mocks.dart';
+import '../helpers/fixtures.dart';
+
+void main() {
+  group('OrderHistoryNotifier', () {
+    late MockOrderRepository mockOrderRepository;
+    late ProviderContainer container;
+
+    setUp(() {
+      mockOrderRepository = MockOrderRepository();
+      container = ProviderContainer(
+        overrides: [
+          orderRepositoryProvider.overrideWithValue(mockOrderRepository),
+        ],
+      );
+    });
+
+    tearDown(() {
+      container.dispose();
+    });
+
+    test('초기 로드 시 완료된 작업 목록을 가져온다', () async {
+      // Arrange
+      final orders = List.generate(
+        5,
+        (i) => testOrder.copyWith(
+          id: 'order-$i',
+          status: OrderStatus.completed,
+        ),
+      );
+      when(() => mockOrderRepository.getCompletedByUser(
+            userId: any(named: 'userId'),
+            cursor: any(named: 'cursor'),
+            limit: any(named: 'limit'),
+          )).thenAnswer((_) async => orders);
+
+      // Act
+      await container.read(orderHistoryNotifierProvider.future);
+      final state = container.read(orderHistoryNotifierProvider);
+
+      // Assert
+      expect(state.value, equals(orders));
+    });
+
+    test('0건이면 빈 목록과 hasMore=false', () async {
+      // Arrange
+      when(() => mockOrderRepository.getCompletedByUser(
+            userId: any(named: 'userId'),
+            cursor: any(named: 'cursor'),
+            limit: any(named: 'limit'),
+          )).thenAnswer((_) async => []);
+
+      // Act
+      await container.read(orderHistoryNotifierProvider.future);
+
+      // Assert
+      final notifier = container.read(orderHistoryNotifierProvider.notifier);
+      expect(notifier.hasMore, isFalse);
+    });
+
+    test('pageSize 미만 로드 시 hasMore=false', () async {
+      // Arrange
+      final orders = List.generate(
+        10,
+        (i) => testOrder.copyWith(id: 'order-$i'),
+      );
+      when(() => mockOrderRepository.getCompletedByUser(
+            userId: any(named: 'userId'),
+            cursor: any(named: 'cursor'),
+            limit: any(named: 'limit'),
+          )).thenAnswer((_) async => orders);
+
+      // Act
+      await container.read(orderHistoryNotifierProvider.future);
+
+      // Assert
+      final notifier = container.read(orderHistoryNotifierProvider.notifier);
+      expect(notifier.hasMore, isFalse); // 10 < 20(pageSize)
+    });
+
+    test('loadMore 호출 시 기존 목록에 추가한다', () async {
+      // Arrange
+      final firstPage = List.generate(
+        20,
+        (i) => testOrder.copyWith(id: 'order-$i'),
+      );
+      final secondPage = List.generate(
+        5,
+        (i) => testOrder.copyWith(id: 'order-${20 + i}'),
+      );
+      var callCount = 0;
+      when(() => mockOrderRepository.getCompletedByUser(
+            userId: any(named: 'userId'),
+            cursor: any(named: 'cursor'),
+            limit: any(named: 'limit'),
+          )).thenAnswer((_) async {
+        callCount++;
+        return callCount == 1 ? firstPage : secondPage;
+      });
+
+      // Act
+      await container.read(orderHistoryNotifierProvider.future);
+      final notifier = container.read(orderHistoryNotifierProvider.notifier);
+      await notifier.loadMore();
+
+      // Assert
+      final state = container.read(orderHistoryNotifierProvider);
+      expect(state.value!.length, equals(25));
+    });
+
+    test('hasMore=false일 때 loadMore를 무시한다', () async {
+      // Arrange
+      final orders = List.generate(
+        5,
+        (i) => testOrder.copyWith(id: 'order-$i'),
+      );
+      when(() => mockOrderRepository.getCompletedByUser(
+            userId: any(named: 'userId'),
+            cursor: any(named: 'cursor'),
+            limit: any(named: 'limit'),
+          )).thenAnswer((_) async => orders);
+
+      // Act
+      await container.read(orderHistoryNotifierProvider.future);
+      final notifier = container.read(orderHistoryNotifierProvider.notifier);
+      await notifier.loadMore(); // hasMore가 false이므로 무시
+
+      // Assert
+      verify(() => mockOrderRepository.getCompletedByUser(
+            userId: any(named: 'userId'),
+            cursor: any(named: 'cursor'),
+            limit: any(named: 'limit'),
+          )).called(1); // 초기 로드 1회만
+    });
+
+    test('refresh 시 상태를 초기화하고 첫 페이지를 재조회한다', () async {
+      // Arrange
+      final orders = List.generate(
+        20,
+        (i) => testOrder.copyWith(id: 'order-$i'),
+      );
+      when(() => mockOrderRepository.getCompletedByUser(
+            userId: any(named: 'userId'),
+            cursor: any(named: 'cursor'),
+            limit: any(named: 'limit'),
+          )).thenAnswer((_) async => orders);
+
+      // Act
+      await container.read(orderHistoryNotifierProvider.future);
+      final notifier = container.read(orderHistoryNotifierProvider.notifier);
+      await notifier.refresh();
+
+      // Assert
+      verify(() => mockOrderRepository.getCompletedByUser(
+            userId: any(named: 'userId'),
+            cursor: any(named: 'cursor'),
+            limit: any(named: 'limit'),
+          )).called(2); // 초기 + refresh
+    });
+  });
+}
+```
+
+Run: `flutter test test/providers/order_history_provider_test.dart`
+Expected: FAIL (컴파일 에러)
+
+**Step 2 (Green): Provider 구현**
+
+Create: `lib/providers/order_history_provider.dart`
+
+```dart
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:riverpod_annotation/riverpod_annotation.dart';
+import 'package:badminton_app/models/order.dart';
+import 'package:badminton_app/repositories/order_repository.dart';
+import 'package:badminton_app/providers/auth_provider.dart';
+
+part 'order_history_provider.g.dart';
+
+const _pageSize = 20;
+
+/// 작업 이력 — 완료된 작업 목록 (커서 기반 페이지네이션)
+@riverpod
+class OrderHistoryNotifier extends _$OrderHistoryNotifier {
+  String? _cursor;
+  bool _hasMore = true;
+  bool _isLoadingMore = false;
+
+  bool get hasMore => _hasMore;
+  bool get isLoadingMore => _isLoadingMore;
+
+  @override
+  Future<List<Order>> build() async {
+    _cursor = null;
+    _hasMore = true;
+    _isLoadingMore = false;
+    return _fetchPage();
+  }
+
+  Future<List<Order>> _fetchPage() async {
+    final currentUser = ref.read(currentUserProvider).valueOrNull;
+    if (currentUser == null) return [];
+
+    final orderRepository = ref.read(orderRepositoryProvider);
+    final orders = await orderRepository.getCompletedByUser(
+      userId: currentUser.id,
+      cursor: _cursor,
+      limit: _pageSize,
+    );
+
+    if (orders.length < _pageSize) {
+      _hasMore = false;
+    }
+
+    if (orders.isNotEmpty) {
+      _cursor = orders.last.updatedAt.toIso8601String();
+    }
+
+    return orders;
+  }
+
+  /// 다음 페이지 로드 (무한 스크롤)
+  Future<void> loadMore() async {
+    if (!_hasMore || _isLoadingMore) return;
+
+    _isLoadingMore = true;
+    try {
+      final newOrders = await _fetchPage();
+      final currentOrders = state.valueOrNull ?? [];
+      state = AsyncData([...currentOrders, ...newOrders]);
+    } catch (e, st) {
+      // 추가 로드 실패 시 기존 목록 유지, 스낵바로 알림
+      _isLoadingMore = false;
+      rethrow;
+    }
+    _isLoadingMore = false;
+  }
+
+  /// Pull-to-refresh: 상태 초기화 후 첫 페이지부터 재조회
+  Future<void> refresh() async {
+    _cursor = null;
+    _hasMore = true;
+    _isLoadingMore = false;
+    state = const AsyncLoading();
+    try {
+      final orders = await _fetchPage();
+      state = AsyncData(orders);
+    } catch (e, st) {
+      state = AsyncError(e, st);
+    }
+  }
+
+  /// 에러 상태에서 재시도
+  Future<void> retry() async {
+    await refresh();
+  }
+}
+```
+
+Run: `flutter test test/providers/order_history_provider_test.dart`
+Expected: PASS
+
+**Step 3 (Red): Widget 테스트 작성**
+
+Create: `test/screens/customer/order_history_screen_test.dart`
+
+```dart
+import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_test/flutter_test.dart';
+import 'package:mocktail/mocktail.dart';
+import 'package:badminton_app/screens/customer/order_history_screen.dart';
+import 'package:badminton_app/providers/order_history_provider.dart';
+import 'package:badminton_app/models/order.dart';
+import 'package:badminton_app/models/enums.dart';
+
+import '../../helpers/mocks.dart';
+import '../../helpers/fixtures.dart';
+import '../../helpers/test_app.dart';
+
+void main() {
+  group('OrderHistoryScreen', () {
+    testWidgets('로딩 상태에서 스켈레톤을 표시한다', (tester) async {
+      // Arrange
+      await tester.pumpWidget(
+        createTestApp(
+          overrides: [
+            orderHistoryNotifierProvider.overrideWith(
+              () => FakeLoadingHistoryNotifier(),
+            ),
+          ],
+          child: const OrderHistoryScreen(),
+        ),
+      );
+
+      // Assert
+      expect(find.byType(SkeletonShimmer), findsWidgets);
+    });
+
+    testWidgets('빈 상태일 때 안내 메시지를 표시한다', (tester) async {
+      // Arrange
+      await tester.pumpWidget(
+        createTestApp(
+          overrides: [
+            orderHistoryNotifierProvider.overrideWith(
+              () => FakeOrderHistoryNotifier([]),
+            ),
+          ],
+          child: const OrderHistoryScreen(),
+        ),
+      );
+      await tester.pumpAndSettle();
+
+      // Assert
+      expect(find.text('아직 완료된 작업이 없습니다'), findsOneWidget);
+    });
+
+    testWidgets('완료된 작업 목록을 카드 형태로 표시한다', (tester) async {
+      // Arrange
+      final orders = [
+        testOrder.copyWith(
+          id: 'order-1',
+          status: OrderStatus.completed,
+          shopName: 'OO 거트샵',
+          updatedAt: DateTime(2026, 2, 15),
+        ),
+        testOrder.copyWith(
+          id: 'order-2',
+          status: OrderStatus.completed,
+          shopName: 'XX 스트링',
+          updatedAt: DateTime(2026, 2, 10),
+        ),
+      ];
+      await tester.pumpWidget(
+        createTestApp(
+          overrides: [
+            orderHistoryNotifierProvider.overrideWith(
+              () => FakeOrderHistoryNotifier(orders),
+            ),
+          ],
+          child: const OrderHistoryScreen(),
+        ),
+      );
+      await tester.pumpAndSettle();
+
+      // Assert
+      expect(find.text('OO 거트샵'), findsOneWidget);
+      expect(find.text('XX 스트링'), findsOneWidget);
+      expect(find.text('2026.02.15 완료'), findsOneWidget);
+      expect(find.text('2026.02.10 완료'), findsOneWidget);
+    });
+
+    testWidgets('작업 카드 탭 시 작업 상세 화면으로 이동한다', (tester) async {
+      // Arrange
+      final orders = [
+        testOrder.copyWith(
+          id: 'order-1',
+          status: OrderStatus.completed,
+          shopName: 'OO 거트샵',
+        ),
+      ];
+      final mockRouter = MockGoRouter();
+      await tester.pumpWidget(
+        createTestApp(
+          overrides: [
+            orderHistoryNotifierProvider.overrideWith(
+              () => FakeOrderHistoryNotifier(orders),
+            ),
+          ],
+          mockRouter: mockRouter,
+          child: const OrderHistoryScreen(),
+        ),
+      );
+      await tester.pumpAndSettle();
+
+      // Act
+      await tester.tap(find.text('OO 거트샵'));
+      await tester.pumpAndSettle();
+
+      // Assert
+      verify(() => mockRouter.go('/customer/order/order-1')).called(1);
+    });
+
+    testWidgets('에러 상태에서 에러 UI를 표시한다', (tester) async {
+      // Arrange
+      await tester.pumpWidget(
+        createTestApp(
+          overrides: [
+            orderHistoryNotifierProvider.overrideWith(
+              () => FakeErrorHistoryNotifier(),
+            ),
+          ],
+          child: const OrderHistoryScreen(),
+        ),
+      );
+      await tester.pumpAndSettle();
+
+      // Assert
+      expect(find.text('데이터를 불러올 수 없습니다'), findsOneWidget);
+      expect(find.text('다시 시도'), findsOneWidget);
+    });
+  });
+}
+```
+
+Run: `flutter test test/screens/customer/order_history_screen_test.dart`
+Expected: FAIL (화면 미구현)
+
+**Step 4 (Green): 화면 구현**
+
+Create: `lib/screens/customer/order_history_screen.dart`
+
+```dart
+import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
+import 'package:badminton_app/providers/order_history_provider.dart';
+import 'package:badminton_app/models/order.dart';
+import 'package:badminton_app/widgets/skeleton_shimmer.dart';
+import 'package:badminton_app/widgets/empty_state.dart';
+import 'package:badminton_app/widgets/error_view.dart';
+import 'package:badminton_app/core/utils/formatters.dart';
+
+class OrderHistoryScreen extends ConsumerStatefulWidget {
+  const OrderHistoryScreen({super.key});
+
+  @override
+  ConsumerState<OrderHistoryScreen> createState() =>
+      _OrderHistoryScreenState();
+}
+
+class _OrderHistoryScreenState extends ConsumerState<OrderHistoryScreen> {
+  final _scrollController = ScrollController();
+
+  @override
+  void initState() {
+    super.initState();
+    _scrollController.addListener(_onScroll);
+  }
+
+  @override
+  void dispose() {
+    _scrollController
+      ..removeListener(_onScroll)
+      ..dispose();
+    super.dispose();
+  }
+
+  void _onScroll() {
+    if (_scrollController.position.pixels >=
+        _scrollController.position.maxScrollExtent - 200) {
+      final notifier = ref.read(orderHistoryNotifierProvider.notifier);
+      if (notifier.hasMore && !notifier.isLoadingMore) {
+        notifier.loadMore();
+      }
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final ordersAsync = ref.watch(orderHistoryNotifierProvider);
+
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('작업 이력',
+            style: TextStyle(
+                fontSize: 18,
+                fontWeight: FontWeight.w600,
+                color: Color(0xFF0F172A))),
+        backgroundColor: Colors.white,
+        elevation: 0,
+        bottom: PreferredSize(
+          preferredSize: const Size.fromHeight(0.5),
+          child: Container(height: 0.5, color: const Color(0xFFE2E8F0)),
+        ),
+      ),
+      body: ordersAsync.when(
+        loading: () => const _SkeletonView(),
+        error: (error, _) => ErrorView(
+          message: '데이터를 불러올 수 없습니다',
+          onRetry: () =>
+              ref.read(orderHistoryNotifierProvider.notifier).retry(),
+        ),
+        data: (orders) {
+          if (orders.isEmpty) {
+            return const EmptyState(
+              icon: Icons.history,
+              message: '아직 완료된 작업이 없습니다',
+            );
+          }
+          return RefreshIndicator(
+            color: const Color(0xFF16A34A),
+            onRefresh: () =>
+                ref.read(orderHistoryNotifierProvider.notifier).refresh(),
+            child: ListView.separated(
+              controller: _scrollController,
+              padding: const EdgeInsets.all(16),
+              itemCount: orders.length +
+                  (ref.read(orderHistoryNotifierProvider.notifier).hasMore
+                      ? 1
+                      : 0),
+              separatorBuilder: (_, __) => const SizedBox(height: 8),
+              itemBuilder: (context, index) {
+                if (index >= orders.length) {
+                  return const Center(
+                    child: Padding(
+                      padding: EdgeInsets.all(16),
+                      child: CircularProgressIndicator(
+                        color: Color(0xFF16A34A),
+                      ),
+                    ),
+                  );
+                }
+                final order = orders[index];
+                return _HistoryOrderCard(
+                  order: order,
+                  onTap: () => context.go('/customer/order/${order.id}'),
+                );
+              },
+            ),
+          );
+        },
+      ),
+    );
+  }
+}
+
+class _HistoryOrderCard extends StatelessWidget {
+  const _HistoryOrderCard({required this.order, required this.onTap});
+  final Order order;
+  final VoidCallback onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: onTap,
+      child: Container(
+        padding: const EdgeInsets.all(16),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(12),
+          border: Border.all(color: const Color(0xFFE2E8F0)),
+        ),
+        child: Row(
+          children: [
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(order.shopName ?? '',
+                      style: const TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.w500,
+                          color: Color(0xFF0F172A))),
+                  const SizedBox(height: 4),
+                  Text(
+                    '${Formatters.date(order.updatedAt)} 완료',
+                    style: const TextStyle(
+                        fontSize: 12, color: Color(0xFF94A3B8)),
+                  ),
+                ],
+              ),
+            ),
+            const Icon(Icons.check_circle, color: Color(0xFF22C55E), size: 24),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class _SkeletonView extends StatelessWidget {
+  const _SkeletonView();
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.all(16),
+      child: Column(
+        children: List.generate(
+          4,
+          (index) => const Padding(
+            padding: EdgeInsets.only(bottom: 8),
+            child: SkeletonShimmer(height: 72, borderRadius: 12),
+          ),
+        ),
+      ),
+    );
+  }
+}
+```
+
+Run: `flutter test test/screens/customer/order_history_screen_test.dart`
+Expected: PASS
+
+**Step 5: Commit**
+
+```bash
+git add lib/providers/order_history_provider.dart \
+  lib/screens/customer/order_history_screen.dart \
+  test/providers/order_history_provider_test.dart \
+  test/screens/customer/order_history_screen_test.dart
+git commit -m "feat: 작업 이력 화면 구현 (커서 기반 페이지네이션 + 무한 스크롤)"
+```
+
+---
+
+---
+
+
+## Phase 5: 샵 탐색 (shop-search, shop-detail)
+
+> Phase 2 완료 후 진행. 고객이 주변 거트 샵을 검색하고 상세 정보를 확인하는 화면을 구현한다.
+
+### Task 5.1: Shop Search (주변 샵 검색)
+
+> 현재 위치 기반으로 주변 거트 샵을 카카오맵 지도 또는 리스트에서 검색하고,
+> 각 샵의 실시간 작업 현황(접수/작업중 건수)을 확인하는 화면.
+
+**Files:**
+- Create: `lib/providers/shop_search_provider.dart`
+- Create: `lib/models/shop_with_order_count.dart`
+- Create: `lib/screens/customer/shop_search_screen.dart`
+- Create: `lib/core/utils/distance_calculator.dart`
+- Create: `test/providers/shop_search_provider_test.dart`
+- Create: `test/screens/customer/shop_search_screen_test.dart`
+- Create: `test/core/utils/distance_calculator_test.dart`
+
+**Step 1 (Red): 거리 계산 유틸리티 테스트 작성**
+
+Create: `test/core/utils/distance_calculator_test.dart`
+
+```dart
+import 'package:flutter_test/flutter_test.dart';
+import 'package:badminton_app/core/utils/distance_calculator.dart';
+
+void main() {
+  group('DistanceCalculator', () {
+    test('같은 좌표 간 거리는 0이다', () {
+      // Arrange & Act
+      final distance = DistanceCalculator.haversine(
+        lat1: 37.5665, lng1: 126.978,
+        lat2: 37.5665, lng2: 126.978,
+      );
+
+      // Assert
+      expect(distance, equals(0.0));
+    });
+
+    test('서울역-강남역 간 거리가 약 7~9km이다', () {
+      // Arrange & Act (서울역: 37.5547, 126.9707 / 강남역: 37.4979, 127.0276)
+      final distance = DistanceCalculator.haversine(
+        lat1: 37.5547, lng1: 126.9707,
+        lat2: 37.4979, lng2: 127.0276,
+      );
+
+      // Assert
+      expect(distance, greaterThan(7000)); // 7km 이상
+      expect(distance, lessThan(9000));    // 9km 미만
+    });
+
+    test('formatDistance: 1km 미만은 Nm 형식이다', () {
+      // Arrange & Act
+      final formatted = DistanceCalculator.formatDistance(350);
+
+      // Assert
+      expect(formatted, equals('350m'));
+    });
+
+    test('formatDistance: 1~10km은 N.Nkm 형식이다', () {
+      // Arrange & Act
+      final formatted = DistanceCalculator.formatDistance(1200);
+
+      // Assert
+      expect(formatted, equals('1.2km'));
+    });
+
+    test('formatDistance: 10km 이상은 Nkm 형식이다', () {
+      // Arrange & Act
+      final formatted = DistanceCalculator.formatDistance(15300);
+
+      // Assert
+      expect(formatted, equals('15km'));
+    });
+  });
+}
+```
+
+Run: `flutter test test/core/utils/distance_calculator_test.dart`
+Expected: FAIL (유틸리티 미구현)
+
+**Step 2 (Green): 거리 계산 유틸리티 구현**
+
+Create: `lib/core/utils/distance_calculator.dart`
+
+```dart
+import 'dart:math';
+
+/// GPS 좌표 간 거리 계산 유틸리티 (Haversine 공식)
+class DistanceCalculator {
+  DistanceCalculator._();
+
+  static const _earthRadiusMeters = 6371000.0;
+
+  /// 두 GPS 좌표 간 직선 거리 (미터 단위)
+  static double haversine({
+    required double lat1,
+    required double lng1,
+    required double lat2,
+    required double lng2,
+  }) {
+    final dLat = _toRadians(lat2 - lat1);
+    final dLng = _toRadians(lng2 - lng1);
+
+    final a = sin(dLat / 2) * sin(dLat / 2) +
+        cos(_toRadians(lat1)) *
+            cos(_toRadians(lat2)) *
+            sin(dLng / 2) *
+            sin(dLng / 2);
+    final c = 2 * atan2(sqrt(a), sqrt(1 - a));
+
+    return _earthRadiusMeters * c;
+  }
+
+  /// 거리를 표시 형식으로 변환
+  /// - 1km 미만: "Nm" (예: 350m)
+  /// - 1~10km: "N.Nkm" (예: 1.2km)
+  /// - 10km 이상: "Nkm" (예: 15km)
+  static String formatDistance(double meters) {
+    if (meters < 1000) {
+      return '${meters.round()}m';
+    } else if (meters < 10000) {
+      return '${(meters / 1000).toStringAsFixed(1)}km';
+    } else {
+      return '${(meters / 1000).round()}km';
+    }
+  }
+
+  static double _toRadians(double degrees) => degrees * pi / 180;
+}
+```
+
+Run: `flutter test test/core/utils/distance_calculator_test.dart`
+Expected: PASS
+
+**Step 3 (Red): Provider 테스트 작성**
+
+Create: `test/providers/shop_search_provider_test.dart`
+
+```dart
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_test/flutter_test.dart';
+import 'package:mocktail/mocktail.dart';
+import 'package:badminton_app/providers/shop_search_provider.dart';
+import 'package:badminton_app/models/shop_with_order_count.dart';
+import 'package:badminton_app/repositories/shop_repository.dart';
+import 'package:badminton_app/repositories/order_repository.dart';
+
+import '../helpers/mocks.dart';
+import '../helpers/fixtures.dart';
+
+void main() {
+  group('ShopSearchProviders', () {
+    test('viewModeProvider 초기값은 map이다', () {
+      // Arrange
+      final container = ProviderContainer();
+
+      // Act
+      final mode = container.read(viewModeProvider);
+
+      // Assert
+      expect(mode, equals(ShopSearchViewMode.map));
+
+      container.dispose();
+    });
+
+    test('viewMode를 list로 전환할 수 있다', () {
+      // Arrange
+      final container = ProviderContainer();
+
+      // Act
+      container.read(viewModeProvider.notifier).state =
+          ShopSearchViewMode.list;
+      final mode = container.read(viewModeProvider);
+
+      // Assert
+      expect(mode, equals(ShopSearchViewMode.list));
+
+      container.dispose();
+    });
+
+    test('selectedShopProvider 초기값은 null이다', () {
+      // Arrange
+      final container = ProviderContainer();
+
+      // Act
+      final shop = container.read(selectedShopProvider);
+
+      // Assert
+      expect(shop, isNull);
+
+      container.dispose();
+    });
+
+    test('마커 선택 시 selectedShop이 갱신된다', () {
+      // Arrange
+      final container = ProviderContainer();
+      final shop = testShopWithOrderCount;
+
+      // Act
+      container.read(selectedShopProvider.notifier).state = shop;
+
+      // Assert
+      expect(container.read(selectedShopProvider), equals(shop));
+
+      container.dispose();
+    });
+
+    test('빈 영역 탭 시 selectedShop이 null이 된다', () {
+      // Arrange
+      final container = ProviderContainer();
+      container.read(selectedShopProvider.notifier).state =
+          testShopWithOrderCount;
+
+      // Act
+      container.read(selectedShopProvider.notifier).state = null;
+
+      // Assert
+      expect(container.read(selectedShopProvider), isNull);
+
+      container.dispose();
+    });
+  });
+
+  group('ShopsInBoundsNotifier', () {
+    late MockShopRepository mockShopRepository;
+    late MockOrderRepository mockOrderRepository;
+    late ProviderContainer container;
+
+    setUp(() {
+      mockShopRepository = MockShopRepository();
+      mockOrderRepository = MockOrderRepository();
+      container = ProviderContainer(
+        overrides: [
+          shopRepositoryProvider.overrideWithValue(mockShopRepository),
+          orderRepositoryProvider.overrideWithValue(mockOrderRepository),
+        ],
+      );
+    });
+
+    tearDown(() {
+      container.dispose();
+    });
+
+    test('지도 영역 내 샵 목록을 조회한다', () async {
+      // Arrange
+      final shops = [testShopWithOrderCount];
+      when(() => mockShopRepository.searchByBounds(
+            southLat: any(named: 'southLat'),
+            northLat: any(named: 'northLat'),
+            westLng: any(named: 'westLng'),
+            eastLng: any(named: 'eastLng'),
+          )).thenAnswer((_) async => shops);
+
+      // Act
+      container.read(mapBoundsProvider.notifier).state = testLatLngBounds;
+      await container.read(shopsInBoundsProvider.future);
+
+      // Assert
+      final state = container.read(shopsInBoundsProvider);
+      expect(state.value, equals(shops));
+    });
+
+    test('mapBounds가 null이면 빈 목록을 반환한다', () async {
+      // Arrange & Act
+      await container.read(shopsInBoundsProvider.future);
+
+      // Assert
+      final state = container.read(shopsInBoundsProvider);
+      expect(state.value, isEmpty);
+    });
+  });
+}
+```
+
+Run: `flutter test test/providers/shop_search_provider_test.dart`
+Expected: FAIL (컴파일 에러)
+
+**Step 4 (Green): 모델 및 Provider 구현**
+
+Create: `lib/models/shop_with_order_count.dart`
+
+```dart
+import 'package:freezed_annotation/freezed_annotation.dart';
+
+part 'shop_with_order_count.freezed.dart';
+part 'shop_with_order_count.g.dart';
+
+/// Shop + 활성 작업 건수 (화면 전용 모델)
+@freezed
+class ShopWithOrderCount with _$ShopWithOrderCount {
+  const factory ShopWithOrderCount({
+    required String id,
+    required String name,
+    required String address,
+    required double latitude,
+    required double longitude,
+    required String phone,
+    String? description,
+    @Default(0) int receivedCount,
+    @Default(0) int inProgressCount,
+    double? distance, // 현재 위치로부터의 거리 (미터)
+  }) = _ShopWithOrderCount;
+
+  factory ShopWithOrderCount.fromJson(Map<String, dynamic> json) =>
+      _$ShopWithOrderCountFromJson(json);
+}
+```
+
+Create: `lib/providers/shop_search_provider.dart`
+
+```dart
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:riverpod_annotation/riverpod_annotation.dart';
+import 'package:badminton_app/models/shop_with_order_count.dart';
+import 'package:badminton_app/repositories/shop_repository.dart';
+import 'package:badminton_app/repositories/order_repository.dart';
+
+part 'shop_search_provider.g.dart';
+
+/// 뷰 모드 (지도 / 리스트)
+enum ShopSearchViewMode { map, list }
+
+/// 위치 권한 상태
+enum LocationPermissionStatus { unknown, granted, denied, permanentlyDenied }
+
+/// 위도/경도 좌표
+class LatLng {
+  const LatLng(this.latitude, this.longitude);
+  final double latitude;
+  final double longitude;
+}
+
+/// 지도 영역 (남서/북동 좌표)
+class LatLngBounds {
+  const LatLngBounds({
+    required this.southWest,
+    required this.northEast,
+  });
+  final LatLng southWest;
+  final LatLng northEast;
+}
+
+/// 뷰 모드 Provider
+final viewModeProvider =
+    StateProvider<ShopSearchViewMode>((ref) => ShopSearchViewMode.map);
+
+/// 위치 권한 상태 Provider
+final locationPermissionProvider =
+    StateProvider<LocationPermissionStatus>(
+        (ref) => LocationPermissionStatus.unknown);
+
+/// 현재 GPS 위치 Provider
+final currentLocationProvider = StateProvider<LatLng?>((ref) => null);
+
+/// 현재 지도 화면 영역 Provider
+final mapBoundsProvider = StateProvider<LatLngBounds?>((ref) => null);
+
+/// 선택된 샵 Provider (지도 마커 선택)
+final selectedShopProvider =
+    StateProvider<ShopWithOrderCount?>((ref) => null);
+
+/// 영역 내 샵 목록 Provider (건수 포함)
+@riverpod
+class ShopsInBoundsNotifier extends _$ShopsInBoundsNotifier {
+  @override
+  Future<List<ShopWithOrderCount>> build() async {
+    final bounds = ref.watch(mapBoundsProvider);
+    if (bounds == null) return [];
+
+    final shopRepository = ref.read(shopRepositoryProvider);
+    final shops = await shopRepository.searchByBounds(
+      southLat: bounds.southWest.latitude,
+      northLat: bounds.northEast.latitude,
+      westLng: bounds.southWest.longitude,
+      eastLng: bounds.northEast.longitude,
+    );
+
+    return shops;
+  }
+}
+```
+
+Run: `flutter test test/providers/shop_search_provider_test.dart`
+Expected: PASS
+
+**Step 5 (Red): Widget 테스트 작성**
+
+Create: `test/screens/customer/shop_search_screen_test.dart`
+
+```dart
+import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_test/flutter_test.dart';
+import 'package:mocktail/mocktail.dart';
+import 'package:badminton_app/screens/customer/shop_search_screen.dart';
+import 'package:badminton_app/providers/shop_search_provider.dart';
+import 'package:badminton_app/models/shop_with_order_count.dart';
+
+import '../../helpers/mocks.dart';
+import '../../helpers/fixtures.dart';
+import '../../helpers/test_app.dart';
+
+void main() {
+  group('ShopSearchScreen', () {
+    testWidgets('앱바에 "주변 샵" 타이틀과 뷰 전환 토글을 표시한다', (tester) async {
+      // Arrange
+      await tester.pumpWidget(
+        createTestApp(
+          overrides: [
+            locationPermissionProvider.overrideWith(
+                (ref) => LocationPermissionStatus.granted),
+            shopsInBoundsProvider.overrideWith(
+                () => FakeShopsNotifier([])),
+          ],
+          child: const ShopSearchScreen(),
+        ),
+      );
+      await tester.pumpAndSettle();
+
+      // Assert
+      expect(find.text('주변 샵'), findsOneWidget);
+      expect(find.text('지도'), findsOneWidget);
+      expect(find.text('리스트'), findsOneWidget);
+    });
+
+    testWidgets('위치 권한 미허용 시 권한 안내 화면을 표시한다', (tester) async {
+      // Arrange
+      await tester.pumpWidget(
+        createTestApp(
+          overrides: [
+            locationPermissionProvider.overrideWith(
+                (ref) => LocationPermissionStatus.denied),
+          ],
+          child: const ShopSearchScreen(),
+        ),
+      );
+      await tester.pumpAndSettle();
+
+      // Assert
+      expect(find.text('위치 권한이 필요합니다'), findsOneWidget);
+      expect(find.text('설정으로 이동'), findsOneWidget);
+    });
+
+    testWidgets('리스트 뷰에서 샵 카드 목록을 표시한다', (tester) async {
+      // Arrange
+      final shops = [
+        testShopWithOrderCount.copyWith(
+          name: 'OO 거트 스트링샵',
+          address: '강남구 역삼동',
+          receivedCount: 2,
+          inProgressCount: 1,
+          distance: 350,
+        ),
+        testShopWithOrderCount.copyWith(
+          name: 'XX 스트링',
+          address: '서초구 서초동',
+          receivedCount: 0,
+          inProgressCount: 0,
+          distance: 1200,
+        ),
+      ];
+      await tester.pumpWidget(
+        createTestApp(
+          overrides: [
+            viewModeProvider.overrideWith((ref) => ShopSearchViewMode.list),
+            locationPermissionProvider.overrideWith(
+                (ref) => LocationPermissionStatus.granted),
+            shopsInBoundsProvider.overrideWith(
+                () => FakeShopsNotifier(shops)),
+          ],
+          child: const ShopSearchScreen(),
+        ),
+      );
+      await tester.pumpAndSettle();
+
+      // Assert
+      expect(find.text('OO 거트 스트링샵'), findsOneWidget);
+      expect(find.text('XX 스트링'), findsOneWidget);
+      expect(find.text('접수 2건'), findsOneWidget);
+      expect(find.text('350m'), findsOneWidget);
+      expect(find.text('1.2km'), findsOneWidget);
+    });
+
+    testWidgets('빈 상태일 때 안내 메시지를 표시한다', (tester) async {
+      // Arrange
+      await tester.pumpWidget(
+        createTestApp(
+          overrides: [
+            viewModeProvider.overrideWith((ref) => ShopSearchViewMode.list),
+            locationPermissionProvider.overrideWith(
+                (ref) => LocationPermissionStatus.granted),
+            shopsInBoundsProvider.overrideWith(
+                () => FakeShopsNotifier([])),
+          ],
+          child: const ShopSearchScreen(),
+        ),
+      );
+      await tester.pumpAndSettle();
+
+      // Assert
+      expect(find.text('주변에 등록된 샵이 없습니다'), findsOneWidget);
+    });
+
+    testWidgets('샵 카드 탭 시 샵 상세 화면으로 이동한다', (tester) async {
+      // Arrange
+      final shops = [
+        testShopWithOrderCount.copyWith(
+          id: 'shop-1',
+          name: 'OO 거트 스트링샵',
+        ),
+      ];
+      final mockRouter = MockGoRouter();
+      await tester.pumpWidget(
+        createTestApp(
+          overrides: [
+            viewModeProvider.overrideWith((ref) => ShopSearchViewMode.list),
+            locationPermissionProvider.overrideWith(
+                (ref) => LocationPermissionStatus.granted),
+            shopsInBoundsProvider.overrideWith(
+                () => FakeShopsNotifier(shops)),
+          ],
+          mockRouter: mockRouter,
+          child: const ShopSearchScreen(),
+        ),
+      );
+      await tester.pumpAndSettle();
+
+      // Act
+      await tester.tap(find.text('OO 거트 스트링샵'));
+      await tester.pumpAndSettle();
+
+      // Assert
+      verify(() => mockRouter.go('/customer/shop/shop-1')).called(1);
+    });
+  });
+}
+```
+
+Run: `flutter test test/screens/customer/shop_search_screen_test.dart`
+Expected: FAIL (화면 미구현)
+
+**Step 6 (Green): 화면 구현**
+
+Create: `lib/screens/customer/shop_search_screen.dart`
+
+```dart
+import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
+import 'package:badminton_app/providers/shop_search_provider.dart';
+import 'package:badminton_app/models/shop_with_order_count.dart';
+import 'package:badminton_app/widgets/empty_state.dart';
+import 'package:badminton_app/widgets/error_view.dart';
+import 'package:badminton_app/widgets/skeleton_shimmer.dart';
+import 'package:badminton_app/core/utils/distance_calculator.dart';
+
+class ShopSearchScreen extends ConsumerWidget {
+  const ShopSearchScreen({super.key});
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final viewMode = ref.watch(viewModeProvider);
+    final permissionStatus = ref.watch(locationPermissionProvider);
+
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('주변 샵',
+            style: TextStyle(
+                fontSize: 18,
+                fontWeight: FontWeight.w600,
+                color: Color(0xFF0F172A))),
+        backgroundColor: Colors.white,
+        elevation: 0,
+        bottom: PreferredSize(
+          preferredSize: const Size.fromHeight(0.5),
+          child: Container(height: 0.5, color: const Color(0xFFE2E8F0)),
+        ),
+        actions: [
+          Padding(
+            padding: const EdgeInsets.only(right: 16),
+            child: _ViewModeToggle(
+              mode: viewMode,
+              onChanged: (mode) =>
+                  ref.read(viewModeProvider.notifier).state = mode,
+            ),
+          ),
+        ],
+      ),
+      body: _buildBody(context, ref, viewMode, permissionStatus),
+    );
+  }
+
+  Widget _buildBody(
+    BuildContext context,
+    WidgetRef ref,
+    ShopSearchViewMode viewMode,
+    LocationPermissionStatus permissionStatus,
+  ) {
+    // 위치 권한 미허용 상태
+    if (permissionStatus == LocationPermissionStatus.denied ||
+        permissionStatus == LocationPermissionStatus.permanentlyDenied) {
+      return const _LocationPermissionView();
+    }
+
+    if (viewMode == ShopSearchViewMode.list) {
+      return _ListView(ref: ref);
+    }
+
+    // 지도 뷰 (카카오맵)
+    return _MapView(ref: ref);
+  }
+}
+
+class _ViewModeToggle extends StatelessWidget {
+  const _ViewModeToggle({required this.mode, required this.onChanged});
+  final ShopSearchViewMode mode;
+  final ValueChanged<ShopSearchViewMode> onChanged;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      height: 32,
+      decoration: BoxDecoration(
+        color: const Color(0xFFF1F5F9),
+        borderRadius: BorderRadius.circular(8),
+      ),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          _SegmentButton(
+            label: '지도',
+            isActive: mode == ShopSearchViewMode.map,
+            onTap: () => onChanged(ShopSearchViewMode.map),
+          ),
+          _SegmentButton(
+            label: '리스트',
+            isActive: mode == ShopSearchViewMode.list,
+            onTap: () => onChanged(ShopSearchViewMode.list),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class _SegmentButton extends StatelessWidget {
+  const _SegmentButton({
+    required this.label,
+    required this.isActive,
+    required this.onTap,
+  });
+  final String label;
+  final bool isActive;
+  final VoidCallback onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: onTap,
+      child: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 12),
+        decoration: BoxDecoration(
+          color: isActive ? const Color(0xFF16A34A) : Colors.transparent,
+          borderRadius: BorderRadius.circular(8),
+        ),
+        alignment: Alignment.center,
+        child: Text(
+          label,
+          style: TextStyle(
+            fontSize: 12,
+            fontWeight: FontWeight.w500,
+            color: isActive ? Colors.white : const Color(0xFF475569),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class _LocationPermissionView extends StatelessWidget {
+  const _LocationPermissionView();
+
+  @override
+  Widget build(BuildContext context) {
+    return Center(
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          const Icon(Icons.location_off, size: 48, color: Color(0xFF94A3B8)),
+          const SizedBox(height: 16),
+          const Text('위치 권한이 필요합니다',
+              style: TextStyle(fontSize: 16, color: Color(0xFF475569))),
+          const SizedBox(height: 8),
+          const Text('주변 샵을 찾으려면 위치 권한을 허용해 주세요',
+              style: TextStyle(fontSize: 14, color: Color(0xFF94A3B8))),
+          const SizedBox(height: 24),
+          SizedBox(
+            height: 48,
+            child: FilledButton(
+              onPressed: () {
+                // TODO: openAppSettings() 호출
+              },
+              style: FilledButton.styleFrom(
+                backgroundColor: const Color(0xFF16A34A),
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(12)),
+              ),
+              child: const Text('설정으로 이동'),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class _MapView extends StatelessWidget {
+  const _MapView({required this.ref});
+  final WidgetRef ref;
+
+  @override
+  Widget build(BuildContext context) {
+    final selectedShop = ref.watch(selectedShopProvider);
+    final shopsAsync = ref.watch(shopsInBoundsProvider);
+
+    return Stack(
+      children: [
+        // TODO: KakaoMap 위젯 삽입
+        // 카카오맵 SDK를 사용하여 지도 표시
+        // onMapMoved 콜백에서 mapBoundsProvider 갱신 (debounce 500ms)
+        // onMarkerTap 콜백에서 selectedShopProvider 갱신
+        Container(
+          color: const Color(0xFFF1F5F9),
+          child: shopsAsync.when(
+            loading: () => const Center(
+              child: CircularProgressIndicator(color: Color(0xFF16A34A)),
+            ),
+            error: (_, __) => const SizedBox.shrink(),
+            data: (shops) {
+              if (shops.isEmpty) {
+                return const Center(
+                  child: Text('주변에 등록된 샵이 없습니다',
+                      style: TextStyle(color: Color(0xFF94A3B8))),
+                );
+              }
+              return const SizedBox.expand(); // 지도 렌더링 영역
+            },
+          ),
+        ),
+        // 현재 위치 FAB
+        Positioned(
+          right: 16,
+          bottom: selectedShop != null ? 180 : 16,
+          child: FloatingActionButton(
+            mini: true,
+            backgroundColor: Colors.white,
+            elevation: 4,
+            onPressed: () {
+              // TODO: GPS 위치 재획득 → 지도 카메라 이동
+            },
+            child: const Icon(Icons.my_location,
+                color: Color(0xFF16A34A), size: 24),
+          ),
+        ),
+        // 하단 시트 (마커 선택 시)
+        if (selectedShop != null)
+          Positioned(
+            left: 0,
+            right: 0,
+            bottom: 0,
+            child: _BottomSheetCard(
+              shop: selectedShop,
+              onTap: () => context.go('/customer/shop/${selectedShop.id}'),
+            ),
+          ),
+      ],
+    );
+  }
+}
+
+class _BottomSheetCard extends StatelessWidget {
+  const _BottomSheetCard({required this.shop, required this.onTap});
+  final ShopWithOrderCount shop;
+  final VoidCallback onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      decoration: const BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+        boxShadow: [
+          BoxShadow(color: Colors.black12, blurRadius: 8, offset: Offset(0, -2)),
+        ],
+      ),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          const SizedBox(height: 8),
+          Container(
+            width: 40,
+            height: 4,
+            decoration: BoxDecoration(
+              color: const Color(0xFFCBD5E1),
+              borderRadius: BorderRadius.circular(999),
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.all(16),
+            child: _ShopCard(shop: shop, onTap: onTap),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class _ListView extends StatelessWidget {
+  const _ListView({required this.ref});
+  final WidgetRef ref;
+
+  @override
+  Widget build(BuildContext context) {
+    final shopsAsync = ref.watch(shopsInBoundsProvider);
+
+    return shopsAsync.when(
+      loading: () => Padding(
+        padding: const EdgeInsets.all(16),
+        child: Column(
+          children: List.generate(
+            3,
+            (i) => const Padding(
+              padding: EdgeInsets.only(bottom: 12),
+              child: SkeletonShimmer(height: 100, borderRadius: 16),
+            ),
+          ),
+        ),
+      ),
+      error: (error, _) => ErrorView(
+        message: '데이터를 불러올 수 없습니다',
+        onRetry: () => ref.invalidate(shopsInBoundsProvider),
+      ),
+      data: (shops) {
+        if (shops.isEmpty) {
+          return const EmptyState(
+            icon: Icons.storefront,
+            message: '주변에 등록된 샵이 없습니다',
+          );
+        }
+        return ListView.separated(
+          padding: const EdgeInsets.all(16),
+          itemCount: shops.length,
+          separatorBuilder: (_, __) => const SizedBox(height: 12),
+          itemBuilder: (context, index) => _ShopCard(
+            shop: shops[index],
+            onTap: () => context.go('/customer/shop/${shops[index].id}'),
+          ),
+        );
+      },
+    );
+  }
+}
+
+class _ShopCard extends StatelessWidget {
+  const _ShopCard({required this.shop, required this.onTap});
+  final ShopWithOrderCount shop;
+  final VoidCallback onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: onTap,
+      child: Container(
+        padding: const EdgeInsets.all(16),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(16),
+          border: Border.all(color: const Color(0xFFE2E8F0)),
+          boxShadow: [
+            BoxShadow(
+                color: Colors.black.withOpacity(0.04),
+                blurRadius: 4,
+                offset: const Offset(0, 1)),
+          ],
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(children: [
+              Expanded(
+                child: Text(shop.name,
+                    style: const TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.w600,
+                        color: Color(0xFF0F172A))),
+              ),
+              const Icon(Icons.chevron_right, size: 24,
+                  color: Color(0xFF94A3B8)),
+            ]),
+            const SizedBox(height: 4),
+            Row(children: [
+              const Icon(Icons.location_on, size: 16,
+                  color: Color(0xFF94A3B8)),
+              const SizedBox(width: 4),
+              Text(shop.address,
+                  style: const TextStyle(
+                      fontSize: 14, color: Color(0xFF475569))),
+              if (shop.distance != null) ...[
+                const Text(' · ',
+                    style: TextStyle(fontSize: 14, color: Color(0xFF94A3B8))),
+                Text(DistanceCalculator.formatDistance(shop.distance!),
+                    style: const TextStyle(
+                        fontSize: 14, color: Color(0xFF475569))),
+              ],
+            ]),
+            const SizedBox(height: 8),
+            Row(children: [
+              Text('접수 ${shop.receivedCount}건',
+                  style: const TextStyle(
+                      fontSize: 14,
+                      fontWeight: FontWeight.w500,
+                      color: Color(0xFFF59E0B))),
+              const Text(' · ',
+                  style: TextStyle(fontSize: 14, color: Color(0xFFCBD5E1))),
+              Text('작업중 ${shop.inProgressCount}건',
+                  style: const TextStyle(
+                      fontSize: 14,
+                      fontWeight: FontWeight.w500,
+                      color: Color(0xFF3B82F6))),
+            ]),
+          ],
+        ),
+      ),
+    );
+  }
+}
+```
+
+Run: `flutter test test/screens/customer/shop_search_screen_test.dart`
+Expected: PASS
+
+**Step 7: Commit**
+
+```bash
+git add lib/core/utils/distance_calculator.dart \
+  lib/models/shop_with_order_count.dart \
+  lib/providers/shop_search_provider.dart \
+  lib/screens/customer/shop_search_screen.dart \
+  test/core/utils/distance_calculator_test.dart \
+  test/providers/shop_search_provider_test.dart \
+  test/screens/customer/shop_search_screen_test.dart
+git commit -m "feat: 주변 샵 검색 화면 구현 (카카오맵 + GPS 권한 + 거리 계산)"
+```
+
+---
+
+
+### Task 5.2: Shop Detail (샵 상세)
+
+> 선택한 샵의 상세 정보(소개, 위치, 연락처)와 작업 현황, 공지사항/이벤트/재고를
+> 카테고리 탭으로 확인하는 화면.
+
+**Files:**
+- Create: `lib/providers/shop_detail_provider.dart`
+- Create: `lib/models/order_counts.dart`
+- Create: `lib/screens/customer/shop_detail_screen.dart`
+- Create: `test/providers/shop_detail_provider_test.dart`
+- Create: `test/screens/customer/shop_detail_screen_test.dart`
+
+**Step 1 (Red): Provider 테스트 작성**
+
+Create: `test/providers/shop_detail_provider_test.dart`
+
+```dart
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_test/flutter_test.dart';
+import 'package:mocktail/mocktail.dart';
+import 'package:badminton_app/providers/shop_detail_provider.dart';
+import 'package:badminton_app/models/shop.dart';
+import 'package:badminton_app/models/order_counts.dart';
+import 'package:badminton_app/models/post.dart';
+import 'package:badminton_app/models/inventory_item.dart';
+import 'package:badminton_app/repositories/shop_repository.dart';
+import 'package:badminton_app/repositories/order_repository.dart';
+import 'package:badminton_app/repositories/post_repository.dart';
+import 'package:badminton_app/repositories/inventory_repository.dart';
+
+import '../helpers/mocks.dart';
+import '../helpers/fixtures.dart';
+
+void main() {
+  group('shopDetailProvider', () {
+    late MockShopRepository mockShopRepository;
+    late ProviderContainer container;
+
+    setUp(() {
+      mockShopRepository = MockShopRepository();
+      container = ProviderContainer(
+        overrides: [
+          shopRepositoryProvider.overrideWithValue(mockShopRepository),
+        ],
+      );
+    });
+
+    tearDown(() {
+      container.dispose();
+    });
+
+    test('shopId로 샵 상세 정보를 조회한다', () async {
+      // Arrange
+      when(() => mockShopRepository.getById(any()))
+          .thenAnswer((_) async => testShop);
+
+      // Act
+      final result = await container.read(
+        shopDetailProvider('shop-1').future,
+      );
+
+      // Assert
+      expect(result, equals(testShop));
+    });
+
+    test('존재하지 않는 shopId로 에러가 발생한다', () async {
+      // Arrange
+      when(() => mockShopRepository.getById(any()))
+          .thenThrow(Exception('Not found'));
+
+      // Act & Assert
+      await expectLater(
+        container.read(shopDetailProvider('bad-id').future),
+        throwsA(isA<Exception>()),
+      );
+    });
+  });
+
+  group('shopOrderCountsProvider', () {
+    late MockOrderRepository mockOrderRepository;
+    late ProviderContainer container;
+
+    setUp(() {
+      mockOrderRepository = MockOrderRepository();
+      container = ProviderContainer(
+        overrides: [
+          orderRepositoryProvider.overrideWithValue(mockOrderRepository),
+        ],
+      );
+    });
+
+    tearDown(() {
+      container.dispose();
+    });
+
+    test('샵의 접수/작업중 건수를 조회한다', () async {
+      // Arrange
+      final counts = const OrderCounts(receivedCount: 3, inProgressCount: 1);
+      when(() => mockOrderRepository.countActiveByShop(any()))
+          .thenAnswer((_) async => counts);
+
+      // Act
+      final result = await container.read(
+        shopOrderCountsProvider('shop-1').future,
+      );
+
+      // Assert
+      expect(result.receivedCount, equals(3));
+      expect(result.inProgressCount, equals(1));
+    });
+  });
+
+  group('shopNoticesProvider', () {
+    late MockPostRepository mockPostRepository;
+    late ProviderContainer container;
+
+    setUp(() {
+      mockPostRepository = MockPostRepository();
+      container = ProviderContainer(
+        overrides: [
+          postRepositoryProvider.overrideWithValue(mockPostRepository),
+        ],
+      );
+    });
+
+    tearDown(() {
+      container.dispose();
+    });
+
+    test('공지사항 목록을 조회한다', () async {
+      // Arrange
+      final notices = [testNoticePost, testNoticePost];
+      when(() => mockPostRepository.getByShopAndCategory(
+            shopId: any(named: 'shopId'),
+            category: 'notice',
+          )).thenAnswer((_) async => notices);
+
+      // Act
+      final result = await container.read(
+        shopNoticesProvider('shop-1').future,
+      );
+
+      // Assert
+      expect(result.length, equals(2));
+    });
+  });
+
+  group('shopEventsProvider', () {
+    late MockPostRepository mockPostRepository;
+    late ProviderContainer container;
+
+    setUp(() {
+      mockPostRepository = MockPostRepository();
+      container = ProviderContainer(
+        overrides: [
+          postRepositoryProvider.overrideWithValue(mockPostRepository),
+        ],
+      );
+    });
+
+    tearDown(() {
+      container.dispose();
+    });
+
+    test('이벤트 목록을 조회한다', () async {
+      // Arrange
+      final events = [testEventPost];
+      when(() => mockPostRepository.getByShopAndCategory(
+            shopId: any(named: 'shopId'),
+            category: 'event',
+          )).thenAnswer((_) async => events);
+
+      // Act
+      final result = await container.read(
+        shopEventsProvider('shop-1').future,
+      );
+
+      // Assert
+      expect(result.length, equals(1));
+    });
+  });
+
+  group('shopInventoryProvider', () {
+    late MockInventoryRepository mockInventoryRepository;
+    late ProviderContainer container;
+
+    setUp(() {
+      mockInventoryRepository = MockInventoryRepository();
+      container = ProviderContainer(
+        overrides: [
+          inventoryRepositoryProvider
+              .overrideWithValue(mockInventoryRepository),
+        ],
+      );
+    });
+
+    tearDown(() {
+      container.dispose();
+    });
+
+    test('재고 목록을 조회한다', () async {
+      // Arrange
+      final items = [testInventoryItem, testInventoryItem];
+      when(() => mockInventoryRepository.getByShop(any()))
+          .thenAnswer((_) async => items);
+
+      // Act
+      final result = await container.read(
+        shopInventoryProvider('shop-1').future,
+      );
+
+      // Assert
+      expect(result.length, equals(2));
+    });
+  });
+
+  group('shopDetailTabProvider', () {
+    test('초기값은 0 (공지사항 탭)이다', () {
+      // Arrange
+      final container = ProviderContainer();
+
+      // Act
+      final tabIndex = container.read(shopDetailTabProvider);
+
+      // Assert
+      expect(tabIndex, equals(0));
+
+      container.dispose();
+    });
+
+    test('탭 인덱스를 변경할 수 있다', () {
+      // Arrange
+      final container = ProviderContainer();
+
+      // Act
+      container.read(shopDetailTabProvider.notifier).state = 2;
+
+      // Assert
+      expect(container.read(shopDetailTabProvider), equals(2));
+
+      container.dispose();
+    });
+  });
+}
+```
+
+Run: `flutter test test/providers/shop_detail_provider_test.dart`
+Expected: FAIL (컴파일 에러)
+
+**Step 2 (Green): 모델 및 Provider 구현**
+
+Create: `lib/models/order_counts.dart`
+
+```dart
+/// 작업 건수 (화면 전용 모델)
+class OrderCounts {
+  const OrderCounts({
+    required this.receivedCount,
+    required this.inProgressCount,
+  });
+
+  final int receivedCount;
+  final int inProgressCount;
+
+  int get total => receivedCount + inProgressCount;
+}
+```
+
+Create: `lib/providers/shop_detail_provider.dart`
+
+```dart
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:riverpod_annotation/riverpod_annotation.dart';
+import 'package:badminton_app/models/shop.dart';
+import 'package:badminton_app/models/order_counts.dart';
+import 'package:badminton_app/models/post.dart';
+import 'package:badminton_app/models/inventory_item.dart';
+import 'package:badminton_app/repositories/shop_repository.dart';
+import 'package:badminton_app/repositories/order_repository.dart';
+import 'package:badminton_app/repositories/post_repository.dart';
+import 'package:badminton_app/repositories/inventory_repository.dart';
+
+part 'shop_detail_provider.g.dart';
+
+/// 샵 상세 정보
+@riverpod
+Future<Shop> shopDetail(ShopDetailRef ref, String shopId) async {
+  final shopRepository = ref.watch(shopRepositoryProvider);
+  return shopRepository.getById(shopId);
+}
+
+/// 샵 작업 현황 (접수/작업중 건수)
+@riverpod
+Future<OrderCounts> shopOrderCounts(
+  ShopOrderCountsRef ref,
+  String shopId,
+) async {
+  final orderRepository = ref.watch(orderRepositoryProvider);
+  return orderRepository.countActiveByShop(shopId);
+}
+
+/// 공지사항 목록
+@riverpod
+Future<List<Post>> shopNotices(ShopNoticesRef ref, String shopId) async {
+  final postRepository = ref.watch(postRepositoryProvider);
+  return postRepository.getByShopAndCategory(
+    shopId: shopId,
+    category: 'notice',
+  );
+}
+
+/// 이벤트 목록
+@riverpod
+Future<List<Post>> shopEvents(ShopEventsRef ref, String shopId) async {
+  final postRepository = ref.watch(postRepositoryProvider);
+  return postRepository.getByShopAndCategory(
+    shopId: shopId,
+    category: 'event',
+  );
+}
+
+/// 재고 목록
+@riverpod
+Future<List<InventoryItem>> shopInventory(
+  ShopInventoryRef ref,
+  String shopId,
+) async {
+  final inventoryRepository = ref.watch(inventoryRepositoryProvider);
+  return inventoryRepository.getByShop(shopId);
+}
+
+/// 선택된 카테고리 탭 인덱스 (0: 공지사항, 1: 이벤트, 2: 가게재고)
+final shopDetailTabProvider = StateProvider<int>((ref) => 0);
+```
+
+Run: `flutter test test/providers/shop_detail_provider_test.dart`
+Expected: PASS
+
+**Step 3 (Red): Widget 테스트 작성**
+
+Create: `test/screens/customer/shop_detail_screen_test.dart`
+
+```dart
+import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_test/flutter_test.dart';
+import 'package:mocktail/mocktail.dart';
+import 'package:badminton_app/screens/customer/shop_detail_screen.dart';
+import 'package:badminton_app/providers/shop_detail_provider.dart';
+import 'package:badminton_app/models/shop.dart';
+import 'package:badminton_app/models/order_counts.dart';
+import 'package:badminton_app/models/post.dart';
+import 'package:badminton_app/models/inventory_item.dart';
+
+import '../../helpers/mocks.dart';
+import '../../helpers/fixtures.dart';
+import '../../helpers/test_app.dart';
+
+void main() {
+  group('ShopDetailScreen', () {
+    testWidgets('로딩 상태에서 스켈레톤을 표시한다', (tester) async {
+      // Arrange
+      await tester.pumpWidget(
+        createTestApp(
+          overrides: [
+            shopDetailProvider('shop-1').overrideWith(
+                (ref) async => Future.delayed(
+                    const Duration(seconds: 10), () => testShop)),
+          ],
+          child: const ShopDetailScreen(shopId: 'shop-1'),
+        ),
+      );
+
+      // Assert
+      expect(find.byType(SkeletonShimmer), findsWidgets);
+    });
+
+    testWidgets('샵 상세 정보를 정상 표시한다', (tester) async {
+      // Arrange
+      final shop = testShop.copyWith(
+        name: 'OO 거트 스트링샵',
+        address: '서울시 강남구 역삼동 123-45',
+        phone: '010-1234-5678',
+        description: '정성스러운 스트링 작업',
+      );
+      await tester.pumpWidget(
+        createTestApp(
+          overrides: [
+            shopDetailProvider('shop-1')
+                .overrideWith((ref) async => shop),
+            shopOrderCountsProvider('shop-1').overrideWith(
+                (ref) async => const OrderCounts(
+                    receivedCount: 2, inProgressCount: 1)),
+            shopNoticesProvider('shop-1')
+                .overrideWith((ref) async => <Post>[]),
+            shopEventsProvider('shop-1')
+                .overrideWith((ref) async => <Post>[]),
+            shopInventoryProvider('shop-1')
+                .overrideWith((ref) async => <InventoryItem>[]),
+          ],
+          child: const ShopDetailScreen(shopId: 'shop-1'),
+        ),
+      );
+      await tester.pumpAndSettle();
+
+      // Assert
+      expect(find.text('OO 거트 스트링샵'), findsOneWidget);
+      expect(find.text('서울시 강남구 역삼동 123-45'), findsOneWidget);
+      expect(find.text('010-1234-5678'), findsOneWidget);
+      expect(find.text('정성스러운 스트링 작업'), findsOneWidget);
+      expect(find.text('길찾기'), findsOneWidget);
+    });
+
+    testWidgets('작업 현황 카드에 접수/작업중 건수를 표시한다', (tester) async {
+      // Arrange
+      await tester.pumpWidget(
+        createTestApp(
+          overrides: [
+            shopDetailProvider('shop-1')
+                .overrideWith((ref) async => testShop),
+            shopOrderCountsProvider('shop-1').overrideWith(
+                (ref) async => const OrderCounts(
+                    receivedCount: 3, inProgressCount: 2)),
+            shopNoticesProvider('shop-1')
+                .overrideWith((ref) async => <Post>[]),
+            shopEventsProvider('shop-1')
+                .overrideWith((ref) async => <Post>[]),
+            shopInventoryProvider('shop-1')
+                .overrideWith((ref) async => <InventoryItem>[]),
+          ],
+          child: const ShopDetailScreen(shopId: 'shop-1'),
+        ),
+      );
+      await tester.pumpAndSettle();
+
+      // Assert
+      expect(find.text('3'), findsOneWidget); // 접수 건수
+      expect(find.text('2'), findsOneWidget); // 작업중 건수
+    });
+
+    testWidgets('카테고리 탭 3개를 표시한다', (tester) async {
+      // Arrange
+      await tester.pumpWidget(
+        createTestApp(
+          overrides: [
+            shopDetailProvider('shop-1')
+                .overrideWith((ref) async => testShop),
+            shopOrderCountsProvider('shop-1').overrideWith(
+                (ref) async => const OrderCounts(
+                    receivedCount: 0, inProgressCount: 0)),
+            shopNoticesProvider('shop-1')
+                .overrideWith((ref) async => <Post>[]),
+            shopEventsProvider('shop-1')
+                .overrideWith((ref) async => <Post>[]),
+            shopInventoryProvider('shop-1')
+                .overrideWith((ref) async => <InventoryItem>[]),
+          ],
+          child: const ShopDetailScreen(shopId: 'shop-1'),
+        ),
+      );
+      await tester.pumpAndSettle();
+
+      // Assert
+      expect(find.text('공지사항'), findsOneWidget);
+      expect(find.text('이벤트'), findsOneWidget);
+      expect(find.text('가게 재고'), findsOneWidget);
+    });
+
+    testWidgets('공지사항 탭에서 공지사항 목록을 표시한다', (tester) async {
+      // Arrange
+      final notices = [
+        testNoticePost.copyWith(title: '7월 휴무 안내'),
+        testNoticePost.copyWith(title: '영업시간 변경 안내'),
+      ];
+      await tester.pumpWidget(
+        createTestApp(
+          overrides: [
+            shopDetailProvider('shop-1')
+                .overrideWith((ref) async => testShop),
+            shopOrderCountsProvider('shop-1').overrideWith(
+                (ref) async => const OrderCounts(
+                    receivedCount: 0, inProgressCount: 0)),
+            shopNoticesProvider('shop-1')
+                .overrideWith((ref) async => notices),
+            shopEventsProvider('shop-1')
+                .overrideWith((ref) async => <Post>[]),
+            shopInventoryProvider('shop-1')
+                .overrideWith((ref) async => <InventoryItem>[]),
+          ],
+          child: const ShopDetailScreen(shopId: 'shop-1'),
+        ),
+      );
+      await tester.pumpAndSettle();
+
+      // Assert
+      expect(find.text('7월 휴무 안내'), findsOneWidget);
+      expect(find.text('영업시간 변경 안내'), findsOneWidget);
+    });
+
+    testWidgets('공지사항이 없으면 빈 상태 메시지를 표시한다', (tester) async {
+      // Arrange
+      await tester.pumpWidget(
+        createTestApp(
+          overrides: [
+            shopDetailProvider('shop-1')
+                .overrideWith((ref) async => testShop),
+            shopOrderCountsProvider('shop-1').overrideWith(
+                (ref) async => const OrderCounts(
+                    receivedCount: 0, inProgressCount: 0)),
+            shopNoticesProvider('shop-1')
+                .overrideWith((ref) async => <Post>[]),
+            shopEventsProvider('shop-1')
+                .overrideWith((ref) async => <Post>[]),
+            shopInventoryProvider('shop-1')
+                .overrideWith((ref) async => <InventoryItem>[]),
+          ],
+          child: const ShopDetailScreen(shopId: 'shop-1'),
+        ),
+      );
+      await tester.pumpAndSettle();
+
+      // Assert
+      expect(find.text('등록된 공지사항이 없습니다'), findsOneWidget);
+    });
+
+    testWidgets('에러 상태에서 에러 UI를 표시한다', (tester) async {
+      // Arrange
+      await tester.pumpWidget(
+        createTestApp(
+          overrides: [
+            shopDetailProvider('shop-1')
+                .overrideWith((ref) => throw Exception('에러')),
+          ],
+          child: const ShopDetailScreen(shopId: 'shop-1'),
+        ),
+      );
+      await tester.pumpAndSettle();
+
+      // Assert
+      expect(find.text('데이터를 불러올 수 없습니다'), findsOneWidget);
+      expect(find.text('다시 시도'), findsOneWidget);
+    });
+  });
+}
+```
+
+Run: `flutter test test/screens/customer/shop_detail_screen_test.dart`
+Expected: FAIL (화면 미구현)
+
+**Step 4 (Green): 화면 구현**
+
+Create: `lib/screens/customer/shop_detail_screen.dart`
+
+```dart
+import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
+import 'package:url_launcher/url_launcher.dart';
+import 'package:cached_network_image/cached_network_image.dart';
+import 'package:badminton_app/providers/shop_detail_provider.dart';
+import 'package:badminton_app/models/shop.dart';
+import 'package:badminton_app/models/order_counts.dart';
+import 'package:badminton_app/models/post.dart';
+import 'package:badminton_app/models/inventory_item.dart';
+import 'package:badminton_app/widgets/skeleton_shimmer.dart';
+import 'package:badminton_app/widgets/error_view.dart';
+import 'package:badminton_app/core/utils/formatters.dart';
+
+class ShopDetailScreen extends ConsumerStatefulWidget {
+  const ShopDetailScreen({super.key, required this.shopId});
+  final String shopId;
+
+  @override
+  ConsumerState<ShopDetailScreen> createState() => _ShopDetailScreenState();
+}
+
+class _ShopDetailScreenState extends ConsumerState<ShopDetailScreen>
+    with SingleTickerProviderStateMixin {
+  late final TabController _tabController;
+
+  @override
+  void initState() {
+    super.initState();
+    _tabController = TabController(length: 3, vsync: this);
+    _tabController.addListener(() {
+      ref.read(shopDetailTabProvider.notifier).state = _tabController.index;
+    });
+  }
+
+  @override
+  void dispose() {
+    _tabController.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final shopAsync = ref.watch(shopDetailProvider(widget.shopId));
+
+    return Scaffold(
+      appBar: AppBar(
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back_ios, color: Color(0xFF0F172A)),
+          onPressed: () => context.pop(),
+        ),
+        title: const Text('샵 정보',
+            style: TextStyle(
+                fontSize: 18,
+                fontWeight: FontWeight.w600,
+                color: Color(0xFF0F172A))),
+        backgroundColor: Colors.white,
+        elevation: 0,
+        bottom: PreferredSize(
+          preferredSize: const Size.fromHeight(0.5),
+          child: Container(height: 0.5, color: const Color(0xFFE2E8F0)),
+        ),
+      ),
+      body: shopAsync.when(
+        loading: () => const _SkeletonView(),
+        error: (error, _) => ErrorView(
+          message: '데이터를 불러올 수 없습니다',
+          onRetry: () =>
+              ref.invalidate(shopDetailProvider(widget.shopId)),
+        ),
+        data: (shop) => _ShopDetailContent(
+          shop: shop,
+          shopId: widget.shopId,
+          tabController: _tabController,
+        ),
+      ),
+    );
+  }
+}
+
+class _ShopDetailContent extends ConsumerWidget {
+  const _ShopDetailContent({
+    required this.shop,
+    required this.shopId,
+    required this.tabController,
+  });
+  final Shop shop;
+  final String shopId;
+  final TabController tabController;
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final orderCountsAsync = ref.watch(shopOrderCountsProvider(shopId));
+
+    return NestedScrollView(
+      headerSliverBuilder: (context, innerBoxIsScrolled) {
+        return [
+          SliverToBoxAdapter(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                // 지도 미리보기
+                Container(
+                  height: 180,
+                  width: double.infinity,
+                  color: const Color(0xFFF1F5F9),
+                  // TODO: NaverMap Static 위젯 삽입
+                  child: GestureDetector(
+                    onTap: () => _openNaverMap(shop),
+                    child: const Center(
+                      child: Icon(Icons.map, size: 48,
+                          color: Color(0xFF94A3B8)),
+                    ),
+                  ),
+                ),
+                // 샵 이름/소개
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(16, 20, 16, 0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Row(children: [
+                        const Icon(Icons.storefront, size: 24,
+                            color: Color(0xFF16A34A)),
+                        const SizedBox(width: 8),
+                        Expanded(
+                          child: Text(shop.name,
+                              style: const TextStyle(
+                                  fontSize: 24,
+                                  fontWeight: FontWeight.bold,
+                                  color: Color(0xFF0F172A))),
+                        ),
+                      ]),
+                      if (shop.description != null &&
+                          shop.description!.isNotEmpty) ...[
+                        const SizedBox(height: 8),
+                        Text(shop.description!,
+                            style: const TextStyle(
+                                fontSize: 14,
+                                color: Color(0xFF475569),
+                                height: 1.5)),
+                      ],
+                    ],
+                  ),
+                ),
+                // 작업 현황
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(16, 24, 16, 0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const Text('작업 현황',
+                          style: TextStyle(
+                              fontSize: 16,
+                              fontWeight: FontWeight.w600,
+                              color: Color(0xFF0F172A))),
+                      const SizedBox(height: 12),
+                      orderCountsAsync.when(
+                        loading: () =>
+                            const SkeletonShimmer(height: 80, borderRadius: 16),
+                        error: (_, __) => const SizedBox.shrink(),
+                        data: (counts) => _OrderCountsCard(counts: counts),
+                      ),
+                    ],
+                  ),
+                ),
+                // 위치 및 연락처
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(16, 24, 16, 0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const Text('위치 및 연락처',
+                          style: TextStyle(
+                              fontSize: 16,
+                              fontWeight: FontWeight.w600,
+                              color: Color(0xFF0F172A))),
+                      const SizedBox(height: 12),
+                      Container(
+                        padding: const EdgeInsets.all(16),
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(16),
+                          border: Border.all(color: const Color(0xFFE2E8F0)),
+                        ),
+                        child: Column(
+                          children: [
+                            Row(children: [
+                              const Icon(Icons.location_on, size: 20,
+                                  color: Color(0xFF94A3B8)),
+                              const SizedBox(width: 8),
+                              Expanded(
+                                  child: Text(shop.address,
+                                      style: const TextStyle(
+                                          fontSize: 14,
+                                          color: Color(0xFF475569)))),
+                            ]),
+                            const SizedBox(height: 12),
+                            GestureDetector(
+                              onTap: () => launchUrl(
+                                  Uri.parse('tel:${shop.phone}')),
+                              child: Row(children: [
+                                const Icon(Icons.phone, size: 20,
+                                    color: Color(0xFF94A3B8)),
+                                const SizedBox(width: 8),
+                                Text(shop.phone,
+                                    style: const TextStyle(
+                                        fontSize: 14,
+                                        color: Color(0xFF3B82F6),
+                                        decoration:
+                                            TextDecoration.underline)),
+                              ]),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                // 길찾기 버튼
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(16, 24, 16, 24),
+                  child: SizedBox(
+                    width: double.infinity,
+                    height: 52,
+                    child: FilledButton.icon(
+                      onPressed: () => _openNaverMapRoute(shop),
+                      icon: const Icon(Icons.directions, size: 20),
+                      label: const Text('길찾기'),
+                      style: FilledButton.styleFrom(
+                        backgroundColor: const Color(0xFF16A34A),
+                        foregroundColor: Colors.white,
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(12)),
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+          // 카테고리 탭 바 (Pinned)
+          SliverPersistentHeader(
+            pinned: true,
+            delegate: _TabBarDelegate(
+              TabBar(
+                controller: tabController,
+                labelColor: const Color(0xFF16A34A),
+                unselectedLabelColor: const Color(0xFF94A3B8),
+                labelStyle: const TextStyle(
+                    fontSize: 14, fontWeight: FontWeight.w600),
+                unselectedLabelStyle: const TextStyle(
+                    fontSize: 14, fontWeight: FontWeight.normal),
+                indicatorColor: const Color(0xFF16A34A),
+                indicatorWeight: 2,
+                tabs: const [
+                  Tab(text: '공지사항'),
+                  Tab(text: '이벤트'),
+                  Tab(text: '가게 재고'),
+                ],
+              ),
+            ),
+          ),
+        ];
+      },
+      body: TabBarView(
+        controller: tabController,
+        children: [
+          _NoticesTab(shopId: shopId),
+          _EventsTab(shopId: shopId),
+          _InventoryTab(shopId: shopId),
+        ],
+      ),
+    );
+  }
+
+  Future<void> _openNaverMap(Shop shop) async {
+    final uri = Uri.parse(
+        'nmap://place?lat=${shop.latitude}&lng=${shop.longitude}'
+        '&name=${Uri.encodeComponent(shop.name)}');
+    if (await canLaunchUrl(uri)) {
+      await launchUrl(uri);
+    } else {
+      await launchUrl(
+        Uri.parse(
+            'https://map.naver.com/v5/search/${Uri.encodeComponent(shop.address)}'),
+        mode: LaunchMode.externalApplication,
+      );
+    }
+  }
+
+  Future<void> _openNaverMapRoute(Shop shop) async {
+    final uri = Uri.parse(
+        'nmap://route/public?dlat=${shop.latitude}'
+        '&dlng=${shop.longitude}&dname=${Uri.encodeComponent(shop.name)}');
+    if (await canLaunchUrl(uri)) {
+      await launchUrl(uri);
+    } else {
+      await launchUrl(
+        Uri.parse(
+            'https://map.naver.com/v5/directions/-/${shop.longitude},${shop.latitude},${Uri.encodeComponent(shop.name)}'),
+        mode: LaunchMode.externalApplication,
+      );
+    }
+  }
+}
+
+class _OrderCountsCard extends StatelessWidget {
+  const _OrderCountsCard({required this.counts});
+  final OrderCounts counts;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.all(20),
+      decoration: BoxDecoration(
+        color: const Color(0xFFF8FAFC),
+        borderRadius: BorderRadius.circular(16),
+      ),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          _CountColumn(
+              count: counts.receivedCount,
+              label: '접수',
+              color: const Color(0xFFF59E0B)),
+          Container(
+              width: 1, height: 40, color: const Color(0xFFE2E8F0),
+              margin: const EdgeInsets.symmetric(horizontal: 32)),
+          _CountColumn(
+              count: counts.inProgressCount,
+              label: '작업중',
+              color: const Color(0xFF3B82F6)),
+        ],
+      ),
+    );
+  }
+}
+
+class _CountColumn extends StatelessWidget {
+  const _CountColumn({
+    required this.count,
+    required this.label,
+    required this.color,
+  });
+  final int count;
+  final String label;
+  final Color color;
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(children: [
+      Text('$count',
+          style: TextStyle(
+              fontSize: 24, fontWeight: FontWeight.bold, color: color)),
+      const SizedBox(height: 4),
+      Text(label,
+          style: const TextStyle(fontSize: 12, color: Color(0xFF94A3B8))),
+    ]);
+  }
+}
+
+class _NoticesTab extends ConsumerWidget {
+  const _NoticesTab({required this.shopId});
+  final String shopId;
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final noticesAsync = ref.watch(shopNoticesProvider(shopId));
+
+    return noticesAsync.when(
+      loading: () => const Center(
+          child: CircularProgressIndicator(color: Color(0xFF16A34A))),
+      error: (_, __) => const Center(child: Text('불러오기 실패')),
+      data: (notices) {
+        if (notices.isEmpty) {
+          return const Center(
+            child: Text('등록된 공지사항이 없습니다',
+                style: TextStyle(fontSize: 14, color: Color(0xFF94A3B8))),
+          );
+        }
+        return ListView.separated(
+          padding: const EdgeInsets.all(16),
+          itemCount: notices.length,
+          separatorBuilder: (_, __) => const SizedBox(height: 12),
+          itemBuilder: (context, index) =>
+              _NoticeCard(post: notices[index]),
+        );
+      },
+    );
+  }
+}
+
+class _NoticeCard extends StatelessWidget {
+  const _NoticeCard({required this.post});
+  final Post post;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(12),
+        border: Border.all(color: const Color(0xFFE2E8F0)),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(post.title,
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+              style: const TextStyle(
+                  fontSize: 14,
+                  fontWeight: FontWeight.w600,
+                  color: Color(0xFF0F172A))),
+          const SizedBox(height: 4),
+          Text(Formatters.date(post.createdAt),
+              style: const TextStyle(
+                  fontSize: 12, color: Color(0xFF94A3B8))),
+          if (post.content != null) ...[
+            const SizedBox(height: 8),
+            Text(post.content!,
+                maxLines: 2,
+                overflow: TextOverflow.ellipsis,
+                style: const TextStyle(
+                    fontSize: 12, color: Color(0xFF475569))),
+          ],
+        ],
+      ),
+    );
+  }
+}
+
+class _EventsTab extends ConsumerWidget {
+  const _EventsTab({required this.shopId});
+  final String shopId;
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final eventsAsync = ref.watch(shopEventsProvider(shopId));
+
+    return eventsAsync.when(
+      loading: () => const Center(
+          child: CircularProgressIndicator(color: Color(0xFF16A34A))),
+      error: (_, __) => const Center(child: Text('불러오기 실패')),
+      data: (events) {
+        if (events.isEmpty) {
+          return const Center(
+            child: Text('등록된 이벤트가 없습니다',
+                style: TextStyle(fontSize: 14, color: Color(0xFF94A3B8))),
+          );
+        }
+        return ListView.separated(
+          padding: const EdgeInsets.all(16),
+          itemCount: events.length,
+          separatorBuilder: (_, __) => const SizedBox(height: 12),
+          itemBuilder: (context, index) =>
+              _EventCard(post: events[index]),
+        );
+      },
+    );
+  }
+}
+
+class _EventCard extends StatelessWidget {
+  const _EventCard({required this.post});
+  final Post post;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.all(12),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(12),
+        border: Border.all(color: const Color(0xFFE2E8F0)),
+      ),
+      child: Row(
+        children: [
+          // 썸네일
+          Container(
+            width: 80,
+            height: 80,
+            decoration: BoxDecoration(
+              color: const Color(0xFFF1F5F9),
+              borderRadius: BorderRadius.circular(8),
+            ),
+            child: post.imageUrl != null
+                ? ClipRRect(
+                    borderRadius: BorderRadius.circular(8),
+                    child: CachedNetworkImage(
+                      imageUrl: post.imageUrl!,
+                      fit: BoxFit.cover,
+                    ),
+                  )
+                : const Icon(Icons.event, size: 40,
+                    color: Color(0xFF94A3B8)),
+          ),
+          const SizedBox(width: 12),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(post.title,
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    style: const TextStyle(
+                        fontSize: 14,
+                        fontWeight: FontWeight.w600,
+                        color: Color(0xFF0F172A))),
+                const SizedBox(height: 4),
+                Text(
+                  '${Formatters.date(post.startDate ?? post.createdAt)}'
+                  ' ~ ${Formatters.date(post.endDate ?? post.createdAt)}',
+                  style: const TextStyle(
+                      fontSize: 12, color: Color(0xFF94A3B8)),
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class _InventoryTab extends ConsumerWidget {
+  const _InventoryTab({required this.shopId});
+  final String shopId;
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final inventoryAsync = ref.watch(shopInventoryProvider(shopId));
+
+    return inventoryAsync.when(
+      loading: () => const Center(
+          child: CircularProgressIndicator(color: Color(0xFF16A34A))),
+      error: (_, __) => const Center(child: Text('불러오기 실패')),
+      data: (items) {
+        if (items.isEmpty) {
+          return const Center(
+            child: Text('등록된 재고 정보가 없습니다',
+                style: TextStyle(fontSize: 14, color: Color(0xFF94A3B8))),
+          );
+        }
+        return Column(
+          children: [
+            const Padding(
+              padding: EdgeInsets.only(top: 12),
+              child: Text('재고 정보는 열람만 가능합니다',
+                  style: TextStyle(
+                      fontSize: 12, color: Color(0xFF94A3B8))),
+            ),
+            Expanded(
+              child: GridView.builder(
+                padding: const EdgeInsets.all(16),
+                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: 3,
+                  crossAxisSpacing: 12,
+                  mainAxisSpacing: 12,
+                  childAspectRatio: 0.75,
+                ),
+                itemCount: items.length,
+                itemBuilder: (context, index) =>
+                    _InventoryCard(item: items[index]),
+              ),
+            ),
+          ],
+        );
+      },
+    );
+  }
+}
+
+class _InventoryCard extends StatelessWidget {
+  const _InventoryCard({required this.item});
+  final InventoryItem item;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(12),
+        border: Border.all(color: const Color(0xFFE2E8F0)),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Expanded(
+            child: Container(
+              width: double.infinity,
+              decoration: BoxDecoration(
+                color: const Color(0xFFF1F5F9),
+                borderRadius: const BorderRadius.vertical(
+                    top: Radius.circular(12)),
+              ),
+              child: item.imageUrl != null
+                  ? ClipRRect(
+                      borderRadius: const BorderRadius.vertical(
+                          top: Radius.circular(12)),
+                      child: CachedNetworkImage(
+                        imageUrl: item.imageUrl!,
+                        fit: BoxFit.cover,
+                      ),
+                    )
+                  : const Center(
+                      child: Icon(Icons.inventory_2, size: 40,
+                          color: Color(0xFF94A3B8))),
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.all(8),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(item.name,
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    style: const TextStyle(
+                        fontSize: 14,
+                        fontWeight: FontWeight.w500,
+                        color: Color(0xFF0F172A))),
+                const SizedBox(height: 2),
+                Text('${item.quantity}개',
+                    style: const TextStyle(
+                        fontSize: 12, color: Color(0xFF475569))),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class _TabBarDelegate extends SliverPersistentHeaderDelegate {
+  const _TabBarDelegate(this.tabBar);
+  final TabBar tabBar;
+
+  @override
+  Widget build(
+      BuildContext context, double shrinkOffset, bool overlapsContent) {
+    return Container(color: Colors.white, child: tabBar);
+  }
+
+  @override
+  double get maxExtent => 48;
+  @override
+  double get minExtent => 48;
+  @override
+  bool shouldRebuild(covariant _TabBarDelegate oldDelegate) => false;
+}
+
+class _SkeletonView extends StatelessWidget {
+  const _SkeletonView();
+
+  @override
+  Widget build(BuildContext context) {
+    return SingleChildScrollView(
+      padding: const EdgeInsets.all(0),
+      child: Column(children: [
+        Container(height: 180, color: const Color(0xFFE2E8F0)),
+        Padding(
+          padding: const EdgeInsets.all(16),
+          child: Column(children: [
+            const SkeletonShimmer(height: 32, borderRadius: 8),
+            const SizedBox(height: 8),
+            const SkeletonShimmer(height: 40, borderRadius: 8),
+            const SizedBox(height: 24),
+            const SkeletonShimmer(height: 80, borderRadius: 16),
+            const SizedBox(height: 24),
+            const SkeletonShimmer(height: 80, borderRadius: 16),
+          ]),
+        ),
+      ]),
+    );
+  }
+}
+```
+
+Run: `flutter test test/screens/customer/shop_detail_screen_test.dart`
+Expected: PASS
+
+**Step 5: Commit**
+
+```bash
+git add lib/models/order_counts.dart \
+  lib/providers/shop_detail_provider.dart \
+  lib/screens/customer/shop_detail_screen.dart \
+  test/providers/shop_detail_provider_test.dart \
+  test/screens/customer/shop_detail_screen_test.dart
+git commit -m "feat: 샵 상세 화면 구현 (탭 카테고리 + 공지/이벤트/재고 조회)"
+```
+
+---
