@@ -4464,7 +4464,1083 @@ git commit -m "feat: 로그인 화면 구현 (소셜 로그인 3종 + 에러 처
 
 ---
 
+### Task 2.3: Profile Setup Screen (프로필 설정 화면)
 
+> 화면 ID: `profile-setup`
+> UI 스펙: `docs/ui-specs/signup.md`
+> 상태 설계: `docs/pages/profile-setup/state.md`
+> 유스케이스: UC-1 소셜 로그인 + 프로필 설정
+
+#### Step 1: 실패하는 단위 테스트 작성
+
+**파일: `test/screens/auth/profile_setup/profile_setup_notifier_test.dart`**
+
+```dart
+import 'package:flutter_test/flutter_test.dart';
+import 'package:mocktail/mocktail.dart';
+import 'package:riverpod/riverpod.dart';
+import 'package:gut_alarm/screens/auth/profile_setup/profile_setup_state.dart';
+import 'package:gut_alarm/screens/auth/profile_setup/profile_setup_notifier.dart';
+import 'package:gut_alarm/screens/auth/profile_setup/profile_setup_providers.dart';
+import 'package:gut_alarm/repositories/user_repository.dart';
+import 'package:gut_alarm/providers/auth_providers.dart';
+import 'package:gut_alarm/models/user.dart' as app;
+import 'package:gut_alarm/core/error/app_exception.dart';
+
+class MockUserRepository extends Mock implements UserRepository {}
+
+void main() {
+  group('ProfileSetupNotifier', () {
+    late ProviderContainer container;
+    late MockUserRepository mockUserRepo;
+    setUp(() { mockUserRepo = MockUserRepository(); });
+    tearDown(() => container.dispose());
+
+    ProviderContainer createContainer({String socialName = '홍길동'}) =>
+        ProviderContainer(overrides: [
+          userRepositoryProvider.overrideWithValue(mockUserRepo),
+          socialProfileNameProvider.overrideWithValue(socialName),
+        ]);
+
+    test('초기 상태: role=null, name=소셜이름, phone="", idle', () {
+      container = createContainer(socialName: '테스트유저');
+      final s = container.read(profileSetupNotifierProvider);
+      expect(s.selectedRole, isNull);
+      expect(s.name, '테스트유저');
+      expect(s.phone, '');
+      expect(s.status, ProfileSetupStatus.idle);
+    });
+
+    test('selectRole(customer) → customer, roleError=null', () {
+      container = createContainer();
+      container.read(profileSetupNotifierProvider.notifier)
+          .selectRole(app.UserRole.customer);
+      final s = container.read(profileSetupNotifierProvider);
+      expect(s.selectedRole, app.UserRole.customer);
+      expect(s.roleError, isNull);
+    });
+
+    test('selectRole(shopOwner) → shopOwner', () {
+      container = createContainer();
+      container.read(profileSetupNotifierProvider.notifier)
+          .selectRole(app.UserRole.shopOwner);
+      expect(container.read(profileSetupNotifierProvider).selectedRole,
+          app.UserRole.shopOwner);
+    });
+
+    test('updateName → name 갱신', () {
+      container = createContainer();
+      container.read(profileSetupNotifierProvider.notifier).updateName('김철수');
+      expect(container.read(profileSetupNotifierProvider).name, '김철수');
+    });
+
+    test('validateName: 빈값 → nameError', () {
+      container = createContainer();
+      final n = container.read(profileSetupNotifierProvider.notifier);
+      n.updateName(''); n.validateName();
+      expect(container.read(profileSetupNotifierProvider).nameError, isNotNull);
+    });
+
+    test('validateName: 유효 → nameError=null', () {
+      container = createContainer();
+      final n = container.read(profileSetupNotifierProvider.notifier);
+      n.updateName('김철수'); n.validateName();
+      expect(container.read(profileSetupNotifierProvider).nameError, isNull);
+    });
+
+    test('updatePhone → 자동 하이픈', () {
+      container = createContainer();
+      container.read(profileSetupNotifierProvider.notifier)
+          .updatePhone('01012345678');
+      expect(container.read(profileSetupNotifierProvider).phone,
+          '010-1234-5678');
+    });
+
+    test('validatePhone: 빈값 → phoneError', () {
+      container = createContainer();
+      container.read(profileSetupNotifierProvider.notifier).validatePhone();
+      expect(container.read(profileSetupNotifierProvider).phoneError, isNotNull);
+    });
+
+    test('submit 성공 (고객): INSERT + matchMembersByPhone', () async {
+      when(() => mockUserRepo.create(any())).thenAnswer((_) async {});
+      when(() => mockUserRepo.matchMembersByPhone(any()))
+          .thenAnswer((_) async {});
+      container = createContainer();
+      final n = container.read(profileSetupNotifierProvider.notifier);
+      n.selectRole(app.UserRole.customer);
+      n.updateName('김철수'); n.updatePhone('01012345678');
+      await n.submit();
+      expect(container.read(profileSetupNotifierProvider).status,
+          ProfileSetupStatus.idle);
+      verify(() => mockUserRepo.create(any())).called(1);
+      verify(() => mockUserRepo.matchMembersByPhone(any())).called(1);
+    });
+
+    test('submit 성공 (사장님): matchMembersByPhone 미호출', () async {
+      when(() => mockUserRepo.create(any())).thenAnswer((_) async {});
+      container = createContainer();
+      final n = container.read(profileSetupNotifierProvider.notifier);
+      n.selectRole(app.UserRole.shopOwner);
+      n.updateName('이사장'); n.updatePhone('01098765432');
+      await n.submit();
+      verify(() => mockUserRepo.create(any())).called(1);
+      verifyNever(() => mockUserRepo.matchMembersByPhone(any()));
+    });
+
+    test('submit: 역할 미선택 → roleError, idle', () async {
+      container = createContainer();
+      final n = container.read(profileSetupNotifierProvider.notifier);
+      n.updateName('김철수'); n.updatePhone('01012345678');
+      await n.submit();
+      expect(container.read(profileSetupNotifierProvider).roleError, isNotNull);
+      expect(container.read(profileSetupNotifierProvider).status,
+          ProfileSetupStatus.idle);
+    });
+
+    test('submit 네트워크 오류 → error', () async {
+      when(() => mockUserRepo.create(any()))
+          .thenThrow(const AppException.network());
+      container = createContainer();
+      final n = container.read(profileSetupNotifierProvider.notifier);
+      n.selectRole(app.UserRole.customer);
+      n.updateName('김철수'); n.updatePhone('01012345678');
+      await n.submit();
+      expect(container.read(profileSetupNotifierProvider).status,
+          ProfileSetupStatus.error);
+    });
+  });
+
+  group('isFormValidProvider', () {
+    test('모두 유효 → true', () {
+      final c = ProviderContainer(overrides: [
+        socialProfileNameProvider.overrideWithValue('홍길동')]);
+      addTearDown(c.dispose);
+      final n = c.read(profileSetupNotifierProvider.notifier);
+      n.selectRole(app.UserRole.customer);
+      n.updateName('김철수'); n.updatePhone('01012345678');
+      expect(c.read(isFormValidProvider), true);
+    });
+
+    test('역할 미선택 → false', () {
+      final c = ProviderContainer(overrides: [
+        socialProfileNameProvider.overrideWithValue('홍길동')]);
+      addTearDown(c.dispose);
+      c.read(profileSetupNotifierProvider.notifier)
+        ..updateName('김철수')..updatePhone('01012345678');
+      expect(c.read(isFormValidProvider), false);
+    });
+  });
+}
+```
+
+#### Step 2: 상태 클래스 및 Notifier 구현
+
+**파일: `lib/screens/auth/profile_setup/profile_setup_state.dart`**
+
+```dart
+import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:gut_alarm/models/user.dart' as app;
+
+part 'profile_setup_state.freezed.dart';
+
+enum ProfileSetupStatus { idle, submitting, error }
+
+@freezed
+class ProfileSetupState with _$ProfileSetupState {
+  const ProfileSetupState._();
+  const factory ProfileSetupState({
+    app.UserRole? selectedRole,
+    @Default('') String name,
+    @Default('') String phone,
+    @Default(ProfileSetupStatus.idle) ProfileSetupStatus status,
+    String? nameError, String? phoneError, String? roleError,
+  }) = _ProfileSetupState;
+
+  factory ProfileSetupState.initial({String name = ''}) =>
+      ProfileSetupState(name: name);
+}
+```
+
+**파일: `lib/screens/auth/profile_setup/profile_setup_notifier.dart`**
+
+```dart
+import 'package:riverpod_annotation/riverpod_annotation.dart';
+import 'package:gut_alarm/screens/auth/profile_setup/profile_setup_state.dart';
+import 'package:gut_alarm/screens/auth/profile_setup/profile_setup_providers.dart';
+import 'package:gut_alarm/repositories/user_repository.dart';
+import 'package:gut_alarm/providers/auth_providers.dart';
+import 'package:gut_alarm/models/user.dart' as app;
+import 'package:gut_alarm/core/error/app_exception.dart';
+import 'package:gut_alarm/core/utils/validators.dart';
+import 'package:gut_alarm/core/utils/formatters.dart';
+
+part 'profile_setup_notifier.g.dart';
+
+@riverpod
+class ProfileSetupNotifier extends _$ProfileSetupNotifier {
+  @override
+  ProfileSetupState build() =>
+      ProfileSetupState.initial(name: ref.read(socialProfileNameProvider));
+
+  void selectRole(app.UserRole role) =>
+      state = state.copyWith(selectedRole: role, roleError: null);
+  void updateName(String v) => state = state.copyWith(name: v);
+  void validateName() =>
+      state = state.copyWith(nameError: Validators.name(state.name));
+  void updatePhone(String v) =>
+      state = state.copyWith(phone: Formatters.phone(v));
+  void validatePhone() =>
+      state = state.copyWith(phoneError: Validators.phone(state.phone));
+
+  Future<void> submit() async {
+    final re = state.selectedRole == null ? '역할을 선택해주세요' : null;
+    final ne = Validators.name(state.name);
+    final pe = Validators.phone(state.phone);
+    state = state.copyWith(roleError: re, nameError: ne, phoneError: pe);
+    if (re != null || ne != null || pe != null) return;
+
+    state = state.copyWith(status: ProfileSetupStatus.submitting);
+    try {
+      final uid = ref.read(authStateProvider).valueOrNull?.id;
+      if (uid == null) { state = state.copyWith(status: ProfileSetupStatus.error); return; }
+      final repo = ref.read(userRepositoryProvider);
+      await repo.create(app.User(id: uid, role: state.selectedRole!,
+          name: state.name, phone: Formatters.phoneRaw(state.phone)));
+      if (state.selectedRole == app.UserRole.customer)
+        await repo.matchMembersByPhone(Formatters.phoneRaw(state.phone));
+      state = state.copyWith(status: ProfileSetupStatus.idle);
+    } on AppException { state = state.copyWith(status: ProfileSetupStatus.error);
+    } catch (_) { state = state.copyWith(status: ProfileSetupStatus.error); }
+  }
+}
+```
+
+**파일: `lib/screens/auth/profile_setup/profile_setup_providers.dart`**
+
+```dart
+import 'package:riverpod_annotation/riverpod_annotation.dart';
+import 'package:gut_alarm/providers/auth_providers.dart';
+import 'package:gut_alarm/screens/auth/profile_setup/profile_setup_notifier.dart';
+import 'package:gut_alarm/core/utils/validators.dart';
+
+part 'profile_setup_providers.g.dart';
+
+@riverpod
+String socialProfileName(SocialProfileNameRef ref) {
+  final u = ref.watch(authStateProvider).valueOrNull;
+  return (u?.userMetadata?['full_name'] as String?) ?? '';
+}
+
+@riverpod
+bool isFormValid(IsFormValidRef ref) {
+  final s = ref.watch(profileSetupNotifierProvider);
+  return s.selectedRole != null
+      && Validators.name(s.name) == null
+      && Validators.phone(s.phone) == null;
+}
+```
+
+#### Step 3: 위젯 테스트 작성
+
+**파일: `test/screens/auth/profile_setup/profile_setup_screen_test.dart`**
+
+```dart
+import 'package:flutter/material.dart';
+import 'package:flutter_test/flutter_test.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:gut_alarm/screens/auth/profile_setup/profile_setup_screen.dart';
+import 'package:gut_alarm/screens/auth/profile_setup/profile_setup_providers.dart';
+
+void main() {
+  group('ProfileSetupScreen', () {
+    testWidgets('"프로필 설정" 타이틀', (t) async {
+      await t.pumpWidget(ProviderScope(
+        overrides: [socialProfileNameProvider.overrideWithValue('테스트')],
+        child: const MaterialApp(home: ProfileSetupScreen())));
+      expect(find.text('프로필 설정'), findsOneWidget);
+    });
+    testWidgets('고객/사장님 카드', (t) async {
+      await t.pumpWidget(ProviderScope(
+        overrides: [socialProfileNameProvider.overrideWithValue('테스트')],
+        child: const MaterialApp(home: ProfileSetupScreen())));
+      expect(find.text('고객'), findsOneWidget);
+      expect(find.text('사장님'), findsOneWidget);
+    });
+    testWidgets('소셜 이름 기본값', (t) async {
+      await t.pumpWidget(ProviderScope(
+        overrides: [socialProfileNameProvider.overrideWithValue('홍길동')],
+        child: const MaterialApp(home: ProfileSetupScreen())));
+      expect(find.widgetWithText(TextField, '홍길동'), findsOneWidget);
+    });
+    testWidgets('초기 버튼 비활성', (t) async {
+      await t.pumpWidget(ProviderScope(
+        overrides: [socialProfileNameProvider.overrideWithValue('테스트')],
+        child: const MaterialApp(home: ProfileSetupScreen())));
+      expect(t.widget<ElevatedButton>(find.byType(ElevatedButton)).onPressed,
+          isNull);
+    });
+    testWidgets('고객 → "시작하기"', (t) async {
+      await t.pumpWidget(ProviderScope(
+        overrides: [socialProfileNameProvider.overrideWithValue('테스트')],
+        child: const MaterialApp(home: ProfileSetupScreen())));
+      await t.tap(find.text('고객')); await t.pump();
+      expect(find.text('시작하기'), findsOneWidget);
+    });
+    testWidgets('사장님 → "다음" + 1/2', (t) async {
+      await t.pumpWidget(ProviderScope(
+        overrides: [socialProfileNameProvider.overrideWithValue('테스트')],
+        child: const MaterialApp(home: ProfileSetupScreen())));
+      await t.tap(find.text('사장님')); await t.pump();
+      expect(find.text('다음'), findsOneWidget);
+      expect(find.text('1/2'), findsOneWidget);
+    });
+  });
+}
+```
+
+#### Step 4: 화면 위젯 구현
+
+**파일: `lib/screens/auth/profile_setup/profile_setup_screen.dart`**
+
+```dart
+import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
+import 'package:gut_alarm/screens/auth/profile_setup/profile_setup_state.dart';
+import 'package:gut_alarm/screens/auth/profile_setup/profile_setup_notifier.dart';
+import 'package:gut_alarm/screens/auth/profile_setup/profile_setup_providers.dart';
+import 'package:gut_alarm/models/user.dart' as app;
+import 'package:gut_alarm/core/widgets/app_toast.dart';
+
+class ProfileSetupScreen extends ConsumerStatefulWidget {
+  const ProfileSetupScreen({super.key});
+  @override
+  ConsumerState<ProfileSetupScreen> createState() => _State();
+}
+
+class _State extends ConsumerState<ProfileSetupScreen> {
+  late final TextEditingController _nameCtr =
+      TextEditingController(text: ref.read(socialProfileNameProvider));
+  late final TextEditingController _phoneCtr = TextEditingController();
+  final _nameFN = FocusNode(), _phoneFN = FocusNode();
+
+  @override
+  void initState() {
+    super.initState();
+    _nameFN.addListener(() { if (!_nameFN.hasFocus)
+        ref.read(profileSetupNotifierProvider.notifier).validateName(); });
+    _phoneFN.addListener(() { if (!_phoneFN.hasFocus)
+        ref.read(profileSetupNotifierProvider.notifier).validatePhone(); });
+  }
+  @override
+  void dispose() { _nameCtr.dispose(); _phoneCtr.dispose();
+    _nameFN.dispose(); _phoneFN.dispose(); super.dispose(); }
+
+  @override
+  Widget build(BuildContext context) {
+    final s = ref.watch(profileSetupNotifierProvider);
+    final valid = ref.watch(isFormValidProvider);
+    final n = ref.read(profileSetupNotifierProvider.notifier);
+    final busy = s.status == ProfileSetupStatus.submitting;
+    final owner = s.selectedRole == app.UserRole.shopOwner;
+
+    ref.listen(profileSetupNotifierProvider, (p, nx) {
+      if (p?.status == ProfileSetupStatus.submitting &&
+          nx.status == ProfileSetupStatus.idle) {
+        AppToast.show(context, '프로필 설정이 완료되었습니다!');
+        context.go(nx.selectedRole == app.UserRole.customer
+            ? '/customer/home' : '/owner/shop-signup');
+      } else if (nx.status == ProfileSetupStatus.error)
+        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+            content: Text('프로필 설정에 실패했습니다. 다시 시도해주세요')));
+    });
+
+    return Scaffold(
+      appBar: AppBar(title: const Text('프로필 설정'), actions: [
+        if (owner) const Padding(padding: EdgeInsets.only(right: 16),
+            child: Center(child: Text('1/2', style: TextStyle(fontSize: 14,
+                fontWeight: FontWeight.w600, color: Color(0xFF16A34A)))))]),
+      body: SingleChildScrollView(padding: const EdgeInsets.all(24),
+        child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+          const Text('어떤 서비스를 이용하시겠어요?', style: TextStyle(fontSize: 16,
+              fontWeight: FontWeight.w500, color: Color(0xFF475569))),
+          const SizedBox(height: 20),
+          Row(children: [
+            Expanded(child: _Card('고객', '거트 교체 알림을 받아요', Icons.person_outline,
+                s.selectedRole == app.UserRole.customer,
+                busy ? null : () => n.selectRole(app.UserRole.customer))),
+            const SizedBox(width: 12),
+            Expanded(child: _Card('사장님', '샵을 등록하고 관리해요', Icons.store_outlined,
+                s.selectedRole == app.UserRole.shopOwner,
+                busy ? null : () => n.selectRole(app.UserRole.shopOwner)))]),
+          if (s.roleError != null) ...[const SizedBox(height: 8),
+            Text(s.roleError!, style: const TextStyle(fontSize: 12,
+                color: Color(0xFFEF4444)))],
+          const SizedBox(height: 24),
+          TextField(controller: _nameCtr, focusNode: _nameFN, enabled: !busy,
+            decoration: InputDecoration(labelText: '이름',
+                prefixIcon: const Icon(Icons.person_outline),
+                errorText: s.nameError, border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(12))),
+            onChanged: n.updateName),
+          const SizedBox(height: 16),
+          TextField(controller: _phoneCtr, focusNode: _phoneFN, enabled: !busy,
+            keyboardType: TextInputType.phone,
+            decoration: InputDecoration(labelText: '연락처',
+                hintText: '010-0000-0000',
+                prefixIcon: const Icon(Icons.phone_outlined),
+                errorText: s.phoneError, border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(12))),
+            onChanged: (v) { n.updatePhone(v);
+              final f = ref.read(profileSetupNotifierProvider).phone;
+              if (_phoneCtr.text != f) _phoneCtr.value = TextEditingValue(
+                  text: f, selection: TextSelection.collapsed(offset: f.length));
+            }),
+          const SizedBox(height: 32),
+          SizedBox(width: double.infinity, height: 48, child: ElevatedButton(
+            onPressed: (valid && !busy) ? n.submit : null,
+            style: ElevatedButton.styleFrom(backgroundColor: const Color(0xFF16A34A),
+                foregroundColor: Colors.white, shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(12))),
+            child: busy ? const SizedBox(width: 20, height: 20,
+                child: CircularProgressIndicator(strokeWidth: 2, color: Colors.white))
+                : Text(owner ? '다음' : '시작하기', style: const TextStyle(
+                    fontSize: 16, fontWeight: FontWeight.w600))))])));
+  }
+}
+
+class _Card extends StatelessWidget {
+  final String t, sub; final IconData ic; final bool sel; final VoidCallback? tap;
+  const _Card(this.t, this.sub, this.ic, this.sel, this.tap);
+  @override
+  Widget build(BuildContext context) => GestureDetector(onTap: tap,
+    child: AnimatedContainer(duration: const Duration(milliseconds: 200),
+      padding: const EdgeInsets.all(16), decoration: BoxDecoration(
+        color: sel ? const Color(0xFF16A34A).withOpacity(0.05) : Colors.white,
+        border: Border.all(color: sel ? const Color(0xFF16A34A) : const Color(0xFFE2E8F0),
+            width: sel ? 2 : 1), borderRadius: BorderRadius.circular(12)),
+      child: Column(children: [
+        Icon(sel ? Icons.check_circle : ic, size: 32,
+            color: sel ? const Color(0xFF16A34A) : const Color(0xFF94A3B8)),
+        const SizedBox(height: 8),
+        Text(t, style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600,
+            color: sel ? const Color(0xFF16A34A) : const Color(0xFF1E293B))),
+        const SizedBox(height: 4),
+        Text(sub, textAlign: TextAlign.center,
+            style: const TextStyle(fontSize: 12, color: Color(0xFF94A3B8)))])));
+}
+```
+
+#### Step 5: 테스트 실행
+
+```bash
+flutter test test/screens/auth/profile_setup/
+```
+
+#### Step 6: 커밋
+
+```bash
+git add lib/screens/auth/profile_setup/ test/screens/auth/profile_setup/
+git commit -m "feat: 프로필 설정 화면 구현 (역할 선택 + 이름/연락처 + users INSERT)"
+```
+
+---
+
+### Task 2.4: Shop Signup Screen (샵 등록 화면)
+
+> 화면 ID: `owner-shop-signup`
+> UI 스펙: `docs/ui-specs/shop-signup.md`
+> 상태 설계: `docs/pages/shop-signup/state.md`
+> 유스케이스: UC-2 샵 등록
+
+#### Step 1: 실패하는 단위 테스트 작성
+
+**파일: `test/screens/auth/shop_signup/shop_signup_notifier_test.dart`**
+
+```dart
+import 'package:flutter_test/flutter_test.dart';
+import 'package:mocktail/mocktail.dart';
+import 'package:riverpod/riverpod.dart';
+import 'package:gut_alarm/screens/auth/shop_signup/shop_signup_state.dart';
+import 'package:gut_alarm/screens/auth/shop_signup/shop_signup_notifier.dart';
+import 'package:gut_alarm/screens/auth/shop_signup/shop_signup_providers.dart';
+import 'package:gut_alarm/repositories/shop_repository.dart';
+import 'package:gut_alarm/providers/auth_providers.dart';
+import 'package:gut_alarm/core/error/app_exception.dart';
+
+class MockShopRepository extends Mock implements ShopRepository {}
+
+void main() {
+  group('ShopSignupNotifier', () {
+    late ProviderContainer container;
+    late MockShopRepository mockShopRepo;
+    setUp(() { mockShopRepo = MockShopRepository(); });
+    tearDown(() => container.dispose());
+
+    ProviderContainer createContainer() => ProviderContainer(overrides: [
+      shopRepositoryProvider.overrideWithValue(mockShopRepo),
+    ]);
+
+    test('초기 상태: 모든 필드 빈값, idle', () {
+      container = createContainer();
+      final s = container.read(shopSignupNotifierProvider);
+      expect(s.shopName, '');
+      expect(s.address, '');
+      expect(s.latitude, isNull);
+      expect(s.longitude, isNull);
+      expect(s.phone, '');
+      expect(s.description, '');
+      expect(s.status, ShopSignupStatus.idle);
+    });
+
+    test('updateShopName → shopName 갱신', () {
+      container = createContainer();
+      container.read(shopSignupNotifierProvider.notifier)
+          .updateShopName('배드민턴 프로샵');
+      expect(container.read(shopSignupNotifierProvider).shopName,
+          '배드민턴 프로샵');
+    });
+
+    test('validateShopName: 빈값 → shopNameError', () {
+      container = createContainer();
+      final n = container.read(shopSignupNotifierProvider.notifier);
+      n.updateShopName(''); n.validateShopName();
+      expect(container.read(shopSignupNotifierProvider).shopNameError,
+          isNotNull);
+    });
+
+    test('validateShopName: 유효 → shopNameError=null', () {
+      container = createContainer();
+      final n = container.read(shopSignupNotifierProvider.notifier);
+      n.updateShopName('프로샵'); n.validateShopName();
+      expect(container.read(shopSignupNotifierProvider).shopNameError, isNull);
+    });
+
+    test('setAddress → address, lat, lng, addressError=null', () {
+      container = createContainer();
+      container.read(shopSignupNotifierProvider.notifier)
+          .setAddress('서울시 강남구 역삼동', 37.5012, 127.0396);
+      final s = container.read(shopSignupNotifierProvider);
+      expect(s.address, '서울시 강남구 역삼동');
+      expect(s.latitude, 37.5012);
+      expect(s.longitude, 127.0396);
+      expect(s.addressError, isNull);
+    });
+
+    test('setAddressWithoutCoords → address만 저장, 좌표=null', () {
+      container = createContainer();
+      container.read(shopSignupNotifierProvider.notifier)
+          .setAddressWithoutCoords('서울시 강남구');
+      final s = container.read(shopSignupNotifierProvider);
+      expect(s.address, '서울시 강남구');
+      expect(s.latitude, isNull);
+      expect(s.longitude, isNull);
+    });
+
+    test('updatePhone → 자동 하이픈', () {
+      container = createContainer();
+      container.read(shopSignupNotifierProvider.notifier)
+          .updatePhone('0212345678');
+      expect(container.read(shopSignupNotifierProvider).phone, '02-1234-5678');
+    });
+
+    test('validatePhone: 빈값 → phoneError', () {
+      container = createContainer();
+      container.read(shopSignupNotifierProvider.notifier).validatePhone();
+      expect(container.read(shopSignupNotifierProvider).phoneError, isNotNull);
+    });
+
+    test('updateDescription → description 갱신 (200자 제한)', () {
+      container = createContainer();
+      container.read(shopSignupNotifierProvider.notifier)
+          .updateDescription('좋은 샵입니다');
+      expect(container.read(shopSignupNotifierProvider).description,
+          '좋은 샵입니다');
+    });
+
+    test('updateDescription: 200자 초과 시 잘림', () {
+      container = createContainer();
+      final long = 'A' * 250;
+      container.read(shopSignupNotifierProvider.notifier)
+          .updateDescription(long);
+      expect(container.read(shopSignupNotifierProvider).description.length, 200);
+    });
+
+    test('submit 성공: shops INSERT → idle', () async {
+      when(() => mockShopRepo.create(any())).thenAnswer((_) async {});
+      container = createContainer();
+      final n = container.read(shopSignupNotifierProvider.notifier);
+      n.updateShopName('프로샵');
+      n.setAddress('서울시 강남구', 37.5, 127.0);
+      n.updatePhone('0212345678');
+      await n.submit();
+      expect(container.read(shopSignupNotifierProvider).status,
+          ShopSignupStatus.idle);
+      verify(() => mockShopRepo.create(any())).called(1);
+    });
+
+    test('submit: 필수 필드 누락 → 에러 설정, API 미호출', () async {
+      container = createContainer();
+      await container.read(shopSignupNotifierProvider.notifier).submit();
+      expect(container.read(shopSignupNotifierProvider).shopNameError,
+          isNotNull);
+      verifyNever(() => mockShopRepo.create(any()));
+    });
+
+    test('submit: 좌표 없음 → addressError', () async {
+      container = createContainer();
+      final n = container.read(shopSignupNotifierProvider.notifier);
+      n.updateShopName('프로샵');
+      n.setAddressWithoutCoords('서울시 강남구');
+      n.updatePhone('0212345678');
+      await n.submit();
+      expect(container.read(shopSignupNotifierProvider).addressError,
+          isNotNull);
+    });
+
+    test('submit 네트워크 오류 → error', () async {
+      when(() => mockShopRepo.create(any()))
+          .thenThrow(const AppException.network());
+      container = createContainer();
+      final n = container.read(shopSignupNotifierProvider.notifier);
+      n.updateShopName('프로샵');
+      n.setAddress('서울시', 37.5, 127.0);
+      n.updatePhone('0212345678');
+      await n.submit();
+      expect(container.read(shopSignupNotifierProvider).status,
+          ShopSignupStatus.error);
+    });
+
+    test('submit 중복 에러(unique_violation) → error', () async {
+      when(() => mockShopRepo.create(any()))
+          .thenThrow(const AppException.conflict('이미 등록된 샵이 있습니다'));
+      container = createContainer();
+      final n = container.read(shopSignupNotifierProvider.notifier);
+      n.updateShopName('프로샵');
+      n.setAddress('서울시', 37.5, 127.0);
+      n.updatePhone('0212345678');
+      await n.submit();
+      expect(container.read(shopSignupNotifierProvider).status,
+          ShopSignupStatus.error);
+    });
+  });
+
+  group('isShopFormValidProvider', () {
+    test('샵이름 + 주소(좌표) + 연락처 유효 → true', () {
+      final c = ProviderContainer(overrides: [
+        shopRepositoryProvider.overrideWithValue(MockShopRepository()),
+      ]);
+      addTearDown(c.dispose);
+      final n = c.read(shopSignupNotifierProvider.notifier);
+      n.updateShopName('프로샵');
+      n.setAddress('서울시', 37.5, 127.0);
+      n.updatePhone('0212345678');
+      expect(c.read(isShopFormValidProvider), true);
+    });
+
+    test('좌표 없음 → false', () {
+      final c = ProviderContainer(overrides: [
+        shopRepositoryProvider.overrideWithValue(MockShopRepository()),
+      ]);
+      addTearDown(c.dispose);
+      final n = c.read(shopSignupNotifierProvider.notifier);
+      n.updateShopName('프로샵');
+      n.setAddressWithoutCoords('서울시');
+      n.updatePhone('0212345678');
+      expect(c.read(isShopFormValidProvider), false);
+    });
+  });
+}
+```
+
+#### Step 2: 상태 클래스 및 Notifier 구현
+
+**파일: `lib/screens/auth/shop_signup/shop_signup_state.dart`**
+
+```dart
+import 'package:freezed_annotation/freezed_annotation.dart';
+
+part 'shop_signup_state.freezed.dart';
+
+enum ShopSignupStatus { idle, submitting, error }
+
+@freezed
+class ShopSignupState with _$ShopSignupState {
+  const ShopSignupState._();
+  const factory ShopSignupState({
+    @Default('') String shopName,
+    @Default('') String address,
+    double? latitude,
+    double? longitude,
+    @Default('') String phone,
+    @Default('') String description,
+    @Default(ShopSignupStatus.idle) ShopSignupStatus status,
+    String? shopNameError,
+    String? addressError,
+    String? phoneError,
+  }) = _ShopSignupState;
+
+  factory ShopSignupState.initial() => const ShopSignupState();
+}
+```
+
+**파일: `lib/screens/auth/shop_signup/shop_signup_notifier.dart`**
+
+```dart
+import 'package:riverpod_annotation/riverpod_annotation.dart';
+import 'package:gut_alarm/screens/auth/shop_signup/shop_signup_state.dart';
+import 'package:gut_alarm/repositories/shop_repository.dart';
+import 'package:gut_alarm/providers/auth_providers.dart';
+import 'package:gut_alarm/models/shop.dart';
+import 'package:gut_alarm/core/error/app_exception.dart';
+import 'package:gut_alarm/core/utils/validators.dart';
+import 'package:gut_alarm/core/utils/formatters.dart';
+
+part 'shop_signup_notifier.g.dart';
+
+@riverpod
+class ShopSignupNotifier extends _$ShopSignupNotifier {
+  @override
+  ShopSignupState build() => ShopSignupState.initial();
+
+  void updateShopName(String v) => state = state.copyWith(shopName: v);
+
+  void validateShopName() =>
+      state = state.copyWith(shopNameError: Validators.shopName(state.shopName));
+
+  void setAddress(String address, double lat, double lng) =>
+      state = state.copyWith(
+          address: address, latitude: lat, longitude: lng, addressError: null);
+
+  void setAddressWithoutCoords(String address) =>
+      state = state.copyWith(address: address, latitude: null, longitude: null);
+
+  void updatePhone(String v) =>
+      state = state.copyWith(phone: Formatters.phone(v));
+
+  void validatePhone() =>
+      state = state.copyWith(phoneError: Validators.phone(state.phone));
+
+  void updateDescription(String v) =>
+      state = state.copyWith(description: v.length > 200 ? v.substring(0, 200) : v);
+
+  Future<void> submit() async {
+    final nameErr = Validators.shopName(state.shopName);
+    final addrErr = (state.address.isEmpty)
+        ? '주소를 검색해주세요'
+        : (state.latitude == null || state.longitude == null)
+            ? '주소의 좌표를 확인할 수 없습니다. 다른 주소로 다시 검색해주세요'
+            : null;
+    final phoneErr = Validators.phone(state.phone);
+
+    state = state.copyWith(
+        shopNameError: nameErr, addressError: addrErr, phoneError: phoneErr);
+    if (nameErr != null || addrErr != null || phoneErr != null) return;
+
+    state = state.copyWith(status: ShopSignupStatus.submitting);
+    try {
+      final userId = ref.read(authStateProvider).valueOrNull?.id;
+      if (userId == null) {
+        state = state.copyWith(status: ShopSignupStatus.error);
+        return;
+      }
+      await ref.read(shopRepositoryProvider).create(Shop(
+        ownerId: userId,
+        name: state.shopName,
+        address: state.address,
+        latitude: state.latitude!,
+        longitude: state.longitude!,
+        phone: Formatters.phoneRaw(state.phone),
+        description: state.description.isNotEmpty ? state.description : null,
+      ));
+      state = state.copyWith(status: ShopSignupStatus.idle);
+    } on AppException catch (_) {
+      state = state.copyWith(status: ShopSignupStatus.error);
+    } catch (_) {
+      state = state.copyWith(status: ShopSignupStatus.error);
+    }
+  }
+}
+```
+
+**파일: `lib/screens/auth/shop_signup/shop_signup_providers.dart`**
+
+```dart
+import 'package:riverpod_annotation/riverpod_annotation.dart';
+import 'package:gut_alarm/screens/auth/shop_signup/shop_signup_notifier.dart';
+import 'package:gut_alarm/core/utils/validators.dart';
+
+part 'shop_signup_providers.g.dart';
+
+@riverpod
+bool isShopFormValid(IsShopFormValidRef ref) {
+  final s = ref.watch(shopSignupNotifierProvider);
+  return Validators.shopName(s.shopName) == null
+      && s.address.isNotEmpty
+      && s.latitude != null
+      && s.longitude != null
+      && Validators.phone(s.phone) == null;
+}
+```
+
+#### Step 3: 위젯 테스트 작성
+
+**파일: `test/screens/auth/shop_signup/shop_signup_screen_test.dart`**
+
+```dart
+import 'package:flutter/material.dart';
+import 'package:flutter_test/flutter_test.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:gut_alarm/screens/auth/shop_signup/shop_signup_screen.dart';
+
+void main() {
+  group('ShopSignupScreen', () {
+    testWidgets('AppBar "샵 등록" 타이틀 + 뒤로가기 없음', (t) async {
+      await t.pumpWidget(const ProviderScope(
+        child: MaterialApp(home: ShopSignupScreen())));
+      expect(find.text('샵 등록'), findsOneWidget);
+      expect(find.byType(BackButton), findsNothing);
+    });
+
+    testWidgets('스텝 인디케이터 2/2 표시', (t) async {
+      await t.pumpWidget(const ProviderScope(
+        child: MaterialApp(home: ShopSignupScreen())));
+      expect(find.text('2/2'), findsOneWidget);
+    });
+
+    testWidgets('필수 입력 필드 표시: 샵 이름, 주소, 연락처', (t) async {
+      await t.pumpWidget(const ProviderScope(
+        child: MaterialApp(home: ShopSignupScreen())));
+      expect(find.text('샵 이름'), findsOneWidget);
+      expect(find.text('주소'), findsOneWidget);
+      expect(find.text('연락처'), findsOneWidget);
+    });
+
+    testWidgets('소개글 필드 + 글자수 카운터 표시', (t) async {
+      await t.pumpWidget(const ProviderScope(
+        child: MaterialApp(home: ShopSignupScreen())));
+      expect(find.text('소개글 (선택)'), findsOneWidget);
+      expect(find.text('0/200'), findsOneWidget);
+    });
+
+    testWidgets('등록 버튼 "등록 완료" + 초기 비활성', (t) async {
+      await t.pumpWidget(const ProviderScope(
+        child: MaterialApp(home: ShopSignupScreen())));
+      expect(find.text('등록 완료'), findsOneWidget);
+      final btn = t.widget<ElevatedButton>(find.byType(ElevatedButton));
+      expect(btn.onPressed, isNull);
+    });
+
+    testWidgets('지도 미리보기 영역 표시', (t) async {
+      await t.pumpWidget(const ProviderScope(
+        child: MaterialApp(home: ShopSignupScreen())));
+      // 주소 미입력 시 안내 텍스트
+      expect(find.text('주소를 검색하면 지도가 표시됩니다'), findsOneWidget);
+    });
+  });
+}
+```
+
+#### Step 4: 화면 위젯 구현
+
+**파일: `lib/screens/auth/shop_signup/shop_signup_screen.dart`**
+
+```dart
+import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
+import 'package:gut_alarm/screens/auth/shop_signup/shop_signup_state.dart';
+import 'package:gut_alarm/screens/auth/shop_signup/shop_signup_notifier.dart';
+import 'package:gut_alarm/screens/auth/shop_signup/shop_signup_providers.dart';
+import 'package:gut_alarm/core/widgets/app_toast.dart';
+
+class ShopSignupScreen extends ConsumerStatefulWidget {
+  const ShopSignupScreen({super.key});
+  @override
+  ConsumerState<ShopSignupScreen> createState() => _State();
+}
+
+class _State extends ConsumerState<ShopSignupScreen> {
+  final _nameCtr = TextEditingController();
+  final _phoneCtr = TextEditingController();
+  final _descCtr = TextEditingController();
+  final _nameFN = FocusNode(), _phoneFN = FocusNode();
+
+  @override
+  void initState() {
+    super.initState();
+    _nameFN.addListener(() { if (!_nameFN.hasFocus)
+        ref.read(shopSignupNotifierProvider.notifier).validateShopName(); });
+    _phoneFN.addListener(() { if (!_phoneFN.hasFocus)
+        ref.read(shopSignupNotifierProvider.notifier).validatePhone(); });
+  }
+  @override
+  void dispose() { _nameCtr.dispose(); _phoneCtr.dispose(); _descCtr.dispose();
+    _nameFN.dispose(); _phoneFN.dispose(); super.dispose(); }
+
+  @override
+  Widget build(BuildContext context) {
+    final s = ref.watch(shopSignupNotifierProvider);
+    final valid = ref.watch(isShopFormValidProvider);
+    final n = ref.read(shopSignupNotifierProvider.notifier);
+    final busy = s.status == ShopSignupStatus.submitting;
+
+    ref.listen(shopSignupNotifierProvider, (p, nx) {
+      if (p?.status == ShopSignupStatus.submitting &&
+          nx.status == ShopSignupStatus.idle) {
+        AppToast.show(context, '샵이 등록되었습니다!');
+        context.go('/owner/dashboard');
+      } else if (nx.status == ShopSignupStatus.error) {
+        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+            content: Text('등록에 실패했습니다. 다시 시도해주세요')));
+      }
+    });
+
+    return Scaffold(
+      appBar: AppBar(
+        automaticallyImplyLeading: false,
+        title: const Text('샵 등록'),
+        actions: const [Padding(padding: EdgeInsets.only(right: 16),
+          child: Center(child: Text('2/2', style: TextStyle(fontSize: 14,
+              fontWeight: FontWeight.w600, color: Color(0xFFF97316)))))],
+      ),
+      body: SingleChildScrollView(padding: const EdgeInsets.all(24),
+        child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+          // 샵 이름
+          TextField(controller: _nameCtr, focusNode: _nameFN, enabled: !busy,
+            decoration: InputDecoration(labelText: '샵 이름',
+                prefixIcon: const Icon(Icons.store_outlined),
+                errorText: s.shopNameError,
+                border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(12))),
+            onChanged: n.updateShopName),
+          const SizedBox(height: 16),
+
+          // 주소 (읽기 전용 + 검색 버튼)
+          TextField(
+            readOnly: true, enabled: !busy,
+            controller: TextEditingController(text: s.address),
+            decoration: InputDecoration(
+              labelText: '주소',
+              prefixIcon: const Icon(Icons.location_on_outlined),
+              errorText: s.addressError,
+              suffixIcon: IconButton(
+                icon: const Icon(Icons.search),
+                onPressed: busy ? null : () => _openAddressSearch(context),
+              ),
+              border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(12))),
+            onTap: busy ? null : () => _openAddressSearch(context),
+          ),
+          const SizedBox(height: 12),
+
+          // 지도 미리보기
+          Container(
+            width: double.infinity, height: 180,
+            decoration: BoxDecoration(
+              color: const Color(0xFFF1F5F9),
+              borderRadius: BorderRadius.circular(12),
+              border: Border.all(color: const Color(0xFFE2E8F0))),
+            child: s.latitude != null && s.longitude != null
+                ? ClipRRect(
+                    borderRadius: BorderRadius.circular(12),
+                    child: const Placeholder(), // KakaoMap widget 대체
+                  )
+                : const Center(child: Text('주소를 검색하면 지도가 표시됩니다',
+                    style: TextStyle(fontSize: 14, color: Color(0xFF94A3B8)))),
+          ),
+          const SizedBox(height: 16),
+
+          // 연락처
+          TextField(controller: _phoneCtr, focusNode: _phoneFN, enabled: !busy,
+            keyboardType: TextInputType.phone,
+            decoration: InputDecoration(labelText: '연락처',
+                hintText: '02-0000-0000',
+                prefixIcon: const Icon(Icons.phone_outlined),
+                errorText: s.phoneError,
+                border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(12))),
+            onChanged: (v) { n.updatePhone(v);
+              final f = ref.read(shopSignupNotifierProvider).phone;
+              if (_phoneCtr.text != f) _phoneCtr.value = TextEditingValue(
+                  text: f, selection: TextSelection.collapsed(offset: f.length));
+            }),
+          const SizedBox(height: 16),
+
+          // 소개글 (선택)
+          TextField(controller: _descCtr, enabled: !busy,
+            maxLines: 3, maxLength: 200,
+            decoration: InputDecoration(
+              labelText: '소개글 (선택)',
+              alignLabelWithHint: true,
+              counterText: '${s.description.length}/200',
+              border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(12))),
+            onChanged: n.updateDescription),
+          const SizedBox(height: 32),
+
+          // 등록 완료 버튼
+          SizedBox(width: double.infinity, height: 52,
+            child: ElevatedButton(
+              onPressed: (valid && !busy) ? n.submit : null,
+              style: ElevatedButton.styleFrom(
+                backgroundColor: const Color(0xFFF97316),
+                foregroundColor: Colors.white,
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(12))),
+              child: busy
+                  ? const SizedBox(width: 20, height: 20,
+                      child: CircularProgressIndicator(strokeWidth: 2,
+                          color: Colors.white))
+                  : const Text('등록 완료', style: TextStyle(fontSize: 16,
+                      fontWeight: FontWeight.w600)))),
+        ])),
+    );
+  }
+
+  /// 카카오 주소 검색 바텀시트
+  void _openAddressSearch(BuildContext context) {
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      shape: const RoundedRectangleBorder(
+          borderRadius: BorderRadius.vertical(top: Radius.circular(16))),
+      builder: (_) => DraggableScrollableSheet(
+        initialChildSize: 0.9, minChildSize: 0.5, maxChildSize: 0.95,
+        expand: false,
+        builder: (context, scrollController) => Column(children: [
+          const SizedBox(height: 12),
+          Container(width: 40, height: 4,
+            decoration: BoxDecoration(color: const Color(0xFFE2E8F0),
+                borderRadius: BorderRadius.circular(2))),
+          const SizedBox(height: 16),
+          const Text('주소 검색', style: TextStyle(fontSize: 18,
+              fontWeight: FontWeight.w600)),
+          const SizedBox(height: 16),
+          // TODO: 카카오 주소 API WebView 연동
+          const Expanded(child: Center(child: Text('카카오 주소 검색 WebView'))),
+        ]),
+      ),
+    );
+  }
+}
+```
+
+#### Step 5: 테스트 실행
+
+```bash
+flutter test test/screens/auth/shop_signup/
+```
+
+#### Step 6: 커밋
+
+```bash
+git add lib/screens/auth/shop_signup/ test/screens/auth/shop_signup/
+git commit -m "feat: 샵 등록 화면 구현 (주소 검색 + 지도 미리보기 + shops INSERT)"
+```
+
+---
 
 ## Phase 4: 고객 핵심 화면 (customer-home, order-detail, order-history)
 
