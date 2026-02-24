@@ -377,8 +377,33 @@ $$;
 -- 타임존을 한국 시간(KST)으로 설정
 alter database postgres set timezone to 'Asia/Seoul';
 
--- UUIDv7 확장 활성화 (시간순 UUID, 인덱스 단편화 방지)
-create extension if not exists pg_uuidv7;
+-- UUIDv7 함수 구현 (pg_uuidv7 확장 미지원 환경 대응)
+-- 시간순 정렬 가능한 UUID 생성 (B-tree 인덱스 단편화 방지)
+create or replace function uuid_generate_v7()
+returns uuid
+language plpgsql
+as $$
+declare
+  v_time double precision;
+  v_unix_ms bigint;
+  v_ts_hex varchar;
+  v_rand_hex varchar;
+begin
+  v_time := extract(epoch from clock_timestamp());
+  v_unix_ms := floor(v_time * 1000)::bigint;
+  v_ts_hex := lpad(to_hex(v_unix_ms), 12, '0');
+  v_rand_hex := lpad(to_hex(floor(random() * (2^30)::bigint)::bigint), 8, '0')
+             || lpad(to_hex(floor(random() * (2^30)::bigint)::bigint), 8, '0')
+             || lpad(to_hex(floor(random() * (2^8)::bigint)::bigint), 2, '0');
+  return (
+    substring(v_ts_hex, 1, 8) || '-' ||
+    substring(v_ts_hex, 9, 4) || '-' ||
+    '7' || substring(v_rand_hex, 1, 3) || '-' ||
+    to_hex(8 + floor(random() * 4)::int) || substring(v_rand_hex, 4, 3) || '-' ||
+    substring(v_rand_hex, 7, 12)
+  )::uuid;
+end;
+$$;
 
 -- ============================================
 -- 1. users 테이블
@@ -759,7 +784,7 @@ create policy "notifications_update_own" on notifications
 | `gen_random_uuid()` (v4, 랜덤) | `uuid_generate_v7()` (v7, 시간순) | B-tree 인덱스 locality 개선, 삽입 성능 향상 |
 
 - `users.id`만 예외: `auth.users(id)` 참조이므로 UUID 유지 (Supabase Auth가 UUIDv4 사용)
-- `pg_uuidv7` 확장 필요
+- `pg_uuidv7` 확장 미지원 환경은 PL/pgSQL 커스텀 함수로 대체 구현
 
 ### 2. RLS: `(select auth.uid())` 캐싱
 
