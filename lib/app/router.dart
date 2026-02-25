@@ -1,4 +1,7 @@
+import 'dart:async';
+
 import 'package:badminton_app/models/enums.dart';
+import 'package:badminton_app/providers/supabase_provider.dart';
 import 'package:badminton_app/screens/auth/login/login_screen.dart';
 import 'package:badminton_app/screens/auth/profile_setup/profile_setup_screen.dart';
 import 'package:badminton_app/screens/auth/shop_signup/shop_signup_screen.dart';
@@ -23,10 +26,52 @@ import 'package:badminton_app/screens/owner/shop_settings/shop_settings_screen.d
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
+
+/// 인증 상태 변경 시 GoRouter를 갱신하는 Listenable.
+class _AuthRefreshNotifier extends ChangeNotifier {
+  _AuthRefreshNotifier(Stream<AuthState> stream) {
+    _subscription = stream.listen((_) => notifyListeners());
+  }
+
+  late final StreamSubscription<AuthState> _subscription;
+
+  @override
+  void dispose() {
+    _subscription.cancel();
+    super.dispose();
+  }
+}
+
+/// 인증이 필요하지 않은 경로 목록.
+const _publicPaths = {'/splash', '/login'};
 
 final routerProvider = Provider<GoRouter>((ref) {
+  final client = ref.read(supabaseProvider);
+  final refreshNotifier =
+      _AuthRefreshNotifier(client.auth.onAuthStateChange);
+
+  ref.onDispose(refreshNotifier.dispose);
+
   return GoRouter(
     initialLocation: '/splash',
+    refreshListenable: refreshNotifier,
+    redirect: (context, state) {
+      final session = client.auth.currentSession;
+      final isPublic = _publicPaths.contains(state.matchedLocation);
+
+      // 세션이 없으면 공개 경로만 허용
+      if (session == null) {
+        return isPublic ? null : '/login';
+      }
+
+      // 세션이 있는데 /login에 있으면 → 스플래시로 (라우트 해석)
+      if (state.matchedLocation == '/login') {
+        return '/splash';
+      }
+
+      return null;
+    },
     routes: [
       GoRoute(
         path: '/splash',
