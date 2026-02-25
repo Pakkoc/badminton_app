@@ -31,6 +31,24 @@
 
   <title>badminton_app</title>
   <link rel="manifest" href="manifest.json">
+
+  <!-- 카카오(다음) 우편번호 서비스 -->
+  <script src="https://t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+  <script>
+    function _openDaumPostcode(onComplete, onClose, container) {
+      new daum.Postcode({
+        oncomplete: function(data) {
+          var address = data.roadAddress || data.jibunAddress || '';
+          onComplete(address);
+        },
+        onclose: function(state) {
+          onClose(state);
+        },
+        width: '100%',
+        height: '100%'
+      }).embed(container);
+    }
+  </script>
 </head>
 <body>
   <script src="flutter_bootstrap.js" async></script>

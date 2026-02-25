@@ -1,12 +1,15 @@
 import 'dart:convert';
 
+import 'package:badminton_app/services/kakao_postcode_web.dart'
+    if (dart.library.io) 'package:badminton_app/services/kakao_postcode_stub.dart'
+    as kakao_web;
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
 /// 카카오(다음) 우편번호 서비스를 통해 주소를 검색하는 서비스.
 ///
-/// 웹에서는 WebView를 사용할 수 없으므로 텍스트 입력 다이얼로그로 대체한다.
+/// 웹에서는 카카오 JS API를 직접 호출하고,
 /// 모바일에서는 webview_flutter로 카카오 주소 API 웹뷰를 표시한다.
 class AddressSearchService {
   const AddressSearchService();
@@ -14,45 +17,16 @@ class AddressSearchService {
   /// 주소 검색을 수행하고 선택된 주소를 반환한다.
   Future<String?> searchAddress(BuildContext context) async {
     if (kIsWeb) {
-      return _showWebFallbackDialog(context);
+      return _showWebAddressSearch(context);
     }
     return _showWebViewBottomSheet(context);
   }
 
-  /// 웹 환경: 텍스트 입력 다이얼로그
-  Future<String?> _showWebFallbackDialog(
+  /// 웹 환경: 카카오 우편번호 JS API 직접 호출
+  Future<String?> _showWebAddressSearch(
     BuildContext context,
   ) async {
-    final controller = TextEditingController();
-    return showDialog<String>(
-      context: context,
-      builder: (context) => AlertDialog(
-        title: const Text('주소 입력'),
-        content: TextField(
-          controller: controller,
-          decoration: const InputDecoration(
-            hintText: '도로명 주소를 입력하세요',
-            border: OutlineInputBorder(),
-          ),
-          autofocus: true,
-        ),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.of(context).pop(),
-            child: const Text('취소'),
-          ),
-          TextButton(
-            onPressed: () {
-              final text = controller.text.trim();
-              if (text.isNotEmpty) {
-                Navigator.of(context).pop(text);
-              }
-            },
-            child: const Text('확인'),
-          ),
-        ],
-      ),
-    );
+    return kakao_web.openKakaoPostcode();
   }
 
   /// 모바일 환경: 카카오 주소 API 웹뷰 바텀시트
@@ -87,10 +61,6 @@ class _KakaoAddressSearchSheetState
   late final WebViewController _webViewController;
   bool _isLoading = true;
 
-  /// 카카오 우편번호 서비스 HTML.
-  ///
-  /// 사용자가 주소를 선택하면 JavaScript → Flutter 채널로
-  /// 도로명 주소(roadAddress) 또는 지번 주소(jibunAddress)를 전달한다.
   static const _html = '''
 <!DOCTYPE html>
 <html>
