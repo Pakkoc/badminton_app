@@ -8,6 +8,7 @@ import 'package:badminton_app/widgets/loading_indicator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class ShopDetailScreen extends ConsumerStatefulWidget {
   const ShopDetailScreen({
@@ -87,9 +88,12 @@ class _ShopDetailScreenState
       body: Column(
         children: [
           _ShopInfoSection(
+            name: shop.name,
             address: shop.address,
             phone: Formatters.phone(shop.phone),
             description: shop.description,
+            latitude: shop.latitude,
+            longitude: shop.longitude,
           ),
           _MemberSection(
             isMember: state.isMember,
@@ -132,14 +136,43 @@ class _ShopDetailScreenState
 
 class _ShopInfoSection extends StatelessWidget {
   const _ShopInfoSection({
+    required this.name,
     required this.address,
     required this.phone,
+    required this.latitude,
+    required this.longitude,
     this.description,
   });
 
+  final String name;
   final String address;
   final String phone;
+  final double latitude;
+  final double longitude;
   final String? description;
+
+  Future<void> _openNaverNavigation() async {
+    final encodedName = Uri.encodeComponent(name);
+    final appUrl = Uri.parse(
+      'nmap://route/car'
+      '?dlat=$latitude&dlng=$longitude'
+      '&dname=$encodedName'
+      '&appname=com.gurtalim.app',
+    );
+
+    if (await canLaunchUrl(appUrl)) {
+      await launchUrl(appUrl);
+    } else {
+      final webUrl = Uri.parse(
+        'https://map.naver.com/v5/directions/-/'
+        '$longitude,$latitude,$encodedName/-/car',
+      );
+      await launchUrl(
+        webUrl,
+        mode: LaunchMode.externalApplication,
+      );
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -162,6 +195,40 @@ class _ShopInfoSection extends StatelessWidget {
                   style: const TextStyle(
                     fontSize: 14,
                     color: Color(0xFF475569),
+                  ),
+                ),
+              ),
+              const SizedBox(width: 8),
+              InkWell(
+                onTap: _openNaverNavigation,
+                borderRadius: BorderRadius.circular(8),
+                child: Container(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 10,
+                    vertical: 6,
+                  ),
+                  decoration: BoxDecoration(
+                    color: const Color(0xFF1EC800),
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                  child: const Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Icon(
+                        Icons.directions_outlined,
+                        size: 14,
+                        color: Colors.white,
+                      ),
+                      SizedBox(width: 4),
+                      Text(
+                        '길찾기',
+                        style: TextStyle(
+                          fontSize: 12,
+                          color: Colors.white,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                    ],
                   ),
                 ),
               ),
