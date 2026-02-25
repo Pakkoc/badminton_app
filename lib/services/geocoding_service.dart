@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:badminton_app/core/config/env.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:http/http.dart' as http;
 
@@ -26,6 +27,11 @@ class GeocodingService {
     String address,
   ) async {
     if (_clientId.isEmpty || _clientSecret.isEmpty) {
+      return null;
+    }
+
+    // 웹에서는 CORS로 인해 Geocoding API 호출 불가
+    if (kIsWeb) {
       return null;
     }
 

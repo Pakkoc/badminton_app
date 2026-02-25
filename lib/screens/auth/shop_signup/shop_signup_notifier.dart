@@ -6,6 +6,7 @@ import 'package:badminton_app/repositories/shop_repository.dart';
 import 'package:badminton_app/screens/auth/shop_signup/shop_signup_state.dart';
 import 'package:badminton_app/services/address_search_service.dart';
 import 'package:badminton_app/services/geocoding_service.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -69,8 +70,7 @@ class ShopSignupNotifier extends Notifier<ShopSignupState> {
       Validators.shopName(state.shopName) == null &&
       state.address.isNotEmpty &&
       Validators.phone(state.phone) == null &&
-      state.latitude != 0.0 &&
-      state.longitude != 0.0;
+      (kIsWeb || (state.latitude != 0.0 && state.longitude != 0.0));
 
   Future<String?> submit() async {
     if (!isValid) return null;
