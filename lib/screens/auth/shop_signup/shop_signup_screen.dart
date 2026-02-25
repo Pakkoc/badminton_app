@@ -2,7 +2,9 @@ import 'package:badminton_app/core/utils/validators.dart';
 import 'package:badminton_app/screens/auth/shop_signup/shop_signup_notifier.dart';
 import 'package:badminton_app/widgets/phone_input_field.dart';
 import 'package:badminton_app/widgets/toast.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_naver_map/flutter_naver_map.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
@@ -35,6 +37,11 @@ class _ShopSignupScreenState
     final state = ref.watch(shopSignupNotifierProvider);
     final notifier =
         ref.read(shopSignupNotifierProvider.notifier);
+
+    // 주소가 변경되면 컨트롤러를 동기화
+    if (_addressController.text != state.address) {
+      _addressController.text = state.address;
+    }
 
     ref.listen(
       shopSignupNotifierProvider.select((s) => s.errorMessage),
@@ -72,14 +79,15 @@ class _ShopSignupScreenState
               onChanged: notifier.updateShopName,
             ),
             const SizedBox(height: 16),
-            TextFormField(
+            _AddressField(
               controller: _addressController,
-              decoration: const InputDecoration(
-                labelText: '주소',
-                border: OutlineInputBorder(),
-              ),
-              onChanged: notifier.updateAddress,
+              onSearch: () => notifier.searchAddress(context),
             ),
+            if (state.latitude != 0.0 && state.longitude != 0.0)
+              _MapPreview(
+                latitude: state.latitude,
+                longitude: state.longitude,
+              ),
             const SizedBox(height: 16),
             PhoneInputField(
               controller: _phoneController,
@@ -140,6 +148,113 @@ class _ShopSignupScreenState
                       )
                     : const Text('등록 완료'),
               ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+/// 주소 입력 필드 (읽기 전용) + 검색 버튼.
+class _AddressField extends StatelessWidget {
+  const _AddressField({
+    required this.controller,
+    required this.onSearch,
+  });
+
+  final TextEditingController controller;
+  final VoidCallback onSearch;
+
+  @override
+  Widget build(BuildContext context) {
+    return TextFormField(
+      controller: controller,
+      readOnly: true,
+      decoration: InputDecoration(
+        labelText: '주소',
+        border: const OutlineInputBorder(),
+        suffixIcon: IconButton(
+          icon: const Icon(Icons.search),
+          tooltip: '주소 검색',
+          onPressed: onSearch,
+        ),
+      ),
+      onTap: onSearch,
+    );
+  }
+}
+
+/// 네이버 지도 미리보기 위젯.
+///
+/// 웹 환경에서는 placeholder를 표시한다.
+class _MapPreview extends StatelessWidget {
+  const _MapPreview({
+    required this.latitude,
+    required this.longitude,
+  });
+
+  final double latitude;
+  final double longitude;
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.only(top: 12),
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(12),
+        child: SizedBox(
+          width: double.infinity,
+          height: 180,
+          child: kIsWeb
+              ? _buildWebPlaceholder(context)
+              : _buildNaverMap(),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildNaverMap() {
+    final position = NLatLng(latitude, longitude);
+    return NaverMap(
+      options: NaverMapViewOptions(
+        initialCameraPosition: NCameraPosition(
+          target: position,
+          zoom: 16,
+        ),
+        scrollGesturesEnable: false,
+        zoomGesturesEnable: false,
+        tiltGesturesEnable: false,
+        rotationGesturesEnable: false,
+        stopGesturesEnable: false,
+      ),
+      onMapReady: (controller) {
+        controller.addOverlay(
+          NMarker(
+            id: 'shop-location',
+            position: position,
+          ),
+        );
+      },
+    );
+  }
+
+  Widget _buildWebPlaceholder(BuildContext context) {
+    return Container(
+      color: Theme.of(context).colorScheme.surfaceContainerHighest,
+      child: Center(
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Icon(
+              Icons.map_outlined,
+              size: 48,
+              color: Theme.of(context).colorScheme.outline,
+            ),
+            const SizedBox(height: 8),
+            Text(
+              '지도 미리보기',
+              style: Theme.of(context).textTheme.bodySmall,
             ),
           ],
         ),

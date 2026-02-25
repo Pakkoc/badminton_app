@@ -15,4 +15,9 @@ class Env {
     'NAVER_MAP_CLIENT_ID',
     defaultValue: '',
   );
+
+  static const naverMapClientSecret = String.fromEnvironment(
+    'NAVER_MAP_CLIENT_SECRET',
+    defaultValue: '',
+  );
 }

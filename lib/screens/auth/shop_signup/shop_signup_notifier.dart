@@ -4,6 +4,9 @@ import 'package:badminton_app/models/shop.dart';
 import 'package:badminton_app/providers/supabase_provider.dart';
 import 'package:badminton_app/repositories/shop_repository.dart';
 import 'package:badminton_app/screens/auth/shop_signup/shop_signup_state.dart';
+import 'package:badminton_app/services/address_search_service.dart';
+import 'package:badminton_app/services/geocoding_service.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 final shopSignupNotifierProvider =
@@ -33,6 +36,33 @@ class ShopSignupNotifier extends Notifier<ShopSignupState> {
 
   void setLocation(double lat, double lng) {
     state = state.copyWith(latitude: lat, longitude: lng);
+  }
+
+  /// 주소 검색 바텀시트를 열고 결과를 state에 반영한다.
+  ///
+  /// 주소 선택 후 Geocoding API로 좌표를 자동 변환한다.
+  Future<void> searchAddress(BuildContext context) async {
+    const addressService = AddressSearchService();
+    final address = await addressService.searchAddress(context);
+
+    if (address == null || address.isEmpty) return;
+
+    state = state.copyWith(address: address);
+
+    await _geocodeAddress(address);
+  }
+
+  /// 주소를 좌표로 변환하여 state에 반영한다.
+  Future<void> _geocodeAddress(String address) async {
+    final geocoding = ref.read(geocodingServiceProvider);
+    final result = await geocoding.geocode(address);
+
+    if (result != null) {
+      state = state.copyWith(
+        latitude: result.latitude,
+        longitude: result.longitude,
+      );
+    }
   }
 
   bool get isValid =>

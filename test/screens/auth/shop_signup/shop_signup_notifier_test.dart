@@ -3,6 +3,7 @@ import 'package:badminton_app/providers/supabase_provider.dart';
 import 'package:badminton_app/repositories/shop_repository.dart';
 import 'package:badminton_app/screens/auth/shop_signup/shop_signup_notifier.dart';
 import 'package:badminton_app/screens/auth/shop_signup/shop_signup_state.dart';
+import 'package:badminton_app/services/geocoding_service.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
@@ -16,6 +17,9 @@ class _MockGoTrueClient extends Mock implements GoTrueClient {}
 
 class _MockAuthUser extends Mock implements AuthUser {}
 
+class _MockGeocodingService extends Mock
+    implements GeocodingService {}
+
 class _FakeShop extends Fake implements Shop {}
 
 void main() {
@@ -27,6 +31,7 @@ void main() {
   late _MockSupabaseClient mockSupabase;
   late _MockGoTrueClient mockAuth;
   late _MockAuthUser mockAuthUser;
+  late _MockGeocodingService mockGeocoding;
   late ProviderContainer container;
 
   setUp(() {
@@ -34,6 +39,7 @@ void main() {
     mockSupabase = _MockSupabaseClient();
     mockAuth = _MockGoTrueClient();
     mockAuthUser = _MockAuthUser();
+    mockGeocoding = _MockGeocodingService();
 
     when(() => mockSupabase.auth).thenReturn(mockAuth);
     when(() => mockAuth.currentUser).thenReturn(mockAuthUser);
@@ -43,6 +49,8 @@ void main() {
       overrides: [
         supabaseProvider.overrideWithValue(mockSupabase),
         shopRepositoryProvider.overrideWithValue(mockShopRepo),
+        geocodingServiceProvider
+            .overrideWithValue(mockGeocoding),
       ],
     );
   });
