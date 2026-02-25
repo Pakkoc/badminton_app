@@ -1,6 +1,12 @@
 import 'package:badminton_app/models/enums.dart';
+import 'package:badminton_app/screens/auth/login/login_screen.dart';
 import 'package:badminton_app/screens/auth/profile_setup/profile_setup_screen.dart';
 import 'package:badminton_app/screens/auth/shop_signup/shop_signup_screen.dart';
+import 'package:badminton_app/screens/auth/splash/splash_screen.dart';
+import 'package:badminton_app/screens/owner/dashboard/owner_dashboard_screen.dart';
+import 'package:badminton_app/screens/owner/order_create/order_create_screen.dart';
+import 'package:badminton_app/screens/owner/order_manage/order_manage_screen.dart';
+import 'package:badminton_app/screens/owner/shop_qr/shop_qr_screen.dart';
 import 'package:badminton_app/screens/customer/home/customer_home_screen.dart';
 import 'package:badminton_app/screens/customer/order_detail/order_detail_screen.dart';
 import 'package:badminton_app/screens/customer/order_history/order_history_screen.dart';
@@ -24,11 +30,11 @@ final routerProvider = Provider<GoRouter>((ref) {
     routes: [
       GoRoute(
         path: '/splash',
-        builder: (context, state) => const _PlaceholderScreen('Splash'),
+        builder: (context, state) => const SplashScreen(),
       ),
       GoRoute(
         path: '/login',
-        builder: (context, state) => const _PlaceholderScreen('Login'),
+        builder: (context, state) => const LoginScreen(),
       ),
       GoRoute(
         path: '/profile-setup',
@@ -116,17 +122,19 @@ final routerProvider = Provider<GoRouter>((ref) {
           GoRoute(
             path: '/owner/dashboard',
             builder: (context, state) =>
-                const _PlaceholderScreen('Owner Dashboard'),
+                const OwnerDashboardScreen(),
           ),
           GoRoute(
             path: '/owner/order-create',
-            builder: (context, state) =>
-                const _PlaceholderScreen('Order Create'),
+            builder: (context, state) => OrderCreateScreen(
+              shopId: state.uri.queryParameters['shopId'] ?? '',
+            ),
           ),
           GoRoute(
             path: '/owner/order-manage',
-            builder: (context, state) =>
-                const _PlaceholderScreen('Order Manage'),
+            builder: (context, state) => OrderManageScreen(
+              shopId: state.uri.queryParameters['shopId'] ?? '',
+            ),
           ),
           GoRoute(
             path: '/owner/shop-qr',
