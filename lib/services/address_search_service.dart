@@ -4,6 +4,7 @@ import 'package:badminton_app/services/kakao_postcode_web.dart'
     if (dart.library.io) 'package:badminton_app/services/kakao_postcode_stub.dart'
     as kakao_web;
 import 'package:flutter/foundation.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
@@ -61,6 +62,8 @@ class _KakaoAddressSearchSheetState
   late final WebViewController _webViewController;
   bool _isLoading = true;
 
+  /// oncomplete에서 커스텀 scheme URL로 네비게이션하여
+  /// NavigationDelegate에서 인터셉트한다.
   static const _html = '''
 <!DOCTYPE html>
 <html>
@@ -80,17 +83,18 @@ class _KakaoAddressSearchSheetState
     new daum.Postcode({
       oncomplete: function(data) {
         var address = data.roadAddress || data.jibunAddress;
-        AddressChannel.postMessage(JSON.stringify({
+        var payload = JSON.stringify({
           address: address,
           zonecode: data.zonecode,
           roadAddress: data.roadAddress,
           jibunAddress: data.jibunAddress,
           buildingName: data.buildingName
-        }));
+        });
+        location.href = 'postcode://result?' + encodeURIComponent(payload);
       },
       onclose: function(state) {
         if (state === 'FORCE_CLOSE') {
-          AddressChannel.postMessage(JSON.stringify({ closed: true }));
+          location.href = 'postcode://close';
         }
       },
       width: '100%',
@@ -106,10 +110,6 @@ class _KakaoAddressSearchSheetState
     super.initState();
     _webViewController = WebViewController()
       ..setJavaScriptMode(JavaScriptMode.unrestricted)
-      ..addJavaScriptChannel(
-        'AddressChannel',
-        onMessageReceived: _onAddressSelected,
-      )
       ..setNavigationDelegate(
         NavigationDelegate(
           onPageFinished: (_) {
@@ -117,23 +117,40 @@ class _KakaoAddressSearchSheetState
               setState(() => _isLoading = false);
             }
           },
+          onNavigationRequest: (request) {
+            final uri = Uri.tryParse(request.url);
+            if (uri != null && uri.scheme == 'postcode') {
+              _handlePostcodeCallback(uri);
+              return NavigationDecision.prevent;
+            }
+            return NavigationDecision.navigate;
+          },
         ),
       )
-      ..loadHtmlString(_html);
+      ..loadHtmlString(
+        _html,
+        baseUrl: 'https://postcode.map.daum.net',
+      );
   }
 
-  void _onAddressSelected(JavaScriptMessage message) {
-    final data =
-        json.decode(message.message) as Map<String, dynamic>;
-
-    if (data.containsKey('closed')) {
+  void _handlePostcodeCallback(Uri uri) {
+    if (uri.host == 'close') {
       Navigator.of(context).pop();
       return;
     }
 
-    final address = data['address'] as String?;
-    if (address != null && address.isNotEmpty) {
-      Navigator.of(context).pop(address);
+    if (uri.host == 'result') {
+      try {
+        final payload = Uri.decodeComponent(uri.query);
+        final data =
+            json.decode(payload) as Map<String, dynamic>;
+        final address = data['address'] as String?;
+        if (address != null && address.isNotEmpty) {
+          Navigator.of(context).pop(address);
+        }
+      } catch (_) {
+        Navigator.of(context).pop();
+      }
     }
   }
 
@@ -169,6 +186,14 @@ class _KakaoAddressSearchSheetState
               children: [
                 WebViewWidget(
                   controller: _webViewController,
+                  gestureRecognizers: {
+                    Factory<VerticalDragGestureRecognizer>(
+                      () => VerticalDragGestureRecognizer(),
+                    ),
+                    Factory<TapGestureRecognizer>(
+                      () => TapGestureRecognizer(),
+                    ),
+                  },
                 ),
                 if (_isLoading)
                   const Center(

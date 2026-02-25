@@ -10,12 +10,19 @@ class AuthRepository {
 
   AuthRepository(this._client);
 
+  /// OAuth 콜백 딥링크 URL.
+  static const _redirectUrl =
+      'com.gurtalim.app://login-callback';
+
   /// OAuth 소셜 로그인을 수행한다.
   ///
-  /// 카카오, 네이버, 구글, 애플 로그인을 지원한다.
+  /// 카카오, 구글, 애플 로그인을 지원한다.
   Future<bool> signInWithOAuth(OAuthProvider provider) async {
     try {
-      return await _client.auth.signInWithOAuth(provider);
+      return await _client.auth.signInWithOAuth(
+        provider,
+        redirectTo: _redirectUrl,
+      );
     } catch (e) {
       throw ErrorHandler.handle(e);
     }
