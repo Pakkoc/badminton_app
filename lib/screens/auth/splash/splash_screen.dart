@@ -52,6 +52,7 @@ class _SplashScreenState extends ConsumerState<SplashScreen>
       SplashRoute.customerHome => '/customer/home',
       SplashRoute.ownerDashboard => '/owner/dashboard',
       SplashRoute.profileSetup => '/profile-setup',
+      SplashRoute.shopRegister => '/shop-register',
     };
     context.go(path);
   }

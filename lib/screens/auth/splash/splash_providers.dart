@@ -1,7 +1,7 @@
 import 'dart:async';
 
 import 'package:badminton_app/models/enums.dart';
-import 'package:badminton_app/providers/auth_provider.dart';
+import 'package:badminton_app/models/user.dart';
 import 'package:badminton_app/providers/supabase_provider.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -10,6 +10,7 @@ enum SplashRoute {
   customerHome,
   ownerDashboard,
   profileSetup,
+  shopRegister,
 }
 
 final splashRouteProvider =
@@ -39,15 +40,36 @@ Future<SplashRoute> _resolveRoute(Ref ref) async {
     return SplashRoute.login;
   }
 
-  final isNewUser = ref.read(isNewUserProvider);
-  if (isNewUser) {
+  // users 테이블에서 직접 조회
+  try {
+    final userId = session.user.id;
+    final data = await client
+        .from('users')
+        .select()
+        .eq('id', userId)
+        .maybeSingle();
+
+    if (data == null) {
+      return SplashRoute.profileSetup;
+    }
+
+    final user = User.fromJson(data);
+
+    if (user.role == UserRole.shopOwner) {
+      // 사장님인데 샵이 없으면 샵 등록으로
+      final shop = await client
+          .from('shops')
+          .select('id')
+          .eq('owner_id', userId)
+          .maybeSingle();
+      if (shop == null) {
+        return SplashRoute.shopRegister;
+      }
+      return SplashRoute.ownerDashboard;
+    }
+
+    return SplashRoute.customerHome;
+  } catch (_) {
     return SplashRoute.profileSetup;
   }
-
-  final role = ref.read(userRoleProvider);
-  return switch (role) {
-    UserRole.customer => SplashRoute.customerHome,
-    UserRole.shopOwner => SplashRoute.ownerDashboard,
-    null => SplashRoute.login,
-  };
 }
