@@ -53,9 +53,13 @@ class AppTheme {
   static const completedForeground = Color(0xFF22C55E);
   static const completedText = Color(0xFF166534);
 
+  // ── Font ────────────────────────────────────
+  static const fontFamily = 'Pretendard';
+
   /// 라이트 테마.
   static ThemeData get lightTheme => ThemeData(
         useMaterial3: true,
+        fontFamily: fontFamily,
         colorScheme: ColorScheme.fromSeed(
           seedColor: courtGreen,
           brightness: Brightness.light,
