@@ -1,5 +1,6 @@
 import 'package:badminton_app/core/error/error_handler.dart';
 import 'package:flutter_naver_login/flutter_naver_login.dart';
+import 'package:flutter_naver_login/interface/types/naver_login_status.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
@@ -32,7 +33,7 @@ class AuthRepository {
           Exception(result.errorMessage ?? '네이버 로그인 실패'),
         );
       }
-      final token = await FlutterNaverLogin.currentAccessToken;
+      final token = await FlutterNaverLogin.getCurrentAccessToken();
       await _client.auth.signInWithIdToken(
         provider: OAuthProvider.apple,
         idToken: token.accessToken,

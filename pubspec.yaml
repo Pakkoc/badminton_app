@@ -28,7 +28,7 @@ dependencies:
 
   # 소셜 로그인
   kakao_flutter_sdk: ^1.9.7
-  flutter_naver_login: ^1.8.0
+  flutter_naver_login: ^2.1.1
   sign_in_with_apple: ^6.1.3
   google_sign_in: ^6.2.2
 
