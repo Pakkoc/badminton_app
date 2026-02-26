@@ -76,6 +76,13 @@ class _OrderManageScreenState
         children: [
           _StatusFilterTabs(
             selectedFilter: state.selectedFilter,
+            totalCount: state.orders.length,
+            countByStatus: {
+              for (final s in OrderStatus.values)
+                s: state.orders
+                    .where((o) => o.status == s)
+                    .length,
+            },
             onFilterChanged: (status) {
               ref
                   .read(
@@ -147,10 +154,14 @@ class _OrderManageScreenState
 class _StatusFilterTabs extends StatelessWidget {
   const _StatusFilterTabs({
     required this.selectedFilter,
+    required this.totalCount,
+    required this.countByStatus,
     required this.onFilterChanged,
   });
 
   final OrderStatus? selectedFilter;
+  final int totalCount;
+  final Map<OrderStatus, int> countByStatus;
   final void Function(OrderStatus?) onFilterChanged;
 
   @override
@@ -164,7 +175,7 @@ class _StatusFilterTabs extends StatelessWidget {
       child: Row(
         children: [
           _FilterChip(
-            label: '전체',
+            label: '전체 ($totalCount)',
             isSelected: selectedFilter == null,
             onTap: () => onFilterChanged(null),
           ),
@@ -173,7 +184,8 @@ class _StatusFilterTabs extends StatelessWidget {
             (status) => Padding(
               padding: const EdgeInsets.only(right: 8),
               child: _FilterChip(
-                label: status.label,
+                label:
+                    '${status.label} ${countByStatus[status] ?? 0}',
                 isSelected: selectedFilter == status,
                 onTap: () => onFilterChanged(status),
               ),
@@ -198,10 +210,36 @@ class _FilterChip extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return FilterChip(
-      label: Text(label),
-      selected: isSelected,
-      onSelected: (_) => onTap(),
+    return GestureDetector(
+      onTap: onTap,
+      child: AnimatedContainer(
+        duration: const Duration(milliseconds: 150),
+        padding: const EdgeInsets.symmetric(
+          horizontal: 16,
+          vertical: 8,
+        ),
+        decoration: BoxDecoration(
+          color: isSelected
+              ? const Color(0xFF16A34A)
+              : Colors.white,
+          borderRadius: BorderRadius.circular(999),
+          border: Border.all(
+            color: isSelected
+                ? const Color(0xFF16A34A)
+                : const Color(0xFFD1D5DB),
+          ),
+        ),
+        child: Text(
+          label,
+          style: TextStyle(
+            fontSize: 14,
+            fontWeight: FontWeight.w500,
+            color: isSelected
+                ? Colors.white
+                : const Color(0xFF374151),
+          ),
+        ),
+      ),
     );
   }
 }

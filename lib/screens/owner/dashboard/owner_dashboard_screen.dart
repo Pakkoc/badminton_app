@@ -58,7 +58,7 @@ class _OwnerDashboardScreenState
         ],
       ),
       body: _buildBody(state),
-      floatingActionButton: FloatingActionButton.extended(
+      floatingActionButton: FloatingActionButton(
         onPressed: () {
           final shopId = ref
               .read(ownerDashboardNotifierProvider)
@@ -68,9 +68,8 @@ class _OwnerDashboardScreenState
             '?shopId=$shopId',
           );
         },
-        backgroundColor: const Color(0xFF16A34A),
-        icon: const Icon(Icons.add),
-        label: const Text('작업 접수'),
+        backgroundColor: const Color(0xFFF97316),
+        child: const Icon(Icons.add),
       ),
     );
   }
@@ -99,16 +98,53 @@ class _OwnerDashboardScreenState
       child: ListView(
         padding: const EdgeInsets.all(16),
         children: [
+          Text(
+            '오늘의 작업 현황',
+            style: Theme.of(context)
+                .textTheme
+                .titleMedium
+                ?.copyWith(
+                  fontSize: 16,
+                  fontWeight: FontWeight.w600,
+                  color: const Color(0xFF0F172A),
+                ),
+          ),
+          const SizedBox(height: 12),
           _StatusCountCards(
             receivedCount: state.receivedCount,
             inProgressCount: state.inProgressCount,
             completedCount: state.completedCount,
           ),
           const SizedBox(height: 24),
-          Text(
-            '최근 작업',
-            style:
-                Theme.of(context).textTheme.titleMedium,
+          Row(
+            mainAxisAlignment:
+                MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                '최근 작업',
+                style: Theme.of(context)
+                    .textTheme
+                    .titleMedium,
+              ),
+              TextButton(
+                onPressed: () {
+                  StatefulNavigationShell.of(context)
+                      .goBranch(1);
+                },
+                style: TextButton.styleFrom(
+                  foregroundColor:
+                      const Color(0xFF16A34A),
+                  padding: EdgeInsets.zero,
+                  minimumSize: Size.zero,
+                  tapTargetSize:
+                      MaterialTapTargetSize.shrinkWrap,
+                ),
+                child: const Text(
+                  '전체보기',
+                  style: TextStyle(fontSize: 14),
+                ),
+              ),
+            ],
           ),
           const SizedBox(height: 8),
           ...state.recentOrders.map(
