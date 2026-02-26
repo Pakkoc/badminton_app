@@ -27,19 +27,25 @@ class GeocodingService {
     String address,
   ) async {
     if (_clientId.isEmpty || _clientSecret.isEmpty) {
+      debugPrint('[Geocoding] 키가 비어있음: '
+          'clientId=${_clientId.isEmpty}, '
+          'clientSecret=${_clientSecret.isEmpty}');
       return null;
     }
 
     // 웹에서는 CORS로 인해 Geocoding API 호출 불가
     if (kIsWeb) {
+      debugPrint('[Geocoding] 웹 환경이라 스킵');
       return null;
     }
 
     try {
       final uri = Uri.parse(
-        'https://naveropenapi.apigw.ntruss.com'
+        'https://maps.apigw.ntruss.com'
         '/map-geocode/v2/geocode',
       ).replace(queryParameters: {'query': address});
+
+      debugPrint('[Geocoding] 요청: $uri');
 
       final response = await _client.get(
         uri,
@@ -49,7 +55,10 @@ class GeocodingService {
         },
       );
 
+      debugPrint('[Geocoding] 응답 코드: ${response.statusCode}');
+
       if (response.statusCode != 200) {
+        debugPrint('[Geocoding] 응답 본문: ${response.body}');
         return null;
       }
 
@@ -58,6 +67,7 @@ class GeocodingService {
       final addresses = body['addresses'] as List<dynamic>?;
 
       if (addresses == null || addresses.isEmpty) {
+        debugPrint('[Geocoding] 결과 없음: ${response.body}');
         return null;
       }
 
@@ -66,11 +76,14 @@ class GeocodingService {
       final y = double.tryParse(first['y'] as String? ?? '');
 
       if (x == null || y == null) {
+        debugPrint('[Geocoding] 좌표 파싱 실패: x=$x, y=$y');
         return null;
       }
 
+      debugPrint('[Geocoding] 성공: lat=$y, lng=$x');
       return (latitude: y, longitude: x);
-    } catch (_) {
+    } catch (e) {
+      debugPrint('[Geocoding] 예외 발생: $e');
       return null;
     }
   }

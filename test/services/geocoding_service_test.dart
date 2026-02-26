@@ -20,7 +20,7 @@ void main() {
       final mockClient = MockClient((request) async {
         expect(
           request.url.host,
-          'naveropenapi.apigw.ntruss.com',
+          'maps.apigw.ntruss.com',
         );
         expect(
           request.headers['X-NCP-APIGW-API-KEY-ID'],
