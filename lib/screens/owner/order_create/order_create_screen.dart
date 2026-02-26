@@ -55,6 +55,59 @@ class _OrderCreateScreenState
                 crossAxisAlignment:
                     CrossAxisAlignment.stretch,
                 children: [
+                  // QR 스캔 버튼
+                  SizedBox(
+                    height: 52,
+                    child: ElevatedButton(
+                      onPressed: () {
+                        // TODO: QR 스캔 기능 구현
+                      },
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: const Color(0xFFF97316),
+                        foregroundColor: Colors.white,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(16),
+                        ),
+                        padding: EdgeInsets.zero,
+                      ),
+                      child: const Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Icon(Icons.qr_code_2, size: 24),
+                          SizedBox(width: 8),
+                          Text(
+                            'QR 스캔으로 회원 확인',
+                            style: TextStyle(
+                              fontSize: 16,
+                              fontWeight: FontWeight.w600,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 16),
+                  // "또는" 구분선
+                  const Row(
+                    children: [
+                      Expanded(
+                        child: Divider(color: Color(0xFFE2E8F0)),
+                      ),
+                      SizedBox(width: 12),
+                      Text(
+                        '또는',
+                        style: TextStyle(
+                          color: Color(0xFF94A3B8),
+                          fontSize: 12,
+                        ),
+                      ),
+                      SizedBox(width: 12),
+                      Expanded(
+                        child: Divider(color: Color(0xFFE2E8F0)),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 16),
                   TextField(
                     controller: _searchController,
                     decoration: const InputDecoration(
@@ -120,13 +173,20 @@ class _OrderCreateScreenState
                           }
                         : null,
                     style: ElevatedButton.styleFrom(
-                      backgroundColor:
-                          const Color(0xFF16A34A),
+                      backgroundColor: const Color(0xFFF97316),
                       foregroundColor: Colors.white,
-                      minimumSize:
-                          const Size.fromHeight(48),
+                      minimumSize: const Size.fromHeight(52),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(12),
+                      ),
                     ),
-                    child: const Text('접수하기'),
+                    child: const Text(
+                      '작업 접수하기',
+                      style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
                   ),
                 ],
               ),
