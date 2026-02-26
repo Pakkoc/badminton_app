@@ -1,5 +1,5 @@
 import 'package:badminton_app/core/error/app_exception.dart';
-import 'package:badminton_app/providers/auth_provider.dart';
+import 'package:badminton_app/providers/supabase_provider.dart';
 import 'package:badminton_app/repositories/shop_repository.dart';
 import 'package:badminton_app/screens/owner/shop_settings/shop_settings_state.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -19,8 +19,9 @@ class ShopSettingsNotifier extends Notifier<ShopSettingsState> {
   Future<void> loadShop() async {
     state = state.copyWith(isLoading: true, errorMessage: null);
     try {
-      final user = await ref.read(currentUserProvider.future);
-      if (user == null) {
+      final userId =
+          ref.read(supabaseProvider).auth.currentUser?.id;
+      if (userId == null) {
         state = state.copyWith(
           isLoading: false,
           errorMessage: '로그인이 필요합니다',
@@ -29,7 +30,7 @@ class ShopSettingsNotifier extends Notifier<ShopSettingsState> {
       }
 
       final shopRepository = ref.read(shopRepositoryProvider);
-      final shop = await shopRepository.getByOwner(user.id);
+      final shop = await shopRepository.getByOwner(userId);
       state = ShopSettingsState(shop: shop);
     } on AppException catch (e) {
       state = state.copyWith(

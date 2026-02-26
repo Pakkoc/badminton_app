@@ -1,5 +1,6 @@
 import 'package:badminton_app/models/enums.dart';
 import 'package:badminton_app/models/order.dart';
+import 'package:badminton_app/providers/owner_shop_provider.dart';
 import 'package:badminton_app/screens/owner/order_manage/order_manage_notifier.dart';
 import 'package:badminton_app/screens/owner/order_manage/order_manage_state.dart';
 import 'package:badminton_app/widgets/confirm_dialog.dart';
@@ -13,10 +14,10 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 class OrderManageScreen extends ConsumerStatefulWidget {
   const OrderManageScreen({
     super.key,
-    required this.shopId,
+    this.shopId,
   });
 
-  final String shopId;
+  final String? shopId;
 
   @override
   ConsumerState<OrderManageScreen> createState() =>
@@ -29,14 +30,44 @@ class _OrderManageScreenState
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
+      _loadOrders();
+    });
+  }
+
+  void _loadOrders() {
+    final shopId = widget.shopId;
+    if (shopId != null && shopId.isNotEmpty) {
       ref
           .read(orderManageNotifierProvider.notifier)
-          .loadOrders(widget.shopId);
+          .loadOrders(shopId);
+      return;
+    }
+    // shopId가 없으면 currentOwnerShopProvider에서 가져옴
+    final shopAsync = ref.read(currentOwnerShopProvider);
+    shopAsync.whenData((shop) {
+      if (shop != null) {
+        ref
+            .read(orderManageNotifierProvider.notifier)
+            .loadOrders(shop.id);
+      }
     });
   }
 
   @override
   Widget build(BuildContext context) {
+    // shopId가 없는 경우 shop 로딩을 감시
+    if (widget.shopId == null || widget.shopId!.isEmpty) {
+      ref.listen(currentOwnerShopProvider, (prev, next) {
+        next.whenData((shop) {
+          if (shop != null) {
+            ref
+                .read(orderManageNotifierProvider.notifier)
+                .loadOrders(shop.id);
+          }
+        });
+      });
+    }
+
     final state = ref.watch(orderManageNotifierProvider);
 
     return Scaffold(
@@ -66,11 +97,7 @@ class _OrderManageScreenState
     if (state.error != null) {
       return ErrorView(
         message: state.error!,
-        onRetry: () {
-          ref
-              .read(orderManageNotifierProvider.notifier)
-              .loadOrders(widget.shopId);
-        },
+        onRetry: _loadOrders,
       );
     }
 

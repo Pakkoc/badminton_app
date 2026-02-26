@@ -1,6 +1,6 @@
 import 'package:badminton_app/core/utils/validators.dart';
 import 'package:badminton_app/models/inventory_item.dart';
-import 'package:badminton_app/providers/auth_provider.dart';
+import 'package:badminton_app/providers/supabase_provider.dart';
 import 'package:badminton_app/repositories/shop_repository.dart';
 import 'package:badminton_app/screens/owner/inventory/inventory_notifier.dart';
 import 'package:badminton_app/screens/owner/inventory/inventory_state.dart';
@@ -34,12 +34,13 @@ class _InventoryScreenState
   }
 
   Future<void> _loadInventory() async {
-    final user = await ref.read(currentUserProvider.future);
-    if (user == null) return;
+    final userId =
+        ref.read(supabaseProvider).auth.currentUser?.id;
+    if (userId == null) return;
 
     final shop = await ref
         .read(shopRepositoryProvider)
-        .getByOwner(user.id);
+        .getByOwner(userId);
     if (shop == null) return;
 
     _shopId = shop.id;
