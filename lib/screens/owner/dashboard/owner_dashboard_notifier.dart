@@ -1,5 +1,6 @@
 import 'package:badminton_app/core/error/app_exception.dart';
 import 'package:badminton_app/models/enums.dart';
+import 'package:badminton_app/repositories/member_repository.dart';
 import 'package:badminton_app/repositories/order_repository.dart';
 import 'package:badminton_app/repositories/shop_repository.dart';
 import 'package:badminton_app/screens/owner/dashboard/owner_dashboard_state.dart';
@@ -10,6 +11,7 @@ final ownerDashboardNotifierProvider = StateNotifierProvider<
   (ref) => OwnerDashboardNotifier(
     shopRepository: ref.watch(shopRepositoryProvider),
     orderRepository: ref.watch(orderRepositoryProvider),
+    memberRepository: ref.watch(memberRepositoryProvider),
   ),
 );
 
@@ -17,18 +19,22 @@ class OwnerDashboardNotifier
     extends StateNotifier<OwnerDashboardState> {
   final ShopRepository _shopRepository;
   final OrderRepository _orderRepository;
+  final MemberRepository _memberRepository;
 
   OwnerDashboardNotifier({
     required ShopRepository shopRepository,
     required OrderRepository orderRepository,
+    required MemberRepository memberRepository,
   })  : _shopRepository = shopRepository,
         _orderRepository = orderRepository,
+        _memberRepository = memberRepository,
         super(const OwnerDashboardState());
 
   Future<void> loadDashboard(String ownerId) async {
     state = state.copyWith(isLoading: true, error: null);
     try {
-      final shop = await _shopRepository.getByOwner(ownerId);
+      final shop =
+          await _shopRepository.getByOwner(ownerId);
       if (shop == null) {
         state = state.copyWith(
           isLoading: false,
@@ -37,8 +43,14 @@ class OwnerDashboardNotifier
         return;
       }
 
-      final orders =
-          await _orderRepository.getByShop(shop.id);
+      final (orders, members) = await (
+        _orderRepository.getByShop(shop.id),
+        _memberRepository.getByShop(shop.id),
+      ).wait;
+
+      final memberNames = <String, String>{
+        for (final m in members) m.id: m.name,
+      };
 
       final receivedCount = orders
           .where((o) => o.status == OrderStatus.received)
@@ -50,8 +62,6 @@ class OwnerDashboardNotifier
           .where((o) => o.status == OrderStatus.completed)
           .length;
 
-      final recentOrders = orders.take(5).toList();
-
       state = state.copyWith(
         isLoading: false,
         shopName: shop.name,
@@ -59,7 +69,8 @@ class OwnerDashboardNotifier
         receivedCount: receivedCount,
         inProgressCount: inProgressCount,
         completedCount: completedCount,
-        recentOrders: recentOrders,
+        recentOrders: orders.take(5).toList(),
+        memberNames: memberNames,
       );
     } on AppException catch (e) {
       state = state.copyWith(
@@ -79,8 +90,8 @@ class OwnerDashboardNotifier
         newStatus.toJson(),
       );
       if (state.shopId != null) {
-        final orders =
-            await _orderRepository.getByShop(state.shopId!);
+        final orders = await _orderRepository
+            .getByShop(state.shopId!);
 
         final receivedCount = orders
             .where((o) => o.status == OrderStatus.received)
@@ -98,6 +109,7 @@ class OwnerDashboardNotifier
           inProgressCount: inProgressCount,
           completedCount: completedCount,
           recentOrders: orders.take(5).toList(),
+          memberNames: state.memberNames,
         );
       }
     } on AppException catch (e) {

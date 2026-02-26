@@ -71,6 +71,19 @@ class MemberRepository {
     }
   }
 
+  /// 매장 ID로 전체 회원을 조회한다.
+  Future<List<Member>> getByShop(String shopId) async {
+    try {
+      final data = await _client
+          .from(_table)
+          .select()
+          .eq('shop_id', shopId);
+      return data.map(Member.fromJson).toList();
+    } catch (e) {
+      throw ErrorHandler.handle(e);
+    }
+  }
+
   /// 회원을 생성한다.
   Future<Member> create(Member member) async {
     try {

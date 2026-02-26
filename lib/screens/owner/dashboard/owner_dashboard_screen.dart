@@ -3,10 +3,8 @@ import 'package:badminton_app/models/order.dart';
 import 'package:badminton_app/providers/supabase_provider.dart';
 import 'package:badminton_app/screens/owner/dashboard/owner_dashboard_notifier.dart';
 import 'package:badminton_app/screens/owner/dashboard/owner_dashboard_state.dart';
-import 'package:badminton_app/widgets/empty_state.dart';
 import 'package:badminton_app/widgets/error_view.dart';
 import 'package:badminton_app/widgets/loading_indicator.dart';
-import 'package:badminton_app/widgets/status_badge.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -41,23 +39,43 @@ class _OwnerDashboardScreenState
 
   @override
   Widget build(BuildContext context) {
-    final state =
-        ref.watch(ownerDashboardNotifierProvider);
+    final state = ref.watch(ownerDashboardNotifierProvider);
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('대시보드'),
+        title: const Text(
+          '대시보드',
+          style: TextStyle(
+            fontSize: 20,
+            fontWeight: FontWeight.bold,
+            color: Color(0xFF0F172A),
+          ),
+        ),
         actions: [
           IconButton(
-            icon: const Icon(Icons.settings_outlined),
+            icon: const Icon(
+              Icons.settings,
+              color: Color(0xFF475569),
+              size: 24,
+            ),
             onPressed: () {
-              final shell = StatefulNavigationShell.of(context);
-              shell.goBranch(2);
+              StatefulNavigationShell.of(context).goBranch(2);
             },
           ),
         ],
       ),
-      body: _buildBody(state),
+      body: _DashboardBody(
+        state: state,
+        onRetry: _loadDashboard,
+        onStatusChange: (orderId, newStatus) {
+          ref
+              .read(ownerDashboardNotifierProvider.notifier)
+              .changeOrderStatus(orderId, newStatus);
+        },
+        onViewAll: () {
+          StatefulNavigationShell.of(context).goBranch(1);
+        },
+      ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           final shopId = ref
@@ -73,8 +91,23 @@ class _OwnerDashboardScreenState
       ),
     );
   }
+}
 
-  Widget _buildBody(OwnerDashboardState state) {
+class _DashboardBody extends StatelessWidget {
+  const _DashboardBody({
+    required this.state,
+    required this.onRetry,
+    required this.onStatusChange,
+    required this.onViewAll,
+  });
+
+  final OwnerDashboardState state;
+  final VoidCallback onRetry;
+  final void Function(String, OrderStatus) onStatusChange;
+  final VoidCallback onViewAll;
+
+  @override
+  Widget build(BuildContext context) {
     if (state.isLoading) {
       return const LoadingIndicator();
     }
@@ -82,86 +115,71 @@ class _OwnerDashboardScreenState
     if (state.error != null) {
       return ErrorView(
         message: state.error!,
-        onRetry: _loadDashboard,
-      );
-    }
-
-    if (state.recentOrders.isEmpty) {
-      return const EmptyState(
-        icon: Icons.inbox_outlined,
-        message: '오늘 접수된 작업이 없습니다',
+        onRetry: onRetry,
       );
     }
 
     return RefreshIndicator(
-      onRefresh: () async => _loadDashboard(),
-      child: ListView(
-        padding: const EdgeInsets.all(16),
-        children: [
-          Text(
-            '오늘의 작업 현황',
-            style: Theme.of(context)
-                .textTheme
-                .titleMedium
-                ?.copyWith(
-                  fontSize: 16,
-                  fontWeight: FontWeight.w600,
-                  color: const Color(0xFF0F172A),
+      onRefresh: () async => onRetry(),
+      child: CustomScrollView(
+        slivers: [
+          SliverPadding(
+            padding: const EdgeInsets.all(16),
+            sliver: SliverList(
+              delegate: SliverChildListDelegate([
+                _StatsSectionHeader(),
+                const SizedBox(height: 12),
+                _StatusCountCards(
+                  receivedCount: state.receivedCount,
+                  inProgressCount: state.inProgressCount,
+                  completedCount: state.completedCount,
                 ),
-          ),
-          const SizedBox(height: 12),
-          _StatusCountCards(
-            receivedCount: state.receivedCount,
-            inProgressCount: state.inProgressCount,
-            completedCount: state.completedCount,
-          ),
-          const SizedBox(height: 24),
-          Row(
-            mainAxisAlignment:
-                MainAxisAlignment.spaceBetween,
-            children: [
-              Text(
-                '최근 작업',
-                style: Theme.of(context)
-                    .textTheme
-                    .titleMedium,
-              ),
-              TextButton(
-                onPressed: () {
-                  StatefulNavigationShell.of(context)
-                      .goBranch(1);
-                },
-                style: TextButton.styleFrom(
-                  foregroundColor:
-                      const Color(0xFF16A34A),
-                  padding: EdgeInsets.zero,
-                  minimumSize: Size.zero,
-                  tapTargetSize:
-                      MaterialTapTargetSize.shrinkWrap,
-                ),
-                child: const Text(
-                  '전체보기',
-                  style: TextStyle(fontSize: 14),
-                ),
-              ),
-            ],
-          ),
-          const SizedBox(height: 8),
-          ...state.recentOrders.map(
-            (order) => _OrderCard(
-              order: order,
-              onStatusChange: (newStatus) {
-                ref
-                    .read(ownerDashboardNotifierProvider
-                        .notifier)
-                    .changeOrderStatus(
-                      order.id,
-                      newStatus,
-                    );
-              },
+                const SizedBox(height: 24),
+                _RecentHeader(onViewAll: onViewAll),
+                const SizedBox(height: 8),
+                if (state.recentOrders.isEmpty)
+                  const _EmptyOrdersView()
+                else
+                  ...state.recentOrders.indexed.map(
+                    (entry) {
+                      final (idx, order) = entry;
+                      return Padding(
+                        padding: EdgeInsets.only(
+                          bottom:
+                              idx < state.recentOrders.length - 1
+                                  ? 10
+                                  : 0,
+                        ),
+                        child: _OrderCard(
+                          order: order,
+                          memberName:
+                              state.memberNames[order.memberId] ??
+                                  '회원',
+                          onStatusChange: (newStatus) {
+                            onStatusChange(order.id, newStatus);
+                          },
+                        ),
+                      );
+                    },
+                  ),
+              ]),
             ),
           ),
         ],
+      ),
+    );
+  }
+}
+
+class _StatsSectionHeader extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return const Text(
+      '오늘의 작업 현황',
+      style: TextStyle(
+        fontSize: 16,
+        fontWeight: FontWeight.w600,
+        color: Color(0xFF0F172A),
       ),
     );
   }
@@ -186,7 +204,8 @@ class _StatusCountCards extends StatelessWidget {
           child: _CountCard(
             label: '접수됨',
             count: receivedCount,
-            color: const Color(0xFFF59E0B),
+            numberColor: const Color(0xFFF59E0B),
+            labelColor: const Color(0xFF92400E),
             bgColor: const Color(0xFFFEF3C7),
           ),
         ),
@@ -195,7 +214,8 @@ class _StatusCountCards extends StatelessWidget {
           child: _CountCard(
             label: '작업중',
             count: inProgressCount,
-            color: const Color(0xFF3B82F6),
+            numberColor: const Color(0xFF3B82F6),
+            labelColor: const Color(0xFF1E40AF),
             bgColor: const Color(0xFFDBEAFE),
           ),
         ),
@@ -204,7 +224,8 @@ class _StatusCountCards extends StatelessWidget {
           child: _CountCard(
             label: '완료',
             count: completedCount,
-            color: const Color(0xFF22C55E),
+            numberColor: const Color(0xFF22C55E),
+            labelColor: const Color(0xFF166534),
             bgColor: const Color(0xFFDCFCE7),
           ),
         ),
@@ -217,43 +238,116 @@ class _CountCard extends StatelessWidget {
   const _CountCard({
     required this.label,
     required this.count,
-    required this.color,
+    required this.numberColor,
+    required this.labelColor,
     required this.bgColor,
   });
 
   final String label;
   final int count;
-  final Color color;
+  final Color numberColor;
+  final Color labelColor;
   final Color bgColor;
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      color: bgColor,
-      child: Padding(
-        padding: const EdgeInsets.all(16),
-        child: Column(
-          children: [
-            Text(
-              '$count',
-              style: Theme.of(context)
-                  .textTheme
-                  .headlineMedium
-                  ?.copyWith(
-                    color: color,
-                    fontWeight: FontWeight.bold,
-                  ),
+    return Container(
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: bgColor,
+        borderRadius: BorderRadius.circular(16),
+      ),
+      child: Column(
+        children: [
+          Text(
+            '$count',
+            style: TextStyle(
+              fontSize: 32,
+              fontWeight: FontWeight.bold,
+              color: numberColor,
             ),
-            const SizedBox(height: 4),
-            Text(
-              label,
-              style: TextStyle(
-                color: color,
-                fontWeight: FontWeight.w600,
-              ),
+          ),
+          const SizedBox(height: 4),
+          Text(
+            label,
+            style: TextStyle(
+              fontSize: 12,
+              fontWeight: FontWeight.w500,
+              color: labelColor,
             ),
-          ],
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class _RecentHeader extends StatelessWidget {
+  const _RecentHeader({required this.onViewAll});
+
+  final VoidCallback onViewAll;
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        const Text(
+          '최근 작업',
+          style: TextStyle(
+            fontSize: 18,
+            fontWeight: FontWeight.w600,
+            color: Color(0xFF0F172A),
+          ),
         ),
+        GestureDetector(
+          onTap: onViewAll,
+          child: const Text(
+            '전체보기',
+            style: TextStyle(
+              fontSize: 14,
+              color: Color(0xFF16A34A),
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+}
+
+class _EmptyOrdersView extends StatelessWidget {
+  const _EmptyOrdersView();
+
+  @override
+  Widget build(BuildContext context) {
+    return const SizedBox(
+      height: 280,
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Icon(
+            Icons.assignment,
+            size: 64,
+            color: Color(0xFFCBD5E1),
+          ),
+          SizedBox(height: 12),
+          Text(
+            '아직 접수된 작업이 없습니다',
+            style: TextStyle(
+              fontSize: 16,
+              fontWeight: FontWeight.w500,
+              color: Color(0xFF475569),
+            ),
+          ),
+          SizedBox(height: 12),
+          Text(
+            '\'+\' 버튼으로 새 작업을 접수하세요',
+            style: TextStyle(
+              fontSize: 13,
+              color: Color(0xFF94A3B8),
+            ),
+          ),
+        ],
       ),
     );
   }
@@ -262,24 +356,159 @@ class _CountCard extends StatelessWidget {
 class _OrderCard extends StatelessWidget {
   const _OrderCard({
     required this.order,
+    required this.memberName,
     required this.onStatusChange,
   });
 
   final GutOrder order;
+  final String memberName;
   final void Function(OrderStatus) onStatusChange;
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      margin: const EdgeInsets.only(bottom: 8),
-      child: ListTile(
-        title: Text(order.memo ?? '메모 없음'),
-        subtitle: Text(
-          '회원 ID: ${order.memberId}',
-          maxLines: 1,
-          overflow: TextOverflow.ellipsis,
+    return Container(
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(16),
+        border: Border.all(
+          color: const Color(0xFFE2E8F0),
         ),
-        trailing: StatusBadge(status: order.status),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                memberName,
+                style: const TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.w600,
+                  color: Color(0xFF0F172A),
+                ),
+              ),
+              _StatusPill(status: order.status),
+            ],
+          ),
+          const SizedBox(height: 8),
+          Text(
+            '접수 ${_formatTime(order.createdAt)}',
+            style: const TextStyle(
+              fontSize: 12,
+              color: Color(0xFF94A3B8),
+            ),
+          ),
+          if (order.status != OrderStatus.completed) ...[
+            const SizedBox(height: 8),
+            _ActionButton(
+              status: order.status,
+              onPressed: () {
+                final next = order.status == OrderStatus.received
+                    ? OrderStatus.inProgress
+                    : OrderStatus.completed;
+                onStatusChange(next);
+              },
+            ),
+          ],
+        ],
+      ),
+    );
+  }
+
+  String _formatTime(DateTime dt) {
+    final h = dt.hour.toString().padLeft(2, '0');
+    final m = dt.minute.toString().padLeft(2, '0');
+    return '$h:$m';
+  }
+}
+
+class _StatusPill extends StatelessWidget {
+  const _StatusPill({required this.status});
+
+  final OrderStatus status;
+
+  @override
+  Widget build(BuildContext context) {
+    final (bg, text) = _colors;
+    return Container(
+      padding: const EdgeInsets.symmetric(
+        horizontal: 10,
+        vertical: 4,
+      ),
+      decoration: BoxDecoration(
+        color: bg,
+        borderRadius: BorderRadius.circular(999),
+      ),
+      child: Text(
+        status.label,
+        style: TextStyle(
+          fontSize: 12,
+          fontWeight: FontWeight.w600,
+          color: text,
+        ),
+      ),
+    );
+  }
+
+  (Color, Color) get _colors => switch (status) {
+        OrderStatus.received => (
+          const Color(0xFFFEF3C7),
+          const Color(0xFFF59E0B),
+        ),
+        OrderStatus.inProgress => (
+          const Color(0xFFDBEAFE),
+          const Color(0xFF3B82F6),
+        ),
+        OrderStatus.completed => (
+          const Color(0xFFDCFCE7),
+          const Color(0xFF22C55E),
+        ),
+      };
+}
+
+class _ActionButton extends StatelessWidget {
+  const _ActionButton({
+    required this.status,
+    required this.onPressed,
+  });
+
+  final OrderStatus status;
+  final VoidCallback onPressed;
+
+  @override
+  Widget build(BuildContext context) {
+    final (label, bg) = switch (status) {
+      OrderStatus.received => ('작업 시작', const Color(0xFF3B82F6)),
+      OrderStatus.inProgress => (
+        '작업 완료',
+        const Color(0xFF22C55E)
+      ),
+      _ => ('', Colors.transparent),
+    };
+
+    return SizedBox(
+      width: double.infinity,
+      height: 36,
+      child: ElevatedButton(
+        onPressed: onPressed,
+        style: ElevatedButton.styleFrom(
+          backgroundColor: bg,
+          foregroundColor: Colors.white,
+          elevation: 0,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(8),
+          ),
+          padding: EdgeInsets.zero,
+        ),
+        child: Text(
+          label,
+          style: const TextStyle(
+            fontSize: 14,
+            fontWeight: FontWeight.w600,
+          ),
+        ),
       ),
     );
   }

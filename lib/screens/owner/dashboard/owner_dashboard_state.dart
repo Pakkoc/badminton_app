@@ -10,6 +10,7 @@ class OwnerDashboardState with _$OwnerDashboardState {
     @Default(0) int inProgressCount,
     @Default(0) int completedCount,
     @Default([]) List<GutOrder> recentOrders,
+    @Default({}) Map<String, String> memberNames,
     @Default(true) bool isLoading,
     String? error,
     String? shopName,
