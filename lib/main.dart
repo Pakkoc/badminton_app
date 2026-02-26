@@ -18,8 +18,12 @@ Future<void> main() async {
 
   if (!kIsWeb) {
     await Firebase.initializeApp();
-    await NaverMapSdk.instance.initialize(
+    await FlutterNaverMap().init(
       clientId: Env.naverMapClientId,
+      onAuthFailed: (ex) {
+        debugPrint('=== NaverMap Auth Failed ===');
+        debugPrint('Error: $ex');
+      },
     );
   }
 
