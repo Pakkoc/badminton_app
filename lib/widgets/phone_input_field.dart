@@ -28,7 +28,7 @@ class PhoneInputField extends StatelessWidget {
         FilteringTextInputFormatter.allow(RegExp(r'[\d-]')),
         _PhoneFormatter(),
       ],
-      validator: (value) => Validators.phone(value),
+      validator: Validators.phone,
       onChanged: onChanged,
     );
   }

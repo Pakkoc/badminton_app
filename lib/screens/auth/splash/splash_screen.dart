@@ -73,16 +73,16 @@ class _SplashScreenState extends ConsumerState<SplashScreen>
           opacity: _fadeAnimation,
           child: ScaleTransition(
             scale: _scaleAnimation,
-            child: Column(
+            child: const Column(
               mainAxisSize: MainAxisSize.min,
               children: [
-                const Icon(
+                Icon(
                   Icons.sports_tennis,
                   size: 80,
                   color: Color(0xFF16A34A),
                 ),
-                const SizedBox(height: 16),
-                const Text(
+                SizedBox(height: 16),
+                Text(
                   '거트알림',
                   style: TextStyle(
                     fontSize: 32,
@@ -90,16 +90,16 @@ class _SplashScreenState extends ConsumerState<SplashScreen>
                     color: Color(0xFF1E293B),
                   ),
                 ),
-                const SizedBox(height: 8),
-                const Text(
+                SizedBox(height: 8),
+                Text(
                   '배드민턴 거트 추적 서비스',
                   style: TextStyle(
                     fontSize: 14,
                     color: Color(0xFF94A3B8),
                   ),
                 ),
-                const SizedBox(height: 48),
-                const SizedBox(
+                SizedBox(height: 48),
+                SizedBox(
                   width: 24,
                   height: 24,
                   child: CircularProgressIndicator(

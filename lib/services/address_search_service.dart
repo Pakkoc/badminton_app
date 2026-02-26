@@ -188,10 +188,10 @@ class _KakaoAddressSearchSheetState
                   controller: _webViewController,
                   gestureRecognizers: {
                     Factory<VerticalDragGestureRecognizer>(
-                      () => VerticalDragGestureRecognizer(),
+                      VerticalDragGestureRecognizer.new,
                     ),
                     Factory<TapGestureRecognizer>(
-                      () => TapGestureRecognizer(),
+                      TapGestureRecognizer.new,
                     ),
                   },
                 ),
