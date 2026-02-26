@@ -8,6 +8,7 @@ part 'order_manage_state.freezed.dart';
 class OrderManageState with _$OrderManageState {
   const factory OrderManageState({
     @Default([]) List<GutOrder> orders,
+    @Default({}) Map<String, String> memberNames,
     OrderStatus? selectedFilter,
     @Default(true) bool isLoading,
     String? error,

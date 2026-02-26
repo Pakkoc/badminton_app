@@ -7,7 +7,6 @@ import 'package:badminton_app/widgets/confirm_dialog.dart';
 import 'package:badminton_app/widgets/empty_state.dart';
 import 'package:badminton_app/widgets/error_view.dart';
 import 'package:badminton_app/widgets/loading_indicator.dart';
-import 'package:badminton_app/widgets/status_badge.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -42,7 +41,6 @@ class _OrderManageScreenState
           .loadOrders(shopId);
       return;
     }
-    // shopId가 없으면 currentOwnerShopProvider에서 가져옴
     final shopAsync = ref.read(currentOwnerShopProvider);
     shopAsync.whenData((shop) {
       if (shop != null) {
@@ -55,7 +53,6 @@ class _OrderManageScreenState
 
   @override
   Widget build(BuildContext context) {
-    // shopId가 없는 경우 shop 로딩을 감시
     if (widget.shopId == null || widget.shopId!.isEmpty) {
       ref.listen(currentOwnerShopProvider, (prev, next) {
         next.whenData((shop) {
@@ -85,8 +82,7 @@ class _OrderManageScreenState
             },
             onFilterChanged: (status) {
               ref
-                  .read(
-                      orderManageNotifierProvider.notifier)
+                  .read(orderManageNotifierProvider.notifier)
                   .filterByStatus(status);
             },
           ),
@@ -122,29 +118,37 @@ class _OrderManageScreenState
       itemCount: orders.length,
       itemBuilder: (context, index) {
         final order = orders[index];
-        return _OrderManageCard(
-          order: order,
-          onStatusChange: (newStatus) {
-            ref
-                .read(orderManageNotifierProvider.notifier)
-                .changeStatus(order.id, newStatus);
-          },
-          onDelete: order.status == OrderStatus.received
-              ? () {
-                  showConfirmDialog(
-                    context: context,
-                    title: '작업 삭제',
-                    content: '이 작업을 삭제하시겠습니까?',
-                    onConfirm: () {
-                      ref
-                          .read(
-                              orderManageNotifierProvider
-                                  .notifier)
-                          .deleteOrder(order.id);
-                    },
-                  );
-                }
-              : null,
+        final memberName =
+            state.memberNames[order.memberId] ?? '회원';
+        return Padding(
+          padding: EdgeInsets.only(
+            bottom: index < orders.length - 1 ? 10 : 0,
+          ),
+          child: _OrderManageCard(
+            order: order,
+            memberName: memberName,
+            onStatusChange: (newStatus) {
+              ref
+                  .read(orderManageNotifierProvider.notifier)
+                  .changeStatus(order.id, newStatus);
+            },
+            onDelete: order.status == OrderStatus.received
+                ? () {
+                    showConfirmDialog(
+                      context: context,
+                      title: '작업 삭제',
+                      content: '이 작업을 삭제하시겠습니까?',
+                      onConfirm: () {
+                        ref
+                            .read(
+                                orderManageNotifierProvider
+                                    .notifier)
+                            .deleteOrder(order.id);
+                      },
+                    );
+                  }
+                : null,
+          ),
         );
       },
     );
@@ -164,6 +168,13 @@ class _StatusFilterTabs extends StatelessWidget {
   final Map<OrderStatus, int> countByStatus;
   final void Function(OrderStatus?) onFilterChanged;
 
+  /// 접수됨 → 접수 (탭 라벨 축약)
+  String _tabLabel(OrderStatus status) => switch (status) {
+        OrderStatus.received => '접수',
+        OrderStatus.inProgress => '작업중',
+        OrderStatus.completed => '완료',
+      };
+
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
@@ -175,7 +186,7 @@ class _StatusFilterTabs extends StatelessWidget {
       child: Row(
         children: [
           _FilterChip(
-            label: '전체 ($totalCount)',
+            label: '전체 $totalCount',
             isSelected: selectedFilter == null,
             onTap: () => onFilterChanged(null),
           ),
@@ -185,7 +196,8 @@ class _StatusFilterTabs extends StatelessWidget {
               padding: const EdgeInsets.only(right: 8),
               child: _FilterChip(
                 label:
-                    '${status.label} ${countByStatus[status] ?? 0}',
+                    '${_tabLabel(status)} '
+                    '${countByStatus[status] ?? 0}',
                 isSelected: selectedFilter == status,
                 onTap: () => onFilterChanged(status),
               ),
@@ -226,17 +238,17 @@ class _FilterChip extends StatelessWidget {
           border: Border.all(
             color: isSelected
                 ? const Color(0xFF16A34A)
-                : const Color(0xFFD1D5DB),
+                : const Color(0xFFE2E8F0),
           ),
         ),
         child: Text(
           label,
           style: TextStyle(
-            fontSize: 14,
+            fontSize: 13,
             fontWeight: FontWeight.w500,
             color: isSelected
                 ? Colors.white
-                : const Color(0xFF374151),
+                : const Color(0xFF475569),
           ),
         ),
       ),
@@ -247,54 +259,66 @@ class _FilterChip extends StatelessWidget {
 class _OrderManageCard extends StatelessWidget {
   const _OrderManageCard({
     required this.order,
+    required this.memberName,
     required this.onStatusChange,
     this.onDelete,
   });
 
   final GutOrder order;
+  final String memberName;
   final void Function(OrderStatus) onStatusChange;
   final VoidCallback? onDelete;
 
   @override
   Widget build(BuildContext context) {
-    final Widget card = Card(
-      margin: const EdgeInsets.only(bottom: 8),
-      child: Padding(
-        padding: const EdgeInsets.all(12),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Row(
-              children: [
-                Expanded(
-                  child: Text(
-                    '회원 ID: ${order.memberId}',
-                    style: Theme.of(context)
-                        .textTheme
-                        .bodyMedium,
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
-                  ),
-                ),
-                StatusBadge(status: order.status),
-              ],
-            ),
-            if (order.memo != null) ...[
-              const SizedBox(height: 8),
+    final Widget card = Container(
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(16),
+        border: Border.all(
+          color: const Color(0xFFE2E8F0),
+        ),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
               Text(
-                order.memo!,
-                style: Theme.of(context)
-                    .textTheme
-                    .bodySmall,
+                memberName,
+                style: const TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.w600,
+                  color: Color(0xFF0F172A),
+                ),
               ),
+              _StatusPill(status: order.status),
             ],
+          ),
+          const SizedBox(height: 8),
+          Text(
+            _formatTimeLabel(order.createdAt),
+            style: const TextStyle(
+              fontSize: 12,
+              color: Color(0xFF94A3B8),
+            ),
+          ),
+          if (order.status != OrderStatus.completed) ...[
             const SizedBox(height: 8),
-            _StatusChangeButtons(
-              currentStatus: order.status,
-              onStatusChange: onStatusChange,
+            _ActionButton(
+              status: order.status,
+              onPressed: () {
+                final next =
+                    order.status == OrderStatus.received
+                        ? OrderStatus.inProgress
+                        : OrderStatus.completed;
+                onStatusChange(next);
+              },
             ),
           ],
-        ),
+        ],
       ),
     );
 
@@ -305,7 +329,10 @@ class _OrderManageCard extends StatelessWidget {
         background: Container(
           alignment: Alignment.centerRight,
           padding: const EdgeInsets.only(right: 16),
-          color: Colors.red,
+          decoration: BoxDecoration(
+            color: Colors.red,
+            borderRadius: BorderRadius.circular(16),
+          ),
           child: const Icon(
             Icons.delete,
             color: Colors.white,
@@ -318,31 +345,116 @@ class _OrderManageCard extends StatelessWidget {
 
     return card;
   }
+
+  String _formatTimeLabel(DateTime dt) {
+    final now = DateTime.now();
+    final today = DateTime(now.year, now.month, now.day);
+    final yesterday =
+        today.subtract(const Duration(days: 1));
+    final dtDate = DateTime(dt.year, dt.month, dt.day);
+
+    final h = dt.hour.toString().padLeft(2, '0');
+    final m = dt.minute.toString().padLeft(2, '0');
+
+    if (dtDate == today) {
+      return '오늘 $h:$m 접수';
+    } else if (dtDate == yesterday) {
+      return '어제 $h:$m 접수';
+    } else {
+      return '${dt.month}/${dt.day} $h:$m 접수';
+    }
+  }
 }
 
-class _StatusChangeButtons extends StatelessWidget {
-  const _StatusChangeButtons({
-    required this.currentStatus,
-    required this.onStatusChange,
-  });
+class _StatusPill extends StatelessWidget {
+  const _StatusPill({required this.status});
 
-  final OrderStatus currentStatus;
-  final void Function(OrderStatus) onStatusChange;
+  final OrderStatus status;
 
   @override
   Widget build(BuildContext context) {
-    return switch (currentStatus) {
-      OrderStatus.received => TextButton(
-          onPressed: () =>
-              onStatusChange(OrderStatus.inProgress),
-          child: const Text('작업 시작'),
+    final (bg, text) = _colors;
+    return Container(
+      padding: const EdgeInsets.symmetric(
+        horizontal: 10,
+        vertical: 4,
+      ),
+      decoration: BoxDecoration(
+        color: bg,
+        borderRadius: BorderRadius.circular(999),
+      ),
+      child: Text(
+        status.label,
+        style: TextStyle(
+          fontSize: 12,
+          fontWeight: FontWeight.w600,
+          color: text,
         ),
-      OrderStatus.inProgress => TextButton(
-          onPressed: () =>
-              onStatusChange(OrderStatus.completed),
-          child: const Text('작업 완료'),
+      ),
+    );
+  }
+
+  (Color, Color) get _colors => switch (status) {
+        OrderStatus.received => (
+          const Color(0xFFFEF3C7),
+          const Color(0xFFF59E0B),
         ),
-      OrderStatus.completed => const SizedBox.shrink(),
+        OrderStatus.inProgress => (
+          const Color(0xFFDBEAFE),
+          const Color(0xFF3B82F6),
+        ),
+        OrderStatus.completed => (
+          const Color(0xFFDCFCE7),
+          const Color(0xFF22C55E),
+        ),
+      };
+}
+
+class _ActionButton extends StatelessWidget {
+  const _ActionButton({
+    required this.status,
+    required this.onPressed,
+  });
+
+  final OrderStatus status;
+  final VoidCallback onPressed;
+
+  @override
+  Widget build(BuildContext context) {
+    final (label, bg) = switch (status) {
+      OrderStatus.received => (
+        '작업 시작',
+        const Color(0xFF3B82F6),
+      ),
+      OrderStatus.inProgress => (
+        '작업 완료',
+        const Color(0xFF22C55E),
+      ),
+      _ => ('', Colors.transparent),
     };
+
+    return SizedBox(
+      width: double.infinity,
+      height: 36,
+      child: ElevatedButton(
+        onPressed: onPressed,
+        style: ElevatedButton.styleFrom(
+          backgroundColor: bg,
+          foregroundColor: Colors.white,
+          elevation: 0,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(8),
+          ),
+          padding: EdgeInsets.zero,
+        ),
+        child: Text(
+          label,
+          style: const TextStyle(
+            fontSize: 14,
+            fontWeight: FontWeight.w600,
+          ),
+        ),
+      ),
+    );
   }
 }
