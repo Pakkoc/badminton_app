@@ -10,7 +10,7 @@ final inventoryRepositoryProvider = Provider<InventoryRepository>((ref) {
 
 /// 재고 리포지토리.
 ///
-/// Supabase `inventory_items` 테이블에 대한 CRUD 작업을 수행한다.
+/// Supabase `inventory` 테이블에 대한 CRUD 작업을 수행한다.
 class InventoryRepository {
   final SupabaseClient client;
 
@@ -20,7 +20,7 @@ class InventoryRepository {
   Future<InventoryItem> create(InventoryItem item) async {
     try {
       final data = await client
-          .from('inventory_items')
+          .from('inventory')
           .insert(item.toJson())
           .select()
           .single();
@@ -37,7 +37,7 @@ class InventoryRepository {
   ) async {
     try {
       final result = await client
-          .from('inventory_items')
+          .from('inventory')
           .update(data)
           .eq('id', id)
           .select()
@@ -51,7 +51,7 @@ class InventoryRepository {
   /// 재고 아이템을 삭제한다.
   Future<void> delete(String id) async {
     try {
-      await client.from('inventory_items').delete().eq('id', id);
+      await client.from('inventory').delete().eq('id', id);
     } catch (e) {
       throw ErrorHandler.handle(e);
     }
@@ -61,7 +61,7 @@ class InventoryRepository {
   Future<List<InventoryItem>> getByShop(String shopId) async {
     try {
       final data = await client
-          .from('inventory_items')
+          .from('inventory')
           .select()
           .eq('shop_id', shopId)
           .order('created_at', ascending: false);
