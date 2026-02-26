@@ -1,10 +1,9 @@
 import 'package:badminton_app/core/utils/validators.dart';
 import 'package:badminton_app/screens/auth/shop_signup/shop_signup_notifier.dart';
+import 'package:badminton_app/widgets/map_preview.dart';
 import 'package:badminton_app/widgets/phone_input_field.dart';
 import 'package:badminton_app/widgets/toast.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_naver_map/flutter_naver_map.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
@@ -84,9 +83,13 @@ class _ShopSignupScreenState
               onSearch: () => notifier.searchAddress(context),
             ),
             if (state.latitude != 0.0 && state.longitude != 0.0)
-              _MapPreview(
-                latitude: state.latitude,
-                longitude: state.longitude,
+              Padding(
+                padding: const EdgeInsets.only(top: 12),
+                child: MapPreview(
+                  latitude: state.latitude,
+                  longitude: state.longitude,
+                  height: 180,
+                ),
               ),
             const SizedBox(height: 16),
             PhoneInputField(
@@ -185,80 +188,3 @@ class _AddressField extends StatelessWidget {
   }
 }
 
-/// 네이버 지도 미리보기 위젯.
-///
-/// 웹 환경에서는 placeholder를 표시한다.
-class _MapPreview extends StatelessWidget {
-  const _MapPreview({
-    required this.latitude,
-    required this.longitude,
-  });
-
-  final double latitude;
-  final double longitude;
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.only(top: 12),
-      child: ClipRRect(
-        borderRadius: BorderRadius.circular(12),
-        child: SizedBox(
-          width: double.infinity,
-          height: 180,
-          child: kIsWeb
-              ? _buildWebPlaceholder(context)
-              : _buildNaverMap(),
-        ),
-      ),
-    );
-  }
-
-  Widget _buildNaverMap() {
-    final position = NLatLng(latitude, longitude);
-    return NaverMap(
-      options: NaverMapViewOptions(
-        initialCameraPosition: NCameraPosition(
-          target: position,
-          zoom: 16,
-        ),
-        scrollGesturesEnable: false,
-        zoomGesturesEnable: false,
-        tiltGesturesEnable: false,
-        rotationGesturesEnable: false,
-        stopGesturesEnable: false,
-      ),
-      onMapReady: (controller) {
-        controller.addOverlay(
-          NMarker(
-            id: 'shop-location',
-            position: position,
-          ),
-        );
-      },
-    );
-  }
-
-  Widget _buildWebPlaceholder(BuildContext context) {
-    return Container(
-      color: Theme.of(context).colorScheme.surfaceContainerHighest,
-      child: Center(
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Icon(
-              Icons.map_outlined,
-              size: 48,
-              color: Theme.of(context).colorScheme.outline,
-            ),
-            const SizedBox(height: 8),
-            Text(
-              '지도 미리보기',
-              style: Theme.of(context).textTheme.bodySmall,
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-}

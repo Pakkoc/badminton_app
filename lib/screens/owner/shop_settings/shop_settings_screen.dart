@@ -1,6 +1,7 @@
 import 'package:badminton_app/core/utils/validators.dart';
 import 'package:badminton_app/screens/owner/shop_settings/shop_settings_notifier.dart';
 import 'package:badminton_app/widgets/loading_indicator.dart';
+import 'package:badminton_app/widgets/map_preview.dart';
 import 'package:badminton_app/widgets/phone_input_field.dart';
 import 'package:badminton_app/widgets/toast.dart';
 import 'package:flutter/material.dart';
@@ -174,6 +175,11 @@ class _ShopSettingsScreenState
                           label: '주소',
                           controller: _addressController,
                           onChanged: notifier.updateAddress,
+                        ),
+                        const SizedBox(height: 12),
+                        MapPreview(
+                          latitude: state.shop?.latitude,
+                          longitude: state.shop?.longitude,
                         ),
                         const SizedBox(height: 12),
                         _PhoneSettingsField(

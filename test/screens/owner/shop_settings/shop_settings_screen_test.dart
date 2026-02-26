@@ -1,6 +1,7 @@
 import 'package:badminton_app/screens/owner/shop_settings/shop_settings_notifier.dart';
 import 'package:badminton_app/screens/owner/shop_settings/shop_settings_screen.dart';
 import 'package:badminton_app/screens/owner/shop_settings/shop_settings_state.dart';
+import 'package:badminton_app/widgets/map_preview.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
@@ -8,6 +9,10 @@ import '../../../helpers/fixtures.dart';
 import '../../../helpers/test_app.dart';
 
 void main() {
+  setUpAll(() {
+    MapPreview.usePlaceholder = true;
+  });
+
   group('ShopSettingsScreen', () {
     testWidgets('로딩 중일 때 로딩 인디케이터를 표시한다', (tester) async {
       // Arrange & Act
@@ -113,6 +118,25 @@ void main() {
         find.byType(CircularProgressIndicator),
         findsOneWidget,
       );
+    });
+
+    testWidgets('지도 미리보기가 표시된다', (tester) async {
+      // Arrange & Act
+      await pumpTestApp(
+        tester,
+        child: const ShopSettingsScreen(),
+        overrides: [
+          shopSettingsNotifierProvider.overrideWith(
+            () => _FakeShopSettingsNotifier(
+              ShopSettingsState(shop: testShop),
+            ),
+          ),
+        ],
+      );
+
+      // Assert
+      expect(find.byType(MapPreview), findsOneWidget);
+      expect(find.text('지도 미리보기'), findsOneWidget);
     });
 
     testWidgets('샵 정보가 텍스트 필드에 채워진다', (tester) async {
