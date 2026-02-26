@@ -42,7 +42,7 @@ void main() {
       expect(find.byType(QrImageView), findsOneWidget);
     });
 
-    testWidgets('샵 이름과 주소를 표시한다', (tester) async {
+    testWidgets('샵 이름을 표시한다', (tester) async {
       // Arrange
       tester.view.physicalSize = const Size(800, 1200);
       tester.view.devicePixelRatio = 1.0;
@@ -54,10 +54,6 @@ void main() {
 
       // Assert
       expect(find.text('거트 프로샵'), findsOneWidget);
-      expect(
-        find.text('서울시 강남구 역삼동 123'),
-        findsOneWidget,
-      );
     });
 
     testWidgets('안내 문구를 표시한다', (tester) async {
@@ -72,7 +68,9 @@ void main() {
 
       // Assert
       expect(
-        find.text('고객이 이 QR 코드를 스캔하면\n자동으로 회원 등록됩니다'),
+        find.text(
+          '고객이 이 QR을 스캔하면 자동으로 회원 등록됩니다',
+        ),
         findsOneWidget,
       );
     });

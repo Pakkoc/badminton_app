@@ -87,7 +87,7 @@ void main() {
       );
 
       // Assert
-      expect(find.text('저장'), findsOneWidget);
+      expect(find.text('저장하기'), findsOneWidget);
     });
 
     testWidgets('제출 중일 때 저장 버튼에 로딩을 표시한다',

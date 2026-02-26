@@ -1,5 +1,6 @@
 import 'package:badminton_app/core/error/app_exception.dart';
 import 'package:badminton_app/models/enums.dart';
+import 'package:badminton_app/repositories/member_repository.dart';
 import 'package:badminton_app/repositories/order_repository.dart';
 import 'package:badminton_app/screens/owner/order_manage/order_manage_notifier.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -10,14 +11,22 @@ import '../../../helpers/fixtures.dart';
 class MockOrderRepository extends Mock
     implements OrderRepository {}
 
+class MockMemberRepository extends Mock
+    implements MemberRepository {}
+
 void main() {
   late MockOrderRepository mockOrderRepo;
+  late MockMemberRepository mockMemberRepo;
   late OrderManageNotifier notifier;
 
   setUp(() {
     mockOrderRepo = MockOrderRepository();
+    mockMemberRepo = MockMemberRepository();
+    when(() => mockMemberRepo.getByShop(any()))
+        .thenAnswer((_) async => [testMember]);
     notifier = OrderManageNotifier(
       orderRepository: mockOrderRepo,
+      memberRepository: mockMemberRepo,
     );
   });
 

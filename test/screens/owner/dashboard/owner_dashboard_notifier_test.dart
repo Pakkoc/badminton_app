@@ -1,5 +1,6 @@
 import 'package:badminton_app/core/error/app_exception.dart';
 import 'package:badminton_app/models/enums.dart';
+import 'package:badminton_app/repositories/member_repository.dart';
 import 'package:badminton_app/repositories/order_repository.dart';
 import 'package:badminton_app/repositories/shop_repository.dart';
 import 'package:badminton_app/screens/owner/dashboard/owner_dashboard_notifier.dart';
@@ -14,17 +15,23 @@ class MockShopRepository extends Mock
 class MockOrderRepository extends Mock
     implements OrderRepository {}
 
+class MockMemberRepository extends Mock
+    implements MemberRepository {}
+
 void main() {
   late MockShopRepository mockShopRepo;
   late MockOrderRepository mockOrderRepo;
+  late MockMemberRepository mockMemberRepo;
   late OwnerDashboardNotifier notifier;
 
   setUp(() {
     mockShopRepo = MockShopRepository();
     mockOrderRepo = MockOrderRepository();
+    mockMemberRepo = MockMemberRepository();
     notifier = OwnerDashboardNotifier(
       shopRepository: mockShopRepo,
       orderRepository: mockOrderRepo,
+      memberRepository: mockMemberRepo,
     );
   });
 
@@ -63,6 +70,8 @@ void main() {
             testOrderCompleted,
           ],
         );
+        when(() => mockMemberRepo.getByShop(testShop.id))
+            .thenAnswer((_) async => [testMember]);
 
         // Act
         await notifier.loadDashboard(testOwner.id);
@@ -88,6 +97,8 @@ void main() {
             .thenAnswer((_) async => testShop);
         when(() => mockOrderRepo.getByShop(testShop.id))
             .thenAnswer((_) async => orders);
+        when(() => mockMemberRepo.getByShop(testShop.id))
+            .thenAnswer((_) async => [testMember]);
 
         // Act
         await notifier.loadDashboard(testOwner.id);
@@ -119,6 +130,8 @@ void main() {
             .thenAnswer(
           (_) async => [testOrderReceived],
         );
+        when(() => mockMemberRepo.getByShop(testShop.id))
+            .thenAnswer((_) async => [testMember]);
         await notifier.loadDashboard(testOwner.id);
 
         // 상태 변경 후 재조회

@@ -51,8 +51,8 @@ void main() {
         await tester.pumpWidget(createApp());
 
         // Assert
-        expect(find.text('제목'), findsOneWidget);
-        expect(find.text('내용'), findsOneWidget);
+        expect(find.text('제목 *'), findsOneWidget);
+        expect(find.text('내용 *'), findsOneWidget);
       },
     );
 
@@ -74,7 +74,7 @@ void main() {
         await tester.pumpWidget(createApp());
 
         // Assert
-        expect(find.text('0/5'), findsOneWidget);
+        expect(find.text('최대 5장'), findsOneWidget);
       },
     );
   });

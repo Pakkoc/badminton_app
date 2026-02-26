@@ -95,7 +95,7 @@ void main() {
       // Assert
       expect(find.text('BG65'), findsOneWidget);
       expect(find.text('거트'), findsOneWidget);
-      expect(find.text('50'), findsOneWidget);
+      expect(find.text('50개'), findsOneWidget);
     });
 
     testWidgets('AppBar 제목이 "재고 관리"이다', (tester) async {
@@ -118,8 +118,7 @@ void main() {
       expect(find.text('재고 관리'), findsOneWidget);
     });
 
-    testWidgets('FAB이 "상품 추가" 텍스트를 표시한다',
-        (tester) async {
+    testWidgets('FAB이 표시된다', (tester) async {
       // Arrange & Act
       await pumpTestApp(
         tester,
@@ -137,12 +136,10 @@ void main() {
 
       // Assert
       expect(
-        find.widgetWithText(
-          FloatingActionButton,
-          '상품 추가',
-        ),
+        find.byType(FloatingActionButton),
         findsOneWidget,
       );
+      expect(find.byIcon(Icons.add), findsOneWidget);
     });
 
     testWidgets('에러 상태일 때 에러 뷰를 표시한다', (tester) async {
@@ -170,7 +167,8 @@ void main() {
       );
     });
 
-    testWidgets('수량 증가/감소 버튼이 표시된다', (tester) async {
+    testWidgets('재고 그리드 카드에 이미지 영역이 표시된다',
+        (tester) async {
       // Arrange & Act
       await pumpTestApp(
         tester,
@@ -186,13 +184,9 @@ void main() {
         ],
       );
 
-      // Assert
+      // Assert — 그리드 카드에 아이콘 표시
       expect(
-        find.byIcon(Icons.add_circle_outline),
-        findsOneWidget,
-      );
-      expect(
-        find.byIcon(Icons.remove_circle_outline),
+        find.byIcon(Icons.inventory_2),
         findsOneWidget,
       );
     });

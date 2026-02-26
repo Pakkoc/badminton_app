@@ -48,9 +48,8 @@ void main() {
       );
 
       // Assert
-      expect(find.text('회원 검색'), findsOneWidget);
       expect(
-        find.text('이름 또는 전화번호'),
+        find.text('회원 이름 또는 연락처 검색'),
         findsOneWidget,
       );
     });
@@ -74,11 +73,9 @@ void main() {
         ),
       );
 
-      // Assert
-      expect(
-        find.text('홍길동 (01012345678)'),
-        findsOneWidget,
-      );
+      // Assert — 이름과 전화번호가 별도로 표시됨
+      expect(find.text('홍길동'), findsOneWidget);
+      expect(find.text('01012345678'), findsOneWidget);
     });
 
     testWidgets('회원 미선택 시 접수 버튼이 비활성화된다', (

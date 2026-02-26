@@ -100,9 +100,9 @@ void main() {
         ),
       );
 
-      // Assert: 필터 탭에 카운트가 포함된 텍스트 형식 ("전체 (0)", "접수됨 0" 등)
-      expect(find.text('전체 (0)'), findsOneWidget);
-      expect(find.text('접수됨 0'), findsOneWidget);
+      // Assert: 필터 탭에 카운트가 포함된 텍스트 형식
+      expect(find.text('전체 0'), findsOneWidget);
+      expect(find.text('접수 0'), findsOneWidget);
       expect(find.text('작업중 0'), findsOneWidget);
       expect(find.text('완료 0'), findsOneWidget);
     });
@@ -120,6 +120,9 @@ void main() {
                     testOrderReceived,
                     testOrderInProgress,
                   ],
+                  memberNames: {
+                    testOrderReceived.memberId: '홍길동',
+                  },
                 ),
               ),
             ),
@@ -130,10 +133,10 @@ void main() {
         ),
       );
 
-      // Assert
+      // Assert — 회원 이름과 액션 버튼 표시
       expect(
-        find.text('2본 작업'),
-        findsAtLeastNWidgets(1),
+        find.text('홍길동'),
+        findsNWidgets(2),
       );
       expect(find.text('작업 시작'), findsOneWidget);
       expect(find.text('작업 완료'), findsOneWidget);

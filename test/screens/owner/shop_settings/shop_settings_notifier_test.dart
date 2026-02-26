@@ -1,29 +1,53 @@
 import 'package:badminton_app/core/error/app_exception.dart';
-import 'package:badminton_app/providers/auth_provider.dart';
+import 'package:badminton_app/providers/supabase_provider.dart';
 import 'package:badminton_app/repositories/shop_repository.dart';
+import 'package:badminton_app/repositories/user_repository.dart';
 import 'package:badminton_app/screens/owner/shop_settings/shop_settings_notifier.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
+import 'package:supabase_flutter/supabase_flutter.dart'
+    as supa;
 
 import '../../../helpers/fixtures.dart';
 
 class _MockShopRepository extends Mock
     implements ShopRepository {}
 
+class _MockUserRepository extends Mock
+    implements UserRepository {}
+
+class _MockSupabaseClient extends Mock
+    implements supa.SupabaseClient {}
+
+class _MockGoTrueClient extends Mock
+    implements supa.GoTrueClient {}
+
 void main() {
-  late _MockShopRepository mockRepo;
+  late _MockShopRepository mockShopRepo;
+  late _MockUserRepository mockUserRepo;
+  late _MockSupabaseClient mockSupabase;
+  late _MockGoTrueClient mockAuth;
   late ProviderContainer container;
 
   setUp(() {
-    mockRepo = _MockShopRepository();
+    mockShopRepo = _MockShopRepository();
+    mockUserRepo = _MockUserRepository();
+    mockSupabase = _MockSupabaseClient();
+    mockAuth = _MockGoTrueClient();
+
+    when(() => mockSupabase.auth).thenReturn(mockAuth);
+    when(() => mockAuth.currentUser).thenReturn(
+      _fakeAuthUser(testOwner.id),
+    );
+
     container = ProviderContainer(
       overrides: [
+        supabaseProvider.overrideWithValue(mockSupabase),
         shopRepositoryProvider
-            .overrideWithValue(mockRepo),
-        currentUserProvider.overrideWith(
-          (ref) async => testOwner,
-        ),
+            .overrideWithValue(mockShopRepo),
+        userRepositoryProvider
+            .overrideWithValue(mockUserRepo),
       ],
     );
   });
@@ -35,8 +59,10 @@ void main() {
   group('ShopSettingsNotifier', () {
     test('build 시 자동으로 샵 정보를 로드한다', () async {
       // Arrange
-      when(() => mockRepo.getByOwner(any()))
+      when(() => mockShopRepo.getByOwner(any()))
           .thenAnswer((_) async => testShop);
+      when(() => mockUserRepo.getById(any()))
+          .thenAnswer((_) async => testOwner);
 
       // Act
       container.read(shopSettingsNotifierProvider);
@@ -53,8 +79,10 @@ void main() {
     group('loadShop', () {
       test('사장님 ID로 샵 정보를 조회한다', () async {
         // Arrange
-        when(() => mockRepo.getByOwner(any()))
+        when(() => mockShopRepo.getByOwner(any()))
             .thenAnswer((_) async => testShop);
+        when(() => mockUserRepo.getById(any()))
+            .thenAnswer((_) async => testOwner);
 
         final notifier = container.read(
           shopSettingsNotifierProvider.notifier,
@@ -73,8 +101,10 @@ void main() {
 
       test('조회 실패 시 에러를 설정한다', () async {
         // Arrange
-        when(() => mockRepo.getByOwner(any()))
+        when(() => mockShopRepo.getByOwner(any()))
             .thenThrow(AppException.server());
+        when(() => mockUserRepo.getById(any()))
+            .thenAnswer((_) async => testOwner);
 
         final notifier = container.read(
           shopSettingsNotifierProvider.notifier,
@@ -92,18 +122,9 @@ void main() {
 
       test('로그인하지 않으면 에러를 설정한다', () async {
         // Arrange
-        final noUserContainer = ProviderContainer(
-          overrides: [
-            shopRepositoryProvider
-                .overrideWithValue(mockRepo),
-            currentUserProvider.overrideWith(
-              (ref) async => null,
-            ),
-          ],
-        );
-        addTearDown(noUserContainer.dispose);
+        when(() => mockAuth.currentUser).thenReturn(null);
 
-        final notifier = noUserContainer.read(
+        final notifier = container.read(
           shopSettingsNotifierProvider.notifier,
         );
 
@@ -111,9 +132,8 @@ void main() {
         await notifier.loadShop();
 
         // Assert
-        final state = noUserContainer.read(
-          shopSettingsNotifierProvider,
-        );
+        final state =
+            container.read(shopSettingsNotifierProvider);
         expect(state.errorMessage, '로그인이 필요합니다');
       });
     });
@@ -121,8 +141,10 @@ void main() {
     group('update methods', () {
       test('updateShopName은 샵 이름을 업데이트한다', () async {
         // Arrange
-        when(() => mockRepo.getByOwner(any()))
+        when(() => mockShopRepo.getByOwner(any()))
             .thenAnswer((_) async => testShop);
+        when(() => mockUserRepo.getById(any()))
+            .thenAnswer((_) async => testOwner);
 
         final notifier = container.read(
           shopSettingsNotifierProvider.notifier,
@@ -140,8 +162,10 @@ void main() {
 
       test('updateAddress는 주소를 업데이트한다', () async {
         // Arrange
-        when(() => mockRepo.getByOwner(any()))
+        when(() => mockShopRepo.getByOwner(any()))
             .thenAnswer((_) async => testShop);
+        when(() => mockUserRepo.getById(any()))
+            .thenAnswer((_) async => testOwner);
 
         final notifier = container.read(
           shopSettingsNotifierProvider.notifier,
@@ -159,8 +183,10 @@ void main() {
 
       test('updatePhone은 전화번호를 업데이트한다', () async {
         // Arrange
-        when(() => mockRepo.getByOwner(any()))
+        when(() => mockShopRepo.getByOwner(any()))
             .thenAnswer((_) async => testShop);
+        when(() => mockUserRepo.getById(any()))
+            .thenAnswer((_) async => testOwner);
 
         final notifier = container.read(
           shopSettingsNotifierProvider.notifier,
@@ -176,10 +202,13 @@ void main() {
         expect(state.shop!.phone, '0298765432');
       });
 
-      test('updateDescription은 소개글을 업데이트한다', () async {
+      test('updateDescription은 소개글을 업데이트한다',
+          () async {
         // Arrange
-        when(() => mockRepo.getByOwner(any()))
+        when(() => mockShopRepo.getByOwner(any()))
             .thenAnswer((_) async => testShop);
+        when(() => mockUserRepo.getById(any()))
+            .thenAnswer((_) async => testOwner);
 
         final notifier = container.read(
           shopSettingsNotifierProvider.notifier,
@@ -214,10 +243,14 @@ void main() {
     group('submit', () {
       test('저장에 성공하면 true를 반환한다', () async {
         // Arrange
-        when(() => mockRepo.getByOwner(any()))
+        when(() => mockShopRepo.getByOwner(any()))
             .thenAnswer((_) async => testShop);
-        when(() => mockRepo.update(any(), any()))
+        when(() => mockUserRepo.getById(any()))
+            .thenAnswer((_) async => testOwner);
+        when(() => mockShopRepo.update(any(), any()))
             .thenAnswer((_) async => testShop);
+        when(() => mockUserRepo.update(any(), any()))
+            .thenAnswer((_) async => testOwner);
 
         final notifier = container.read(
           shopSettingsNotifierProvider.notifier,
@@ -249,17 +282,18 @@ void main() {
 
       test('저장 실패 시 false를 반환한다', () async {
         // Arrange
-        when(() => mockRepo.getByOwner(any()))
+        when(() => mockShopRepo.getByOwner(any()))
             .thenAnswer((_) async => testShop);
+        when(() => mockUserRepo.getById(any()))
+            .thenAnswer((_) async => testOwner);
 
         final notifier = container.read(
           shopSettingsNotifierProvider.notifier,
         );
         await notifier.loadShop();
-        // 빌드 시 스케줄된 microtask 완료 대기
         await Future<void>.delayed(Duration.zero);
 
-        when(() => mockRepo.update(any(), any()))
+        when(() => mockShopRepo.update(any(), any()))
             .thenThrow(AppException.server());
 
         // Act
@@ -275,3 +309,12 @@ void main() {
     });
   });
 }
+
+/// GoTrueClient.currentUser가 반환할 가짜 AuthUser 생성.
+supa.User _fakeAuthUser(String id) => supa.User(
+      id: id,
+      appMetadata: {},
+      userMetadata: {},
+      aud: 'authenticated',
+      createdAt: DateTime(2026).toIso8601String(),
+    );
