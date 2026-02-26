@@ -9,8 +9,9 @@
 #   role: common | customer | shop_owner
 #   pencil_id: Pencil 디자인 프레임 ID
 #   spec_file: UI 스펙 문서 경로
-#   nav_to: 이 화면에서 이동 가능한 화면 ID 목록
-#   nav_from: 이 화면으로 진입하는 화면 ID 목록
+#
+# 네비게이션 정보(nav_to/nav_from)는 Pencil 디자인이 SOT이다.
+# /design-sync 스킬이 Pencil → UI 스펙으로 네비게이션을 동기화한다.
 
 screens:
   # ─── 공통 (온보딩) ───
@@ -20,8 +21,6 @@ screens:
     role: common
     pencil_id: 75vDs
     spec_file: docs/ui-specs/splash.md
-    nav_to: [login, customer-home, owner-dashboard]
-    nav_from: []
 
   login:
     name: "로그인"
@@ -29,8 +28,6 @@ screens:
     role: common
     pencil_id: hI7MJ
     spec_file: docs/ui-specs/login.md
-    nav_to: [customer-home, owner-dashboard, profile-setup]
-    nav_from: [splash, customer-mypage]
 
   profile-setup:
     name: "프로필 설정"
@@ -38,8 +35,6 @@ screens:
     role: common
     pencil_id: s2pzz
     spec_file: docs/ui-specs/signup.md
-    nav_to: [customer-home, owner-shop-signup]
-    nav_from: [login]
 
   owner-shop-signup:
     name: "샵 등록"
@@ -47,8 +42,6 @@ screens:
     role: shop_owner
     pencil_id: PdstH
     spec_file: docs/ui-specs/shop-signup.md
-    nav_to: [owner-dashboard]
-    nav_from: [profile-setup]
 
   # ─── 고객 흐름 ───
   customer-home:
@@ -57,8 +50,6 @@ screens:
     role: customer
     pencil_id: 0b6dS
     spec_file: docs/ui-specs/customer-home.md
-    nav_to: [customer-order-detail, customer-shop-search, customer-order-history, customer-mypage, customer-notifications]
-    nav_from: [login, profile-setup, splash]
 
   customer-order-detail:
     name: "작업 상세"
@@ -66,8 +57,6 @@ screens:
     role: customer
     pencil_id: l7Ghq
     spec_file: docs/ui-specs/order-detail.md
-    nav_to: []
-    nav_from: [customer-home, customer-order-history, customer-notifications]
 
   customer-order-history:
     name: "작업 이력"
@@ -75,8 +64,6 @@ screens:
     role: customer
     pencil_id: cdfXb
     spec_file: docs/ui-specs/order-history.md
-    nav_to: [customer-order-detail]
-    nav_from: [customer-home]
 
   customer-shop-search:
     name: "주변 샵 검색"
@@ -84,8 +71,6 @@ screens:
     role: customer
     pencil_id: KMb0t
     spec_file: docs/ui-specs/shop-search.md
-    nav_to: [customer-shop-detail]
-    nav_from: [customer-home]
 
   customer-shop-detail:
     name: "샵 상세"
@@ -93,8 +78,6 @@ screens:
     role: customer
     pencil_id: S4mUF
     spec_file: docs/ui-specs/shop-detail.md
-    nav_to: [customer-post-list, customer-post-detail]
-    nav_from: [customer-shop-search]
 
   customer-notifications:
     name: "알림"
@@ -102,8 +85,6 @@ screens:
     role: customer
     pencil_id: fKRz8
     spec_file: docs/ui-specs/notifications.md
-    nav_to: [customer-order-detail]
-    nav_from: [customer-home]
 
   customer-post-list:
     name: "게시글 목록"
@@ -111,8 +92,6 @@ screens:
     role: customer
     pencil_id: 0htm7
     spec_file: docs/ui-specs/post-list.md
-    nav_to: [customer-post-detail]
-    nav_from: [customer-shop-detail]
 
   customer-post-detail:
     name: "게시글 상세"
@@ -120,8 +99,6 @@ screens:
     role: customer
     pencil_id: gkn1s
     spec_file: docs/ui-specs/post-detail.md
-    nav_to: []
-    nav_from: [customer-post-list, customer-shop-detail]
 
   customer-mypage:
     name: "마이페이지"
@@ -129,8 +106,6 @@ screens:
     role: customer
     pencil_id: xz11L
     spec_file: docs/ui-specs/mypage.md
-    nav_to: [login, customer-profile-edit]
-    nav_from: [customer-home]
 
   customer-profile-edit:
     name: "프로필 수정"
@@ -138,8 +113,6 @@ screens:
     role: customer
     pencil_id: eHCxi
     spec_file: docs/ui-specs/profile-edit.md
-    nav_to: []
-    nav_from: [customer-mypage]
 
   # ─── 사장님 흐름 ───
   owner-dashboard:
@@ -148,8 +121,6 @@ screens:
     role: shop_owner
     pencil_id: ExImm
     spec_file: docs/ui-specs/owner-dashboard.md
-    nav_to: [owner-order-create, owner-order-manage, owner-shop-settings]
-    nav_from: [login, owner-shop-signup, splash]
 
   owner-order-create:
     name: "작업 접수"
@@ -157,8 +128,6 @@ screens:
     role: shop_owner
     pencil_id: HEBtI
     spec_file: docs/ui-specs/order-create.md
-    nav_to: []
-    nav_from: [owner-dashboard, owner-order-manage]
 
   owner-order-manage:
     name: "작업 관리"
@@ -166,8 +135,6 @@ screens:
     role: shop_owner
     pencil_id: UVpp2
     spec_file: docs/ui-specs/order-manage.md
-    nav_to: [owner-order-create]
-    nav_from: [owner-dashboard]
 
   owner-shop-settings:
     name: "샵 설정"
@@ -175,8 +142,6 @@ screens:
     role: shop_owner
     pencil_id: qQBpR
     spec_file: docs/ui-specs/shop-settings.md
-    nav_to: [owner-shop-qr, owner-post-create, owner-inventory-manage]
-    nav_from: [owner-dashboard]
 
   owner-shop-qr:
     name: "샵 QR코드"
@@ -184,8 +149,6 @@ screens:
     role: shop_owner
     pencil_id: PYHid
     spec_file: docs/ui-specs/shop-qr.md
-    nav_to: []
-    nav_from: [owner-shop-settings]
 
   owner-post-create:
     name: "게시글 작성"
@@ -193,8 +156,6 @@ screens:
     role: shop_owner
     pencil_id: zQq8F
     spec_file: docs/ui-specs/post-create.md
-    nav_to: []
-    nav_from: [owner-shop-settings]
 
   owner-inventory-manage:
     name: "재고 관리"
@@ -202,5 +163,3 @@ screens:
     role: shop_owner
     pencil_id: frCH8
     spec_file: docs/ui-specs/inventory-manage.md
-    nav_to: []
-    nav_from: [owner-shop-settings]

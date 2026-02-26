@@ -58,8 +58,8 @@ techstack → database → usecases → common-modules → state-plan → plan
 ### SOT (Single Source of Truth)
 | 영역 | SOT | 동기화 스킬 |
 |------|-----|-----------|
-| 화면 메타정보 (ID, 이름, 네비게이션) | screen-registry.yaml | /sync |
-| 시각 디자인 (레이아웃, 스타일) | Pencil .pen 파일 | /design-sync |
+| 화면 메타정보 (ID, 이름, 역할) | screen-registry.yaml | /sync |
+| 시각 디자인 (레이아웃, 스타일, 네비게이션) | Pencil .pen 파일 | /design-sync |
 | 설계 문서 (DB, 유스케이스, 상태 등) | 각 문서 자체 | /doc-sync |
 
 ## Flutter / Dart 코딩 규칙
