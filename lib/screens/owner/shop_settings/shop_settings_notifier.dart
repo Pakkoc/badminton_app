@@ -5,6 +5,9 @@ import 'package:badminton_app/providers/supabase_provider.dart';
 import 'package:badminton_app/repositories/shop_repository.dart';
 import 'package:badminton_app/repositories/user_repository.dart';
 import 'package:badminton_app/screens/owner/shop_settings/shop_settings_state.dart';
+import 'package:badminton_app/services/address_search_service.dart';
+import 'package:badminton_app/services/geocoding_service.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 final shopSettingsNotifierProvider =
@@ -70,6 +73,31 @@ class ShopSettingsNotifier extends Notifier<ShopSettingsState> {
     );
   }
 
+  /// 주소 검색 바텀시트를 열고 결과를 state에 반영한다.
+  Future<void> searchAddress(BuildContext context) async {
+    const addressService = AddressSearchService();
+    final address = await addressService.searchAddress(context);
+
+    if (address == null || address.isEmpty) return;
+    if (state.shop == null) return;
+
+    state = state.copyWith(
+      shop: state.shop!.copyWith(address: address),
+    );
+
+    final geocoding = ref.read(geocodingServiceProvider);
+    final result = await geocoding.geocode(address);
+
+    if (result != null && state.shop != null) {
+      state = state.copyWith(
+        shop: state.shop!.copyWith(
+          latitude: result.latitude,
+          longitude: result.longitude,
+        ),
+      );
+    }
+  }
+
   void updatePhone(String phone) {
     if (state.shop == null) return;
     state = state.copyWith(
@@ -117,6 +145,8 @@ class ShopSettingsNotifier extends Notifier<ShopSettingsState> {
       final shopData = <String, dynamic>{
         'name': shop.name,
         'address': shop.address,
+        'latitude': shop.latitude,
+        'longitude': shop.longitude,
         'phone': shop.phone,
         'description': shop.description,
       };

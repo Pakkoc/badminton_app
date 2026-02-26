@@ -75,6 +75,8 @@ void main() {
       // 섹션 헤더 확인
       expect(find.text('샵 정보'), findsOneWidget);
       expect(find.text('사장님 정보'), findsOneWidget);
+      // 주소 검색 아이콘 확인
+      expect(find.byIcon(Icons.search), findsOneWidget);
     });
 
     testWidgets('저장 버튼이 표시된다', (tester) async {

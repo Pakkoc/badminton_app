@@ -54,6 +54,17 @@ class _ShopSettingsScreenState
       _initialized = true;
     }
 
+    // 주소 검색으로 변경 시 컨트롤러 동기화
+    ref.listen(
+      shopSettingsNotifierProvider
+          .select((s) => s.shop?.address),
+      (prev, next) {
+        if (next != null && _addressController.text != next) {
+          _addressController.text = next;
+        }
+      },
+    );
+
     ref.listen(
       shopSettingsNotifierProvider
           .select((s) => s.errorMessage),
@@ -171,10 +182,10 @@ class _ShopSettingsScreenState
                           validator: Validators.shopName,
                         ),
                         const SizedBox(height: 12),
-                        _SettingsField(
-                          label: '주소',
+                        _AddressSettingsField(
                           controller: _addressController,
-                          onChanged: notifier.updateAddress,
+                          onSearch: () =>
+                              notifier.searchAddress(context),
                         ),
                         const SizedBox(height: 12),
                         MapPreview(
@@ -385,6 +396,66 @@ class _PhoneSettingsField extends StatelessWidget {
               controller: controller,
               label: '',
               onChanged: onChanged,
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+}
+
+/// 주소 입력 필드 (읽기 전용) + 검색 아이콘.
+class _AddressSettingsField extends StatelessWidget {
+  const _AddressSettingsField({
+    required this.controller,
+    required this.onSearch,
+  });
+
+  final TextEditingController controller;
+  final VoidCallback onSearch;
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        const Text(
+          '주소',
+          style: TextStyle(
+            fontSize: 12,
+            color: Color(0xFF64748B),
+          ),
+        ),
+        const SizedBox(height: 6),
+        SizedBox(
+          height: 44,
+          child: TextFormField(
+            controller: controller,
+            readOnly: true,
+            onTap: onSearch,
+            decoration: InputDecoration(
+              hintStyle: const TextStyle(
+                fontSize: 14,
+                color: Color(0xFF94A3B8),
+              ),
+              filled: true,
+              fillColor: const Color(0xFFF1F5F9),
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(8),
+                borderSide: BorderSide.none,
+              ),
+              contentPadding: const EdgeInsets.symmetric(
+                horizontal: 16,
+                vertical: 12,
+              ),
+              suffixIcon: IconButton(
+                icon: const Icon(
+                  Icons.search,
+                  color: Color(0xFF94A3B8),
+                ),
+                tooltip: '주소 검색',
+                onPressed: onSearch,
+              ),
             ),
           ),
         ),

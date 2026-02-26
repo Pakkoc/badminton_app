@@ -1,7 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_naver_map/flutter_naver_map.dart';
-import 'package:meta/meta.dart';
 
 /// 네이버 지도 미리보기 위젯.
 ///
