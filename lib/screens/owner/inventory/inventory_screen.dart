@@ -142,17 +142,17 @@ class _InventoryScreenState
                     if (success &&
                         sheetContext.mounted) {
                       Navigator.of(sheetContext).pop();
-                      if (context.mounted) {
-                        AppToast.success(
-                          context,
-                          '상품이 추가되었습니다',
-                        );
-                      }
+                    }
+                    if (success && mounted) {
+                      AppToast.success(
+                        context,
+                        '상품이 추가되었습니다',
+                      );
                     }
                   },
                   style: ElevatedButton.styleFrom(
                     backgroundColor:
-                        const Color(0xFF16A34A),
+                        const Color(0xFFF97316),
                     foregroundColor:
                         const Color(0xFFFFFFFF),
                     shape: RoundedRectangleBorder(
@@ -161,6 +161,128 @@ class _InventoryScreenState
                     ),
                   ),
                   child: const Text('추가'),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  void _showEditItemDialog(InventoryItem item) {
+    final nameController =
+        TextEditingController(text: item.name);
+    final categoryController =
+        TextEditingController(text: item.category ?? '');
+    final quantityController =
+        TextEditingController(text: item.quantity.toString());
+    final formKey = GlobalKey<FormState>();
+
+    showModalBottomSheet<void>(
+      context: context,
+      isScrollControlled: true,
+      builder: (sheetContext) => Padding(
+        padding: EdgeInsets.only(
+          left: 24,
+          right: 24,
+          top: 24,
+          bottom: MediaQuery.of(sheetContext)
+                  .viewInsets
+                  .bottom +
+              24,
+        ),
+        child: Form(
+          key: formKey,
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                '상품 수정',
+                style: Theme.of(sheetContext)
+                    .textTheme
+                    .titleLarge,
+              ),
+              const SizedBox(height: 16),
+              TextFormField(
+                controller: nameController,
+                decoration: const InputDecoration(
+                  labelText: '상품명',
+                  border: OutlineInputBorder(),
+                ),
+                validator: Validators.productName,
+                autovalidateMode:
+                    AutovalidateMode.onUserInteraction,
+              ),
+              const SizedBox(height: 12),
+              TextFormField(
+                controller: categoryController,
+                decoration: const InputDecoration(
+                  labelText: '카테고리 (선택)',
+                  border: OutlineInputBorder(),
+                ),
+              ),
+              const SizedBox(height: 12),
+              TextFormField(
+                controller: quantityController,
+                decoration: const InputDecoration(
+                  labelText: '수량',
+                  border: OutlineInputBorder(),
+                ),
+                keyboardType: TextInputType.number,
+                validator: Validators.quantity,
+                autovalidateMode:
+                    AutovalidateMode.onUserInteraction,
+              ),
+              const SizedBox(height: 16),
+              SizedBox(
+                width: double.infinity,
+                height: 48,
+                child: ElevatedButton(
+                  onPressed: () async {
+                    if (!formKey.currentState!.validate()) {
+                      return;
+                    }
+                    final updates = <String, dynamic>{
+                      'name': nameController.text,
+                      'quantity': int.parse(
+                        quantityController.text,
+                      ),
+                    };
+                    final cat =
+                        categoryController.text.trim();
+                    updates['category'] =
+                        cat.isEmpty ? null : cat;
+
+                    await ref
+                        .read(
+                          inventoryNotifierProvider
+                              .notifier,
+                        )
+                        .updateItem(item.id, updates);
+
+                    if (sheetContext.mounted) {
+                      Navigator.of(sheetContext).pop();
+                    }
+                    if (mounted) {
+                      AppToast.success(
+                        context,
+                        '상품이 수정되었습니다',
+                      );
+                    }
+                  },
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor:
+                        const Color(0xFFF97316),
+                    foregroundColor:
+                        const Color(0xFFFFFFFF),
+                    shape: RoundedRectangleBorder(
+                      borderRadius:
+                          BorderRadius.circular(12),
+                    ),
+                  ),
+                  child: const Text('수정'),
                 ),
               ),
             ],
@@ -186,11 +308,11 @@ class _InventoryScreenState
     return Scaffold(
       appBar: AppBar(title: const Text('재고 관리')),
       body: _buildBody(state),
-      floatingActionButton: FloatingActionButton.extended(
+      floatingActionButton: FloatingActionButton(
         onPressed: _showAddItemDialog,
-        backgroundColor: const Color(0xFF16A34A),
-        icon: const Icon(Icons.add),
-        label: const Text('상품 추가'),
+        backgroundColor: const Color(0xFFF97316),
+        foregroundColor: Colors.white,
+        child: const Icon(Icons.add, size: 28),
       ),
     );
   }
@@ -218,34 +340,22 @@ class _InventoryScreenState
 
     return RefreshIndicator(
       onRefresh: _loadInventory,
-      child: ListView.builder(
+      child: GridView.builder(
         padding: const EdgeInsets.all(16),
+        gridDelegate:
+            const SliverGridDelegateWithFixedCrossAxisCount(
+          crossAxisCount: 2,
+          crossAxisSpacing: 12,
+          mainAxisSpacing: 12,
+          childAspectRatio: 0.75,
+        ),
         itemCount: state.items.length,
         itemBuilder: (context, index) {
           final item = state.items[index];
-          return _InventoryItemTile(
+          return _InventoryGridCard(
             item: item,
-            onIncrement: () {
-              ref
-                  .read(inventoryNotifierProvider.notifier)
-                  .updateItem(
-                    item.id,
-                    {'quantity': item.quantity + 1},
-                  );
-            },
-            onDecrement: () {
-              if (item.quantity > 0) {
-                ref
-                    .read(
-                      inventoryNotifierProvider.notifier,
-                    )
-                    .updateItem(
-                      item.id,
-                      {'quantity': item.quantity - 1},
-                    );
-              }
-            },
-            onDelete: () {
+            onTap: () => _showEditItemDialog(item),
+            onLongPress: () {
               showConfirmDialog(
                 context: context,
                 title: '상품 삭제',
@@ -267,173 +377,128 @@ class _InventoryScreenState
   }
 }
 
-class _InventoryItemTile extends StatelessWidget {
-  const _InventoryItemTile({
+class _InventoryGridCard extends StatelessWidget {
+  const _InventoryGridCard({
     required this.item,
-    required this.onIncrement,
-    required this.onDecrement,
-    required this.onDelete,
+    required this.onTap,
+    required this.onLongPress,
   });
 
   final InventoryItem item;
-  final VoidCallback onIncrement;
-  final VoidCallback onDecrement;
-  final VoidCallback onDelete;
+  final VoidCallback onTap;
+  final VoidCallback onLongPress;
 
   @override
   Widget build(BuildContext context) {
-    return Dismissible(
-      key: Key(item.id),
-      direction: DismissDirection.endToStart,
-      background: Container(
-        alignment: Alignment.centerRight,
-        padding: const EdgeInsets.only(right: 16),
-        color: Theme.of(context).colorScheme.error,
-        child: const Icon(
-          Icons.delete,
+    return GestureDetector(
+      onTap: onTap,
+      onLongPress: onLongPress,
+      child: Container(
+        decoration: BoxDecoration(
           color: Colors.white,
+          borderRadius: BorderRadius.circular(12),
+          border: Border.all(
+            color: const Color(0xFFE2E8F0),
+          ),
         ),
-      ),
-      confirmDismiss: (_) async {
-        onDelete();
-        return false;
-      },
-      child: Card(
-        margin: const EdgeInsets.only(bottom: 8),
-        child: Padding(
-          padding: const EdgeInsets.all(12),
-          child: Row(
-            children: [
-              _buildImage(context),
-              const SizedBox(width: 12),
-              Expanded(
-                child: Column(
-                  crossAxisAlignment:
-                      CrossAxisAlignment.start,
-                  children: [
+        clipBehavior: Clip.hardEdge,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            _CardImage(imageUrl: item.imageUrl),
+            Padding(
+              padding: const EdgeInsets.all(8),
+              child: Column(
+                crossAxisAlignment:
+                    CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    item.name,
+                    style: Theme.of(context)
+                        .textTheme
+                        .bodyMedium
+                        ?.copyWith(
+                      fontWeight: FontWeight.w500,
+                      color: const Color(0xFF0F172A),
+                    ),
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                  if (item.category != null) ...[
+                    const SizedBox(height: 2),
                     Text(
-                      item.name,
+                      item.category!,
                       style: Theme.of(context)
                           .textTheme
-                          .titleSmall,
-                    ),
-                    if (item.category != null)
-                      Text(
-                        item.category!,
-                        style: Theme.of(context)
-                            .textTheme
-                            .bodySmall
-                            ?.copyWith(
-                          color: Theme.of(context)
-                              .colorScheme
-                              .onSurface
-                              .withValues(alpha: 0.6),
-                        ),
+                          .bodySmall
+                          ?.copyWith(
+                        color: const Color(0xFF94A3B8),
                       ),
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                    ),
                   ],
-                ),
+                  const SizedBox(height: 4),
+                  Text(
+                    '${item.quantity}개',
+                    style: Theme.of(context)
+                        .textTheme
+                        .bodySmall
+                        ?.copyWith(
+                      fontWeight: FontWeight.w600,
+                      color: const Color(0xFF475569),
+                    ),
+                  ),
+                ],
               ),
-              _QuantityControl(
-                quantity: item.quantity,
-                onIncrement: onIncrement,
-                onDecrement: onDecrement,
-              ),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-
-  Widget _buildImage(BuildContext context) {
-    if (item.imageUrl != null) {
-      return ClipRRect(
-        borderRadius: BorderRadius.circular(8),
-        child: CachedNetworkImage(
-          imageUrl: item.imageUrl!,
-          width: 48,
-          height: 48,
-          fit: BoxFit.cover,
-          placeholder: (ctx, url) => Container(
-            width: 48,
-            height: 48,
-            color: Theme.of(context)
-                .colorScheme
-                .surfaceContainerHighest,
-            child: const Icon(Icons.image, size: 24),
-          ),
-          errorWidget: (ctx, url, err) => Container(
-            width: 48,
-            height: 48,
-            color: Theme.of(context)
-                .colorScheme
-                .surfaceContainerHighest,
-            child: const Icon(
-              Icons.broken_image,
-              size: 24,
             ),
-          ),
+          ],
         ),
-      );
-    }
-    return Container(
-      width: 48,
-      height: 48,
-      decoration: BoxDecoration(
-        color: Theme.of(context)
-            .colorScheme
-            .surfaceContainerHighest,
-        borderRadius: BorderRadius.circular(8),
       ),
-      child: const Icon(Icons.inventory_2, size: 24),
     );
   }
 }
 
-class _QuantityControl extends StatelessWidget {
-  const _QuantityControl({
-    required this.quantity,
-    required this.onIncrement,
-    required this.onDecrement,
-  });
+class _CardImage extends StatelessWidget {
+  const _CardImage({required this.imageUrl});
 
-  final int quantity;
-  final VoidCallback onIncrement;
-  final VoidCallback onDecrement;
+  final String? imageUrl;
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        IconButton(
-          onPressed: onDecrement,
-          icon: const Icon(Icons.remove_circle_outline),
-          iconSize: 20,
-          constraints: const BoxConstraints(
-            minWidth: 32,
-            minHeight: 32,
-          ),
+    if (imageUrl != null) {
+      return ClipRRect(
+        borderRadius: const BorderRadius.vertical(
+          top: Radius.circular(12),
         ),
-        SizedBox(
-          width: 32,
-          child: Text(
-            '$quantity',
-            textAlign: TextAlign.center,
-            style:
-                Theme.of(context).textTheme.titleSmall,
-          ),
+        child: CachedNetworkImage(
+          imageUrl: imageUrl!,
+          width: double.infinity,
+          height: 120,
+          fit: BoxFit.cover,
+          placeholder: (ctx, url) => _placeholder(),
+          errorWidget: (ctx, url, err) => _placeholder(),
         ),
-        IconButton(
-          onPressed: onIncrement,
-          icon: const Icon(Icons.add_circle_outline),
-          iconSize: 20,
-          constraints: const BoxConstraints(
-            minWidth: 32,
-            minHeight: 32,
-          ),
+      );
+    }
+    return _placeholder();
+  }
+
+  Widget _placeholder() {
+    return Container(
+      width: double.infinity,
+      height: 120,
+      decoration: const BoxDecoration(
+        color: Color(0xFFF1F5F9),
+        borderRadius: BorderRadius.vertical(
+          top: Radius.circular(12),
         ),
-      ],
+      ),
+      child: const Icon(
+        Icons.inventory_2,
+        size: 40,
+        color: Color(0xFF94A3B8),
+      ),
     );
   }
 }

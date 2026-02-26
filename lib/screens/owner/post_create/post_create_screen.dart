@@ -124,8 +124,9 @@ class PostCreateScreen extends ConsumerWidget {
                         }
                       },
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: const Color(0xFF16A34A),
+                  backgroundColor: const Color(0xFFF97316),
                   foregroundColor: Colors.white,
+                  minimumSize: const Size.fromHeight(48),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(12),
                   ),
@@ -143,10 +144,10 @@ class PostCreateScreen extends ConsumerWidget {
                         ),
                       )
                     : const Text(
-                        '등록',
+                        '등록하기',
                         style: TextStyle(
                           fontSize: 16,
-                          fontWeight: FontWeight.w600,
+                          fontWeight: FontWeight.bold,
                         ),
                       ),
               ),
