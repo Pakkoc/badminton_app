@@ -65,8 +65,11 @@ void main() {
       // Assert
       expect(find.text('샵 이름'), findsOneWidget);
       expect(find.text('주소'), findsOneWidget);
-      expect(find.text('전화번호'), findsOneWidget);
+      expect(find.text('전화번호'), findsWidgets);
       expect(find.text('소개글'), findsOneWidget);
+      // 섹션 헤더 확인
+      expect(find.text('샵 정보'), findsOneWidget);
+      expect(find.text('사장님 정보'), findsOneWidget);
     });
 
     testWidgets('저장 버튼이 표시된다', (tester) async {
@@ -162,6 +165,12 @@ class _FakeShopSettingsNotifier
 
   @override
   void updateDescription(String description) {}
+
+  @override
+  void updateOwnerName(String name) {}
+
+  @override
+  void updateOwnerPhone(String phone) {}
 
   @override
   Future<bool> submit() async => true;
