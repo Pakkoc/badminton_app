@@ -55,7 +55,8 @@ lib/
 │   ├── status_badge.dart              # [M9] 상태 뱃지
 │   ├── confirm_dialog.dart            # [M9] 확인 다이얼로그
 │   ├── toast.dart                     # [M9] 토스트/스낵바
-│   └── phone_input_field.dart         # [M9] 전화번호 입력 필드
+│   ├── phone_input_field.dart         # [M9] 전화번호 입력 필드
+│   └── map_preview.dart              # [M9] 지도 미리보기
 └── screens/
     ├── auth/                          # 인증 화면들
     ├── customer/                      # 고객 화면들
@@ -325,6 +326,7 @@ lib/
 | `ConfirmDialog` | confirm_dialog.dart | 확인/취소 다이얼로그 | UC-5, 8, 9 |
 | `AppToast` | toast.dart | 성공/에러 토스트 메시지 | UC-1, 2, 3, 4, 7, 8, 9 |
 | `PhoneInputField` | phone_input_field.dart | 전화번호 입력 (자동 하이픈) | UC-1, 2, 3, 9 |
+| `MapPreview` | map_preview.dart | 네이버 지도 미리보기 (좌표→마커, 미입력 시 안내) | UC-2, 9 |
 
 ### EmptyState 위젯 인터페이스
 
@@ -476,7 +478,7 @@ test/
 
 | 질문 | 답변 |
 |------|------|
-| 과잉 설계된 모듈이 없는가? | **예** — 지도/Geocoding은 화면 수준(UC-2, UC-6)에서 직접 사용하므로 별도 공통 모듈로 분리하지 않음. QR 스캔도 UC-3, UC-4 화면에서 직접 처리 |
+| 과잉 설계된 모듈이 없는가? | **예** — Geocoding은 화면 수준(UC-2, UC-6)에서 직접 사용. 지도 미리보기(`MapPreview`)는 샵 등록/설정 2개 화면에서 공유하므로 M9로 분리. QR 스캔도 UC-3, UC-4 화면에서 직접 처리 |
 | 문서에 언급되지 않은 추측성 모듈이 포함되지 않았는가? | **예** — 분석/로깅, 다국어, 캐시 레이어 등 기획/유스케이스에 없는 모듈은 제외함 |
 
 ---
