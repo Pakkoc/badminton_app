@@ -46,7 +46,16 @@ class _OrderCreateScreenState
     });
 
     return Scaffold(
-      appBar: AppBar(title: const Text('작업 접수')),
+      appBar: AppBar(
+        title: const Text(
+          '작업 접수',
+          style: TextStyle(
+            fontSize: 20,
+            fontWeight: FontWeight.bold,
+            color: Color(0xFF0F172A),
+          ),
+        ),
+      ),
       body: state.isSubmitting
           ? const LoadingIndicator()
           : Padding(
@@ -63,15 +72,18 @@ class _OrderCreateScreenState
                         // TODO: QR 스캔 기능 구현
                       },
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: const Color(0xFFF97316),
+                        backgroundColor:
+                            const Color(0xFFF97316),
                         foregroundColor: Colors.white,
                         shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(16),
+                          borderRadius:
+                              BorderRadius.circular(16),
                         ),
                         padding: EdgeInsets.zero,
                       ),
                       child: const Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
+                        mainAxisAlignment:
+                            MainAxisAlignment.center,
                         children: [
                           Icon(Icons.qr_code_2, size: 24),
                           SizedBox(width: 8),
@@ -91,7 +103,9 @@ class _OrderCreateScreenState
                   const Row(
                     children: [
                       Expanded(
-                        child: Divider(color: Color(0xFFE2E8F0)),
+                        child: Divider(
+                          color: Color(0xFFE2E8F0),
+                        ),
                       ),
                       SizedBox(width: 12),
                       Text(
@@ -103,28 +117,53 @@ class _OrderCreateScreenState
                       ),
                       SizedBox(width: 12),
                       Expanded(
-                        child: Divider(color: Color(0xFFE2E8F0)),
+                        child: Divider(
+                          color: Color(0xFFE2E8F0),
+                        ),
                       ),
                     ],
                   ),
                   const SizedBox(height: 16),
-                  TextField(
-                    controller: _searchController,
-                    decoration: const InputDecoration(
-                      labelText: '회원 검색',
-                      hintText: '이름 또는 전화번호',
-                      prefixIcon: Icon(Icons.search),
-                      border: OutlineInputBorder(),
+                  // 회원 검색 입력
+                  SizedBox(
+                    height: 48,
+                    child: TextField(
+                      controller: _searchController,
+                      decoration: InputDecoration(
+                        hintText: '회원 이름 또는 연락처 검색',
+                        hintStyle: const TextStyle(
+                          fontSize: 14,
+                          color: Color(0xFF94A3B8),
+                        ),
+                        prefixIcon: const Icon(
+                          Icons.search,
+                          size: 16,
+                          color: Color(0xFF94A3B8),
+                        ),
+                        filled: true,
+                        fillColor: const Color(0xFFF1F5F9),
+                        border: OutlineInputBorder(
+                          borderRadius:
+                              BorderRadius.circular(8),
+                          borderSide: BorderSide.none,
+                        ),
+                        contentPadding:
+                            const EdgeInsets.symmetric(
+                          horizontal: 16,
+                        ),
+                      ),
+                      onChanged: (query) {
+                        ref
+                            .read(
+                              orderCreateNotifierProvider
+                                  .notifier,
+                            )
+                            .searchMembers(
+                              widget.shopId,
+                              query,
+                            );
+                      },
                     ),
-                    onChanged: (query) {
-                      ref
-                          .read(orderCreateNotifierProvider
-                              .notifier)
-                          .searchMembers(
-                            widget.shopId,
-                            query,
-                          );
-                    },
                   ),
                   if (state.searchResults.isNotEmpty)
                     _SearchResultsList(
@@ -132,8 +171,9 @@ class _OrderCreateScreenState
                       onSelect: (member) {
                         ref
                             .read(
-                                orderCreateNotifierProvider
-                                    .notifier)
+                              orderCreateNotifierProvider
+                                  .notifier,
+                            )
                             .selectMember(member);
                         _searchController.clear();
                       },
@@ -146,20 +186,50 @@ class _OrderCreateScreenState
                     ),
                   ],
                   const SizedBox(height: 16),
-                  TextField(
-                    controller: _memoController,
-                    decoration: const InputDecoration(
-                      labelText: '메모',
-                      hintText: '작업 내용을 입력하세요',
-                      border: OutlineInputBorder(),
+                  // 메모 라벨
+                  const Text(
+                    '메모',
+                    style: TextStyle(
+                      fontSize: 14,
+                      fontWeight: FontWeight.w600,
+                      color: Color(0xFF475569),
                     ),
-                    maxLines: 3,
-                    onChanged: (memo) {
-                      ref
-                          .read(orderCreateNotifierProvider
-                              .notifier)
-                          .updateMemo(memo);
-                    },
+                  ),
+                  const SizedBox(height: 12),
+                  // 메모 입력
+                  SizedBox(
+                    height: 80,
+                    child: TextField(
+                      controller: _memoController,
+                      decoration: InputDecoration(
+                        hintText: '메모 (선택사항)',
+                        hintStyle: const TextStyle(
+                          fontSize: 14,
+                          color: Color(0xFF94A3B8),
+                        ),
+                        filled: true,
+                        fillColor: const Color(0xFFF1F5F9),
+                        border: OutlineInputBorder(
+                          borderRadius:
+                              BorderRadius.circular(8),
+                          borderSide: BorderSide.none,
+                        ),
+                        contentPadding:
+                            const EdgeInsets.all(16),
+                      ),
+                      maxLines: null,
+                      expands: true,
+                      textAlignVertical:
+                          TextAlignVertical.top,
+                      onChanged: (memo) {
+                        ref
+                            .read(
+                              orderCreateNotifierProvider
+                                  .notifier,
+                            )
+                            .updateMemo(memo);
+                      },
+                    ),
                   ),
                   const SizedBox(height: 24),
                   ElevatedButton(
@@ -167,17 +237,21 @@ class _OrderCreateScreenState
                         ? () {
                             ref
                                 .read(
-                                    orderCreateNotifierProvider
-                                        .notifier)
+                                  orderCreateNotifierProvider
+                                      .notifier,
+                                )
                                 .submit(widget.shopId);
                           }
                         : null,
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: const Color(0xFFF97316),
+                      backgroundColor:
+                          const Color(0xFFF97316),
                       foregroundColor: Colors.white,
-                      minimumSize: const Size.fromHeight(52),
+                      minimumSize:
+                          const Size.fromHeight(48),
                       shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(12),
+                        borderRadius:
+                            BorderRadius.circular(12),
                       ),
                     ),
                     child: const Text(
@@ -238,23 +312,39 @@ class _SelectedMemberCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      color: Theme.of(context)
-          .colorScheme
-          .primaryContainer,
-      child: Padding(
-        padding: const EdgeInsets.all(12),
-        child: Row(
-          children: [
-            const Icon(Icons.person),
-            const SizedBox(width: 8),
-            Text(
-              '$name ($phone)',
-              style:
-                  Theme.of(context).textTheme.bodyLarge,
+    return Container(
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(16),
+        border: Border.all(color: const Color(0xFFE2E8F0)),
+      ),
+      child: Row(
+        children: [
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  name,
+                  style: const TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.w600,
+                    color: Color(0xFF0F172A),
+                  ),
+                ),
+                const SizedBox(height: 8),
+                Text(
+                  phone,
+                  style: const TextStyle(
+                    fontSize: 14,
+                    color: Color(0xFF475569),
+                  ),
+                ),
+              ],
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }
