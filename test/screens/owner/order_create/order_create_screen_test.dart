@@ -100,9 +100,9 @@ void main() {
         ),
       );
 
-      // Assert
+      // Assert: "작업 접수하기" 텍스트를 포함한 ElevatedButton을 찾아 비활성화 확인
       final button = tester.widget<ElevatedButton>(
-        find.byType(ElevatedButton),
+        find.widgetWithText(ElevatedButton, '작업 접수하기'),
       );
       expect(button.onPressed, isNull);
     });
@@ -128,9 +128,9 @@ void main() {
         ),
       );
 
-      // Assert
+      // Assert: "작업 접수하기" 텍스트를 포함한 ElevatedButton을 찾아 활성화 확인
       final button = tester.widget<ElevatedButton>(
-        find.byType(ElevatedButton),
+        find.widgetWithText(ElevatedButton, '작업 접수하기'),
       );
       expect(button.onPressed, isNotNull);
     });

@@ -100,11 +100,11 @@ void main() {
         ),
       );
 
-      // Assert
-      expect(find.text('전체'), findsOneWidget);
-      expect(find.text('접수됨'), findsOneWidget);
-      expect(find.text('작업중'), findsOneWidget);
-      expect(find.text('완료'), findsOneWidget);
+      // Assert: 필터 탭에 카운트가 포함된 텍스트 형식 ("전체 (0)", "접수됨 0" 등)
+      expect(find.text('전체 (0)'), findsOneWidget);
+      expect(find.text('접수됨 0'), findsOneWidget);
+      expect(find.text('작업중 0'), findsOneWidget);
+      expect(find.text('완료 0'), findsOneWidget);
     });
 
     testWidgets('작업 목록을 표시한다', (tester) async {

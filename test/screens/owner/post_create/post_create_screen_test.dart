@@ -57,13 +57,13 @@ void main() {
     );
 
     testWidgets(
-      '등록 버튼이 표시된다',
+      '등록하기 버튼이 표시된다',
       (tester) async {
         // Arrange & Act
         await tester.pumpWidget(createApp());
 
         // Assert
-        expect(find.text('등록'), findsOneWidget);
+        expect(find.text('등록하기'), findsOneWidget);
       },
     );
 
