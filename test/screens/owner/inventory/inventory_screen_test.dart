@@ -1,13 +1,36 @@
+import 'package:badminton_app/providers/supabase_provider.dart';
+import 'package:badminton_app/repositories/shop_repository.dart';
 import 'package:badminton_app/screens/owner/inventory/inventory_notifier.dart';
 import 'package:badminton_app/screens/owner/inventory/inventory_screen.dart';
 import 'package:badminton_app/screens/owner/inventory/inventory_state.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:mocktail/mocktail.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
 import '../../../helpers/fixtures.dart';
 import '../../../helpers/test_app.dart';
 
+class _MockSupabaseClient extends Mock implements SupabaseClient {}
+
+class _MockGoTrueClient extends Mock implements GoTrueClient {}
+
+class _MockShopRepository extends Mock implements ShopRepository {}
+
 void main() {
+  late _MockSupabaseClient mockSupabase;
+  late _MockGoTrueClient mockAuth;
+  late _MockShopRepository mockShopRepo;
+
+  setUp(() {
+    mockSupabase = _MockSupabaseClient();
+    mockAuth = _MockGoTrueClient();
+    mockShopRepo = _MockShopRepository();
+
+    when(() => mockSupabase.auth).thenReturn(mockAuth);
+    when(() => mockAuth.currentUser).thenReturn(null);
+  });
+
   group('InventoryScreen', () {
     testWidgets('로딩 중일 때 로딩 인디케이터를 표시한다', (tester) async {
       // Arrange & Act
@@ -15,6 +38,8 @@ void main() {
         tester,
         child: const InventoryScreen(),
         overrides: [
+          supabaseProvider.overrideWithValue(mockSupabase),
+          shopRepositoryProvider.overrideWithValue(mockShopRepo),
           inventoryNotifierProvider.overrideWith(
             () => _FakeInventoryNotifier(
               const InventoryState(isLoading: true),
@@ -36,6 +61,8 @@ void main() {
         tester,
         child: const InventoryScreen(),
         overrides: [
+          supabaseProvider.overrideWithValue(mockSupabase),
+          shopRepositoryProvider.overrideWithValue(mockShopRepo),
           inventoryNotifierProvider.overrideWith(
             () => _FakeInventoryNotifier(
               const InventoryState(),
@@ -55,6 +82,8 @@ void main() {
         tester,
         child: const InventoryScreen(),
         overrides: [
+          supabaseProvider.overrideWithValue(mockSupabase),
+          shopRepositoryProvider.overrideWithValue(mockShopRepo),
           inventoryNotifierProvider.overrideWith(
             () => _FakeInventoryNotifier(
               InventoryState(items: [testInventoryItem]),
@@ -75,6 +104,8 @@ void main() {
         tester,
         child: const InventoryScreen(),
         overrides: [
+          supabaseProvider.overrideWithValue(mockSupabase),
+          shopRepositoryProvider.overrideWithValue(mockShopRepo),
           inventoryNotifierProvider.overrideWith(
             () => _FakeInventoryNotifier(
               const InventoryState(),
@@ -94,6 +125,8 @@ void main() {
         tester,
         child: const InventoryScreen(),
         overrides: [
+          supabaseProvider.overrideWithValue(mockSupabase),
+          shopRepositoryProvider.overrideWithValue(mockShopRepo),
           inventoryNotifierProvider.overrideWith(
             () => _FakeInventoryNotifier(
               InventoryState(items: [testInventoryItem]),
@@ -118,6 +151,8 @@ void main() {
         tester,
         child: const InventoryScreen(),
         overrides: [
+          supabaseProvider.overrideWithValue(mockSupabase),
+          shopRepositoryProvider.overrideWithValue(mockShopRepo),
           inventoryNotifierProvider.overrideWith(
             () => _FakeInventoryNotifier(
               const InventoryState(
@@ -141,6 +176,8 @@ void main() {
         tester,
         child: const InventoryScreen(),
         overrides: [
+          supabaseProvider.overrideWithValue(mockSupabase),
+          shopRepositoryProvider.overrideWithValue(mockShopRepo),
           inventoryNotifierProvider.overrideWith(
             () => _FakeInventoryNotifier(
               InventoryState(items: [testInventoryItem]),
