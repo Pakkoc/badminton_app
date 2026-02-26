@@ -76,7 +76,10 @@ class _ShopSettingsScreenState
         children: [
           Expanded(
             child: SingleChildScrollView(
-              padding: const EdgeInsets.all(24),
+              padding: const EdgeInsets.symmetric(
+                vertical: 12,
+                horizontal: 16,
+              ),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -150,45 +153,45 @@ class _ShopSettingsScreenState
                   ),
                   const SizedBox(height: 12),
 
-                  // 샵 정보 필드
-                  TextFormField(
-                    controller: _nameController,
-                    decoration: const InputDecoration(
-                      labelText: '샵 이름',
-                      border: OutlineInputBorder(),
+                  // 샵 정보 카드
+                  Container(
+                    padding: const EdgeInsets.all(14),
+                    decoration: BoxDecoration(
+                      color: const Color(0xFFFFFFFF),
+                      borderRadius: BorderRadius.circular(16),
                     ),
-                    validator: Validators.shopName,
-                    autovalidateMode:
-                        AutovalidateMode.onUserInteraction,
-                    onChanged: notifier.updateShopName,
-                  ),
-                  const SizedBox(height: 16),
-                  TextFormField(
-                    controller: _addressController,
-                    decoration: const InputDecoration(
-                      labelText: '주소',
-                      border: OutlineInputBorder(),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        _SettingsField(
+                          label: '샵 이름',
+                          controller: _nameController,
+                          onChanged: notifier.updateShopName,
+                          validator: Validators.shopName,
+                        ),
+                        const SizedBox(height: 12),
+                        _SettingsField(
+                          label: '주소',
+                          controller: _addressController,
+                          onChanged: notifier.updateAddress,
+                        ),
+                        const SizedBox(height: 12),
+                        _PhoneSettingsField(
+                          label: '전화번호',
+                          controller: _phoneController,
+                          onChanged: notifier.updatePhone,
+                        ),
+                        const SizedBox(height: 12),
+                        _SettingsField(
+                          label: '소개글',
+                          controller: _descriptionController,
+                          onChanged: notifier.updateDescription,
+                          maxLines: 4,
+                          height: 80,
+                          validator: Validators.description,
+                        ),
+                      ],
                     ),
-                    onChanged: notifier.updateAddress,
-                  ),
-                  const SizedBox(height: 16),
-                  PhoneInputField(
-                    controller: _phoneController,
-                    onChanged: notifier.updatePhone,
-                  ),
-                  const SizedBox(height: 16),
-                  TextFormField(
-                    controller: _descriptionController,
-                    decoration: const InputDecoration(
-                      labelText: '소개글',
-                      border: OutlineInputBorder(),
-                      alignLabelWithHint: true,
-                    ),
-                    maxLines: 4,
-                    validator: Validators.description,
-                    autovalidateMode:
-                        AutovalidateMode.onUserInteraction,
-                    onChanged: notifier.updateDescription,
                   ),
                   const SizedBox(height: 24),
 
@@ -199,19 +202,29 @@ class _ShopSettingsScreenState
                   ),
                   const SizedBox(height: 12),
 
-                  // 사장님 정보 필드
-                  TextFormField(
-                    controller: _ownerNameController,
-                    decoration: const InputDecoration(
-                      labelText: '이름',
-                      border: OutlineInputBorder(),
+                  // 사장님 정보 카드
+                  Container(
+                    padding: const EdgeInsets.all(14),
+                    decoration: BoxDecoration(
+                      color: const Color(0xFFFFFFFF),
+                      borderRadius: BorderRadius.circular(16),
                     ),
-                    onChanged: notifier.updateOwnerName,
-                  ),
-                  const SizedBox(height: 16),
-                  PhoneInputField(
-                    controller: _ownerPhoneController,
-                    onChanged: notifier.updateOwnerPhone,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        _SettingsField(
+                          label: '이름',
+                          controller: _ownerNameController,
+                          onChanged: notifier.updateOwnerName,
+                        ),
+                        const SizedBox(height: 12),
+                        _PhoneSettingsField(
+                          label: '전화번호',
+                          controller: _ownerPhoneController,
+                          onChanged: notifier.updateOwnerPhone,
+                        ),
+                      ],
+                    ),
                   ),
                   const SizedBox(height: 8),
                 ],
@@ -235,6 +248,141 @@ class _ShopSettingsScreenState
           ),
         ],
       ),
+    );
+  }
+}
+
+class _SettingsField extends StatelessWidget {
+  const _SettingsField({
+    required this.label,
+    required this.controller,
+    this.onChanged,
+    this.maxLines = 1,
+    this.height = 44,
+    this.validator,
+  });
+
+  final String label;
+  final TextEditingController controller;
+  final ValueChanged<String>? onChanged;
+  final int maxLines;
+  final double height;
+  final String? Function(String?)? validator;
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          label,
+          style: const TextStyle(
+            fontSize: 12,
+            color: Color(0xFF64748B),
+          ),
+        ),
+        const SizedBox(height: 6),
+        SizedBox(
+          height: height,
+          child: TextFormField(
+            controller: controller,
+            onChanged: onChanged,
+            maxLines: maxLines,
+            validator: validator,
+            autovalidateMode: AutovalidateMode.onUserInteraction,
+            decoration: InputDecoration(
+              hintStyle: const TextStyle(
+                fontSize: 14,
+                color: Color(0xFF94A3B8),
+              ),
+              filled: true,
+              fillColor: const Color(0xFFF1F5F9),
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(8),
+                borderSide: BorderSide.none,
+              ),
+              contentPadding: const EdgeInsets.symmetric(
+                horizontal: 16,
+                vertical: 12,
+              ),
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+}
+
+/// PhoneInputField를 Pencil 스타일 라벨과 함께 감싸는 위젯.
+/// PhoneInputField 내부의 포맷팅 로직을 유지하면서
+/// 외부 라벨을 Pencil 디자인에 맞게 표현한다.
+class _PhoneSettingsField extends StatelessWidget {
+  const _PhoneSettingsField({
+    required this.label,
+    required this.controller,
+    this.onChanged,
+  });
+
+  final String label;
+  final TextEditingController controller;
+  final ValueChanged<String>? onChanged;
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          label,
+          style: const TextStyle(
+            fontSize: 12,
+            color: Color(0xFF64748B),
+          ),
+        ),
+        const SizedBox(height: 6),
+        Theme(
+          data: Theme.of(context).copyWith(
+            inputDecorationTheme: const InputDecorationTheme(
+              filled: true,
+              fillColor: Color(0xFFF1F5F9),
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.all(Radius.circular(8)),
+                borderSide: BorderSide.none,
+              ),
+              enabledBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.all(Radius.circular(8)),
+                borderSide: BorderSide.none,
+              ),
+              focusedBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.all(Radius.circular(8)),
+                borderSide: BorderSide.none,
+              ),
+              errorBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.all(Radius.circular(8)),
+                borderSide: BorderSide(color: Color(0xFFEF4444)),
+              ),
+              focusedErrorBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.all(Radius.circular(8)),
+                borderSide: BorderSide(color: Color(0xFFEF4444)),
+              ),
+              contentPadding: EdgeInsets.symmetric(
+                horizontal: 16,
+                vertical: 12,
+              ),
+              labelStyle: TextStyle(fontSize: 0),
+              floatingLabelBehavior: FloatingLabelBehavior.never,
+            ),
+          ),
+          child: SizedBox(
+            height: 44,
+            child: PhoneInputField(
+              controller: controller,
+              label: '',
+              onChanged: onChanged,
+            ),
+          ),
+        ),
+      ],
     );
   }
 }
@@ -317,7 +465,7 @@ class _SaveButton extends StatelessWidget {
                     color: Colors.white,
                   ),
                 )
-              : const Text('저장'),
+              : const Text('저장하기'),
         ),
       ),
     );
