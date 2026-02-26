@@ -179,7 +179,7 @@ void main() {
         expect(notifier.isValid, isFalse);
       });
 
-      test('좌표가 0이면 false를 반환한다', () {
+      test('주소가 없으면 false를 반환한다', () {
         // Arrange
         final notifier = container.read(
           shopSignupNotifierProvider.notifier,
@@ -187,7 +187,6 @@ void main() {
 
         // Act
         notifier.updateShopName('배드민턴 프로샵');
-        notifier.updateAddress('서울시 강남구');
         notifier.updatePhone('010-1234-5678');
 
         // Assert

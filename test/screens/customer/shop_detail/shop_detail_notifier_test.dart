@@ -1,6 +1,7 @@
 import 'package:badminton_app/models/member.dart';
 import 'package:badminton_app/providers/auth_provider.dart';
 import 'package:badminton_app/repositories/member_repository.dart';
+import 'package:badminton_app/repositories/order_repository.dart';
 import 'package:badminton_app/repositories/post_repository.dart';
 import 'package:badminton_app/repositories/shop_repository.dart';
 import 'package:badminton_app/screens/customer/shop_detail/shop_detail_notifier.dart';
@@ -18,12 +19,16 @@ class MockMemberRepository extends Mock
 
 class MockPostRepository extends Mock implements PostRepository {}
 
+class MockOrderRepository extends Mock
+    implements OrderRepository {}
+
 class FakeMember extends Fake implements Member {}
 
 void main() {
   late MockShopRepository mockShopRepository;
   late MockMemberRepository mockMemberRepository;
   late MockPostRepository mockPostRepository;
+  late MockOrderRepository mockOrderRepository;
   late ProviderContainer container;
 
   setUpAll(() {
@@ -34,6 +39,7 @@ void main() {
     mockShopRepository = MockShopRepository();
     mockMemberRepository = MockMemberRepository();
     mockPostRepository = MockPostRepository();
+    mockOrderRepository = MockOrderRepository();
     container = ProviderContainer(
       overrides: [
         shopRepositoryProvider
@@ -42,6 +48,8 @@ void main() {
             .overrideWithValue(mockMemberRepository),
         postRepositoryProvider
             .overrideWithValue(mockPostRepository),
+        orderRepositoryProvider
+            .overrideWithValue(mockOrderRepository),
         currentUserProvider.overrideWith(
           (ref) => Future.value(testUser),
         ),
@@ -88,6 +96,9 @@ void main() {
           'event',
         ),
       ).thenAnswer((_) async => [testPostEvent]);
+      when(
+        () => mockOrderRepository.getByShop(testShop.id),
+      ).thenAnswer((_) async => []);
 
       final notifier = container.read(
         shopDetailNotifierProvider.notifier,
