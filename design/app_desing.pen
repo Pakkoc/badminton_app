@@ -3937,7 +3937,7 @@
       "y": 2248,
       "name": "Shop Detail",
       "width": 390,
-      "height": 844,
+      "height": 1015,
       "fill": "$--background",
       "layout": "vertical",
       "children": [
