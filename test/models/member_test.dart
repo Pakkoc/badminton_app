@@ -1,5 +1,5 @@
-import 'package:flutter_test/flutter_test.dart';
 import 'package:badminton_app/models/member.dart';
+import 'package:flutter_test/flutter_test.dart';
 
 void main() {
   group('Member', () {

@@ -1,8 +1,6 @@
 import 'package:badminton_app/providers/auth_provider.dart';
 import 'package:badminton_app/repositories/auth_repository.dart';
 import 'package:badminton_app/screens/customer/mypage/mypage_screen.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 

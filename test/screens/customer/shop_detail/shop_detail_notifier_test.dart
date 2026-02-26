@@ -1,5 +1,4 @@
 import 'package:badminton_app/models/member.dart';
-import 'package:badminton_app/models/user.dart';
 import 'package:badminton_app/providers/auth_provider.dart';
 import 'package:badminton_app/repositories/member_repository.dart';
 import 'package:badminton_app/repositories/post_repository.dart';

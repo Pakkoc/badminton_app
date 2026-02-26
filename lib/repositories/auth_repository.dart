@@ -1,7 +1,6 @@
 import 'package:badminton_app/core/error/error_handler.dart';
 import 'package:flutter_naver_login/flutter_naver_login.dart';
 import 'package:flutter_naver_login/interface/types/naver_login_status.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 /// 인증을 관리하는 리포지토리.

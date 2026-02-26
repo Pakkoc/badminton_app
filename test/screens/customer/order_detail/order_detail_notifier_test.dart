@@ -1,7 +1,5 @@
 import 'dart:async';
 
-import 'package:badminton_app/models/order.dart';
-import 'package:badminton_app/models/shop.dart';
 import 'package:badminton_app/repositories/order_repository.dart';
 import 'package:badminton_app/repositories/shop_repository.dart';
 import 'package:badminton_app/screens/customer/order_detail/order_detail_notifier.dart';

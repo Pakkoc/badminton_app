@@ -1,9 +1,7 @@
 import 'package:badminton_app/core/error/app_exception.dart';
-import 'package:badminton_app/models/shop.dart';
 import 'package:badminton_app/providers/auth_provider.dart';
 import 'package:badminton_app/repositories/shop_repository.dart';
 import 'package:badminton_app/screens/owner/shop_settings/shop_settings_notifier.dart';
-import 'package:badminton_app/screens/owner/shop_settings/shop_settings_state.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';

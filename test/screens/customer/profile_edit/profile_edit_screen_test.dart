@@ -2,10 +2,8 @@ import 'package:badminton_app/screens/customer/profile_edit/profile_edit_notifie
 import 'package:badminton_app/screens/customer/profile_edit/profile_edit_screen.dart';
 import 'package:badminton_app/screens/customer/profile_edit/profile_edit_state.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 
-import '../../../helpers/fixtures.dart';
 import '../../../helpers/test_app.dart';
 
 void main() {

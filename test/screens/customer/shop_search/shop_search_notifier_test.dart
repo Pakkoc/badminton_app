@@ -1,4 +1,3 @@
-import 'package:badminton_app/models/shop.dart';
 import 'package:badminton_app/repositories/shop_repository.dart';
 import 'package:badminton_app/screens/customer/shop_search/shop_search_notifier.dart';
 import 'package:badminton_app/screens/customer/shop_search/shop_search_state.dart';

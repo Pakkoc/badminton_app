@@ -1,6 +1,6 @@
-import 'package:flutter_test/flutter_test.dart';
-import 'package:badminton_app/models/notification_item.dart';
 import 'package:badminton_app/models/enums.dart';
+import 'package:badminton_app/models/notification_item.dart';
+import 'package:flutter_test/flutter_test.dart';
 
 void main() {
   group('NotificationItem', () {

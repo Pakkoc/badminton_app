@@ -4,7 +4,6 @@ import 'package:badminton_app/screens/customer/notifications/notifications_notif
 import 'package:badminton_app/screens/customer/notifications/notifications_screen.dart';
 import 'package:badminton_app/screens/customer/notifications/notifications_state.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 import '../../../helpers/fixtures.dart';

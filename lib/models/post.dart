@@ -1,5 +1,5 @@
-import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:badminton_app/models/enums.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'post.freezed.dart';
 part 'post.g.dart';

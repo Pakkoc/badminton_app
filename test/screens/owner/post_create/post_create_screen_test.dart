@@ -12,7 +12,7 @@ void main() {
       return ProviderScope(
         overrides: [
           postCreateNotifierProvider.overrideWith(
-            () => PostCreateNotifier(),
+            PostCreateNotifier.new,
           ),
         ],
         child: MaterialApp(

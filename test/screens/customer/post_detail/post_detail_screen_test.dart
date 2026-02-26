@@ -17,7 +17,7 @@ void main() {
           ProviderScope(
             overrides: [
               postDetailNotifierProvider.overrideWith(
-                () => _LoadingNotifier(),
+                _LoadingNotifier.new,
               ),
             ],
             child: MaterialApp(
@@ -45,7 +45,7 @@ void main() {
           ProviderScope(
             overrides: [
               postDetailNotifierProvider.overrideWith(
-                () => _LoadedNotifier(),
+                _LoadedNotifier.new,
               ),
             ],
             child: MaterialApp(
@@ -74,7 +74,7 @@ void main() {
           ProviderScope(
             overrides: [
               postDetailNotifierProvider.overrideWith(
-                () => _LoadedNotifier(),
+                _LoadedNotifier.new,
               ),
             ],
             child: MaterialApp(
@@ -103,7 +103,7 @@ void main() {
           ProviderScope(
             overrides: [
               postDetailNotifierProvider.overrideWith(
-                () => _LoadedNotifier(),
+                _LoadedNotifier.new,
               ),
             ],
             child: MaterialApp(
@@ -129,7 +129,7 @@ void main() {
           ProviderScope(
             overrides: [
               postDetailNotifierProvider.overrideWith(
-                () => _EventNotifier(),
+                _EventNotifier.new,
               ),
             ],
             child: MaterialApp(
@@ -162,7 +162,7 @@ void main() {
           ProviderScope(
             overrides: [
               postDetailNotifierProvider.overrideWith(
-                () => _ErrorNotifier(),
+                _ErrorNotifier.new,
               ),
             ],
             child: MaterialApp(

@@ -1,7 +1,6 @@
 import 'package:badminton_app/core/utils/formatters.dart';
 import 'package:badminton_app/models/post.dart';
 import 'package:badminton_app/screens/customer/shop_detail/shop_detail_notifier.dart';
-import 'package:badminton_app/screens/customer/shop_detail/shop_detail_state.dart';
 import 'package:badminton_app/widgets/empty_state.dart';
 import 'package:badminton_app/widgets/error_view.dart';
 import 'package:badminton_app/widgets/loading_indicator.dart';

@@ -1,9 +1,7 @@
-import 'package:badminton_app/models/enums.dart';
 import 'package:badminton_app/models/user.dart';
 import 'package:badminton_app/providers/auth_provider.dart';
 import 'package:badminton_app/repositories/order_repository.dart';
 import 'package:badminton_app/screens/customer/home/customer_home_notifier.dart';
-import 'package:badminton_app/screens/customer/home/customer_home_state.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';

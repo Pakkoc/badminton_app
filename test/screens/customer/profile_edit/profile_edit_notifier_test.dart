@@ -1,10 +1,8 @@
 import 'package:badminton_app/core/error/app_exception.dart';
-import 'package:badminton_app/models/user.dart';
 import 'package:badminton_app/providers/auth_provider.dart';
 import 'package:badminton_app/repositories/storage_repository.dart';
 import 'package:badminton_app/repositories/user_repository.dart';
 import 'package:badminton_app/screens/customer/profile_edit/profile_edit_notifier.dart';
-import 'package:badminton_app/screens/customer/profile_edit/profile_edit_state.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';

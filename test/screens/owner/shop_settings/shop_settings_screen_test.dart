@@ -2,7 +2,6 @@ import 'package:badminton_app/screens/owner/shop_settings/shop_settings_notifier
 import 'package:badminton_app/screens/owner/shop_settings/shop_settings_screen.dart';
 import 'package:badminton_app/screens/owner/shop_settings/shop_settings_state.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 import '../../../helpers/fixtures.dart';

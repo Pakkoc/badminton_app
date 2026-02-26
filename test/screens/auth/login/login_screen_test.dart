@@ -28,7 +28,7 @@ void main() {
           createLoginApp(
             overrides: [
               loginNotifierProvider.overrideWith(
-                () => LoginNotifier(),
+                LoginNotifier.new,
               ),
             ],
           ),
@@ -47,7 +47,7 @@ void main() {
           createLoginApp(
             overrides: [
               loginNotifierProvider.overrideWith(
-                () => LoginNotifier(),
+                LoginNotifier.new,
               ),
             ],
           ),
@@ -66,7 +66,7 @@ void main() {
           createLoginApp(
             overrides: [
               loginNotifierProvider.overrideWith(
-                () => LoginNotifier(),
+                LoginNotifier.new,
               ),
             ],
           ),
@@ -85,7 +85,7 @@ void main() {
           createLoginApp(
             overrides: [
               loginNotifierProvider.overrideWith(
-                () => LoginNotifier(),
+                LoginNotifier.new,
               ),
             ],
           ),

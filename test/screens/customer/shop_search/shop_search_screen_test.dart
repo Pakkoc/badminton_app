@@ -15,7 +15,7 @@ void main() {
       return ProviderScope(
         overrides: [
           shopSearchNotifierProvider.overrideWith(
-            () => ShopSearchNotifier(),
+            ShopSearchNotifier.new,
           ),
         ],
         child: const MaterialApp(
@@ -75,7 +75,7 @@ void main() {
           ProviderScope(
             overrides: [
               shopSearchNotifierProvider.overrideWith(
-                () => _LoadingShopSearchNotifier(),
+                _LoadingShopSearchNotifier.new,
               ),
             ],
             child: const MaterialApp(

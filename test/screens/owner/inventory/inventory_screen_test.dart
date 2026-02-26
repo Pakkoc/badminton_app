@@ -1,9 +1,7 @@
-import 'package:badminton_app/models/inventory_item.dart';
 import 'package:badminton_app/screens/owner/inventory/inventory_notifier.dart';
 import 'package:badminton_app/screens/owner/inventory/inventory_screen.dart';
 import 'package:badminton_app/screens/owner/inventory/inventory_state.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 import '../../../helpers/fixtures.dart';

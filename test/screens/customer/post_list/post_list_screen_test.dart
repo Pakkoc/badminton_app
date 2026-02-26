@@ -17,7 +17,7 @@ void main() {
           ProviderScope(
             overrides: [
               postListNotifierProvider.overrideWith(
-                () => PostListNotifier(),
+                PostListNotifier.new,
               ),
             ],
             child: MaterialApp(
@@ -43,7 +43,7 @@ void main() {
           ProviderScope(
             overrides: [
               postListNotifierProvider.overrideWith(
-                () => _EmptyNotifier(),
+                _EmptyNotifier.new,
               ),
             ],
             child: MaterialApp(
@@ -73,7 +73,7 @@ void main() {
           ProviderScope(
             overrides: [
               postListNotifierProvider.overrideWith(
-                () => _WithPostsNotifier(),
+                _WithPostsNotifier.new,
               ),
             ],
             child: MaterialApp(
@@ -103,7 +103,7 @@ void main() {
           ProviderScope(
             overrides: [
               postListNotifierProvider.overrideWith(
-                () => _LoadingNotifier(),
+                _LoadingNotifier.new,
               ),
             ],
             child: MaterialApp(

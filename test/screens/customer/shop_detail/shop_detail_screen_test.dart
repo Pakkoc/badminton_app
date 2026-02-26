@@ -17,7 +17,7 @@ void main() {
           ProviderScope(
             overrides: [
               shopDetailNotifierProvider.overrideWith(
-                () => _LoadingNotifier(),
+                _LoadingNotifier.new,
               ),
             ],
             child: MaterialApp(
@@ -44,7 +44,7 @@ void main() {
           ProviderScope(
             overrides: [
               shopDetailNotifierProvider.overrideWith(
-                () => _LoadedNotifier(),
+                _LoadedNotifier.new,
               ),
             ],
             child: MaterialApp(
@@ -70,7 +70,7 @@ void main() {
           ProviderScope(
             overrides: [
               shopDetailNotifierProvider.overrideWith(
-                () => _NotMemberNotifier(),
+                _NotMemberNotifier.new,
               ),
             ],
             child: MaterialApp(
@@ -95,7 +95,7 @@ void main() {
           ProviderScope(
             overrides: [
               shopDetailNotifierProvider.overrideWith(
-                () => _LoadedNotifier(),
+                _LoadedNotifier.new,
               ),
             ],
             child: MaterialApp(
@@ -123,7 +123,7 @@ void main() {
           ProviderScope(
             overrides: [
               shopDetailNotifierProvider.overrideWith(
-                () => _LoadedNotifier(),
+                _LoadedNotifier.new,
               ),
             ],
             child: MaterialApp(
