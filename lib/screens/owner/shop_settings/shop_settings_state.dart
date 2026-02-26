@@ -7,6 +7,8 @@ part 'shop_settings_state.freezed.dart';
 class ShopSettingsState with _$ShopSettingsState {
   const factory ShopSettingsState({
     Shop? shop,
+    @Default('') String ownerName,
+    @Default('') String ownerPhone,
     @Default(false) bool isLoading,
     @Default(false) bool isSubmitting,
     String? errorMessage,

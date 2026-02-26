@@ -1,6 +1,9 @@
 import 'package:badminton_app/core/error/app_exception.dart';
+import 'package:badminton_app/models/shop.dart';
+import 'package:badminton_app/models/user.dart';
 import 'package:badminton_app/providers/supabase_provider.dart';
 import 'package:badminton_app/repositories/shop_repository.dart';
+import 'package:badminton_app/repositories/user_repository.dart';
 import 'package:badminton_app/screens/owner/shop_settings/shop_settings_state.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -30,8 +33,16 @@ class ShopSettingsNotifier extends Notifier<ShopSettingsState> {
       }
 
       final shopRepository = ref.read(shopRepositoryProvider);
+      final userRepository = ref.read(userRepositoryProvider);
+
       final shop = await shopRepository.getByOwner(userId);
-      state = ShopSettingsState(shop: shop);
+      final user = await userRepository.getById(userId);
+
+      state = ShopSettingsState(
+        shop: shop,
+        ownerName: user?.name ?? '',
+        ownerPhone: user?.phone ?? '',
+      );
     } on AppException catch (e) {
       state = state.copyWith(
         isLoading: false,
@@ -73,6 +84,14 @@ class ShopSettingsNotifier extends Notifier<ShopSettingsState> {
     );
   }
 
+  void updateOwnerName(String name) {
+    state = state.copyWith(ownerName: name);
+  }
+
+  void updateOwnerPhone(String phone) {
+    state = state.copyWith(ownerPhone: phone);
+  }
+
   Future<bool> submit() async {
     if (state.shop == null) return false;
 
@@ -81,19 +100,40 @@ class ShopSettingsNotifier extends Notifier<ShopSettingsState> {
       errorMessage: null,
     );
     try {
+      final userId =
+          ref.read(supabaseProvider).auth.currentUser?.id;
+      if (userId == null) {
+        state = state.copyWith(
+          isSubmitting: false,
+          errorMessage: '로그인이 필요합니다',
+        );
+        return false;
+      }
+
       final shopRepository = ref.read(shopRepositoryProvider);
+      final userRepository = ref.read(userRepositoryProvider);
       final shop = state.shop!;
-      final data = <String, dynamic>{
+
+      final shopData = <String, dynamic>{
         'name': shop.name,
         'address': shop.address,
         'phone': shop.phone,
         'description': shop.description,
       };
+      final userData = <String, dynamic>{
+        'name': state.ownerName,
+        'phone': state.ownerPhone,
+      };
 
-      final updated =
-          await shopRepository.update(shop.id, data);
+      final Shop updatedShop =
+          await shopRepository.update(shop.id, shopData);
+      final User updatedUser =
+          await userRepository.update(userId, userData);
+
       state = state.copyWith(
-        shop: updated,
+        shop: updatedShop,
+        ownerName: updatedUser.name,
+        ownerPhone: updatedUser.phone,
         isSubmitting: false,
       );
       return true;

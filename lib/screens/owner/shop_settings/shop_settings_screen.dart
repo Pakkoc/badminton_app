@@ -21,6 +21,8 @@ class _ShopSettingsScreenState
   final _addressController = TextEditingController();
   final _phoneController = TextEditingController();
   final _descriptionController = TextEditingController();
+  final _ownerNameController = TextEditingController();
+  final _ownerPhoneController = TextEditingController();
   bool _initialized = false;
 
   @override
@@ -29,6 +31,8 @@ class _ShopSettingsScreenState
     _addressController.dispose();
     _phoneController.dispose();
     _descriptionController.dispose();
+    _ownerNameController.dispose();
+    _ownerPhoneController.dispose();
     super.dispose();
   }
 
@@ -44,6 +48,8 @@ class _ShopSettingsScreenState
       _phoneController.text = state.shop!.phone;
       _descriptionController.text =
           state.shop!.description ?? '';
+      _ownerNameController.text = state.ownerName;
+      _ownerPhoneController.text = state.ownerPhone;
       _initialized = true;
     }
 
@@ -66,155 +72,252 @@ class _ShopSettingsScreenState
 
     return Scaffold(
       appBar: AppBar(title: const Text('샵 설정')),
-      body: SingleChildScrollView(
-        padding: const EdgeInsets.all(24),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            // 관리 메뉴 섹션
-            Row(
-              children: [
-                const Icon(
-                  Icons.menu,
-                  color: Color(0xFF16A34A),
-                  size: 20,
-                ),
-                const SizedBox(width: 6),
-                Text(
-                  '관리 메뉴',
-                  style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                        fontSize: 16,
-                        fontWeight: FontWeight.w600,
-                        color: const Color(0xFF0F172A),
-                      ),
-                ),
-              ],
-            ),
-            const SizedBox(height: 12),
-            Container(
-              decoration: BoxDecoration(
-                color: const Color(0xFFFFFFFF),
-                borderRadius: BorderRadius.circular(16),
-                border: Border.all(
-                  color: const Color(0xFFE2E8F0),
-                ),
-              ),
+      body: Column(
+        children: [
+          Expanded(
+            child: SingleChildScrollView(
+              padding: const EdgeInsets.all(24),
               child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  _MenuItemTile(
-                    icon: Icons.qr_code_2,
-                    label: '내 샵 QR코드',
-                    showDivider: true,
-                    onTap: () => context.push(
-                      '/owner/settings/shop-qr',
-                      extra: state.shop,
+                  // 관리 메뉴 섹션
+                  Row(
+                    children: [
+                      const Icon(
+                        Icons.menu,
+                        color: Color(0xFF16A34A),
+                        size: 20,
+                      ),
+                      const SizedBox(width: 6),
+                      Text(
+                        '관리 메뉴',
+                        style: Theme.of(context)
+                            .textTheme
+                            .titleMedium
+                            ?.copyWith(
+                              fontSize: 16,
+                              fontWeight: FontWeight.w600,
+                              color: const Color(0xFF0F172A),
+                            ),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 12),
+                  Container(
+                    decoration: BoxDecoration(
+                      color: const Color(0xFFFFFFFF),
+                      borderRadius: BorderRadius.circular(16),
+                      border: Border.all(
+                        color: const Color(0xFFE2E8F0),
+                      ),
+                    ),
+                    child: Column(
+                      children: [
+                        _MenuItemTile(
+                          icon: Icons.qr_code_2,
+                          label: '내 샵 QR코드',
+                          showDivider: true,
+                          onTap: () => context.push(
+                            '/owner/settings/shop-qr',
+                            extra: state.shop,
+                          ),
+                        ),
+                        _MenuItemTile(
+                          icon: Icons.edit_note,
+                          label: '게시글 작성',
+                          showDivider: true,
+                          onTap: () => context.push(
+                            '/owner/settings/post-create'
+                            '?shopId=${state.shop!.id}',
+                          ),
+                        ),
+                        _MenuItemTile(
+                          icon: Icons.inventory_2,
+                          label: '재고 관리',
+                          showDivider: false,
+                          onTap: () => context
+                              .push('/owner/settings/inventory'),
+                        ),
+                      ],
                     ),
                   ),
-                  _MenuItemTile(
-                    icon: Icons.edit_note,
-                    label: '게시글 작성',
-                    showDivider: true,
-                    onTap: () => context.push(
-                      '/owner/settings/post-create'
-                      '?shopId=${state.shop!.id}',
+                  const SizedBox(height: 24),
+
+                  // 샵 정보 섹션 헤더
+                  const _SectionHeader(
+                    icon: Icons.store,
+                    label: '샵 정보',
+                  ),
+                  const SizedBox(height: 12),
+
+                  // 샵 정보 필드
+                  TextFormField(
+                    controller: _nameController,
+                    decoration: const InputDecoration(
+                      labelText: '샵 이름',
+                      border: OutlineInputBorder(),
                     ),
+                    validator: Validators.shopName,
+                    autovalidateMode:
+                        AutovalidateMode.onUserInteraction,
+                    onChanged: notifier.updateShopName,
                   ),
-                  _MenuItemTile(
-                    icon: Icons.inventory_2,
-                    label: '재고 관리',
-                    showDivider: false,
-                    onTap: () =>
-                        context.push('/owner/settings/inventory'),
+                  const SizedBox(height: 16),
+                  TextFormField(
+                    controller: _addressController,
+                    decoration: const InputDecoration(
+                      labelText: '주소',
+                      border: OutlineInputBorder(),
+                    ),
+                    onChanged: notifier.updateAddress,
                   ),
+                  const SizedBox(height: 16),
+                  PhoneInputField(
+                    controller: _phoneController,
+                    onChanged: notifier.updatePhone,
+                  ),
+                  const SizedBox(height: 16),
+                  TextFormField(
+                    controller: _descriptionController,
+                    decoration: const InputDecoration(
+                      labelText: '소개글',
+                      border: OutlineInputBorder(),
+                      alignLabelWithHint: true,
+                    ),
+                    maxLines: 4,
+                    validator: Validators.description,
+                    autovalidateMode:
+                        AutovalidateMode.onUserInteraction,
+                    onChanged: notifier.updateDescription,
+                  ),
+                  const SizedBox(height: 24),
+
+                  // 사장님 정보 섹션 헤더
+                  const _SectionHeader(
+                    icon: Icons.person,
+                    label: '사장님 정보',
+                  ),
+                  const SizedBox(height: 12),
+
+                  // 사장님 정보 필드
+                  TextFormField(
+                    controller: _ownerNameController,
+                    decoration: const InputDecoration(
+                      labelText: '이름',
+                      border: OutlineInputBorder(),
+                    ),
+                    onChanged: notifier.updateOwnerName,
+                  ),
+                  const SizedBox(height: 16),
+                  PhoneInputField(
+                    controller: _ownerPhoneController,
+                    onChanged: notifier.updateOwnerPhone,
+                  ),
+                  const SizedBox(height: 8),
                 ],
               ),
             ),
-            const SizedBox(height: 24),
-            TextFormField(
-              controller: _nameController,
-              decoration: const InputDecoration(
-                labelText: '샵 이름',
-                border: OutlineInputBorder(),
+          ),
+
+          // 저장 버튼 — 하단 고정
+          _SaveButton(
+            isSubmitting: state.isSubmitting,
+            onPressed: () async {
+              final success = await notifier.submit();
+              if (success && context.mounted) {
+                AppToast.success(
+                  context,
+                  '샵 설정이 저장되었습니다',
+                );
+                context.pop();
+              }
+            },
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class _SectionHeader extends StatelessWidget {
+  const _SectionHeader({
+    required this.icon,
+    required this.label,
+  });
+
+  final IconData icon;
+  final String label;
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      children: [
+        Icon(
+          icon,
+          color: const Color(0xFF16A34A),
+          size: 20,
+        ),
+        const SizedBox(width: 6),
+        Text(
+          label,
+          style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                fontSize: 16,
+                fontWeight: FontWeight.w700,
+                color: const Color(0xFF0F172A),
               ),
-              validator: Validators.shopName,
-              autovalidateMode:
-                  AutovalidateMode.onUserInteraction,
-              onChanged: notifier.updateShopName,
+        ),
+      ],
+    );
+  }
+}
+
+class _SaveButton extends StatelessWidget {
+  const _SaveButton({
+    required this.isSubmitting,
+    required this.onPressed,
+  });
+
+  final bool isSubmitting;
+  final VoidCallback onPressed;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      decoration: const BoxDecoration(
+        border: Border(
+          top: BorderSide(color: Color(0xFFE2E8F0)),
+        ),
+      ),
+      padding: const EdgeInsets.symmetric(
+        vertical: 12,
+        horizontal: 16,
+      ),
+      child: SizedBox(
+        width: double.infinity,
+        height: 48,
+        child: ElevatedButton(
+          onPressed: isSubmitting ? null : onPressed,
+          style: ElevatedButton.styleFrom(
+            backgroundColor: const Color(0xFF16A34A),
+            foregroundColor: const Color(0xFFFFFFFF),
+            disabledBackgroundColor:
+                const Color(0xFF16A34A).withValues(alpha: 0.5),
+            disabledForegroundColor:
+                const Color(0xFFFFFFFF).withValues(alpha: 0.5),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(12),
             ),
-            const SizedBox(height: 16),
-            TextFormField(
-              controller: _addressController,
-              decoration: const InputDecoration(
-                labelText: '주소',
-                border: OutlineInputBorder(),
-              ),
-              onChanged: notifier.updateAddress,
-            ),
-            const SizedBox(height: 16),
-            PhoneInputField(
-              controller: _phoneController,
-              onChanged: notifier.updatePhone,
-            ),
-            const SizedBox(height: 16),
-            TextFormField(
-              controller: _descriptionController,
-              decoration: const InputDecoration(
-                labelText: '소개글',
-                border: OutlineInputBorder(),
-                alignLabelWithHint: true,
-              ),
-              maxLines: 4,
-              validator: Validators.description,
-              autovalidateMode:
-                  AutovalidateMode.onUserInteraction,
-              onChanged: notifier.updateDescription,
-            ),
-            const SizedBox(height: 32),
-            SizedBox(
-              width: double.infinity,
-              height: 48,
-              child: ElevatedButton(
-                onPressed: state.isSubmitting
-                    ? null
-                    : () async {
-                        final success =
-                            await notifier.submit();
-                        if (success && context.mounted) {
-                          AppToast.success(
-                            context,
-                            '샵 설정이 저장되었습니다',
-                          );
-                          context.pop();
-                        }
-                      },
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: const Color(0xFF16A34A),
-                  foregroundColor: const Color(0xFFFFFFFF),
-                  disabledBackgroundColor:
-                      const Color(0xFF16A34A).withValues(
-                    alpha: 0.5,
+          ),
+          child: isSubmitting
+              ? const SizedBox(
+                  width: 24,
+                  height: 24,
+                  child: CircularProgressIndicator(
+                    strokeWidth: 2,
+                    color: Colors.white,
                   ),
-                  disabledForegroundColor:
-                      const Color(0xFFFFFFFF).withValues(
-                    alpha: 0.5,
-                  ),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(12),
-                  ),
-                ),
-                child: state.isSubmitting
-                    ? const SizedBox(
-                        width: 24,
-                        height: 24,
-                        child: CircularProgressIndicator(
-                          strokeWidth: 2,
-                          color: Colors.white,
-                        ),
-                      )
-                    : const Text('저장'),
-              ),
-            ),
-          ],
+                )
+              : const Text('저장'),
         ),
       ),
     );
@@ -249,7 +352,8 @@ class _MenuItemTile extends StatelessWidget {
           child: SizedBox(
             height: 52,
             child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16),
+              padding:
+                  const EdgeInsets.symmetric(horizontal: 16),
               child: Row(
                 children: [
                   Icon(
