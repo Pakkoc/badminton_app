@@ -62,7 +62,7 @@
 | 컴포넌트 | 타입 | 설명 | 스타일 |
 |----------|------|------|--------|
 | 뒤로가기 | IconButton | 이전 화면으로 복귀 | Material Icon `arrow_back_ios`, 크기 24px, 색상 `#0F172A` |
-| 타이틀 | Text | "알림" | `titleLarge` (18sp, SemiBold), 색상 `#0F172A` |
+| 타이틀 | Text | "알림" | `titleLarge` (20sp, Bold), 색상 `#0F172A` |
 
 **앱바 스타일:**
 
@@ -81,7 +81,7 @@
 | 알림 제목 | Text | 알림 제목 | `bodyMedium` (14sp, Medium 500), 색상 `#0F172A` |
 | 알림 내용 | Text | 알림 상세 내용 | `bodySmall` (13sp), 색상 `#475569`, 최대 2줄 |
 | 시간 | Text | 상대 시간 표시 | `bodySmall` (12sp), 색상 `#94A3B8` |
-| 하단 구분선 | Divider | 아이템 간 구분 | 색상 `#E2E8F0`, 두께 1px |
+| 하단 구분선 | Divider | 아이템 간 구분 | 색상 `#F1F5F9`, 두께 1px |
 
 **알림 아이템 레이아웃:**
 - Row: [아이콘 원형 40x40] + [Column: 제목, 내용, 시간]
@@ -94,10 +94,10 @@
 
 | 알림 유형 | 아이콘 | 배경색 | 아이콘 색상 |
 |-----------|--------|--------|-------------|
-| 작업 상태 변경 | `sync` | `#DBEAFE` | `#3B82F6` |
-| 작업 완료 | `check_circle` | `#DCFCE7` | `#22C55E` |
+| 작업 상태 변경 | `build` | `#DBEAFE` | `#3B82F6` |
+| 작업 완료 | `check_circle` | `#DCFCE7` | `#16A34A` |
 | 새 공지사항/이벤트 | `campaign` | `#FEF3C7` | `#F59E0B` |
-| 접수 확인 | `inventory_2` | `#DBEAFE` | `#3B82F6` |
+| 접수 확인 | `assignment` | `#DBEAFE` | `#3B82F6` |
 
 ### 3.4 빈 상태 (Empty State)
 

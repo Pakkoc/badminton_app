@@ -112,7 +112,7 @@
 
 | 컴포넌트 | 타입 | 설명 | 스타일 |
 |----------|------|------|--------|
-| 타이틀 | Text | "주변 샵" | `titleLarge` (18sp, SemiBold), 색상 `#0F172A` |
+| 타이틀 | Text | "주변 샵" | `titleLarge` (20sp, Bold), 색상 `#0F172A` |
 | 뷰 전환 토글 | SegmentedButton | 지도/리스트 뷰 전환 | 아래 토글 스타일 참조 |
 
 **앱바 스타일:**
@@ -213,7 +213,7 @@
 | 컴포넌트 | 타입 | 설명 | 스타일 |
 |----------|------|------|--------|
 | 카드 컨테이너 | Card (탭 가능) | 샵 정보 카드 | 아래 카드 스타일 참조 |
-| 샵 이름 | Text | 샵 이름 | `headlineMedium` (20sp, SemiBold), 색상 `#0F172A` |
+| 샵 이름 | Text | 샵 이름 | `titleMedium` (16sp, Bold 700), 색상 `#0F172A` |
 | 화살표 아이콘 | Icon | 상세 이동 표시 | `chevron_right`, 24px, 색상 `#94A3B8` |
 | 주소/거리 정보 | Row (Icon + Text) | 주소 + 현재 위치로부터 거리 | 아이콘: `location_on` 16px `#94A3B8`, 텍스트: `bodyMedium` (14sp) `#475569` |
 | 작업 현황 | Row | 접수 건수 + 작업중 건수 | 아래 작업 현황 스타일 참조 |
@@ -234,9 +234,9 @@
 
 | 컴포넌트 | 스타일 |
 |----------|--------|
-| 접수 건수 | `bodyMedium` (14sp, Medium), 색상 `#F59E0B`. 형식: "접수 N건" |
+| 접수 건수 | `labelSmall` (12sp, Medium), 색상 `#F59E0B`, 배경 `#FEF3C7`. 형식: "접수 N건" |
 | 구분점 | `bodyMedium`, 색상 `#CBD5E1`. " · " |
-| 작업중 건수 | `bodyMedium` (14sp, Medium), 색상 `#3B82F6`. 형식: "작업중 N건" |
+| 작업중 건수 | `labelSmall` (12sp, Medium), 색상 `#3B82F6`, 배경 `#DBEAFE`. 형식: "작업중 N건" |
 
 **거리 표시 규칙:**
 
@@ -470,7 +470,7 @@ final orderCounts = await supabase
 - [N/A] 파괴적 액션 확인 대화상자 — 파괴적 액션 없음
 
 ### 레이아웃 (HIGH)
-- [x] 모바일 본문 폰트 최소 16px — 샵 이름 `headlineMedium` 20sp
+- [x] 모바일 본문 폰트 최소 16px — 샵 이름 `titleMedium` 16sp
 - [x] 가로 스크롤 없음 — 세로 스크롤(리스트 뷰) / 지도 패닝(지도 뷰)
 - [x] 고정 요소 아래 콘텐츠 패딩 확보 — 앱바 56px + 하단 네비게이션 80px 고정, 지도/리스트 영역 분리
 
