@@ -94,6 +94,10 @@ class _ShopDetailScreenState
             latitude: shop.latitude,
             longitude: shop.longitude,
           ),
+          _OrderStatusCard(
+            receivedCount: state.receivedCount,
+            inProgressCount: state.inProgressCount,
+          ),
           _MemberSection(
             isMember: state.isMember,
             isRegistering: state.isRegistering,
@@ -261,6 +265,101 @@ class _ShopInfoSection extends StatelessWidget {
               ),
             ),
           ],
+        ],
+      ),
+    );
+  }
+}
+
+class _OrderStatusCard extends StatelessWidget {
+  const _OrderStatusCard({
+    required this.receivedCount,
+    required this.inProgressCount,
+  });
+
+  final int receivedCount;
+  final int inProgressCount;
+
+  @override
+  Widget build(BuildContext context) {
+    if (receivedCount == 0 && inProgressCount == 0) {
+      return const SizedBox.shrink();
+    }
+
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(16, 16, 16, 0),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const Text(
+            '작업 현황',
+            style: TextStyle(
+              fontSize: 16,
+              fontWeight: FontWeight.w600,
+              color: Color(0xFF0F172A),
+            ),
+          ),
+          const SizedBox(height: 12),
+          Container(
+            decoration: BoxDecoration(
+              color: const Color(0xFFF8FAFC),
+              borderRadius: BorderRadius.circular(16),
+            ),
+            padding: const EdgeInsets.all(20),
+            child: Row(
+              children: [
+                Expanded(
+                  child: Column(
+                    children: [
+                      Text(
+                        '$receivedCount',
+                        style: const TextStyle(
+                          fontSize: 24,
+                          fontWeight: FontWeight.bold,
+                          color: Color(0xFFF59E0B),
+                        ),
+                      ),
+                      const SizedBox(height: 4),
+                      const Text(
+                        '접수',
+                        style: TextStyle(
+                          fontSize: 12,
+                          color: Color(0xFF94A3B8),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                Container(
+                  width: 1,
+                  height: 40,
+                  color: const Color(0xFFE2E8F0),
+                ),
+                Expanded(
+                  child: Column(
+                    children: [
+                      Text(
+                        '$inProgressCount',
+                        style: const TextStyle(
+                          fontSize: 24,
+                          fontWeight: FontWeight.bold,
+                          color: Color(0xFF3B82F6),
+                        ),
+                      ),
+                      const SizedBox(height: 4),
+                      const Text(
+                        '작업중',
+                        style: TextStyle(
+                          fontSize: 12,
+                          color: Color(0xFF94A3B8),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          ),
         ],
       ),
     );

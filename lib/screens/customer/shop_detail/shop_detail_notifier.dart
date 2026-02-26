@@ -3,6 +3,7 @@ import 'package:badminton_app/models/enums.dart';
 import 'package:badminton_app/models/member.dart';
 import 'package:badminton_app/providers/auth_provider.dart';
 import 'package:badminton_app/repositories/member_repository.dart';
+import 'package:badminton_app/repositories/order_repository.dart';
 import 'package:badminton_app/repositories/post_repository.dart';
 import 'package:badminton_app/repositories/shop_repository.dart';
 import 'package:badminton_app/screens/customer/shop_detail/shop_detail_state.dart';
@@ -54,11 +55,22 @@ class ShopDetailNotifier extends Notifier<ShopDetailState> {
         PostCategory.event.toJson(),
       );
 
+      final orderRepository = ref.read(orderRepositoryProvider);
+      final orders = await orderRepository.getByShop(shopId);
+      final receivedCount = orders
+          .where((o) => o.status == OrderStatus.received)
+          .length;
+      final inProgressCount = orders
+          .where((o) => o.status == OrderStatus.inProgress)
+          .length;
+
       state = state.copyWith(
         shop: shop,
         isMember: isMember,
         noticePosts: noticePosts,
         eventPosts: eventPosts,
+        receivedCount: receivedCount,
+        inProgressCount: inProgressCount,
         isLoading: false,
       );
     } on AppException catch (e) {

@@ -13,6 +13,8 @@ class ShopDetailState with _$ShopDetailState {
     @Default(false) bool isRegistering,
     @Default([]) List<Post> noticePosts,
     @Default([]) List<Post> eventPosts,
+    @Default(0) int receivedCount,
+    @Default(0) int inProgressCount,
     String? error,
   }) = _ShopDetailState;
 }
