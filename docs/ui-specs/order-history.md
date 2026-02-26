@@ -95,7 +95,6 @@
 |----------|------|------|------|
 | 홈 탭 | BottomNavItem | 아이콘 `home` + "홈" | 비활성 (`#94A3B8`) |
 | 샵검색 탭 | BottomNavItem | 아이콘 `search` + "샵검색" | 비활성 (`#94A3B8`) |
-| QR 탭 | BottomNavItem | 아이콘 `qr_code_2` + "QR" | 비활성 (`#94A3B8`) |
 | 이력 탭 | BottomNavItem | 아이콘 `history` + "이력" | 활성 (`#16A34A`) |
 | MY 탭 | BottomNavItem | 아이콘 `person` + "MY" | 비활성 (`#94A3B8`) |
 
