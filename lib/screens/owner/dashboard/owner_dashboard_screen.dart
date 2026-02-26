@@ -1,6 +1,6 @@
 import 'package:badminton_app/models/enums.dart';
 import 'package:badminton_app/models/order.dart';
-import 'package:badminton_app/providers/auth_provider.dart';
+import 'package:badminton_app/providers/supabase_provider.dart';
 import 'package:badminton_app/screens/owner/dashboard/owner_dashboard_notifier.dart';
 import 'package:badminton_app/screens/owner/dashboard/owner_dashboard_state.dart';
 import 'package:badminton_app/widgets/empty_state.dart';
@@ -30,14 +30,13 @@ class _OwnerDashboardScreenState
   }
 
   void _loadDashboard() {
-    final user = ref.read(currentUserProvider);
-    user.whenData((u) {
-      if (u != null) {
-        ref
-            .read(ownerDashboardNotifierProvider.notifier)
-            .loadDashboard(u.id);
-      }
-    });
+    final userId =
+        ref.read(supabaseProvider).auth.currentUser?.id;
+    if (userId != null) {
+      ref
+          .read(ownerDashboardNotifierProvider.notifier)
+          .loadDashboard(userId);
+    }
   }
 
   @override
@@ -47,50 +46,31 @@ class _OwnerDashboardScreenState
 
     return Scaffold(
       appBar: AppBar(
-        title: Text(state.shopName ?? '대시보드'),
+        title: const Text('대시보드'),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.settings_outlined),
+            onPressed: () {
+              final shell = StatefulNavigationShell.of(context);
+              shell.goBranch(2);
+            },
+          ),
+        ],
       ),
       body: _buildBody(state),
       floatingActionButton: FloatingActionButton.extended(
-        onPressed: () =>
-            context.push('/owner/order-create'),
+        onPressed: () {
+          final shopId = ref
+              .read(ownerDashboardNotifierProvider)
+              .shopId;
+          context.push(
+            '/owner/dashboard/order-create'
+            '?shopId=$shopId',
+          );
+        },
         backgroundColor: const Color(0xFF16A34A),
         icon: const Icon(Icons.add),
         label: const Text('작업 접수'),
-      ),
-      bottomNavigationBar: NavigationBar(
-        selectedIndex: 0,
-        destinations: const [
-          NavigationDestination(
-            icon: Icon(Icons.dashboard_outlined),
-            selectedIcon: Icon(Icons.dashboard),
-            label: '대시보드',
-          ),
-          NavigationDestination(
-            icon: Icon(Icons.list_alt_outlined),
-            selectedIcon: Icon(Icons.list_alt),
-            label: '작업관리',
-          ),
-          NavigationDestination(
-            icon: Icon(Icons.qr_code_outlined),
-            selectedIcon: Icon(Icons.qr_code),
-            label: 'QR',
-          ),
-          NavigationDestination(
-            icon: Icon(Icons.settings_outlined),
-            selectedIcon: Icon(Icons.settings),
-            label: '설정',
-          ),
-        ],
-        onDestinationSelected: (index) {
-          switch (index) {
-            case 1:
-              context.go('/owner/order-manage');
-            case 2:
-              context.go('/owner/shop-qr');
-            case 3:
-              context.go('/owner/settings');
-          }
-        },
       ),
     );
   }
