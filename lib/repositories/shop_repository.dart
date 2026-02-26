@@ -34,9 +34,10 @@ class ShopRepository {
   /// 매장을 생성한다.
   Future<Shop> create(Shop shop) async {
     try {
+      final json = shop.toJson()..remove('id');
       final data = await _client
           .from(_table)
-          .insert(shop.toJson())
+          .insert(json)
           .select()
           .single();
       return Shop.fromJson(data);
