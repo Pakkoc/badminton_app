@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:badminton_app/models/enums.dart';
+import 'package:badminton_app/models/shop.dart';
 import 'package:badminton_app/providers/supabase_provider.dart';
 import 'package:badminton_app/screens/auth/login/login_screen.dart';
 import 'package:badminton_app/screens/auth/profile_setup/profile_setup_screen.dart';
@@ -9,6 +10,7 @@ import 'package:badminton_app/screens/auth/splash/splash_screen.dart';
 import 'package:badminton_app/screens/owner/dashboard/owner_dashboard_screen.dart';
 import 'package:badminton_app/screens/owner/order_create/order_create_screen.dart';
 import 'package:badminton_app/screens/owner/order_manage/order_manage_screen.dart';
+import 'package:badminton_app/screens/owner/owner_shell_screen.dart';
 import 'package:badminton_app/screens/owner/shop_qr/shop_qr_screen.dart';
 import 'package:badminton_app/screens/customer/home/customer_home_screen.dart';
 import 'package:badminton_app/screens/customer/order_detail/order_detail_screen.dart';
@@ -160,66 +162,73 @@ final routerProvider = Provider<GoRouter>((ref) {
         ],
       ),
 
-      // 사장님 라우트
-      ShellRoute(
-        builder: (context, state, child) => child,
-        routes: [
-          GoRoute(
-            path: '/owner/dashboard',
-            builder: (context, state) =>
-                const OwnerDashboardScreen(),
-          ),
-          GoRoute(
-            path: '/owner/order-create',
-            builder: (context, state) => OrderCreateScreen(
-              shopId: state.uri.queryParameters['shopId'] ?? '',
+      // 사장님 라우트 (하단 네비게이션 바 공유)
+      StatefulShellRoute.indexedStack(
+        builder: (context, state, navigationShell) =>
+            OwnerShellScreen(
+          navigationShell: navigationShell,
+        ),
+        branches: [
+          StatefulShellBranch(routes: [
+            GoRoute(
+              path: '/owner/dashboard',
+              builder: (context, state) =>
+                  const OwnerDashboardScreen(),
+              routes: [
+                GoRoute(
+                  path: 'order-create',
+                  builder: (context, state) =>
+                      OrderCreateScreen(
+                    shopId: state.uri
+                            .queryParameters['shopId'] ??
+                        '',
+                  ),
+                ),
+              ],
             ),
-          ),
-          GoRoute(
-            path: '/owner/order-manage',
-            builder: (context, state) => OrderManageScreen(
-              shopId: state.uri.queryParameters['shopId'] ?? '',
+          ]),
+          StatefulShellBranch(routes: [
+            GoRoute(
+              path: '/owner/order-manage',
+              builder: (context, state) => OrderManageScreen(
+                shopId: state.uri
+                    .queryParameters['shopId'],
+              ),
             ),
-          ),
-          GoRoute(
-            path: '/owner/shop-qr',
-            builder: (context, state) =>
-                const _PlaceholderScreen('Shop QR'),
-          ),
-          GoRoute(
-            path: '/owner/post-create',
-            builder: (context, state) {
-              final shopId =
-                  state.uri.queryParameters['shopId'] ?? '';
-              return PostCreateScreen(shopId: shopId);
-            },
-          ),
-          GoRoute(
-            path: '/owner/inventory',
-            builder: (context, state) =>
-                const InventoryScreen(),
-          ),
-          GoRoute(
-            path: '/owner/settings',
-            builder: (context, state) =>
-                const ShopSettingsScreen(),
-          ),
+          ]),
+          StatefulShellBranch(routes: [
+            GoRoute(
+              path: '/owner/settings',
+              builder: (context, state) =>
+                  const ShopSettingsScreen(),
+              routes: [
+                GoRoute(
+                  path: 'inventory',
+                  builder: (context, state) =>
+                      const InventoryScreen(),
+                ),
+                GoRoute(
+                  path: 'post-create',
+                  builder: (context, state) {
+                    final shopId = state.uri
+                            .queryParameters['shopId'] ??
+                        '';
+                    return PostCreateScreen(
+                        shopId: shopId);
+                  },
+                ),
+                GoRoute(
+                  path: 'shop-qr',
+                  builder: (context, state) =>
+                      ShopQrScreen(
+                    shop: state.extra! as Shop,
+                  ),
+                ),
+              ],
+            ),
+          ]),
         ],
       ),
     ],
   );
 });
-
-class _PlaceholderScreen extends StatelessWidget {
-  const _PlaceholderScreen(this.name);
-
-  final String name;
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: Text(name)),
-      body: Center(child: Text('$name Screen')),
-    );
-  }
-}
