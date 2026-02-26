@@ -4094,6 +4094,238 @@
             },
             {
               "type": "frame",
+              "id": "Uq32z",
+              "name": "Status Section",
+              "width": "fill_container",
+              "layout": "vertical",
+              "gap": 12,
+              "children": [
+                {
+                  "type": "text",
+                  "id": "nMeyU",
+                  "name": "statusTitle",
+                  "fill": "#0F172A",
+                  "content": "작업 현황",
+                  "fontFamily": "Gmarket Sans",
+                  "fontSize": 16,
+                  "fontWeight": "SemiBold"
+                },
+                {
+                  "type": "frame",
+                  "id": "XZ9lV",
+                  "name": "Status Card",
+                  "width": "fill_container",
+                  "fill": "#F8FAFC",
+                  "cornerRadius": 16,
+                  "gap": 24,
+                  "padding": 20,
+                  "justifyContent": "center",
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "frame",
+                      "id": "FdkxV",
+                      "name": "Received Col",
+                      "layout": "vertical",
+                      "gap": 4,
+                      "alignItems": "center",
+                      "children": [
+                        {
+                          "type": "text",
+                          "id": "kdUwO",
+                          "name": "recvCount",
+                          "fill": "#F59E0B",
+                          "content": "2",
+                          "fontFamily": "Gmarket Sans",
+                          "fontSize": 24,
+                          "fontWeight": "Bold"
+                        },
+                        {
+                          "type": "text",
+                          "id": "wpnKp",
+                          "name": "recvLabel",
+                          "fill": "#94A3B8",
+                          "content": "접수",
+                          "fontFamily": "Gmarket Sans",
+                          "fontSize": 12,
+                          "fontWeight": "normal"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "frame",
+                      "id": "94So0",
+                      "name": "Divider",
+                      "width": 1,
+                      "height": 40,
+                      "fill": "#E2E8F0"
+                    },
+                    {
+                      "type": "frame",
+                      "id": "rVS4g",
+                      "name": "InProgress Col",
+                      "layout": "vertical",
+                      "gap": 4,
+                      "alignItems": "center",
+                      "children": [
+                        {
+                          "type": "text",
+                          "id": "1Ylyk",
+                          "name": "progCount",
+                          "fill": "#3B82F6",
+                          "content": "1",
+                          "fontFamily": "Gmarket Sans",
+                          "fontSize": 24,
+                          "fontWeight": "Bold"
+                        },
+                        {
+                          "type": "text",
+                          "id": "9GrGu",
+                          "name": "progLabel",
+                          "fill": "#94A3B8",
+                          "content": "작업중",
+                          "fontFamily": "Gmarket Sans",
+                          "fontSize": 12,
+                          "fontWeight": "normal"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "3P5YQ",
+              "name": "Location Section",
+              "width": "fill_container",
+              "layout": "vertical",
+              "gap": 12,
+              "children": [
+                {
+                  "type": "text",
+                  "id": "kfJwO",
+                  "name": "locTitle",
+                  "fill": "#0F172A",
+                  "content": "위치 및 연락처",
+                  "fontFamily": "Gmarket Sans",
+                  "fontSize": 16,
+                  "fontWeight": "SemiBold"
+                },
+                {
+                  "type": "frame",
+                  "id": "yWhqH",
+                  "name": "Location Card",
+                  "width": "fill_container",
+                  "fill": "#FFFFFF",
+                  "cornerRadius": 16,
+                  "stroke": {
+                    "align": "inside",
+                    "thickness": 1,
+                    "fill": "#E2E8F0"
+                  },
+                  "layout": "vertical",
+                  "gap": 12,
+                  "padding": 16,
+                  "children": [
+                    {
+                      "type": "frame",
+                      "id": "nAAtZ",
+                      "name": "Address Row",
+                      "gap": 8,
+                      "alignItems": "center",
+                      "children": [
+                        {
+                          "type": "icon_font",
+                          "id": "G0cMA",
+                          "name": "addrIcon",
+                          "width": 20,
+                          "height": 20,
+                          "iconFontName": "location_on",
+                          "iconFontFamily": "Material Symbols Outlined",
+                          "fill": "#94A3B8"
+                        },
+                        {
+                          "type": "text",
+                          "id": "pr7OI",
+                          "name": "addrText",
+                          "fill": "#475569",
+                          "content": "서울시 강남구 역삼동 123-45",
+                          "fontFamily": "Gmarket Sans",
+                          "fontSize": 14,
+                          "fontWeight": "normal"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "frame",
+                      "id": "dVQ0N",
+                      "name": "Phone Row",
+                      "gap": 8,
+                      "alignItems": "center",
+                      "children": [
+                        {
+                          "type": "icon_font",
+                          "id": "tyDWx",
+                          "name": "phoneIcon",
+                          "width": 20,
+                          "height": 20,
+                          "iconFontName": "phone",
+                          "iconFontFamily": "Material Symbols Outlined",
+                          "fill": "#94A3B8"
+                        },
+                        {
+                          "type": "text",
+                          "id": "59o0J",
+                          "name": "phoneText",
+                          "fill": "#3B82F6",
+                          "content": "02-1234-5678",
+                          "fontFamily": "Gmarket Sans",
+                          "fontSize": 14,
+                          "fontWeight": "normal"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "UrIfC",
+              "name": "Navigate Button",
+              "width": "fill_container",
+              "height": 48,
+              "fill": "#16A34A",
+              "cornerRadius": 12,
+              "gap": 8,
+              "justifyContent": "center",
+              "alignItems": "center",
+              "children": [
+                {
+                  "type": "icon_font",
+                  "id": "WbJB2",
+                  "name": "navBtnIcon",
+                  "width": 20,
+                  "height": 20,
+                  "iconFontName": "directions",
+                  "iconFontFamily": "Material Symbols Outlined",
+                  "fill": "#FFFFFF"
+                },
+                {
+                  "type": "text",
+                  "id": "viM1c",
+                  "name": "navBtnText",
+                  "fill": "#FFFFFF",
+                  "content": "길찾기",
+                  "fontFamily": "Gmarket Sans",
+                  "fontSize": 16,
+                  "fontWeight": "600"
+                }
+              ]
+            },
+            {
+              "type": "frame",
               "id": "flWZT",
               "name": "Category Tabs",
               "width": "fill_container",
@@ -4292,40 +4524,6 @@
                       "fontWeight": "normal"
                     }
                   ]
-                }
-              ]
-            },
-            {
-              "type": "frame",
-              "id": "UrIfC",
-              "name": "Navigate Button",
-              "width": "fill_container",
-              "height": 48,
-              "fill": "#16A34A",
-              "cornerRadius": 12,
-              "gap": 8,
-              "justifyContent": "center",
-              "alignItems": "center",
-              "children": [
-                {
-                  "type": "icon_font",
-                  "id": "WbJB2",
-                  "name": "navBtnIcon",
-                  "width": 20,
-                  "height": 20,
-                  "iconFontName": "directions",
-                  "iconFontFamily": "Material Symbols Outlined",
-                  "fill": "#FFFFFF"
-                },
-                {
-                  "type": "text",
-                  "id": "viM1c",
-                  "name": "navBtnText",
-                  "fill": "#FFFFFF",
-                  "content": "길찾기",
-                  "fontFamily": "Gmarket Sans",
-                  "fontSize": 16,
-                  "fontWeight": "600"
                 }
               ]
             }
@@ -7543,16 +7741,6 @@
               "name": "titleSpacer",
               "width": "fill_container",
               "height": 1
-            },
-            {
-              "type": "text",
-              "id": "gYRM8",
-              "name": "countBadge",
-              "fill": "#94A3B8",
-              "content": "5개",
-              "fontFamily": "Gmarket Sans",
-              "fontSize": 14,
-              "fontWeight": "normal"
             }
           ]
         },
