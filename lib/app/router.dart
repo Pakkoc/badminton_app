@@ -9,6 +9,7 @@ import 'package:badminton_app/screens/auth/shop_signup/shop_signup_screen.dart';
 import 'package:badminton_app/screens/auth/splash/splash_screen.dart';
 import 'package:badminton_app/screens/customer/home/customer_home_screen.dart';
 import 'package:badminton_app/screens/customer/mypage/mypage_screen.dart';
+import 'package:badminton_app/screens/customer/qr_order/qr_order_screen.dart';
 import 'package:badminton_app/screens/customer/notifications/notifications_screen.dart';
 import 'package:badminton_app/screens/customer/order_detail/order_detail_screen.dart';
 import 'package:badminton_app/screens/customer/order_history/order_history_screen.dart';
@@ -92,11 +93,12 @@ final routerProvider = Provider<GoRouter>((ref) {
         builder: (context, state) => const ShopSignupScreen(),
       ),
 
-      // QR 딥링크: /shop/:shopId → /customer/shop/:shopId
+      // QR 딥링크: /shop/:shopId → QR 접수 화면
       GoRoute(
         path: '/shop/:shopId',
-        redirect: (context, state) =>
-            '/customer/shop/${state.pathParameters['shopId']}',
+        builder: (context, state) => QrOrderScreen(
+          shopId: state.pathParameters['shopId']!,
+        ),
       ),
 
       // 고객 라우트
