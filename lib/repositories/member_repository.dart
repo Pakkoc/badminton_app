@@ -85,11 +85,15 @@ class MemberRepository {
   }
 
   /// 회원을 생성한다.
+  ///
+  /// [member.id]가 빈 문자열이면 DB에서 자동 생성한다.
   Future<Member> create(Member member) async {
     try {
+      final json = member.toJson();
+      if (json['id'] == '') json.remove('id');
       final data = await _client
           .from(_table)
-          .insert(member.toJson())
+          .insert(json)
           .select()
           .single();
       return Member.fromJson(data);

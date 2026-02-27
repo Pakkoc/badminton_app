@@ -17,11 +17,15 @@ class OrderRepository {
   OrderRepository(this._client);
 
   /// 주문을 생성한다.
+  ///
+  /// [order.id]가 빈 문자열이면 DB에서 자동 생성한다.
   Future<GutOrder> create(GutOrder order) async {
     try {
+      final json = order.toJson();
+      if (json['id'] == '') json.remove('id');
       final data = await _client
           .from(_table)
-          .insert(order.toJson())
+          .insert(json)
           .select()
           .single();
       return GutOrder.fromJson(data);
