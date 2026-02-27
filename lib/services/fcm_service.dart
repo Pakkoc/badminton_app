@@ -1,4 +1,5 @@
 import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:supabase_flutter/supabase_flutter.dart' hide User;
 
 /// FCM 푸시 알림 서비스.
@@ -6,6 +7,15 @@ import 'package:supabase_flutter/supabase_flutter.dart' hide User;
 /// 알림 권한 요청, 토큰 관리, 메시지 핸들러 설정을 담당한다.
 class FcmService {
   final FirebaseMessaging _messaging;
+  final FlutterLocalNotificationsPlugin _localNotifications =
+      FlutterLocalNotificationsPlugin();
+
+  static const _androidChannel = AndroidNotificationChannel(
+    'gut_alarm_channel',
+    '거트알림',
+    description: '거트 작업 상태 알림',
+    importance: Importance.high,
+  );
 
   FcmService({FirebaseMessaging? messaging})
       : _messaging = messaging ?? FirebaseMessaging.instance;
@@ -15,8 +25,23 @@ class FcmService {
   /// 알림 권한을 요청하고 토큰을 가져온다.
   Future<void> initialize() async {
     await _requestPermission();
+    await _initLocalNotifications();
     await getToken();
     setupMessageHandlers();
+  }
+
+  Future<void> _initLocalNotifications() async {
+    const androidSettings =
+        AndroidInitializationSettings('@mipmap/ic_launcher');
+    const settings =
+        InitializationSettings(android: androidSettings);
+    await _localNotifications.initialize(settings);
+
+    // Android 알림 채널 생성
+    await _localNotifications
+        .resolvePlatformSpecificImplementation<
+            AndroidFlutterLocalNotificationsPlugin>()
+        ?.createNotificationChannel(_androidChannel);
   }
 
   /// 현재 FCM 토큰을 반환한다.
@@ -47,7 +72,8 @@ class FcmService {
 
   /// 포그라운드/백그라운드 메시지 핸들러를 설정한다.
   void setupMessageHandlers() {
-    FirebaseMessaging.onMessage.listen(_handleForegroundMessage);
+    FirebaseMessaging.onMessage
+        .listen(_handleForegroundMessage);
     FirebaseMessaging.onMessageOpenedApp
         .listen(_handleBackgroundMessage);
   }
@@ -57,10 +83,27 @@ class FcmService {
   }
 
   void _handleForegroundMessage(RemoteMessage message) {
-    // 포그라운드 메시지 처리 로직
+    final notification = message.notification;
+    if (notification == null) return;
+
+    _localNotifications.show(
+      notification.hashCode,
+      notification.title,
+      notification.body,
+      NotificationDetails(
+        android: AndroidNotificationDetails(
+          _androidChannel.id,
+          _androidChannel.name,
+          channelDescription: _androidChannel.description,
+          importance: Importance.high,
+          priority: Priority.high,
+          icon: '@mipmap/ic_launcher',
+        ),
+      ),
+    );
   }
 
   void _handleBackgroundMessage(RemoteMessage message) {
-    // 백그라운드 메시지 탭 처리 로직
+    // 알림 탭 → 앱 열기 (추후 딥링크 처리 가능)
   }
 }

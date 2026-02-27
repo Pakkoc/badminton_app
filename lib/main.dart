@@ -1,6 +1,7 @@
 import 'package:badminton_app/app/router.dart';
 import 'package:badminton_app/app/theme.dart';
 import 'package:badminton_app/core/config/env.dart';
+import 'package:badminton_app/services/fcm_service.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -18,6 +19,7 @@ Future<void> main() async {
 
   if (!kIsWeb) {
     await Firebase.initializeApp();
+    await FcmService().initialize();
     await FlutterNaverMap().init(
       clientId: Env.naverMapClientId,
       onAuthFailed: (ex) {
