@@ -107,6 +107,13 @@ screens:
     pencil_id: xz11L
     spec_file: docs/ui-specs/mypage.md
 
+  customer-qr-order:
+    name: "QR 접수"
+    description: "QR 스캔으로 샵에 자동 회원 등록 및 작업 접수"
+    role: customer
+    pencil_id: ""
+    spec_file: ""
+
   customer-profile-edit:
     name: "프로필 수정"
     description: "이름, 연락처 등 프로필 정보 수정"
