@@ -289,18 +289,20 @@ lib/
 
 **파일 위치**: `lib/services/fcm_service.dart`, `lib/providers/fcm_provider.dart`
 
-**의존성**: `firebase_messaging`, `firebase_core`, `supabase_flutter`
+**의존성**: `firebase_messaging`, `firebase_core`, `supabase_flutter`, `flutter_local_notifications`
 
 **공개 인터페이스**:
 
 | 항목 | 설명 |
 |------|------|
-| `FcmService.initialize()` | FCM 초기화 + 권한 요청 |
+| `FcmService.initialize()` | FCM 초기화 + 권한 요청 + 로컬 알림 채널 생성. `main()`에서 호출 |
 | `FcmService.getToken()` | 현재 FCM 토큰 반환 |
-| `FcmService.saveTokenToDb(userId)` | 토큰을 users.fcm_token에 저장 |
+| `FcmService.saveTokenToDb(userId, client)` | 토큰을 users.fcm_token에 저장. 스플래시(`splash_providers.dart`)에서 호출 |
 | `FcmService.onTokenRefresh` | 토큰 갱신 시 DB 업데이트 |
 | `FcmService.onMessage` | 포그라운드 알림 수신 스트림 |
 | `FcmService.onMessageOpenedApp` | 알림 탭 → 딥링크 처리 |
+
+**포그라운드 알림**: 앱이 열린 상태에서 FCM 메시지를 수신하면 `flutter_local_notifications`를 사용하여 시스템 알림바에 알림을 표시한다.
 
 **사용하는 유스케이스**: UC-4(접수 알림), UC-5(상태 변경 알림), UC-10(알림 조회)
 

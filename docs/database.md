@@ -697,6 +697,11 @@ create policy "orders_insert_owner" on orders
   for insert to authenticated
   with check ((select is_shop_owner(shop_id)));
 
+-- 고객이 QR 스캔으로 자신의 member_id로 주문을 생성할 수 있도록 허용
+create policy "orders_insert_member" on orders
+  for insert to authenticated
+  with check ((select is_order_member(member_id)));
+
 create policy "orders_update_owner" on orders
   for update to authenticated
   using ((select is_shop_owner(shop_id)));
