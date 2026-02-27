@@ -13,7 +13,11 @@ final shopSearchNotifierProvider =
 
 class ShopSearchNotifier extends Notifier<ShopSearchState> {
   @override
-  ShopSearchState build() => const ShopSearchState();
+  ShopSearchState build() {
+    // 화면 진입 시 전체 범위로 샵을 자동 로드한다.
+    Future.microtask(() => loadNearbyShops());
+    return const ShopSearchState();
+  }
 
   /// 뷰 모드를 전환한다.
   void toggleViewMode(ShopSearchViewMode mode) {
