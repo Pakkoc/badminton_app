@@ -78,22 +78,23 @@ class ShopSearchScreen extends ConsumerWidget {
       );
     }
 
+    // 지도 모드는 샵이 없어도 항상 지도를 표시한다.
+    if (state.viewMode == ShopSearchViewMode.map) {
+      return _MapView(
+        shops: state.shops,
+        orderCounts: state.orderCounts,
+        selectedShop: state.selectedShop,
+      );
+    }
+
+    // 리스트 모드에서 샵이 없으면 빈 상태 표시.
     if (state.shops.isEmpty) {
       return const _EmptyView();
     }
 
-    if (state.viewMode == ShopSearchViewMode.list) {
-      return _ShopListView(
-        shops: state.shops,
-        orderCounts: state.orderCounts,
-      );
-    }
-
-    // 지도 뷰: NaverMap + 하단 시트
-    return _MapView(
+    return _ShopListView(
       shops: state.shops,
       orderCounts: state.orderCounts,
-      selectedShop: state.selectedShop,
     );
   }
 }
