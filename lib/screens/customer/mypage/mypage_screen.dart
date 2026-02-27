@@ -1,6 +1,7 @@
 import 'package:badminton_app/core/utils/formatters.dart';
 import 'package:badminton_app/providers/auth_provider.dart';
 import 'package:badminton_app/widgets/confirm_dialog.dart';
+import 'package:badminton_app/widgets/customer_bottom_nav.dart';
 import 'package:badminton_app/widgets/loading_indicator.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
@@ -16,6 +17,9 @@ class MypageScreen extends ConsumerWidget {
 
     return Scaffold(
       appBar: AppBar(title: const Text('마이페이지')),
+      bottomNavigationBar: const CustomerBottomNav(
+        currentIndex: 3,
+      ),
       body: userAsync.when(
         data: (user) {
           if (user == null) {
