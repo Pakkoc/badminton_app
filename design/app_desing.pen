@@ -292,6 +292,18 @@
       ]
     },
     {
+      "type": "text",
+      "id": "ZqsfZ",
+      "x": 581,
+      "y": 3273,
+      "name": "n8",
+      "fill": "#94A3B8",
+      "content": "샵 상세",
+      "fontFamily": "Gmarket Sans",
+      "fontSize": 14,
+      "fontWeight": "normal"
+    },
+    {
       "type": "frame",
       "id": "s2pzz",
       "x": 940,
@@ -6421,18 +6433,6 @@
       "name": "n7",
       "fill": "#94A3B8",
       "content": "주변 샵 검색",
-      "fontFamily": "Gmarket Sans",
-      "fontSize": 14,
-      "fontWeight": "normal"
-    },
-    {
-      "type": "text",
-      "id": "ZqsfZ",
-      "x": 590,
-      "y": 3108,
-      "name": "n8",
-      "fill": "#94A3B8",
-      "content": "샵 상세",
       "fontFamily": "Gmarket Sans",
       "fontSize": 14,
       "fontWeight": "normal"
