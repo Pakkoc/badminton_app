@@ -1,6 +1,7 @@
 import 'package:badminton_app/screens/customer/home/customer_home_notifier.dart';
 import 'package:badminton_app/screens/customer/home/customer_home_screen.dart';
 import 'package:badminton_app/screens/customer/home/customer_home_state.dart';
+import 'package:badminton_app/widgets/customer_bottom_nav.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -76,7 +77,7 @@ void main() {
     );
 
     testWidgets(
-      '빈 주문 목록일 때 EmptyState를 표시한다',
+      '빈 상태 — 일러스트, 메시지, CTA 버튼 표시',
       (tester) async {
         // Arrange & Act
         await tester.pumpWidget(
@@ -87,14 +88,26 @@ void main() {
 
         // Assert
         expect(
+          find.byIcon(Icons.sports_tennis),
+          findsOneWidget,
+        );
+        expect(
           find.text('아직 진행 중인 작업이 없습니다'),
+          findsOneWidget,
+        );
+        expect(
+          find.text('주변 샵을 검색해 거트를 맡겨보세요'),
+          findsOneWidget,
+        );
+        expect(
+          find.text('주변 샵 검색하기'),
           findsOneWidget,
         );
       },
     );
 
     testWidgets(
-      'AppBar에 거트알림 타이틀이 표시된다',
+      'AppBar에 거트알림 타이틀이 녹색으로 표시된다',
       (tester) async {
         // Arrange & Act
         await tester.pumpWidget(
@@ -127,7 +140,7 @@ void main() {
     );
 
     testWidgets(
-      '활성 주문이 있으면 요약 카드와 주문 카드를 표시한다',
+      '활성 주문이 있으면 요약 카드를 "접수 N건 / 작업중 N건" 형식으로 표시',
       (tester) async {
         // Arrange & Act
         await tester.pumpWidget(
@@ -137,16 +150,76 @@ void main() {
                 testOrderReceived,
                 testOrderInProgress,
               ],
+              shopNames: {
+                testOrderReceived.shopId: '거트 프로샵',
+              },
             ),
           ),
         );
 
         // Assert
-        // 요약 카드의 접수됨 + StatusBadge의 접수됨
-        expect(find.text('접수됨'), findsWidgets);
-        expect(find.text('작업중'), findsWidgets);
-        // 요약 카드에 각각 1건씩
-        expect(find.text('1'), findsNWidgets(2));
+        expect(find.text('접수 1건'), findsOneWidget);
+        expect(find.text('작업중 1건'), findsOneWidget);
+      },
+    );
+
+    testWidgets(
+      '"내 작업" 섹션 타이틀이 표시된다',
+      (tester) async {
+        // Arrange & Act
+        await tester.pumpWidget(
+          createApp(
+            state: CustomerHomeState(
+              activeOrders: [testOrderReceived],
+              shopNames: {
+                testOrderReceived.shopId: '거트 프로샵',
+              },
+            ),
+          ),
+        );
+
+        // Assert
+        expect(find.text('내 작업'), findsOneWidget);
+      },
+    );
+
+    testWidgets(
+      '작업 카드에 샵 이름이 표시된다',
+      (tester) async {
+        // Arrange & Act
+        await tester.pumpWidget(
+          createApp(
+            state: CustomerHomeState(
+              activeOrders: [testOrderReceived],
+              shopNames: {
+                testOrderReceived.shopId: '거트 프로샵',
+              },
+            ),
+          ),
+        );
+
+        // Assert
+        expect(find.text('거트 프로샵'), findsOneWidget);
+      },
+    );
+
+    testWidgets(
+      '작업 카드에 접수 시간이 "접수 HH:mm" 형식으로 표시된다',
+      (tester) async {
+        // Arrange & Act
+        await tester.pumpWidget(
+          createApp(
+            state: CustomerHomeState(
+              activeOrders: [testOrderReceived],
+              shopNames: {
+                testOrderReceived.shopId: '거트 프로샵',
+              },
+            ),
+          ),
+        );
+
+        // Assert
+        expect(find.text('접수 10:00'), findsOneWidget);
       },
     );
 
@@ -158,6 +231,9 @@ void main() {
           createApp(
             state: CustomerHomeState(
               activeOrders: [testOrderReceived],
+              shopNames: {
+                testOrderReceived.shopId: '거트 프로샵',
+              },
             ),
           ),
         );
@@ -168,7 +244,7 @@ void main() {
     );
 
     testWidgets(
-      '하단 네비게이션이 표시된다',
+      '하단 네비게이션 4탭이 표시된다',
       (tester) async {
         // Arrange & Act
         await tester.pumpWidget(
@@ -178,9 +254,14 @@ void main() {
         );
 
         // Assert
+        expect(
+          find.byType(CustomerBottomNav),
+          findsOneWidget,
+        );
         expect(find.text('홈'), findsOneWidget);
         expect(find.text('샵검색'), findsOneWidget);
-        expect(find.text('마이페이지'), findsOneWidget);
+        expect(find.text('이력'), findsOneWidget);
+        expect(find.text('MY'), findsOneWidget);
       },
     );
   });

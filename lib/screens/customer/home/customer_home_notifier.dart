@@ -2,6 +2,7 @@ import 'package:badminton_app/core/error/app_exception.dart';
 import 'package:badminton_app/models/enums.dart';
 import 'package:badminton_app/providers/auth_provider.dart';
 import 'package:badminton_app/repositories/order_repository.dart';
+import 'package:badminton_app/repositories/shop_repository.dart';
 import 'package:badminton_app/screens/customer/home/customer_home_state.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -44,7 +45,22 @@ class CustomerHomeNotifier extends Notifier<CustomerHomeState> {
         return false;
       }).toList();
 
-      state = CustomerHomeState(activeOrders: activeOrders);
+      // 샵 이름 조회
+      final shopRepo = ref.read(shopRepositoryProvider);
+      final shopIds =
+          activeOrders.map((o) => o.shopId).toSet();
+      final shopNames = <String, String>{};
+      for (final shopId in shopIds) {
+        final shop = await shopRepo.getById(shopId);
+        if (shop != null) {
+          shopNames[shopId] = shop.name;
+        }
+      }
+
+      state = CustomerHomeState(
+        activeOrders: activeOrders,
+        shopNames: shopNames,
+      );
     } on AppException catch (e) {
       state = state.copyWith(
         isLoading: false,

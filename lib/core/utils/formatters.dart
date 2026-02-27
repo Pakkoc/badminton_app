@@ -35,6 +35,13 @@ class Formatters {
     return '$month/$day $hour:$minute';
   }
 
+  /// "접수 HH:mm" 고정 형식으로 반환한다.
+  static String fixedTime(DateTime dateTime) {
+    final hour = dateTime.hour.toString().padLeft(2, '0');
+    final minute = dateTime.minute.toString().padLeft(2, '0');
+    return '접수 $hour:$minute';
+  }
+
   /// `YYYY.MM.DD` 형식으로 반환한다.
   static String date(DateTime dt) {
     final year = dt.year.toString();

@@ -7,6 +7,7 @@ part 'customer_home_state.freezed.dart';
 class CustomerHomeState with _$CustomerHomeState {
   const factory CustomerHomeState({
     @Default([]) List<GutOrder> activeOrders,
+    @Default({}) Map<String, String> shopNames,
     @Default(false) bool isLoading,
     String? error,
   }) = _CustomerHomeState;

@@ -1,8 +1,10 @@
+import 'package:badminton_app/app/theme.dart';
 import 'package:badminton_app/core/utils/formatters.dart';
 import 'package:badminton_app/models/enums.dart';
 import 'package:badminton_app/models/order.dart';
 import 'package:badminton_app/screens/customer/home/customer_home_notifier.dart';
-import 'package:badminton_app/widgets/empty_state.dart';
+import 'package:badminton_app/screens/customer/home/customer_home_state.dart';
+import 'package:badminton_app/widgets/customer_bottom_nav.dart';
 import 'package:badminton_app/widgets/error_view.dart';
 import 'package:badminton_app/widgets/loading_indicator.dart';
 import 'package:badminton_app/widgets/status_badge.dart';
@@ -19,26 +21,36 @@ class CustomerHomeScreen extends ConsumerWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('거트알림'),
+        title: Text(
+          '거트알림',
+          style: Theme.of(context).textTheme.headlineMedium?.copyWith(
+                color: AppTheme.courtGreen,
+                fontWeight: FontWeight.bold,
+              ),
+        ),
+        centerTitle: false,
+        backgroundColor: Colors.white,
+        elevation: 0,
+        bottom: PreferredSize(
+          preferredSize: const Size.fromHeight(0.5),
+          child: Container(
+            height: 0.5,
+            color: AppTheme.border,
+          ),
+        ),
         actions: [
           IconButton(
             icon: const Icon(Icons.notifications_outlined),
+            color: AppTheme.textPrimary,
             onPressed: () =>
                 context.push('/customer/notifications'),
+            tooltip: '알림',
           ),
         ],
       ),
       body: _buildBody(context, ref, state),
-      bottomNavigationBar: _BottomNav(
+      bottomNavigationBar: const CustomerBottomNav(
         currentIndex: 0,
-        onTap: (index) {
-          switch (index) {
-            case 1:
-              context.go('/customer/shop-search');
-            case 2:
-              context.go('/customer/mypage');
-          }
-        },
       ),
     );
   }
@@ -46,7 +58,7 @@ class CustomerHomeScreen extends ConsumerWidget {
   Widget _buildBody(
     BuildContext context,
     WidgetRef ref,
-    dynamic state,
+    CustomerHomeState state,
   ) {
     if (state.isLoading) {
       return const LoadingIndicator();
@@ -62,50 +74,72 @@ class CustomerHomeScreen extends ConsumerWidget {
     }
 
     if (state.activeOrders.isEmpty) {
-      return RefreshIndicator(
+      return _EmptyBody(
         onRefresh: () => ref
             .read(customerHomeNotifierProvider.notifier)
             .refresh(),
-        child: ListView(
-          children: const [
-            SizedBox(height: 120),
-            EmptyState(
-              icon: Icons.content_paste_off,
-              message: '아직 진행 중인 작업이 없습니다',
-            ),
-          ],
-        ),
       );
     }
 
-    final receivedCount = state.activeOrders
-        .where(
-          (GutOrder o) => o.status == OrderStatus.received,
-        )
-        .length;
-    final inProgressCount = state.activeOrders
-        .where(
-          (GutOrder o) => o.status == OrderStatus.inProgress,
-        )
-        .length;
-
-    return RefreshIndicator(
+    return _OrderListBody(
+      state: state,
       onRefresh: () => ref
           .read(customerHomeNotifierProvider.notifier)
           .refresh(),
+    );
+  }
+}
+
+/// 빈 상태 — 스펙 섹션 3.6.
+class _EmptyBody extends StatelessWidget {
+  const _EmptyBody({required this.onRefresh});
+
+  final Future<void> Function() onRefresh;
+
+  @override
+  Widget build(BuildContext context) {
+    return RefreshIndicator(
+      color: AppTheme.courtGreen,
+      onRefresh: onRefresh,
       child: ListView(
-        padding: const EdgeInsets.all(16),
         children: [
-          _SummaryCard(
-            receivedCount: receivedCount,
-            inProgressCount: inProgressCount,
-          ),
-          const SizedBox(height: 16),
-          ...state.activeOrders.map<Widget>(
-            (GutOrder order) => _OrderCard(
-              order: order,
-              onTap: () =>
-                  context.push('/customer/order/${order.id}'),
+          SizedBox(
+            height: MediaQuery.of(context).size.height * 0.7,
+            child: Center(
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  const Icon(
+                    Icons.sports_tennis,
+                    size: 120,
+                    color: AppTheme.textTertiary,
+                  ),
+                  const SizedBox(height: 24),
+                  Text(
+                    '아직 진행 중인 작업이 없습니다',
+                    style: Theme.of(context)
+                        .textTheme
+                        .headlineMedium,
+                  ),
+                  const SizedBox(height: 8),
+                  Text(
+                    '주변 샵을 검색해 거트를 맡겨보세요',
+                    style: Theme.of(context)
+                        .textTheme
+                        .bodyMedium
+                        ?.copyWith(color: AppTheme.textTertiary),
+                  ),
+                  const SizedBox(height: 24),
+                  SizedBox(
+                    width: 200,
+                    child: OutlinedButton(
+                      onPressed: () =>
+                          context.go('/customer/shop-search'),
+                      child: const Text('주변 샵 검색하기'),
+                    ),
+                  ),
+                ],
+              ),
             ),
           ),
         ],
@@ -114,6 +148,83 @@ class CustomerHomeScreen extends ConsumerWidget {
   }
 }
 
+/// 주문 목록 본문 — 요약 카드 + 내 작업 섹션.
+class _OrderListBody extends StatelessWidget {
+  const _OrderListBody({
+    required this.state,
+    required this.onRefresh,
+  });
+
+  final CustomerHomeState state;
+  final Future<void> Function() onRefresh;
+
+  @override
+  Widget build(BuildContext context) {
+    final receivedCount = state.activeOrders
+        .where((o) => o.status == OrderStatus.received)
+        .length;
+    final inProgressCount = state.activeOrders
+        .where((o) => o.status == OrderStatus.inProgress)
+        .length;
+    final showSummary = receivedCount + inProgressCount > 0;
+
+    return RefreshIndicator(
+      color: AppTheme.courtGreen,
+      onRefresh: onRefresh,
+      child: ListView.builder(
+        padding: const EdgeInsets.all(16),
+        itemCount: state.activeOrders.length +
+            (showSummary ? 2 : 1), // summary + title + cards
+        itemBuilder: (context, index) {
+          var offset = 0;
+
+          // 요약 카드
+          if (showSummary && index == 0) {
+            return Padding(
+              padding: const EdgeInsets.only(bottom: 20),
+              child: _SummaryCard(
+                receivedCount: receivedCount,
+                inProgressCount: inProgressCount,
+              ),
+            );
+          }
+          if (showSummary) offset = 1;
+
+          // "내 작업" 섹션 타이틀
+          if (index == offset) {
+            return Padding(
+              padding: const EdgeInsets.only(bottom: 12),
+              child: Text(
+                '내 작업',
+                style: Theme.of(context)
+                    .textTheme
+                    .titleMedium,
+              ),
+            );
+          }
+
+          // 작업 카드
+          final orderIndex = index - offset - 1;
+          final order = state.activeOrders[orderIndex];
+          final shopName =
+              state.shopNames[order.shopId] ?? '';
+
+          return Padding(
+            padding: const EdgeInsets.only(bottom: 12),
+            child: _OrderCard(
+              order: order,
+              shopName: shopName,
+              onTap: () =>
+                  context.push('/customer/order/${order.id}'),
+            ),
+          );
+        },
+      ),
+    );
+  }
+}
+
+/// 진행 중 요약 카드 — 스펙 섹션 3.2.
 class _SummaryCard extends StatelessWidget {
   const _SummaryCard({
     required this.receivedCount,
@@ -125,61 +236,36 @@ class _SummaryCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final colorScheme = Theme.of(context).colorScheme;
-
     return Card(
+      elevation: 0,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(16),
+        side: const BorderSide(color: AppTheme.border),
+      ),
       child: Padding(
         padding: const EdgeInsets.all(16),
         child: Row(
           children: [
-            Expanded(
-              child: Column(
-                children: [
-                  Text(
-                    '$receivedCount',
-                    style: Theme.of(context)
-                        .textTheme
-                        .headlineMedium
-                        ?.copyWith(
-                          fontWeight: FontWeight.bold,
-                          color: colorScheme.primary,
-                        ),
+            Text(
+              '접수 $receivedCount건',
+              style: Theme.of(context)
+                  .textTheme
+                  .bodyMedium
+                  ?.copyWith(
+                    fontWeight: FontWeight.w600,
+                    color: AppTheme.textPrimary,
                   ),
-                  const SizedBox(height: 4),
-                  Text(
-                    '접수됨',
-                    style:
-                        Theme.of(context).textTheme.bodyMedium,
-                  ),
-                ],
-              ),
             ),
-            Container(
-              width: 1,
-              height: 48,
-              color: colorScheme.outlineVariant,
-            ),
-            Expanded(
-              child: Column(
-                children: [
-                  Text(
-                    '$inProgressCount',
-                    style: Theme.of(context)
-                        .textTheme
-                        .headlineMedium
-                        ?.copyWith(
-                          fontWeight: FontWeight.bold,
-                          color: colorScheme.primary,
-                        ),
+            const SizedBox(width: 16),
+            Text(
+              '작업중 $inProgressCount건',
+              style: Theme.of(context)
+                  .textTheme
+                  .bodyMedium
+                  ?.copyWith(
+                    fontWeight: FontWeight.w600,
+                    color: AppTheme.textPrimary,
                   ),
-                  const SizedBox(height: 4),
-                  Text(
-                    '작업중',
-                    style:
-                        Theme.of(context).textTheme.bodyMedium,
-                  ),
-                ],
-              ),
             ),
           ],
         ),
@@ -188,98 +274,107 @@ class _SummaryCard extends StatelessWidget {
   }
 }
 
+/// 작업 카드 — 스펙 섹션 3.3.
+///
+/// 세로 레이아웃: 상태뱃지 → 샵이름 → 접수시간 → 메모(선택).
 class _OrderCard extends StatelessWidget {
   const _OrderCard({
     required this.order,
+    required this.shopName,
     required this.onTap,
   });
 
   final GutOrder order;
+  final String shopName;
   final VoidCallback onTap;
 
   @override
   Widget build(BuildContext context) {
     return Card(
-      margin: const EdgeInsets.only(bottom: 8),
+      elevation: 1,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(16),
+        side: const BorderSide(color: AppTheme.border),
+      ),
       child: InkWell(
         onTap: onTap,
-        borderRadius: BorderRadius.circular(12),
+        borderRadius: BorderRadius.circular(16),
         child: Padding(
           padding: const EdgeInsets.all(16),
-          child: Row(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               StatusBadge(status: order.status),
-              const SizedBox(width: 12),
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
+              const SizedBox(height: 8),
+              Text(
+                shopName,
+                style: Theme.of(context)
+                    .textTheme
+                    .bodyMedium
+                    ?.copyWith(color: AppTheme.textSecondary),
+              ),
+              const SizedBox(height: 8),
+              Row(
+                children: [
+                  const Icon(
+                    Icons.schedule,
+                    size: 16,
+                    color: AppTheme.textTertiary,
+                  ),
+                  const SizedBox(width: 4),
+                  Text(
+                    Formatters.fixedTime(order.createdAt),
+                    style: Theme.of(context)
+                        .textTheme
+                        .bodySmall
+                        ?.copyWith(
+                          color: AppTheme.textTertiary,
+                        ),
+                  ),
+                ],
+              ),
+              if (order.memo != null) ...[
+                const SizedBox(height: 8),
+                Row(
                   children: [
-                    if (order.memo != null)
-                      Text(
+                    const Icon(
+                      Icons.notes,
+                      size: 16,
+                      color: AppTheme.textTertiary,
+                    ),
+                    const SizedBox(width: 4),
+                    Expanded(
+                      child: Text(
                         order.memo!,
                         style: Theme.of(context)
                             .textTheme
-                            .bodyMedium,
+                            .bodySmall
+                            ?.copyWith(
+                              color: AppTheme.textTertiary,
+                            ),
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
                       ),
-                    const SizedBox(height: 4),
-                    Text(
-                      Formatters.relativeTime(
-                        order.createdAt,
-                      ),
-                      style: Theme.of(context)
-                          .textTheme
-                          .bodySmall
-                          ?.copyWith(
-                            color: Theme.of(context)
-                                .colorScheme
-                                .onSurface
-                                .withValues(alpha: 0.5),
-                          ),
                     ),
                   ],
                 ),
-              ),
-              const Icon(Icons.chevron_right),
+              ],
+              if (order.status == OrderStatus.completed) ...[
+                const SizedBox(height: 8),
+                Align(
+                  alignment: Alignment.centerRight,
+                  child: Icon(
+                    Icons.directions,
+                    size: 24,
+                    color: AppTheme.courtGreen,
+                    semanticLabel: '길찾기',
+                  ),
+                ),
+              ],
             ],
           ),
         ),
       ),
-    );
-  }
-}
-
-class _BottomNav extends StatelessWidget {
-  const _BottomNav({
-    required this.currentIndex,
-    required this.onTap,
-  });
-
-  final int currentIndex;
-  final ValueChanged<int> onTap;
-
-  @override
-  Widget build(BuildContext context) {
-    return BottomNavigationBar(
-      currentIndex: currentIndex,
-      onTap: onTap,
-      items: const [
-        BottomNavigationBarItem(
-          icon: Icon(Icons.home_outlined),
-          activeIcon: Icon(Icons.home),
-          label: '홈',
-        ),
-        BottomNavigationBarItem(
-          icon: Icon(Icons.search),
-          label: '샵검색',
-        ),
-        BottomNavigationBarItem(
-          icon: Icon(Icons.person_outline),
-          activeIcon: Icon(Icons.person),
-          label: '마이페이지',
-        ),
-      ],
     );
   }
 }

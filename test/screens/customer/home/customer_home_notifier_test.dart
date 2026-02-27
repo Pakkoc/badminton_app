@@ -1,6 +1,7 @@
 import 'package:badminton_app/models/user.dart';
 import 'package:badminton_app/providers/auth_provider.dart';
 import 'package:badminton_app/repositories/order_repository.dart';
+import 'package:badminton_app/repositories/shop_repository.dart';
 import 'package:badminton_app/screens/customer/home/customer_home_notifier.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -11,11 +12,19 @@ import '../../../helpers/fixtures.dart';
 class MockOrderRepository extends Mock
     implements OrderRepository {}
 
+class MockShopRepository extends Mock
+    implements ShopRepository {}
+
 void main() {
   late MockOrderRepository mockOrderRepository;
+  late MockShopRepository mockShopRepository;
 
   setUp(() {
     mockOrderRepository = MockOrderRepository();
+    mockShopRepository = MockShopRepository();
+    when(
+      () => mockShopRepository.getById(any()),
+    ).thenAnswer((_) async => testShop);
   });
 
   ProviderContainer createContainer({
@@ -25,6 +34,9 @@ void main() {
       overrides: [
         orderRepositoryProvider.overrideWithValue(
           mockOrderRepository,
+        ),
+        shopRepositoryProvider.overrideWithValue(
+          mockShopRepository,
         ),
         currentUserProvider.overrideWith(
           (ref) async => user,
@@ -80,7 +92,6 @@ void main() {
         final container = createContainer(user: testUser);
 
         // Act
-        // build() 내부에서 loadOrders()를 호출하므로 대기
         await container
             .read(customerHomeNotifierProvider.notifier)
             .loadOrders();
@@ -96,6 +107,34 @@ void main() {
             (o) => o == oldCompleted,
           ),
           isFalse,
+        );
+      },
+    );
+
+    test(
+      'loadOrders가 샵 이름을 함께 조회한다',
+      () async {
+        // Arrange
+        when(
+          () =>
+              mockOrderRepository.getByMemberUser(any()),
+        ).thenAnswer(
+          (_) async => [testOrderReceived],
+        );
+
+        final container = createContainer(user: testUser);
+
+        // Act
+        await container
+            .read(customerHomeNotifierProvider.notifier)
+            .loadOrders();
+
+        // Assert
+        final state =
+            container.read(customerHomeNotifierProvider);
+        expect(
+          state.shopNames[testOrderReceived.shopId],
+          testShop.name,
         );
       },
     );
