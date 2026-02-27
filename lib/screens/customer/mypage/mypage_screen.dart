@@ -49,8 +49,9 @@ class MypageScreen extends ConsumerWidget {
               ),
               _MenuItem(
                 icon: Icons.notifications_outlined,
-                label: '알림 설정',
-                onTap: () {},
+                label: '알림',
+                onTap: () =>
+                    context.push('/customer/notifications'),
               ),
               const Divider(height: 1),
               _MenuItem(

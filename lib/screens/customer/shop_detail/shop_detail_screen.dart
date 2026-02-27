@@ -7,6 +7,7 @@ import 'package:badminton_app/screens/customer/shop_detail/shop_detail_notifier.
 import 'package:badminton_app/screens/customer/shop_detail/shop_detail_state.dart';
 import 'package:badminton_app/widgets/error_view.dart';
 import 'package:badminton_app/widgets/loading_indicator.dart';
+import 'package:badminton_app/widgets/map_preview.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -163,29 +164,11 @@ class _MapPreview extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () => _openMap(),
-      child: Container(
+      child: MapPreview(
+        latitude: shop.latitude,
+        longitude: shop.longitude,
         height: 180,
-        width: double.infinity,
-        color: AppTheme.surfaceVariant,
-        child: const Center(
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Icon(
-                Icons.map,
-                size: 48,
-                color: AppTheme.textTertiary,
-              ),
-              SizedBox(height: 8),
-              Text(
-                '지도 미리보기',
-                style: TextStyle(
-                  color: AppTheme.textTertiary,
-                ),
-              ),
-            ],
-          ),
-        ),
+        emptyText: '위치 정보가 없습니다',
       ),
     );
   }
