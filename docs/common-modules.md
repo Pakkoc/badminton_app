@@ -220,6 +220,7 @@ lib/
 - Riverpod Provider로 제공 (테스트 시 Mock 교체 용이)
 - 에러 발생 시 `AppException`으로 래핑하여 throw
 - Realtime 구독은 `Stream<List<T>>`로 반환
+- **빈 id 처리**: freezed 모델의 `id` 기본값이 `''`(빈 문자열)인 경우, `create()` 시 JSON에서 `id` 키를 제거하여 DB가 `uuid_generate_v7()`로 자동 생성하도록 한다. 예: `final json = model.toJson(); if (json['id'] == '') json.remove('id');`
 
 ---
 

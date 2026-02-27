@@ -1,6 +1,6 @@
 # 스플래시 — 상태 설계
 
-> 최종 수정일: 2026-02-24
+> 최종 수정일: 2026-02-28
 
 ---
 
@@ -28,6 +28,7 @@
 | `authState` | `authStateProvider` (M3) | Supabase Auth 세션 스트림. 공통 모듈에서 관리하므로 이 화면에서 별도로 관리하지 않음 |
 | `currentUser` | `currentUserProvider` (M3) | users 테이블의 현재 사용자 레코드. role 판별에 사용 |
 | `isNewUser` | `isNewUserProvider` (M3) | 신규 사용자 여부 (users 테이블에 레코드 없음) |
+| `fcmService` | `fcmServiceProvider` (M8) | FCM 토큰을 users.fcm_token에 저장. 인증 확인 후 비동기로 호출 |
 
 ---
 
@@ -82,3 +83,9 @@ flowchart TD
 ### 쓰기 (Actions)
 
 이 화면은 사용자 입력이 없는 표시 전용 화면이므로 쓰기 액션이 없다. 라우팅은 `splashRouteProvider`의 결과에 따라 go_router 리다이렉트에서 자동 처리한다.
+
+### 부수 효과 (Side Effects)
+
+| 효과 | 시점 | 설명 |
+|------|------|------|
+| FCM 토큰 저장 | 인증 세션 유효 + 사용자 레코드 존재 시 | `FcmService.saveTokenToDb(userId, client)`를 비동기로 호출. 실패해도 라우팅에 영향 없음 (`unawaited` + `catchError`) |

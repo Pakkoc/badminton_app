@@ -112,7 +112,7 @@ screens:
     description: "QR 스캔으로 샵에 자동 회원 등록 및 작업 접수"
     role: customer
     pencil_id: ""
-    spec_file: ""
+    spec_file: docs/ui-specs/customer-qr-order.md
 
   customer-profile-edit:
     name: "프로필 수정"

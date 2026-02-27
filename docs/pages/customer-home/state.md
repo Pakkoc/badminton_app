@@ -1,7 +1,7 @@
 # 고객 홈 — 상태 설계
 
 > 화면 ID: `customer-home`
-> 최종 수정일: 2026-02-27
+> 최종 수정일: 2026-02-28
 
 ---
 
@@ -25,6 +25,7 @@ freezed 클래스: `CustomerHomeState`
 | Provider | 타입 | 역할 |
 |----------|------|------|
 | `customerHomeNotifierProvider` | `NotifierProvider<CustomerHomeNotifier, CustomerHomeState>` | 화면의 메인 상태 관리. 초기 로드 및 데이터 집계 |
+| `unreadNotificationCountProvider` | `StateNotifierProvider<UnreadNotificationCountNotifier, int>` | 읽지 않은 알림 수. AppBar 알림 아이콘 뱃지에 표시 |
 
 ### 의존 Provider
 
@@ -34,6 +35,7 @@ freezed 클래스: `CustomerHomeState`
 | `memberRepositoryProvider` | M5 리포지토리 | 사용자의 회원 정보 → shopId 목록 확보 |
 | `orderRepositoryProvider` | M5 리포지토리 | 샵별 주문 조회 |
 | `shopRepositoryProvider` | M5 리포지토리 | 샵 이름 조회 |
+| `unreadNotificationCountProvider` | 공통 Provider | 읽지 않은 알림 수 (Supabase Realtime 구독) |
 
 ---
 
