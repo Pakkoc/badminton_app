@@ -632,6 +632,13 @@
           "width": "fill_container",
           "height": 56,
           "fill": "$--surface",
+          "stroke": {
+            "align": "inside",
+            "thickness": {
+              "bottom": 0.5
+            },
+            "fill": "$--border"
+          },
           "padding": [
             0,
             16
@@ -681,7 +688,7 @@
               "width": "fill_container",
               "fill": "$--surface",
               "cornerRadius": 16,
-              "gap": 12,
+              "gap": 16,
               "padding": 16,
               "children": [
                 {
@@ -767,20 +774,10 @@
               "id": "iaCrV",
               "name": "sectionTitle",
               "fill": "$--text-primary",
-              "content": "진행 중인 작업",
+              "content": "내 작업",
               "fontFamily": "Gmarket Sans",
-              "fontSize": 18,
+              "fontSize": 16,
               "fontWeight": "SemiBold"
-            },
-            {
-              "type": "text",
-              "id": "eqf3y",
-              "name": "sectionLink",
-              "fill": "$--primary",
-              "content": "전체보기",
-              "fontFamily": "Gmarket Sans",
-              "fontSize": 14,
-              "fontWeight": "normal"
             }
           ]
         },
@@ -814,56 +811,46 @@
               "children": [
                 {
                   "type": "frame",
-                  "id": "UGs9O",
-                  "name": "Card1 Top Row",
-                  "width": "fill_container",
-                  "justifyContent": "space_between",
+                  "id": "P7vqH",
+                  "name": "Status Badge",
+                  "fill": "$--status-progress-bg",
+                  "cornerRadius": 999,
+                  "gap": 6,
+                  "padding": [
+                    6,
+                    12
+                  ],
                   "alignItems": "center",
                   "children": [
                     {
-                      "type": "text",
-                      "id": "HeL4k",
-                      "name": "card1Title",
-                      "fill": "$--text-primary",
-                      "content": "OO 거트샵",
-                      "fontFamily": "Gmarket Sans",
-                      "fontSize": 16,
-                      "fontWeight": "SemiBold"
+                      "type": "ellipse",
+                      "id": "7VH9V",
+                      "name": "card1BadgeDot",
+                      "fill": "$--status-progress",
+                      "width": 8,
+                      "height": 8
                     },
                     {
-                      "type": "frame",
-                      "id": "P7vqH",
-                      "name": "Status Badge",
-                      "fill": "$--status-progress-bg",
-                      "cornerRadius": 999,
-                      "gap": 6,
-                      "padding": [
-                        4,
-                        10
-                      ],
-                      "alignItems": "center",
-                      "children": [
-                        {
-                          "type": "ellipse",
-                          "id": "7VH9V",
-                          "name": "card1BadgeDot",
-                          "fill": "$--status-progress",
-                          "width": 8,
-                          "height": 8
-                        },
-                        {
-                          "type": "text",
-                          "id": "1Cj3b",
-                          "name": "card1BadgeText",
-                          "fill": "$--status-progress-text",
-                          "content": "작업중",
-                          "fontFamily": "Gmarket Sans",
-                          "fontSize": 12,
-                          "fontWeight": "Medium"
-                        }
-                      ]
+                      "type": "text",
+                      "id": "1Cj3b",
+                      "name": "card1BadgeText",
+                      "fill": "$--status-progress-text",
+                      "content": "작업중",
+                      "fontFamily": "Gmarket Sans",
+                      "fontSize": 12,
+                      "fontWeight": "Medium"
                     }
                   ]
+                },
+                {
+                  "type": "text",
+                  "id": "zbvTK",
+                  "name": "card1ShopName",
+                  "fill": "#475569",
+                  "content": "OO 거트샵",
+                  "fontFamily": "Gmarket Sans",
+                  "fontSize": 14,
+                  "fontWeight": "normal"
                 },
                 {
                   "type": "frame",
@@ -915,56 +902,46 @@
               "children": [
                 {
                   "type": "frame",
-                  "id": "NmhTM",
-                  "name": "Card2 Top Row",
-                  "width": "fill_container",
-                  "justifyContent": "space_between",
+                  "id": "JfmPD",
+                  "name": "Status Badge Received",
+                  "fill": "$--status-received-bg",
+                  "cornerRadius": 999,
+                  "gap": 6,
+                  "padding": [
+                    6,
+                    12
+                  ],
                   "alignItems": "center",
                   "children": [
                     {
-                      "type": "text",
-                      "id": "YfFes",
-                      "name": "card2Title",
-                      "fill": "$--text-primary",
-                      "content": "XX 스트링샵",
-                      "fontFamily": "Gmarket Sans",
-                      "fontSize": 16,
-                      "fontWeight": "SemiBold"
+                      "type": "ellipse",
+                      "id": "3hRvv",
+                      "name": "card2BadgeDot",
+                      "fill": "$--status-received",
+                      "width": 8,
+                      "height": 8
                     },
                     {
-                      "type": "frame",
-                      "id": "JfmPD",
-                      "name": "Status Badge Received",
-                      "fill": "$--status-received-bg",
-                      "cornerRadius": 999,
-                      "gap": 6,
-                      "padding": [
-                        4,
-                        10
-                      ],
-                      "alignItems": "center",
-                      "children": [
-                        {
-                          "type": "ellipse",
-                          "id": "3hRvv",
-                          "name": "card2BadgeDot",
-                          "fill": "$--status-received",
-                          "width": 8,
-                          "height": 8
-                        },
-                        {
-                          "type": "text",
-                          "id": "WH9yZ",
-                          "name": "card2BadgeText",
-                          "fill": "$--status-received-text",
-                          "content": "접수됨",
-                          "fontFamily": "Gmarket Sans",
-                          "fontSize": 12,
-                          "fontWeight": "Medium"
-                        }
-                      ]
+                      "type": "text",
+                      "id": "WH9yZ",
+                      "name": "card2BadgeText",
+                      "fill": "$--status-received-text",
+                      "content": "접수됨",
+                      "fontFamily": "Gmarket Sans",
+                      "fontSize": 12,
+                      "fontWeight": "Medium"
                     }
                   ]
+                },
+                {
+                  "type": "text",
+                  "id": "o7WgU",
+                  "name": "card2ShopName",
+                  "fill": "#475569",
+                  "content": "XX 스트링샵",
+                  "fontFamily": "Gmarket Sans",
+                  "fontSize": 14,
+                  "fontWeight": "normal"
                 },
                 {
                   "type": "frame",
@@ -1017,7 +994,7 @@
           "stroke": {
             "align": "inside",
             "thickness": {
-              "top": 1
+              "top": 0.5
             },
             "fill": "$--border"
           },
@@ -2759,7 +2736,7 @@
               "width": 24,
               "height": 24,
               "iconFontName": "arrow_back_ios",
-              "iconFontFamily": "Material Symbols Outlined",
+              "iconFontFamily": "Material Symbols Rounded",
               "fill": "#0F172A"
             },
             {
@@ -2803,7 +2780,7 @@
                   "width": 32,
                   "height": 32,
                   "iconFontName": "build_circle",
-                  "iconFontFamily": "Material Symbols Outlined",
+                  "iconFontFamily": "Material Symbols Rounded",
                   "fill": "#1E40AF"
                 },
                 {
@@ -2866,7 +2843,7 @@
                           "width": 24,
                           "height": 24,
                           "iconFontName": "check_circle",
-                          "iconFontFamily": "Material Symbols Outlined",
+                          "iconFontFamily": "Material Symbols Rounded",
                           "fill": "#F59E0B"
                         },
                         {
@@ -2933,7 +2910,7 @@
                           "width": 24,
                           "height": 24,
                           "iconFontName": "check_circle",
-                          "iconFontFamily": "Material Symbols Outlined",
+                          "iconFontFamily": "Material Symbols Rounded",
                           "fill": "#3B82F6"
                         },
                         {
@@ -3000,7 +2977,7 @@
                           "width": 24,
                           "height": 24,
                           "iconFontName": "radio_button_unchecked",
-                          "iconFontFamily": "Material Symbols Outlined",
+                          "iconFontFamily": "Material Symbols Rounded",
                           "fill": "#CBD5E1"
                         },
                         {
@@ -3135,7 +3112,7 @@
                           "width": 20,
                           "height": 20,
                           "iconFontName": "storefront",
-                          "iconFontFamily": "Material Symbols Outlined",
+                          "iconFontFamily": "Material Symbols Rounded",
                           "fill": "#16A34A"
                         },
                         {
@@ -3165,7 +3142,7 @@
                           "width": 20,
                           "height": 20,
                           "iconFontName": "location_on",
-                          "iconFontFamily": "Material Symbols Outlined",
+                          "iconFontFamily": "Material Symbols Rounded",
                           "fill": "#94A3B8"
                         },
                         {
@@ -3195,7 +3172,7 @@
                           "width": 20,
                           "height": 20,
                           "iconFontName": "call",
-                          "iconFontFamily": "Material Symbols Outlined",
+                          "iconFontFamily": "Material Symbols Rounded",
                           "fill": "#94A3B8"
                         },
                         {
@@ -3212,74 +3189,83 @@
                     },
                     {
                       "type": "frame",
-                      "id": "OThce",
-                      "name": "Directions Button",
+                      "id": "JWvxx",
+                      "name": "Button Row",
                       "width": "fill_container",
-                      "height": 48,
-                      "fill": "#16A34A",
-                      "cornerRadius": 12,
                       "gap": 8,
-                      "justifyContent": "center",
-                      "alignItems": "center",
                       "children": [
                         {
-                          "type": "icon_font",
-                          "id": "yZyrj",
-                          "name": "dirIcon",
-                          "width": 20,
-                          "height": 20,
-                          "iconFontName": "directions",
-                          "iconFontFamily": "Material Symbols Outlined",
-                          "fill": "#FFFFFF"
-                        },
-                        {
-                          "type": "text",
-                          "id": "UYBHM",
-                          "name": "dirText",
+                          "type": "frame",
+                          "id": "zqviZ",
+                          "name": "Phone Button",
+                          "width": "fill_container",
+                          "height": 48,
                           "fill": "#FFFFFF",
-                          "content": "길찾기",
-                          "fontFamily": "Gmarket Sans",
-                          "fontSize": 16,
-                          "fontWeight": "500"
-                        }
-                      ]
-                    },
-                    {
-                      "type": "frame",
-                      "id": "zqviZ",
-                      "name": "Phone Button",
-                      "width": "fill_container",
-                      "height": 48,
-                      "fill": "#FFFFFF",
-                      "cornerRadius": 12,
-                      "stroke": {
-                        "align": "inside",
-                        "thickness": 1.5,
-                        "fill": "#16A34A"
-                      },
-                      "gap": 8,
-                      "justifyContent": "center",
-                      "alignItems": "center",
-                      "children": [
-                        {
-                          "type": "icon_font",
-                          "id": "5RRtJ",
-                          "name": "phoneIcon",
-                          "width": 20,
-                          "height": 20,
-                          "iconFontName": "call",
-                          "iconFontFamily": "Material Symbols Outlined",
-                          "fill": "#16A34A"
+                          "cornerRadius": 12,
+                          "stroke": {
+                            "align": "inside",
+                            "thickness": 1,
+                            "fill": "#16A34A"
+                          },
+                          "gap": 8,
+                          "justifyContent": "center",
+                          "alignItems": "center",
+                          "children": [
+                            {
+                              "type": "icon_font",
+                              "id": "5RRtJ",
+                              "name": "phoneIcon",
+                              "width": 20,
+                              "height": 20,
+                              "iconFontName": "call",
+                              "iconFontFamily": "Material Symbols Rounded",
+                              "fill": "#16A34A"
+                            },
+                            {
+                              "type": "text",
+                              "id": "fvniD",
+                              "name": "phoneText",
+                              "fill": "#16A34A",
+                              "content": "전화하기",
+                              "fontFamily": "Gmarket Sans",
+                              "fontSize": 16,
+                              "fontWeight": "500"
+                            }
+                          ]
                         },
                         {
-                          "type": "text",
-                          "id": "fvniD",
-                          "name": "phoneText",
+                          "type": "frame",
+                          "id": "OThce",
+                          "name": "Directions Button",
+                          "width": "fill_container",
+                          "height": 48,
                           "fill": "#16A34A",
-                          "content": "전화하기",
-                          "fontFamily": "Gmarket Sans",
-                          "fontSize": 16,
-                          "fontWeight": "500"
+                          "cornerRadius": 12,
+                          "gap": 8,
+                          "justifyContent": "center",
+                          "alignItems": "center",
+                          "children": [
+                            {
+                              "type": "icon_font",
+                              "id": "yZyrj",
+                              "name": "dirIcon",
+                              "width": 20,
+                              "height": 20,
+                              "iconFontName": "directions",
+                              "iconFontFamily": "Material Symbols Rounded",
+                              "fill": "#FFFFFF"
+                            },
+                            {
+                              "type": "text",
+                              "id": "UYBHM",
+                              "name": "dirText",
+                              "fill": "#FFFFFF",
+                              "content": "길찾기",
+                              "fontFamily": "Gmarket Sans",
+                              "fontSize": 16,
+                              "fontWeight": "500"
+                            }
+                          ]
                         }
                       ]
                     }
@@ -3335,7 +3321,7 @@
               "id": "PHKyH",
               "name": "Title",
               "fill": "$--text-primary",
-              "content": "주변 샵 검색",
+              "content": "주변 샵",
               "fontFamily": "Gmarket Sans",
               "fontSize": 20,
               "fontWeight": "Bold"
@@ -3442,7 +3428,7 @@
               "width": 14,
               "height": 14,
               "iconFontName": "storefront",
-              "iconFontFamily": "Material Symbols Outlined",
+              "iconFontFamily": "Material Symbols Rounded",
               "fill": "#FFFFFF"
             },
             {
@@ -3464,7 +3450,7 @@
               "width": 14,
               "height": 14,
               "iconFontName": "storefront",
-              "iconFontFamily": "Material Symbols Outlined",
+              "iconFontFamily": "Material Symbols Rounded",
               "fill": "#FFFFFF"
             },
             {
@@ -3486,7 +3472,7 @@
               "width": 14,
               "height": 14,
               "iconFontName": "storefront",
-              "iconFontFamily": "Material Symbols Outlined",
+              "iconFontFamily": "Material Symbols Rounded",
               "fill": "#FFFFFF"
             },
             {
@@ -3519,7 +3505,7 @@
                   "width": 24,
                   "height": 24,
                   "iconFontName": "my_location",
-                  "iconFontFamily": "Material Symbols Outlined",
+                  "iconFontFamily": "Material Symbols Rounded",
                   "fill": "#16A34A"
                 }
               ]
@@ -3584,11 +3570,41 @@
                       "fontWeight": "700"
                     },
                     {
+                      "type": "icon_font",
+                      "id": "6R7D6",
+                      "name": "card1Chevron",
+                      "width": 24,
+                      "height": 24,
+                      "iconFontName": "chevron_right",
+                      "iconFontFamily": "Material Symbols Rounded",
+                      "fill": "#94A3B8"
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "f4ZWv",
+                  "name": "Card1 Addr Row",
+                  "width": "fill_container",
+                  "gap": 4,
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "icon_font",
+                      "id": "zB2UA",
+                      "name": "card1AddrIcon",
+                      "width": 16,
+                      "height": 16,
+                      "iconFontName": "location_on",
+                      "iconFontFamily": "Material Symbols Rounded",
+                      "fill": "#94A3B8"
+                    },
+                    {
                       "type": "text",
-                      "id": "n3ib3",
-                      "name": "card1Dist",
-                      "fill": "#94A3B8",
-                      "content": "500m",
+                      "id": "cwEnV",
+                      "name": "card1AddrText",
+                      "fill": "#475569",
+                      "content": "강남구 역삼동 · 500m",
                       "fontFamily": "Gmarket Sans",
                       "fontSize": 14,
                       "fontWeight": "normal"
@@ -3651,16 +3667,6 @@
                       ]
                     }
                   ]
-                },
-                {
-                  "type": "text",
-                  "id": "ZHK87",
-                  "name": "card1Addr",
-                  "fill": "#475569",
-                  "content": "강남구 역삼동 123-45",
-                  "fontFamily": "Gmarket Sans",
-                  "fontSize": 14,
-                  "fontWeight": "normal"
                 }
               ]
             },
@@ -3709,11 +3715,41 @@
                       "fontWeight": "700"
                     },
                     {
+                      "type": "icon_font",
+                      "id": "1MDBF",
+                      "name": "card2Chevron",
+                      "width": 24,
+                      "height": 24,
+                      "iconFontName": "chevron_right",
+                      "iconFontFamily": "Material Symbols Rounded",
+                      "fill": "#94A3B8"
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "Mift8",
+                  "name": "Card2 Addr Row",
+                  "width": "fill_container",
+                  "gap": 4,
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "icon_font",
+                      "id": "uQ8ZZ",
+                      "name": "card2AddrIcon",
+                      "width": 16,
+                      "height": 16,
+                      "iconFontName": "location_on",
+                      "iconFontFamily": "Material Symbols Rounded",
+                      "fill": "#94A3B8"
+                    },
+                    {
                       "type": "text",
-                      "id": "tRzH4",
-                      "name": "card2Dist",
-                      "fill": "#94A3B8",
-                      "content": "1.2km",
+                      "id": "KZ2j7",
+                      "name": "card2AddrText",
+                      "fill": "#475569",
+                      "content": "서초구 서초동 · 1.2km",
                       "fontFamily": "Gmarket Sans",
                       "fontSize": 14,
                       "fontWeight": "normal"
@@ -3776,16 +3812,6 @@
                       ]
                     }
                   ]
-                },
-                {
-                  "type": "text",
-                  "id": "FJmXS",
-                  "name": "card2Addr",
-                  "fill": "#475569",
-                  "content": "서초구 서초동 456-78",
-                  "fontFamily": "Gmarket Sans",
-                  "fontSize": 14,
-                  "fontWeight": "normal"
                 }
               ]
             }
@@ -3801,7 +3827,7 @@
           "stroke": {
             "align": "inside",
             "thickness": {
-              "top": 1
+              "top": 0.5
             },
             "fill": "$--border"
           },
@@ -3983,7 +4009,7 @@
               "width": 24,
               "height": 24,
               "iconFontName": "arrow_back_ios",
-              "iconFontFamily": "Material Symbols Outlined",
+              "iconFontFamily": "Material Symbols Rounded",
               "fill": "#0F172A"
             },
             {
@@ -3991,7 +4017,7 @@
               "id": "uVAOC",
               "name": "appBarTitle",
               "fill": "#0F172A",
-              "content": "샵 상세",
+              "content": "샵 정보",
               "fontFamily": "Gmarket Sans",
               "fontSize": 18,
               "fontWeight": "600"
@@ -4031,7 +4057,7 @@
               "width": 14,
               "height": 14,
               "iconFontName": "storefront",
-              "iconFontFamily": "Material Symbols Outlined",
+              "iconFontFamily": "Material Symbols Rounded",
               "fill": "#FFFFFF"
             }
           ]
@@ -4074,7 +4100,7 @@
                       "width": 24,
                       "height": 24,
                       "iconFontName": "storefront",
-                      "iconFontFamily": "Material Symbols Outlined",
+                      "iconFontFamily": "Material Symbols Rounded",
                       "fill": "#16A34A"
                     },
                     {
@@ -4129,7 +4155,7 @@
                   "width": "fill_container",
                   "fill": "#F8FAFC",
                   "cornerRadius": 16,
-                  "gap": 24,
+                  "gap": 16,
                   "padding": 20,
                   "justifyContent": "center",
                   "alignItems": "center",
@@ -4254,7 +4280,7 @@
                           "width": 20,
                           "height": 20,
                           "iconFontName": "location_on",
-                          "iconFontFamily": "Material Symbols Outlined",
+                          "iconFontFamily": "Material Symbols Rounded",
                           "fill": "#94A3B8"
                         },
                         {
@@ -4282,8 +4308,8 @@
                           "name": "phoneIcon",
                           "width": 20,
                           "height": 20,
-                          "iconFontName": "phone",
-                          "iconFontFamily": "Material Symbols Outlined",
+                          "iconFontName": "call",
+                          "iconFontFamily": "Material Symbols Rounded",
                           "fill": "#94A3B8"
                         },
                         {
@@ -4321,7 +4347,7 @@
                   "width": 20,
                   "height": 20,
                   "iconFontName": "directions",
-                  "iconFontFamily": "Material Symbols Outlined",
+                  "iconFontFamily": "Material Symbols Rounded",
                   "fill": "#FFFFFF"
                 },
                 {
@@ -4604,6 +4630,13 @@
               "width": "fill_container",
               "fill": "#FFFFFF",
               "cornerRadius": 16,
+              "stroke": {
+                "align": "inside",
+                "thickness": {
+                  "bottom": 1
+                },
+                "fill": "#F1F5F9"
+              },
               "layout": "vertical",
               "gap": 6,
               "padding": 16,
@@ -4634,7 +4667,7 @@
                       "cornerRadius": 10,
                       "padding": [
                         4,
-                        10
+                        8
                       ],
                       "justifyContent": "center",
                       "alignItems": "center",
@@ -4646,8 +4679,8 @@
                           "fill": "#166534",
                           "content": "완료",
                           "fontFamily": "Gmarket Sans",
-                          "fontSize": 11,
-                          "fontWeight": "500"
+                          "fontSize": 12,
+                          "fontWeight": "Bold"
                         }
                       ]
                     }
@@ -4682,6 +4715,13 @@
               "width": "fill_container",
               "fill": "#FFFFFF",
               "cornerRadius": 16,
+              "stroke": {
+                "align": "inside",
+                "thickness": {
+                  "bottom": 1
+                },
+                "fill": "#F1F5F9"
+              },
               "layout": "vertical",
               "gap": 6,
               "padding": 16,
@@ -4712,7 +4752,7 @@
                       "cornerRadius": 10,
                       "padding": [
                         4,
-                        10
+                        8
                       ],
                       "justifyContent": "center",
                       "alignItems": "center",
@@ -4724,8 +4764,8 @@
                           "fill": "#166534",
                           "content": "완료",
                           "fontFamily": "Gmarket Sans",
-                          "fontSize": 11,
-                          "fontWeight": "500"
+                          "fontSize": 12,
+                          "fontWeight": "Bold"
                         }
                       ]
                     }
@@ -4760,6 +4800,13 @@
               "width": "fill_container",
               "fill": "#FFFFFF",
               "cornerRadius": 16,
+              "stroke": {
+                "align": "inside",
+                "thickness": {
+                  "bottom": 1
+                },
+                "fill": "#F1F5F9"
+              },
               "layout": "vertical",
               "gap": 6,
               "padding": 16,
@@ -4790,7 +4837,7 @@
                       "cornerRadius": 10,
                       "padding": [
                         4,
-                        10
+                        8
                       ],
                       "justifyContent": "center",
                       "alignItems": "center",
@@ -4802,8 +4849,8 @@
                           "fill": "#166534",
                           "content": "완료",
                           "fontFamily": "Gmarket Sans",
-                          "fontSize": 11,
-                          "fontWeight": "500"
+                          "fontSize": 12,
+                          "fontWeight": "Bold"
                         }
                       ]
                     }
@@ -4850,7 +4897,7 @@
           "stroke": {
             "align": "inside",
             "thickness": {
-              "top": 1
+              "top": 0.5
             },
             "fill": "$--border"
           },
@@ -9516,7 +9563,7 @@
               "width": 24,
               "height": 24,
               "iconFontName": "arrow_back_ios",
-              "iconFontFamily": "Material Symbols Outlined",
+              "iconFontFamily": "Material Symbols Rounded",
               "fill": "#0F172A"
             },
             {
@@ -9524,10 +9571,48 @@
               "id": "1PQwe",
               "name": "abTitle",
               "fill": "#0F172A",
-              "content": "샵 상세",
+              "content": "샵 정보",
               "fontFamily": "Gmarket Sans",
               "fontSize": 18,
               "fontWeight": "600"
+            }
+          ]
+        },
+        {
+          "type": "frame",
+          "id": "ssXxC",
+          "name": "Map Preview",
+          "width": "fill_container",
+          "height": 180,
+          "fill": {
+            "type": "image",
+            "enabled": true,
+            "url": "./images/generated-1771596609351.png",
+            "mode": "fill"
+          },
+          "layout": "none",
+          "children": [
+            {
+              "type": "ellipse",
+              "id": "wEb6A",
+              "x": 181,
+              "y": 76,
+              "name": "mapMarker",
+              "fill": "#16A34A",
+              "width": 28,
+              "height": 28
+            },
+            {
+              "type": "icon_font",
+              "id": "3iNQv",
+              "x": 188,
+              "y": 83,
+              "name": "markerIcon",
+              "width": 14,
+              "height": 14,
+              "iconFontName": "storefront",
+              "iconFontFamily": "Material Symbols Rounded",
+              "fill": "#FFFFFF"
             }
           ]
         },
@@ -9559,7 +9644,7 @@
                   "width": 24,
                   "height": 24,
                   "iconFontName": "storefront",
-                  "iconFontFamily": "Material Symbols Outlined",
+                  "iconFontFamily": "Material Symbols Rounded",
                   "fill": "#16A34A"
                 },
                 {
@@ -9569,10 +9654,44 @@
                   "fill": "#0F172A",
                   "content": "OO 거트 스트링샵",
                   "fontFamily": "Gmarket Sans",
-                  "fontSize": 20,
+                  "fontSize": 22,
                   "fontWeight": "700"
                 }
               ]
+            }
+          ]
+        },
+        {
+          "type": "frame",
+          "id": "gnr33",
+          "name": "Navigate Button",
+          "width": "fill_container",
+          "height": 48,
+          "fill": "#16A34A",
+          "cornerRadius": 12,
+          "gap": 8,
+          "justifyContent": "center",
+          "alignItems": "center",
+          "children": [
+            {
+              "type": "icon_font",
+              "id": "mLFv3",
+              "name": "navIcon",
+              "width": 20,
+              "height": 20,
+              "iconFontName": "directions",
+              "iconFontFamily": "Material Symbols Rounded",
+              "fill": "#FFFFFF"
+            },
+            {
+              "type": "text",
+              "id": "TwBbc",
+              "name": "navText",
+              "fill": "#FFFFFF",
+              "content": "길찾기",
+              "fontFamily": "Gmarket Sans",
+              "fontSize": 16,
+              "fontWeight": "600"
             }
           ]
         },
@@ -9673,53 +9792,26 @@
           "name": "Inventory Grid",
           "width": "fill_container",
           "height": "fill_container",
-          "layout": "none",
+          "layout": "vertical",
+          "gap": 12,
+          "padding": 16,
           "children": [
             {
-              "type": "frame",
-              "id": "3srXP",
-              "x": 16,
-              "y": 580,
-              "name": "Navigate Button",
-              "width": 358,
-              "height": 48,
-              "fill": "#16A34A",
-              "cornerRadius": 12,
-              "layout": "none",
-              "children": [
-                {
-                  "type": "icon_font",
-                  "id": "rWiog",
-                  "x": 140,
-                  "y": 14,
-                  "name": "navIcon",
-                  "width": 20,
-                  "height": 20,
-                  "iconFontName": "directions",
-                  "iconFontFamily": "Material Symbols Outlined",
-                  "fill": "#FFFFFF"
-                },
-                {
-                  "type": "text",
-                  "id": "1wz8j",
-                  "x": 168,
-                  "y": 13,
-                  "name": "navText",
-                  "fill": "#FFFFFF",
-                  "content": "길찾기",
-                  "fontFamily": "Gmarket Sans",
-                  "fontSize": 16,
-                  "fontWeight": "600"
-                }
-              ]
+              "type": "text",
+              "id": "jWWGR",
+              "name": "readOnlyNotice",
+              "fill": "#94A3B8",
+              "content": "재고 정보는 열람만 가능합니다",
+              "textAlign": "center",
+              "fontFamily": "Gmarket Sans",
+              "fontSize": 12,
+              "fontWeight": "normal"
             },
             {
               "type": "frame",
               "id": "cmwlK",
-              "x": 16,
-              "y": 16,
-              "name": "Grid Wrap",
-              "width": 358,
+              "name": "Grid 3col",
+              "width": "fill_container",
               "gap": 12,
               "children": [
                 {
@@ -9802,84 +9894,6 @@
                           "name": "c1qq",
                           "fill": "#475569",
                           "content": "재고: 3개",
-                          "fontFamily": "Gmarket Sans",
-                          "fontSize": 11,
-                          "fontWeight": "SemiBold"
-                        }
-                      ]
-                    },
-                    {
-                      "type": "frame",
-                      "id": "oJTAi",
-                      "name": "Item Card 3",
-                      "width": "fill_container",
-                      "height": 170,
-                      "fill": "#FFFFFF",
-                      "cornerRadius": 12,
-                      "stroke": {
-                        "align": "inside",
-                        "thickness": 1,
-                        "fill": "#E2E8F0"
-                      },
-                      "layout": "vertical",
-                      "gap": 6,
-                      "padding": [
-                        12,
-                        8,
-                        8,
-                        8
-                      ],
-                      "alignItems": "center",
-                      "children": [
-                        {
-                          "type": "frame",
-                          "id": "w1xwK",
-                          "name": "Icon Area",
-                          "width": "fill_container",
-                          "height": 76,
-                          "fill": "#F1F5F9",
-                          "cornerRadius": 8,
-                          "justifyContent": "center",
-                          "alignItems": "center",
-                          "children": [
-                            {
-                              "type": "icon_font",
-                              "id": "5v0Qv",
-                              "name": "c3ii",
-                              "width": 32,
-                              "height": 32,
-                              "iconFontName": "checkroom",
-                              "iconFontFamily": "Material Symbols Rounded",
-                              "fill": "#94A3B8"
-                            }
-                          ]
-                        },
-                        {
-                          "type": "text",
-                          "id": "uDGbl",
-                          "name": "c3nn",
-                          "fill": "#0F172A",
-                          "content": "요넥스 반팔 티셔츠",
-                          "fontFamily": "Gmarket Sans",
-                          "fontSize": 13,
-                          "fontWeight": "500"
-                        },
-                        {
-                          "type": "text",
-                          "id": "G97d7",
-                          "name": "c3cc",
-                          "fill": "#94A3B8",
-                          "content": "상의",
-                          "fontFamily": "Gmarket Sans",
-                          "fontSize": 11,
-                          "fontWeight": "normal"
-                        },
-                        {
-                          "type": "text",
-                          "id": "MeWfR",
-                          "name": "c3qq",
-                          "fill": "#475569",
-                          "content": "재고: 5개",
                           "fontFamily": "Gmarket Sans",
                           "fontSize": 11,
                           "fontWeight": "SemiBold"
@@ -9968,6 +9982,94 @@
                           "name": "c2qq",
                           "fill": "#475569",
                           "content": "재고: 12통",
+                          "fontFamily": "Gmarket Sans",
+                          "fontSize": 11,
+                          "fontWeight": "SemiBold"
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "fUgGF",
+                  "name": "Col 3",
+                  "width": "fill_container",
+                  "layout": "vertical",
+                  "gap": 12,
+                  "children": [
+                    {
+                      "type": "frame",
+                      "id": "oJTAi",
+                      "name": "Item Card 3",
+                      "width": "fill_container",
+                      "height": 170,
+                      "fill": "#FFFFFF",
+                      "cornerRadius": 12,
+                      "stroke": {
+                        "align": "inside",
+                        "thickness": 1,
+                        "fill": "#E2E8F0"
+                      },
+                      "layout": "vertical",
+                      "gap": 6,
+                      "padding": [
+                        12,
+                        8,
+                        8,
+                        8
+                      ],
+                      "alignItems": "center",
+                      "children": [
+                        {
+                          "type": "frame",
+                          "id": "w1xwK",
+                          "name": "Icon Area",
+                          "width": "fill_container",
+                          "height": 76,
+                          "fill": "#F1F5F9",
+                          "cornerRadius": 8,
+                          "justifyContent": "center",
+                          "alignItems": "center",
+                          "children": [
+                            {
+                              "type": "icon_font",
+                              "id": "5v0Qv",
+                              "name": "c3ii",
+                              "width": 32,
+                              "height": 32,
+                              "iconFontName": "checkroom",
+                              "iconFontFamily": "Material Symbols Rounded",
+                              "fill": "#94A3B8"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "id": "uDGbl",
+                          "name": "c3nn",
+                          "fill": "#0F172A",
+                          "content": "요넥스 반팔 티셔츠",
+                          "fontFamily": "Gmarket Sans",
+                          "fontSize": 13,
+                          "fontWeight": "500"
+                        },
+                        {
+                          "type": "text",
+                          "id": "G97d7",
+                          "name": "c3cc",
+                          "fill": "#94A3B8",
+                          "content": "상의",
+                          "fontFamily": "Gmarket Sans",
+                          "fontSize": 11,
+                          "fontWeight": "normal"
+                        },
+                        {
+                          "type": "text",
+                          "id": "MeWfR",
+                          "name": "c3qq",
+                          "fill": "#475569",
+                          "content": "재고: 5개",
                           "fontFamily": "Gmarket Sans",
                           "fontSize": 11,
                           "fontWeight": "SemiBold"
@@ -10091,6 +10193,13 @@
           "width": "fill_container",
           "height": 56,
           "fill": "$--surface",
+          "stroke": {
+            "align": "inside",
+            "thickness": {
+              "bottom": 0.5
+            },
+            "fill": "$--border"
+          },
           "padding": [
             0,
             16
@@ -10127,7 +10236,6 @@
           "width": "fill_container",
           "height": "fill_container",
           "layout": "vertical",
-          "gap": 12,
           "justifyContent": "center",
           "alignItems": "center",
           "children": [
@@ -10135,31 +10243,58 @@
               "type": "icon_font",
               "id": "R2Kan",
               "name": "e1icon",
-              "width": 64,
-              "height": 64,
-              "iconFontName": "inbox",
+              "width": 120,
+              "height": 120,
+              "iconFontName": "sports_tennis",
               "iconFontFamily": "Material Symbols Rounded",
-              "fill": "#CBD5E1"
+              "fill": "#94A3B8"
             },
             {
               "type": "text",
               "id": "eaL39",
               "name": "e1msg",
-              "fill": "#475569",
-              "content": "진행 중인 작업이 없습니다",
+              "fill": "#0F172A",
+              "content": "아직 진행 중인 작업이 없습니다",
               "fontFamily": "Gmarket Sans",
-              "fontSize": 16,
-              "fontWeight": "500"
+              "fontSize": 20,
+              "fontWeight": "SemiBold"
             },
             {
               "type": "text",
               "id": "lno74",
               "name": "e1sub",
               "fill": "#94A3B8",
-              "content": "샵에서 작업을 접수하면 여기에 표시됩니다",
+              "content": "주변 샵을 검색해 거트를 맡겨보세요",
               "fontFamily": "Gmarket Sans",
-              "fontSize": 13,
+              "fontSize": 14,
               "fontWeight": "normal"
+            },
+            {
+              "type": "frame",
+              "id": "8vEiQ",
+              "name": "CTA Button",
+              "width": 200,
+              "height": 48,
+              "cornerRadius": 12,
+              "stroke": {
+                "align": "inside",
+                "thickness": 1.5,
+                "fill": "#16A34A"
+              },
+              "justifyContent": "center",
+              "alignItems": "center",
+              "children": [
+                {
+                  "type": "text",
+                  "id": "WKlMh",
+                  "name": "ctaBtnText",
+                  "fill": "#16A34A",
+                  "content": "주변 샵 검색하기",
+                  "fontFamily": "Gmarket Sans",
+                  "fontSize": 14,
+                  "fontWeight": "500"
+                }
+              ]
             }
           ]
         },
@@ -10173,7 +10308,7 @@
           "stroke": {
             "align": "inside",
             "thickness": {
-              "top": 1
+              "top": 0.5
             },
             "fill": "$--border"
           },
@@ -10369,8 +10504,8 @@
               "type": "icon_font",
               "id": "IpihV",
               "name": "e2icon",
-              "width": 64,
-              "height": 64,
+              "width": 80,
+              "height": 80,
               "iconFontName": "history",
               "iconFontFamily": "Material Symbols Rounded",
               "fill": "#CBD5E1"
@@ -10379,8 +10514,8 @@
               "type": "text",
               "id": "UqmV5",
               "name": "e2msg",
-              "fill": "#475569",
-              "content": "완료된 작업이 없습니다",
+              "fill": "#94A3B8",
+              "content": "아직 완료된 작업이 없습니다",
               "fontFamily": "Gmarket Sans",
               "fontSize": 16,
               "fontWeight": "500"
@@ -10389,10 +10524,10 @@
               "type": "text",
               "id": "EUk10",
               "name": "e2sub",
-              "fill": "#94A3B8",
-              "content": "작업이 완료되면 이력에 기록됩니다",
+              "fill": "#CBD5E1",
+              "content": "거트 작업이 완료되면 여기에 표시됩니다",
               "fontFamily": "Gmarket Sans",
-              "fontSize": 13,
+              "fontSize": 12,
               "fontWeight": "normal"
             }
           ]
@@ -10407,7 +10542,7 @@
           "stroke": {
             "align": "inside",
             "thickness": {
-              "top": 1
+              "top": 0.5
             },
             "fill": "$--border"
           },
