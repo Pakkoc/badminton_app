@@ -1,5 +1,6 @@
 import 'package:badminton_app/core/error/app_exception.dart';
 import 'package:badminton_app/providers/auth_provider.dart';
+import 'package:badminton_app/providers/unread_notification_count_provider.dart';
 import 'package:badminton_app/repositories/notification_repository.dart';
 import 'package:badminton_app/screens/customer/notifications/notifications_state.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -60,6 +61,9 @@ class NotificationsNotifier extends Notifier<NotificationsState> {
             )
             .toList(),
       );
+      ref
+          .read(unreadNotificationCountProvider.notifier)
+          .refresh();
     } on AppException catch (e) {
       state = state.copyWith(error: e.userMessage);
     }
@@ -78,6 +82,9 @@ class NotificationsNotifier extends Notifier<NotificationsState> {
             .map((n) => n.copyWith(isRead: true))
             .toList(),
       );
+      ref
+          .read(unreadNotificationCountProvider.notifier)
+          .refresh();
     } on AppException catch (e) {
       state = state.copyWith(error: e.userMessage);
     }
