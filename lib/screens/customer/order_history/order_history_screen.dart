@@ -1,10 +1,11 @@
+import 'package:badminton_app/app/theme.dart';
 import 'package:badminton_app/core/utils/formatters.dart';
 import 'package:badminton_app/models/order.dart';
 import 'package:badminton_app/screens/customer/order_history/order_history_notifier.dart';
-import 'package:badminton_app/widgets/empty_state.dart';
+import 'package:badminton_app/screens/customer/order_history/order_history_state.dart';
+import 'package:badminton_app/widgets/customer_bottom_nav.dart';
 import 'package:badminton_app/widgets/error_view.dart';
 import 'package:badminton_app/widgets/loading_indicator.dart';
-import 'package:badminton_app/widgets/status_badge.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -17,15 +18,33 @@ class OrderHistoryScreen extends ConsumerWidget {
     final state = ref.watch(orderHistoryNotifierProvider);
 
     return Scaffold(
-      appBar: AppBar(title: const Text('작업 내역')),
+      appBar: AppBar(
+        title: Text(
+          '작업 이력',
+          style: Theme.of(context).textTheme.headlineMedium,
+        ),
+        centerTitle: true,
+        backgroundColor: Colors.white,
+        elevation: 0,
+        bottom: PreferredSize(
+          preferredSize: const Size.fromHeight(0.5),
+          child: Container(
+            height: 0.5,
+            color: AppTheme.border,
+          ),
+        ),
+      ),
       body: _buildBody(context, ref, state),
+      bottomNavigationBar: const CustomerBottomNav(
+        currentIndex: 2,
+      ),
     );
   }
 
   Widget _buildBody(
     BuildContext context,
     WidgetRef ref,
-    dynamic state,
+    OrderHistoryState state,
   ) {
     if (state.isLoading) {
       return const LoadingIndicator();
@@ -41,23 +60,61 @@ class OrderHistoryScreen extends ConsumerWidget {
     }
 
     if (state.orders.isEmpty) {
-      return const EmptyState(
-        icon: Icons.history,
-        message: '작업 내역이 없습니다',
+      return Center(
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            const Icon(
+              Icons.sports_tennis,
+              size: 80,
+              color: Color(0xFFCBD5E1),
+            ),
+            const SizedBox(height: 16),
+            Text(
+              '아직 완료된 작업이 없습니다',
+              style: Theme.of(context)
+                  .textTheme
+                  .bodyLarge
+                  ?.copyWith(color: AppTheme.textTertiary),
+            ),
+            const SizedBox(height: 8),
+            Text(
+              '거트 작업이 완료되면 여기에 표시됩니다',
+              style: Theme.of(context)
+                  .textTheme
+                  .bodySmall
+                  ?.copyWith(
+                    color: const Color(0xFFCBD5E1),
+                  ),
+            ),
+          ],
+        ),
       );
     }
 
-    return ListView.builder(
-      padding: const EdgeInsets.all(16),
-      itemCount: state.orders.length,
-      itemBuilder: (context, index) {
-        final GutOrder order = state.orders[index];
-        return _HistoryCard(
-          order: order,
-          onTap: () =>
-              context.push('/customer/order/${order.id}'),
-        );
-      },
+    return RefreshIndicator(
+      color: AppTheme.courtGreen,
+      onRefresh: () => ref
+          .read(orderHistoryNotifierProvider.notifier)
+          .loadHistory(),
+      child: ListView.builder(
+        padding: const EdgeInsets.all(16),
+        itemCount: state.orders.length,
+        itemBuilder: (context, index) {
+          final order = state.orders[index];
+          final shopName =
+              state.shopNames[order.shopId] ?? '';
+          return Padding(
+            padding: const EdgeInsets.only(bottom: 12),
+            child: _HistoryCard(
+              order: order,
+              shopName: shopName,
+              onTap: () => context
+                  .push('/customer/order/${order.id}'),
+            ),
+          );
+        },
+      ),
     );
   }
 }
@@ -65,56 +122,76 @@ class OrderHistoryScreen extends ConsumerWidget {
 class _HistoryCard extends StatelessWidget {
   const _HistoryCard({
     required this.order,
+    required this.shopName,
     required this.onTap,
   });
 
   final GutOrder order;
+  final String shopName;
   final VoidCallback onTap;
 
   @override
   Widget build(BuildContext context) {
+    final completedDate = order.completedAt ?? order.updatedAt;
+
     return Card(
-      margin: const EdgeInsets.only(bottom: 8),
+      elevation: 0,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(16),
+        side: const BorderSide(color: AppTheme.border),
+      ),
       child: InkWell(
         onTap: onTap,
-        borderRadius: BorderRadius.circular(12),
+        borderRadius: BorderRadius.circular(16),
         child: Padding(
           padding: const EdgeInsets.all(16),
           child: Row(
             children: [
-              StatusBadge(status: order.status),
-              const SizedBox(width: 12),
               Expanded(
                 child: Column(
                   crossAxisAlignment:
                       CrossAxisAlignment.start,
                   children: [
-                    if (order.memo != null)
-                      Text(
-                        order.memo!,
-                        style: Theme.of(context)
-                            .textTheme
-                            .bodyMedium,
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
-                      ),
+                    Text(
+                      shopName,
+                      style: Theme.of(context)
+                          .textTheme
+                          .titleMedium
+                          ?.copyWith(
+                            fontWeight: FontWeight.bold,
+                          ),
+                    ),
                     const SizedBox(height: 4),
                     Text(
-                      Formatters.dateTime(order.createdAt),
+                      '${Formatters.date(completedDate)} 완료',
                       style: Theme.of(context)
                           .textTheme
                           .bodySmall
                           ?.copyWith(
-                            color: Theme.of(context)
-                                .colorScheme
-                                .onSurface
-                                .withValues(alpha: 0.5),
+                            color: AppTheme.textTertiary,
                           ),
                     ),
                   ],
                 ),
               ),
-              const Icon(Icons.chevron_right),
+              Container(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 8,
+                  vertical: 4,
+                ),
+                decoration: BoxDecoration(
+                  color: AppTheme.completedBackground,
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                child: Text(
+                  '완료',
+                  style: TextStyle(
+                    color: AppTheme.completedText,
+                    fontSize: 12,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ),
             ],
           ),
         ),

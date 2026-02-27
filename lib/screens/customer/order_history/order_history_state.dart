@@ -7,6 +7,7 @@ part 'order_history_state.freezed.dart';
 class OrderHistoryState with _$OrderHistoryState {
   const factory OrderHistoryState({
     @Default([]) List<GutOrder> orders,
+    @Default({}) Map<String, String> shopNames,
     @Default(false) bool isLoading,
     String? error,
   }) = _OrderHistoryState;
