@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:badminton_app/models/enums.dart';
 import 'package:badminton_app/models/user.dart' as app;
+import 'package:badminton_app/providers/fcm_provider.dart';
 import 'package:badminton_app/providers/supabase_provider.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
@@ -76,6 +77,14 @@ Future<SplashRoute> _resolveRoute(Ref ref) async {
     }
 
     final user = app.User.fromJson(data);
+
+    // FCM 토큰 저장 (비동기, 실패해도 라우팅 진행)
+    unawaited(
+      ref
+          .read(fcmServiceProvider)
+          .saveTokenToDb(userId, client)
+          .catchError((_) {}),
+    );
 
     if (user.role == UserRole.shopOwner) {
       // 사장님인데 샵이 없으면 샵 등록으로
