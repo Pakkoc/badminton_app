@@ -420,7 +420,7 @@ class _ContactSection extends StatelessWidget {
                     child: Row(
                       children: [
                         const Icon(
-                          Icons.phone,
+                          Icons.call,
                           size: 20,
                           color: AppTheme.textTertiary,
                         ),
@@ -632,13 +632,11 @@ class _NoticeTab extends StatelessWidget {
                       post.content,
                       maxLines: 2,
                       overflow: TextOverflow.ellipsis,
-                      style: Theme.of(context)
-                          .textTheme
-                          .bodySmall
-                          ?.copyWith(
-                            color:
-                                AppTheme.textSecondary,
-                          ),
+                      style: TextStyle(
+                        fontSize: 13,
+                        height: 1.5,
+                        color: AppTheme.textSecondary,
+                      ),
                     ),
                   ],
                 ),
