@@ -17,6 +17,8 @@ class ShopSearchScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final state = ref.watch(shopSearchNotifierProvider);
+    final isMap =
+        state.viewMode == ShopSearchViewMode.map;
 
     return Scaffold(
       appBar: AppBar(
@@ -49,26 +51,26 @@ class ShopSearchScreen extends ConsumerWidget {
           ),
         ),
       ),
-      body: _buildBody(context, ref, state),
+      // 지도 뷰는 항상 유지하고 위에 리스트를 겹친다.
+      body: Stack(
+        children: [
+          // NaverMap은 항상 렌더링하여 리빌드를 방지.
+          const _MapView(),
+          // 리스트 모드일 때 지도 위에 오버레이.
+          if (!isMap) _buildListBody(context, ref, state),
+        ],
+      ),
       bottomNavigationBar: const CustomerBottomNav(
         currentIndex: 1,
       ),
     );
   }
 
-  Widget _buildBody(
+  Widget _buildListBody(
     BuildContext context,
     WidgetRef ref,
     ShopSearchState state,
   ) {
-    if (!state.hasLocationPermission) {
-      return const _LocationPermissionView();
-    }
-
-    if (state.isLoading) {
-      return const LoadingIndicator();
-    }
-
     if (state.error != null) {
       return ErrorView(
         message: state.error!,
@@ -78,23 +80,19 @@ class ShopSearchScreen extends ConsumerWidget {
       );
     }
 
-    // 지도 모드는 샵이 없어도 항상 지도를 표시한다.
-    if (state.viewMode == ShopSearchViewMode.map) {
-      return _MapView(
-        shops: state.shops,
-        orderCounts: state.orderCounts,
-        selectedShop: state.selectedShop,
+    if (state.shops.isEmpty) {
+      return Container(
+        color: Theme.of(context).scaffoldBackgroundColor,
+        child: const _EmptyView(),
       );
     }
 
-    // 리스트 모드에서 샵이 없으면 빈 상태 표시.
-    if (state.shops.isEmpty) {
-      return const _EmptyView();
-    }
-
-    return _ShopListView(
-      shops: state.shops,
-      orderCounts: state.orderCounts,
+    return Container(
+      color: Theme.of(context).scaffoldBackgroundColor,
+      child: _ShopListView(
+        shops: state.shops,
+        orderCounts: state.orderCounts,
+      ),
     );
   }
 }
@@ -449,16 +447,11 @@ class _OrderCountBadge extends StatelessWidget {
 /// 지도 뷰 — 스펙 3.2.
 /// NaverMap은 네이티브 위젯이므로 위젯 테스트에서 직접
 /// 렌더링할 수 없다. 지도 통합은 별도 통합 테스트에서 검증.
+///
+/// const 생성자로 리빌드를 방지하고, 내부에서 직접
+/// shopSearchNotifierProvider를 watch한다.
 class _MapView extends ConsumerStatefulWidget {
-  const _MapView({
-    required this.shops,
-    required this.orderCounts,
-    this.selectedShop,
-  });
-
-  final List<Shop> shops;
-  final Map<String, ShopOrderCounts> orderCounts;
-  final Shop? selectedShop;
+  const _MapView();
 
   @override
   ConsumerState<_MapView> createState() => _MapViewState();
@@ -466,12 +459,24 @@ class _MapView extends ConsumerStatefulWidget {
 
 class _MapViewState extends ConsumerState<_MapView> {
   NaverMapController? _mapController;
+  List<Shop> _prevShops = const [];
 
   /// 한국 기본 위치 (서울).
   static const _defaultPosition = NLatLng(37.5665, 126.9780);
 
   @override
   Widget build(BuildContext context) {
+    final state = ref.watch(shopSearchNotifierProvider);
+
+    // 샵 목록이 변경되면 마커를 갱신한다.
+    if (state.shops != _prevShops) {
+      _prevShops = state.shops;
+      // build 후 마커 갱신 (build 중 controller 호출 방지).
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        _updateMarkers(state.shops);
+      });
+    }
+
     return Stack(
       children: [
         if (kIsWeb)
@@ -492,15 +497,15 @@ class _MapViewState extends ConsumerState<_MapView> {
             onCameraIdle: _onCameraIdle,
           ),
         // 하단 시트 (마커 선택 시)
-        if (widget.selectedShop != null)
+        if (state.selectedShop != null)
           Positioned(
             left: 0,
             right: 0,
             bottom: 0,
             child: _BottomSheetCard(
-              shop: widget.selectedShop!,
+              shop: state.selectedShop!,
               counts:
-                  widget.orderCounts[widget.selectedShop!.id] ??
+                  state.orderCounts[state.selectedShop!.id] ??
                       const ShopOrderCounts(),
             ),
           ),
@@ -510,7 +515,7 @@ class _MapViewState extends ConsumerState<_MapView> {
 
   void _onMapReady(NaverMapController controller) {
     _mapController = controller;
-    _updateMarkers();
+    _updateMarkers(ref.read(shopSearchNotifierProvider).shops);
   }
 
   /// 카메라 이동 완료 시 영역 내 샵을 다시 로드한다.
@@ -526,11 +531,11 @@ class _MapViewState extends ConsumerState<_MapView> {
         );
   }
 
-  void _updateMarkers() {
+  void _updateMarkers(List<Shop> shops) {
     final controller = _mapController;
     if (controller == null) return;
     controller.clearOverlays();
-    for (final shop in widget.shops) {
+    for (final shop in shops) {
       if (shop.latitude == null || shop.longitude == null) {
         continue;
       }
@@ -544,14 +549,6 @@ class _MapViewState extends ConsumerState<_MapView> {
             .selectShop(shop);
       });
       controller.addOverlay(marker);
-    }
-  }
-
-  @override
-  void didUpdateWidget(covariant _MapView oldWidget) {
-    super.didUpdateWidget(oldWidget);
-    if (oldWidget.shops != widget.shops) {
-      _updateMarkers();
     }
   }
 }
