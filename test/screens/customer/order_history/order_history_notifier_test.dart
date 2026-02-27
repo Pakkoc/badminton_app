@@ -3,6 +3,7 @@ import 'package:badminton_app/models/user.dart';
 import 'package:badminton_app/providers/auth_provider.dart';
 import 'package:badminton_app/repositories/order_repository.dart';
 import 'package:badminton_app/repositories/shop_repository.dart';
+import 'package:badminton_app/repositories/user_repository.dart';
 import 'package:badminton_app/screens/customer/order_history/order_history_notifier.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -16,16 +17,24 @@ class MockOrderRepository extends Mock
 class MockShopRepository extends Mock
     implements ShopRepository {}
 
+class MockUserRepository extends Mock
+    implements UserRepository {}
+
 void main() {
   late MockOrderRepository mockOrderRepository;
   late MockShopRepository mockShopRepository;
+  late MockUserRepository mockUserRepository;
 
   setUp(() {
     mockOrderRepository = MockOrderRepository();
     mockShopRepository = MockShopRepository();
+    mockUserRepository = MockUserRepository();
     when(
       () => mockShopRepository.getById(any()),
     ).thenAnswer((_) async => testShop);
+    when(
+      () => mockUserRepository.getById(testUser.id),
+    ).thenAnswer((_) async => testUser);
   });
 
   ProviderContainer createContainer({
@@ -39,8 +48,11 @@ void main() {
         shopRepositoryProvider.overrideWithValue(
           mockShopRepository,
         ),
-        currentUserProvider.overrideWith(
-          (ref) async => user,
+        userRepositoryProvider.overrideWithValue(
+          mockUserRepository,
+        ),
+        currentAuthUserIdProvider.overrideWithValue(
+          user?.id,
         ),
       ],
     );

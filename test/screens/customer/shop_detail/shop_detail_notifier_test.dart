@@ -5,6 +5,7 @@ import 'package:badminton_app/repositories/member_repository.dart';
 import 'package:badminton_app/repositories/order_repository.dart';
 import 'package:badminton_app/repositories/post_repository.dart';
 import 'package:badminton_app/repositories/shop_repository.dart';
+import 'package:badminton_app/repositories/user_repository.dart';
 import 'package:badminton_app/screens/customer/shop_detail/shop_detail_notifier.dart';
 import 'package:badminton_app/screens/customer/shop_detail/shop_detail_state.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -28,6 +29,9 @@ class MockOrderRepository extends Mock
 class MockInventoryRepository extends Mock
     implements InventoryRepository {}
 
+class MockUserRepository extends Mock
+    implements UserRepository {}
+
 class FakeMember extends Fake implements Member {}
 
 void main() {
@@ -36,6 +40,7 @@ void main() {
   late MockPostRepository mockPostRepository;
   late MockOrderRepository mockOrderRepository;
   late MockInventoryRepository mockInventoryRepository;
+  late MockUserRepository mockUserRepository;
   late ProviderContainer container;
 
   setUpAll(() {
@@ -48,6 +53,10 @@ void main() {
     mockPostRepository = MockPostRepository();
     mockOrderRepository = MockOrderRepository();
     mockInventoryRepository = MockInventoryRepository();
+    mockUserRepository = MockUserRepository();
+    when(
+      () => mockUserRepository.getById(testUser.id),
+    ).thenAnswer((_) async => testUser);
     container = ProviderContainer(
       overrides: [
         shopRepositoryProvider
@@ -60,8 +69,10 @@ void main() {
             .overrideWithValue(mockOrderRepository),
         inventoryRepositoryProvider
             .overrideWithValue(mockInventoryRepository),
-        currentUserProvider.overrideWith(
-          (ref) => Future.value(testUser),
+        userRepositoryProvider
+            .overrideWithValue(mockUserRepository),
+        currentAuthUserIdProvider.overrideWithValue(
+          testUser.id,
         ),
       ],
     );

@@ -21,7 +21,7 @@ class OrderHistoryNotifier extends Notifier<OrderHistoryState> {
   Future<void> loadHistory() async {
     state = state.copyWith(isLoading: true, error: null);
     try {
-      final user = await ref.read(currentUserProvider.future);
+      final user = await getCurrentUser(ref);
       if (user == null) {
         state = state.copyWith(
           isLoading: false,

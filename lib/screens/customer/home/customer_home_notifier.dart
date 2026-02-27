@@ -21,7 +21,7 @@ class CustomerHomeNotifier extends Notifier<CustomerHomeState> {
   Future<void> loadOrders() async {
     state = state.copyWith(isLoading: true, error: null);
     try {
-      final user = await ref.read(currentUserProvider.future);
+      final user = await getCurrentUser(ref);
       if (user == null) {
         state = state.copyWith(
           isLoading: false,

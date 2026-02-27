@@ -23,14 +23,17 @@ void main() {
   setUp(() {
     mockUserRepo = _MockUserRepository();
     mockStorageRepo = _MockStorageRepository();
+    when(
+      () => mockUserRepo.getById(testUser.id),
+    ).thenAnswer((_) async => testUser);
     container = ProviderContainer(
       overrides: [
         userRepositoryProvider
             .overrideWithValue(mockUserRepo),
         storageRepositoryProvider
             .overrideWithValue(mockStorageRepo),
-        currentUserProvider.overrideWith(
-          (ref) async => testUser,
+        currentAuthUserIdProvider.overrideWithValue(
+          testUser.id,
         ),
       ],
     );
@@ -137,8 +140,8 @@ void main() {
                 .overrideWithValue(mockUserRepo),
             storageRepositoryProvider
                 .overrideWithValue(mockStorageRepo),
-            currentUserProvider.overrideWith(
-              (ref) async => null,
+            currentAuthUserIdProvider.overrideWithValue(
+              null,
             ),
           ],
         );

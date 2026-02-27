@@ -1,6 +1,7 @@
 import 'package:badminton_app/core/error/app_exception.dart';
 import 'package:badminton_app/providers/auth_provider.dart';
 import 'package:badminton_app/repositories/notification_repository.dart';
+import 'package:badminton_app/repositories/user_repository.dart';
 import 'package:badminton_app/screens/customer/notifications/notifications_notifier.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -11,18 +12,28 @@ import '../../../helpers/fixtures.dart';
 class _MockNotificationRepository extends Mock
     implements NotificationRepository {}
 
+class _MockUserRepository extends Mock
+    implements UserRepository {}
+
 void main() {
   late _MockNotificationRepository mockRepo;
+  late _MockUserRepository mockUserRepo;
   late ProviderContainer container;
 
   setUp(() {
     mockRepo = _MockNotificationRepository();
+    mockUserRepo = _MockUserRepository();
+    when(
+      () => mockUserRepo.getById(testUser.id),
+    ).thenAnswer((_) async => testUser);
     container = ProviderContainer(
       overrides: [
         notificationRepositoryProvider
             .overrideWithValue(mockRepo),
-        currentUserProvider.overrideWith(
-          (ref) async => testUser,
+        userRepositoryProvider
+            .overrideWithValue(mockUserRepo),
+        currentAuthUserIdProvider.overrideWithValue(
+          testUser.id,
         ),
       ],
     );
@@ -77,8 +88,10 @@ void main() {
           overrides: [
             notificationRepositoryProvider
                 .overrideWithValue(mockRepo),
-            currentUserProvider.overrideWith(
-              (ref) async => null,
+            userRepositoryProvider
+                .overrideWithValue(mockUserRepo),
+            currentAuthUserIdProvider.overrideWithValue(
+              null,
             ),
           ],
         );

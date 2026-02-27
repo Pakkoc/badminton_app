@@ -19,7 +19,7 @@ class NotificationsNotifier extends Notifier<NotificationsState> {
   Future<void> loadNotifications() async {
     state = state.copyWith(isLoading: true, error: null);
     try {
-      final user = await ref.read(currentUserProvider.future);
+      final user = await getCurrentUser(ref);
       if (user == null) {
         state = state.copyWith(
           isLoading: false,
@@ -67,7 +67,7 @@ class NotificationsNotifier extends Notifier<NotificationsState> {
 
   Future<void> markAllAsRead() async {
     try {
-      final user = await ref.read(currentUserProvider.future);
+      final user = await getCurrentUser(ref);
       if (user == null) return;
 
       final repository =

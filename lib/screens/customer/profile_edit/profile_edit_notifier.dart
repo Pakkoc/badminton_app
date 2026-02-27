@@ -21,7 +21,7 @@ class ProfileEditNotifier extends Notifier<ProfileEditState> {
 
   Future<void> loadProfile() async {
     try {
-      final user = await ref.read(currentUserProvider.future);
+      final user = await getCurrentUser(ref);
       if (user == null) return;
 
       state = state.copyWith(
@@ -46,7 +46,7 @@ class ProfileEditNotifier extends Notifier<ProfileEditState> {
 
   Future<void> pickImage(Uint8List imageBytes) async {
     try {
-      final user = await ref.read(currentUserProvider.future);
+      final user = await getCurrentUser(ref);
       if (user == null) return;
 
       final storageRepository =
@@ -74,7 +74,7 @@ class ProfileEditNotifier extends Notifier<ProfileEditState> {
       errorMessage: null,
     );
     try {
-      final user = await ref.read(currentUserProvider.future);
+      final user = await getCurrentUser(ref);
       if (user == null) {
         state = state.copyWith(
           isSubmitting: false,

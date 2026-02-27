@@ -33,7 +33,7 @@ class ShopDetailNotifier extends Notifier<ShopDetailState> {
       }
 
       final user =
-          await ref.read(currentUserProvider.future);
+          await getCurrentUser(ref);
       var isMember = false;
       if (user != null) {
         final memberRepo =
@@ -102,7 +102,7 @@ class ShopDetailNotifier extends Notifier<ShopDetailState> {
         state.copyWith(isRegistering: true, error: null);
     try {
       final user =
-          await ref.read(currentUserProvider.future);
+          await getCurrentUser(ref);
       if (user == null) {
         state = state.copyWith(
           isRegistering: false,
