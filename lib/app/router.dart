@@ -92,6 +92,13 @@ final routerProvider = Provider<GoRouter>((ref) {
         builder: (context, state) => const ShopSignupScreen(),
       ),
 
+      // QR 딥링크: /shop/:shopId → /customer/shop/:shopId
+      GoRoute(
+        path: '/shop/:shopId',
+        redirect: (context, state) =>
+            '/customer/shop/${state.pathParameters['shopId']}',
+      ),
+
       // 고객 라우트
       ShellRoute(
         builder: (context, state, child) => child,

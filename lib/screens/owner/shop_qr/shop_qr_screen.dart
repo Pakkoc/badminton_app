@@ -84,7 +84,7 @@ class _QrCard extends StatelessWidget {
               ),
             ),
             child: QrImageView(
-              data: shop.id,
+              data: 'https://gutalarm.app/shop/${shop.id}',
               version: QrVersions.auto,
               size: 200,
               padding: const EdgeInsets.all(8),
