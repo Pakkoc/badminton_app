@@ -1,3 +1,4 @@
+import 'package:badminton_app/core/utils/formatters.dart';
 import 'package:badminton_app/screens/customer/order_detail/order_detail_notifier.dart';
 import 'package:badminton_app/screens/customer/order_detail/order_detail_screen.dart';
 import 'package:badminton_app/screens/customer/order_detail/order_detail_state.dart';
@@ -40,14 +41,11 @@ void main() {
     testWidgets(
       '로딩 중일 때 LoadingIndicator를 표시한다',
       (tester) async {
-        // Arrange & Act
         await tester.pumpWidget(
           createApp(
             state: const OrderDetailState(isLoading: true),
           ),
         );
-
-        // Assert
         expect(
           find.byType(CircularProgressIndicator),
           findsOneWidget,
@@ -56,16 +54,13 @@ void main() {
     );
 
     testWidgets(
-      'AppBar에 작업 상세가 표시된다',
+      'AppBar에 "작업 상세"가 표시된다',
       (tester) async {
-        // Arrange & Act
         await tester.pumpWidget(
           createApp(
             state: const OrderDetailState(isLoading: true),
           ),
         );
-
-        // Assert
         expect(find.text('작업 상세'), findsOneWidget);
       },
     );
@@ -73,7 +68,6 @@ void main() {
     testWidgets(
       '에러 시 ErrorView를 표시한다',
       (tester) async {
-        // Arrange & Act
         await tester.pumpWidget(
           createApp(
             state: const OrderDetailState(
@@ -81,8 +75,6 @@ void main() {
             ),
           ),
         );
-
-        // Assert
         expect(
           find.text('주문 정보를 불러올 수 없습니다'),
           findsOneWidget,
@@ -91,9 +83,8 @@ void main() {
     );
 
     testWidgets(
-      '주문과 샵 정보가 표시된다',
+      '큰 상태 뱃지에 상태 텍스트가 표시된다',
       (tester) async {
-        // Arrange & Act
         await tester.pumpWidget(
           createApp(
             state: OrderDetailState(
@@ -102,17 +93,14 @@ void main() {
             ),
           ),
         );
-
-        // Assert
-        expect(find.text(testShop.name), findsOneWidget);
-        expect(find.text(testShop.address), findsOneWidget);
+        // Large badge + timeline 모두에 "접수됨" 표시
+        expect(find.text('접수됨'), findsNWidgets(2));
       },
     );
 
     testWidgets(
-      '타임라인이 표시된다',
+      '"진행 상태" 타임라인이 표시된다',
       (tester) async {
-        // Arrange & Act
         await tester.pumpWidget(
           createApp(
             state: OrderDetailState(
@@ -121,19 +109,16 @@ void main() {
             ),
           ),
         );
-
-        // Assert
-        expect(find.text('타임라인'), findsOneWidget);
-        expect(find.text('접수'), findsOneWidget);
-        expect(find.text('작업 시작'), findsOneWidget);
+        expect(find.text('진행 상태'), findsOneWidget);
+        expect(find.text('접수됨'), findsOneWidget);
+        expect(find.text('작업중'), findsNWidgets(2));
         expect(find.text('완료'), findsOneWidget);
       },
     );
 
     testWidgets(
-      '메모가 표시된다',
+      '"작업 메모" 섹션이 표시된다',
       (tester) async {
-        // Arrange & Act
         await tester.pumpWidget(
           createApp(
             state: OrderDetailState(
@@ -142,10 +127,31 @@ void main() {
             ),
           ),
         );
-
-        // Assert
-        expect(find.text('메모'), findsOneWidget);
+        expect(find.text('작업 메모'), findsOneWidget);
         expect(find.text('2본 작업'), findsOneWidget);
+      },
+    );
+
+    testWidgets(
+      '"샵 정보" 섹션에 이름, 주소, 전화, 버튼이 표시된다',
+      (tester) async {
+        await tester.pumpWidget(
+          createApp(
+            state: OrderDetailState(
+              order: testOrderReceived,
+              shop: testShop,
+            ),
+          ),
+        );
+        expect(find.text('샵 정보'), findsOneWidget);
+        expect(find.text(testShop.name), findsOneWidget);
+        expect(find.text(testShop.address), findsOneWidget);
+        expect(
+          find.text(Formatters.phone(testShop.phone)),
+          findsOneWidget,
+        );
+        expect(find.text('전화하기'), findsOneWidget);
+        expect(find.text('길찾기'), findsOneWidget);
       },
     );
   });
