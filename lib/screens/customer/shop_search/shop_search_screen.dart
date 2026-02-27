@@ -5,7 +5,9 @@ import 'package:badminton_app/screens/customer/shop_search/shop_search_state.dar
 import 'package:badminton_app/widgets/customer_bottom_nav.dart';
 import 'package:badminton_app/widgets/error_view.dart';
 import 'package:badminton_app/widgets/loading_indicator.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_naver_map/flutter_naver_map.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
@@ -446,7 +448,7 @@ class _OrderCountBadge extends StatelessWidget {
 /// 지도 뷰 — 스펙 3.2.
 /// NaverMap은 네이티브 위젯이므로 위젯 테스트에서 직접
 /// 렌더링할 수 없다. 지도 통합은 별도 통합 테스트에서 검증.
-class _MapView extends StatelessWidget {
+class _MapView extends ConsumerStatefulWidget {
   const _MapView({
     required this.shops,
     required this.orderCounts,
@@ -458,48 +460,98 @@ class _MapView extends StatelessWidget {
   final Shop? selectedShop;
 
   @override
+  ConsumerState<_MapView> createState() => _MapViewState();
+}
+
+class _MapViewState extends ConsumerState<_MapView> {
+  NaverMapController? _mapController;
+
+  /// 한국 기본 위치 (서울).
+  static const _defaultPosition = NLatLng(37.5665, 126.9780);
+
+  @override
   Widget build(BuildContext context) {
     return Stack(
       children: [
-        // NaverMap 영역 (플레이스홀더)
-        Container(
-          color: AppTheme.surfaceVariant,
-          child: const Center(
-            child: Text('지도 영역'),
-          ),
-        ),
-        // 현재 위치 FAB
-        Positioned(
-          right: 16,
-          bottom: selectedShop != null ? 180 : 16,
-          child: FloatingActionButton.small(
-            heroTag: 'myLocation',
-            onPressed: () {
-              // 현재 위치로 이동
-            },
-            backgroundColor: Colors.white,
-            elevation: 4,
-            child: const Icon(
-              Icons.my_location,
-              color: AppTheme.courtGreen,
-              size: 24,
+        if (kIsWeb)
+          Container(
+            color: AppTheme.surfaceVariant,
+            child: const Center(child: Text('지도 영역')),
+          )
+        else
+          NaverMap(
+            options: const NaverMapViewOptions(
+              initialCameraPosition: NCameraPosition(
+                target: _defaultPosition,
+                zoom: 12,
+              ),
+              locationButtonEnable: true,
             ),
+            onMapReady: _onMapReady,
+            onCameraIdle: _onCameraIdle,
           ),
-        ),
         // 하단 시트 (마커 선택 시)
-        if (selectedShop != null)
+        if (widget.selectedShop != null)
           Positioned(
             left: 0,
             right: 0,
             bottom: 0,
             child: _BottomSheetCard(
-              shop: selectedShop!,
-              counts: orderCounts[selectedShop!.id] ??
-                  const ShopOrderCounts(),
+              shop: widget.selectedShop!,
+              counts:
+                  widget.orderCounts[widget.selectedShop!.id] ??
+                      const ShopOrderCounts(),
             ),
           ),
       ],
     );
+  }
+
+  void _onMapReady(NaverMapController controller) {
+    _mapController = controller;
+    _updateMarkers();
+  }
+
+  /// 카메라 이동 완료 시 영역 내 샵을 다시 로드한다.
+  Future<void> _onCameraIdle() async {
+    final controller = _mapController;
+    if (controller == null) return;
+    final bounds = await controller.getContentBounds();
+    ref.read(shopSearchNotifierProvider.notifier).loadNearbyShops(
+          swLat: bounds.southWest.latitude,
+          swLng: bounds.southWest.longitude,
+          neLat: bounds.northEast.latitude,
+          neLng: bounds.northEast.longitude,
+        );
+  }
+
+  void _updateMarkers() {
+    final controller = _mapController;
+    if (controller == null) return;
+    controller.clearOverlays();
+    for (final shop in widget.shops) {
+      if (shop.latitude == null || shop.longitude == null) {
+        continue;
+      }
+      final marker = NMarker(
+        id: shop.id,
+        position: NLatLng(shop.latitude!, shop.longitude!),
+      );
+      marker.setOnTapListener((_) {
+        ref
+            .read(shopSearchNotifierProvider.notifier)
+            .selectShop(shop);
+      });
+      controller.addOverlay(marker);
+    }
+  }
+
+  @override
+  void didUpdateWidget(covariant _MapView oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (oldWidget.shops != widget.shops) {
+      _updateMarkers();
+    }
   }
 }
 
