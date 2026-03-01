@@ -1,16 +1,18 @@
 {
   "mcpServers": {
-    "supabase": {
-      "type": "http",
-      "url": "https://mcp.supabase.com/mcp?project_ref=wzuuyvbzubfjkoxzrbrz"
-    },
     "context7": {
       "type": "http",
       "url": "https://mcp.context7.com/mcp"
     },
     "dart": {
       "command": "dart",
-      "args": ["mcp-server"]
+      "args": [
+        "mcp-server"
+      ]
+    },
+    "supabase": {
+      "type": "http",
+      "url": "https://mcp.supabase.com/mcp?project_ref=oflojyftixjmdtdlhlhs"
     }
   }
 }
