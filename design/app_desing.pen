@@ -657,14 +657,46 @@
               "fontWeight": "Bold"
             },
             {
-              "type": "icon_font",
-              "id": "FGfir",
-              "name": "bellIcon",
-              "width": 24,
-              "height": 24,
-              "iconFontName": "notifications",
-              "iconFontFamily": "Material Symbols Rounded",
-              "fill": "$--text-primary"
+              "type": "frame",
+              "id": "aUNha",
+              "name": "Bell Wrapper",
+              "width": 28,
+              "height": 28,
+              "children": [
+                {
+                  "type": "icon_font",
+                  "id": "M88e0",
+                  "name": "bellIcon",
+                  "width": 24,
+                  "height": 24,
+                  "iconFontName": "notifications",
+                  "iconFontFamily": "Material Symbols Rounded",
+                  "fill": "$--text-primary"
+                },
+                {
+                  "type": "frame",
+                  "id": "5Igm6",
+                  "name": "Badge",
+                  "width": 16,
+                  "height": 16,
+                  "fill": "#EF4444",
+                  "cornerRadius": 999,
+                  "justifyContent": "center",
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "hqGI1",
+                      "name": "badgeText",
+                      "fill": "#FFFFFF",
+                      "content": "2",
+                      "fontFamily": "Gmarket Sans",
+                      "fontSize": 10,
+                      "fontWeight": "Bold"
+                    }
+                  ]
+                }
+              ]
             }
           ]
         },
