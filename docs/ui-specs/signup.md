@@ -94,7 +94,7 @@
 | 속성 | 값 |
 |------|-----|
 | 형식 | `● 정보 입력 ─── ○ 샵 등록` (2단계 중 1단계 활성) |
-| 활성 단계 색상 | `#2563EB` (Court Green) |
+| 활성 단계 색상 | `#2563EB` (Primary Blue) |
 | 비활성 단계 색상 | `#9CA3AF` (Text Tertiary) |
 | 연결선 색상 | `#E8E0D8` |
 | 텍스트 크기 | 12sp (`bodySmall`) |
@@ -181,7 +181,7 @@
 |------|-----|
 | 아이콘 | `check_circle` (Material Symbols) |
 | 크기 | 24px |
-| 색상 | `#2563EB` (Court Green) |
+| 색상 | `#2563EB` (Primary Blue) |
 | 위치 | 카드 우측 상단, 패딩 12px |
 | 표시 조건 | 해당 역할이 선택되었을 때만 |
 
@@ -210,7 +210,7 @@
 | 라벨-필드 간격 | 8px |
 | 높이 | 48px |
 | 배경색 | `#EFF6FF` (Surface Variant) |
-| 모서리 둥글기 | 14px (`radius_sm`) |
+| 모서리 둥글기 | 14px (`radius_md`) |
 | 힌트 텍스트 | "이름을 입력해주세요" |
 | 힌트 텍스트 색상 | `#9CA3AF` (Text Tertiary) |
 | 좌측 아이콘 | `person_outline`, 색상 `#9CA3AF` |
@@ -258,7 +258,7 @@
 |------|-----|
 | 너비 | 화면 전체 (수평 패딩 16px 제외) |
 | 높이 | 48px |
-| 배경색 | `#2563EB` (Court Green) |
+| 배경색 | `#2563EB` (Primary Blue) |
 | 비활성 배경색 | `#2563EB` 40% 불투명도 |
 | 텍스트 색상 | `#FFFFFF` |
 | 텍스트 크기 | 16sp (`titleMedium`) |

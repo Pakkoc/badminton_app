@@ -97,7 +97,7 @@
 - 배경: `#EFF6FF`
 - 모서리: 20px
 - 내부 패딩: 24px
-- 버튼 배경: `#F59E0B` (CTA Amber)
+- 버튼 배경: `#2563EB` (Primary Blue)
 - 버튼 높이: 52px (일반보다 크게)
 - 버튼 모서리: 14px
 - 버튼 좌측에 `qr_code_scanner` 아이콘 포함
@@ -156,7 +156,7 @@
 |----------|------|------|------|
 | 접수 버튼 | FilledButton | "작업 접수하기" | 필수 필드 미입력 시 비활성, 완료 시 활성 |
 
-- 배경 (활성): `#F59E0B` (CTA Amber)
+- 배경 (활성): `#2563EB` (Primary Blue)
 - 배경 (비활성): `#E8E0D8`
 - 텍스트: `#FFFFFF`, `titleMedium` (16sp, SemiBold)
 - 높이: 52px

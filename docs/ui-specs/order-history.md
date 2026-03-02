@@ -79,6 +79,7 @@
 - 카드 간 간격: 12px
 - 카드 좌측: 샵 이름 + 완료일 세로 배치
 - 카드 우측: 완료 배지
+- **좌측 accent border**: 4px, `#10B981` (completedForeground)
 - 탭 시 ripple 효과
 
 ### 3.3 빈 상태

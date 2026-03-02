@@ -84,7 +84,7 @@
 
 | 컴포넌트 | 타입 | 설명 | 스타일 |
 |----------|------|------|--------|
-| 카드 컨테이너 | Card | 게시글 카드 | 배경 `#FFFFFF`, cornerRadius 14px, stroke `#E8E0D8` 1px |
+| 카드 컨테이너 | Card | 게시글 카드 | 배경 `#FFFFFF`, cornerRadius 20px, stroke `#E8E0D8` 1px |
 | 카테고리 뱃지 | Chip | "공지사항" 또는 "이벤트" | pill shape, 공지: 배경 `#EFF6FF` 텍스트 `#065F46`, 이벤트: 배경 `#FEF3C7` 텍스트 `#92400E` |
 | 날짜 | Text | 게시 날짜 | `bodySmall` (12sp), `#9CA3AF` |
 | 제목 | Text | 게시글 제목 | `titleSmall` (14sp, Bold), `#1A1A2E`, 최대 1줄 |
