@@ -190,6 +190,23 @@
 - 뒤로가기 버튼에 `semanticLabel: "뒤로가기"`를 포함한다.
 - 알림 아이콘에 알림 유형을 설명하는 접근성 라벨을 포함한다.
 
+### 일러스트레이션 & 애니메이션 구현 참고
+
+> 구현 시 아래 사항을 반영할 것. Pencil 디자인에서는 정적 표현만 가능하므로 여기에 동적 요소를 명시한다.
+
+| 요소 | 현재 (정적) | 구현 목표 (동적) | 구현 방법 |
+|------|------------|-----------------|-----------|
+| 빈 상태 아이콘 | Material Icon `notifications_none` 64px | Lottie 애니메이션 종 일러스트 | `lottie` 패키지. 종이 좌우로 흔들리는 루프. `assets/animations/empty_notifications.json` |
+| 알림 읽음 처리 | 즉시 반영 | 배경색 페이드 전환 | `AnimatedContainer(duration: 200ms)`. 미읽음(`#EFF6FF`) → 읽음(`#FFFFFF`) 전환 |
+
+**Lottie 에셋 준비:**
+- 파일: `assets/animations/empty_notifications.json`
+- 테마: 조용한 종 — "아직 알림 없음" 느낌
+- 색상: `#9CA3AF` (tertiary)
+- 크기: 80x80px
+- 재생: 무한 루프 (loop: true)
+- 대안: Lottie 에셋 준비 전까지 Material Icon `notifications_none` 64px 정적 사용
+
 ### Flutter 구현 참고
 - `ListView.builder`로 알림 목록을 구현한다.
 - `StatefulWidget`으로 구현 (로딩/빈/에러 상태 관리).

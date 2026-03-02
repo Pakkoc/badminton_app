@@ -280,3 +280,20 @@ if (session != null) {
 - ✅ StatelessWidget vs StatefulWidget 구분 — 상태 변수(isCheckingAuth) 존재하므로 StatefulWidget 사용 필요 (섹션 7.2)
 - N/A ListView.builder 사용 (목록 화면) — 목록 없음
 - N/A Form + GlobalKey 유효성 검증 (폼 화면) — 폼 없음
+
+### 일러스트레이션 & 애니메이션 구현 참고
+
+> 구현 시 아래 사항을 반영할 것. Pencil 디자인에서는 정적 표현만 가능하므로 여기에 동적 요소를 명시한다.
+
+| 요소 | 현재 (정적) | 구현 목표 (동적) | 구현 방법 |
+|------|------------|-----------------|-----------|
+| 셔틀콕 아이콘 | Material Icon `sports_tennis` 80x80 | Lottie 애니메이션 셔틀콕 | `lottie` 패키지 사용. 셔틀콕이 위에서 떨어지며 바운스하는 2초 애니메이션. `assets/animations/splash_logo.json` |
+| 로고 등장 | 페이드인 + 스케일업 (CSS 전환) | AnimationController 기반 시퀀스 | `AnimatedBuilder` + `CurvedAnimation(Curves.easeOutBack)`. 아이콘 → 텍스트 → 스피너 순차 등장 |
+| 화면 전환 | 즉시 전환 | 페이드아웃 300ms | `GoRouter`의 `CustomTransitionPage` + `FadeTransition` |
+
+**Lottie 에셋 준비:**
+- 파일: `assets/animations/splash_logo.json`
+- 테마: 배드민턴 셔틀콕 + 라켓, 색상 `#2563EB` 기반
+- 크기: 120x120px (아이콘보다 약간 크게)
+- 재생: 1회 재생 후 정지 (loop: false)
+- 대안: Lottie 에셋 준비 전까지 현재 Material Icon + `AnimatedOpacity` + `AnimatedScale`로 구현

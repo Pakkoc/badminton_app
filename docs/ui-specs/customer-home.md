@@ -468,3 +468,23 @@ supabase
 - ✅ StatelessWidget vs StatefulWidget 구분 — 다수 상태 변수 존재 (섹션 7.2), StatefulWidget 사용 필요
 - ✅ ListView.builder 사용 (목록 화면) — 작업 카드 목록은 `ListView.builder`로 구현하여 성능 최적화 필요
 - N/A Form + GlobalKey 유효성 검증 (폼 화면) — 폼 없음
+
+### 일러스트레이션 & 애니메이션 구현 참고
+
+> 구현 시 아래 사항을 반영할 것. Pencil 디자인에서는 정적 표현만 가능하므로 여기에 동적 요소를 명시한다.
+
+| 요소 | 현재 (정적) | 구현 목표 (동적) | 구현 방법 |
+|------|------------|-----------------|-----------|
+| 빈 상태 일러스트 | 정적 이미지 120x120 | Lottie 애니메이션 셔틀콕 | `lottie` 패키지. 셔틀콕이 가볍게 흔들리는 루프 애니메이션. `assets/animations/empty_orders.json` |
+| 작업중 펄스 | CSS 개념의 펄스 점 | `AnimatedContainer` 펄스 | `AnimationController` + `Tween<double>(begin: 0.6, end: 1.0)`. 좌측 `#2563EB` 점이 1500ms 주기로 불투명도 반복 |
+| 상태 색상 전환 | 즉시 변경 | 300ms 전환 | `AnimatedSwitcher(duration: 300ms)` 로 상태 뱃지 교체 시 페이드 효과 |
+| 새 카드 추가 | 즉시 표시 | Slide + Fade 300ms | `AnimatedList` + `SlideTransition` + `FadeTransition` |
+| Pull-to-refresh | 기본 인디케이터 | Material 리프레시 | `RefreshIndicator` 기본 사용, 색상 `#2563EB` |
+
+**Lottie 에셋 준비:**
+- 파일: `assets/animations/empty_orders.json`
+- 테마: 배드민턴 셔틀콕이 날아다니는 가벼운 루프 애니메이션
+- 색상: `#2563EB` (primary) + `#E8E0D8` (border)
+- 크기: 120x120px
+- 재생: 무한 루프 (loop: true)
+- 대안: Lottie 에셋 준비 전까지 `assets/images/empty_orders.svg` 정적 일러스트 사용

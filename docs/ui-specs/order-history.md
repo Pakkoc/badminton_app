@@ -217,6 +217,22 @@ final completedOrders = await supabase
 - 에러 재시도 시 로딩 상태로 전환 후 API 재호출. 성공 시 목록 표시, 실패 시 에러 상태 재표시.
 - Pull-to-refresh 완료 시 목록이 갱신되며, 실패 시 "새로고침에 실패했습니다" 스낵바 표시.
 
+### 일러스트레이션 & 애니메이션 구현 참고
+
+> 구현 시 아래 사항을 반영할 것. Pencil 디자인에서는 정적 표현만 가능하므로 여기에 동적 요소를 명시한다.
+
+| 요소 | 현재 (정적) | 구현 목표 (동적) | 구현 방법 |
+|------|------------|-----------------|-----------|
+| 빈 상태 일러스트 | 정적 아이콘 80x80 | Lottie 애니메이션 | `lottie` 패키지. 셔틀콕이 천천히 회전하는 루프 애니메이션. `assets/animations/empty_history.json` |
+
+**Lottie 에셋 준비:**
+- 파일: `assets/animations/empty_history.json`
+- 테마: 시계/달력 위 셔틀콕 — "아직 이력 없음" 느낌
+- 색상: `#9CA3AF` (tertiary) + `#E8E0D8` (border)
+- 크기: 100x100px
+- 재생: 무한 루프 (loop: true)
+- 대안: Lottie 에셋 준비 전까지 현재 라켓 아이콘 80x80 정적 사용
+
 ### Flutter 구현 참고
 - 이 화면은 실시간 구독(stream) + 페이지네이션을 사용하므로 `StatefulWidget`으로 구현한다.
 - 목록은 `ListView.builder`로 구현하여 대량의 완료 작업도 효율적으로 렌더링한다.

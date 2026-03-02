@@ -284,6 +284,24 @@ final orders = await query.limit(50);
 - N/A 입력 타입별 적절한 키보드
 - N/A 비밀번호 표시/숨기기 토글
 
+### 일러스트레이션 & 애니메이션 구현 참고
+
+> 구현 시 아래 사항을 반영할 것. Pencil 디자인에서는 정적 표현만 가능하므로 여기에 동적 요소를 명시한다.
+
+| 요소 | 현재 (정적) | 구현 목표 (동적) | 구현 방법 |
+|------|------------|-----------------|-----------|
+| 빈 상태 일러스트 | 텍스트만 | Lottie 애니메이션 | `lottie` 패키지. 빈 클립보드 위 셔틀콕. `assets/animations/empty_manage.json` |
+| 필터 탭 전환 | 즉시 전환 | 목록 페이드 전환 | `AnimatedSwitcher(duration: 200ms)` 로 필터 변경 시 목록 교체 |
+| 상태 변경 | 즉시 반영 | 카드 색상 전환 300ms | `AnimatedContainer(duration: 300ms)` 로 좌측 컬러바 색상 전환 |
+
+**Lottie 에셋 준비:**
+- 파일: `assets/animations/empty_manage.json`
+- 테마: 빈 작업 목록 — 클립보드 + 셔틀콕
+- 색상: `#9CA3AF` (tertiary) + `#E8E0D8` (border)
+- 크기: 100x100px
+- 재생: 무한 루프 (loop: true)
+- 대안: Lottie 에셋 준비 전까지 텍스트 기반 빈 상태 유지
+
 ### Flutter 구현 참고
 - [x] StatelessWidget vs StatefulWidget 구분 (실시간 구독 + 필터 상태 → StatefulWidget 필요)
 - [x] ListView.builder 사용 (목록 화면) (무한 스크롤 50건씩 로드, ListView.builder 적합)

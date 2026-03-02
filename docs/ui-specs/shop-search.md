@@ -486,6 +486,24 @@ final orderCounts = await supabase
 - [N/A] 입력 타입별 적절한 키보드
 - [N/A] 비밀번호 표시/숨기기 토글
 
+### 일러스트레이션 & 애니메이션 구현 참고
+
+> 구현 시 아래 사항을 반영할 것. Pencil 디자인에서는 정적 표현만 가능하므로 여기에 동적 요소를 명시한다.
+
+| 요소 | 현재 (정적) | 구현 목표 (동적) | 구현 방법 |
+|------|------------|-----------------|-----------|
+| 빈 상태 일러스트 | 정적 이미지 120x120 | Lottie 애니메이션 샵 일러스트 | `lottie` 패키지. 지도 핀이 떨어지며 바운스하는 루프. `assets/animations/empty_shops.json` |
+| 뷰 전환 | 즉시 전환 | 200ms 크로스페이드 | `AnimatedSwitcher(duration: 200ms)` 로 지도/리스트 뷰 전환 |
+| 현재 위치 이동 | 즉시 이동 | 지도 카메라 이동 애니메이션 | `GoogleMapController.animateCamera()` 기본 애니메이션 사용 |
+
+**Lottie 에셋 준비:**
+- 파일: `assets/animations/empty_shops.json`
+- 테마: 지도 위 핀이 떨어지며 "아직 주변 샵 없음" 느낌
+- 색상: `#2563EB` (primary) + `#9CA3AF` (tertiary)
+- 크기: 120x120px
+- 재생: 무한 루프 (loop: true)
+- 대안: Lottie 에셋 준비 전까지 현재 정적 일러스트 이미지 120x120 사용
+
 ### Flutter 구현 참고
 - [x] StatelessWidget vs StatefulWidget 구분 — StatefulWidget (지도 상태, 뷰 모드, 위치 권한 관리)
 - [x] ListView.builder 사용 (목록 화면) — 리스트 뷰 모드에서 사용

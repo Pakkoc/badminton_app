@@ -301,6 +301,25 @@ final recentOrders = await supabase
 - N/A 입력 타입별 적절한 키보드
 - N/A 비밀번호 표시/숨기기 토글
 
+### 일러스트레이션 & 애니메이션 구현 참고
+
+> 구현 시 아래 사항을 반영할 것. Pencil 디자인에서는 정적 표현만 가능하므로 여기에 동적 요소를 명시한다.
+
+| 요소 | 현재 (정적) | 구현 목표 (동적) | 구현 방법 |
+|------|------------|-----------------|-----------|
+| 빈 상태 아이콘 | Material Icon `assignment` 64px | Lottie 애니메이션 매장 일러스트 | `lottie` 패키지. 빈 매장에 셔틀콕이 날아오는 루프 애니메이션. `assets/animations/empty_dashboard.json` |
+| 카운트 카드 탭 | 즉시 이동 | scale 0.98 눌림 효과 | `GestureDetector` + `AnimatedScale(scale: 0.98, duration: 100ms)` |
+| FAB 스크롤 반응 | 항상 표시 | 스크롤 시 축소/복원 | `ScrollController.addListener` + `AnimatedScale`. 스크롤 중 scale 0.0, 멈추면 scale 1.0 (200ms) |
+| 상태 변경 피드백 | 텍스트만 | "실행 취소" 스낵바 슬라이드업 | `ScaffoldMessenger.showSnackBar` + `SnackBarAction("실행 취소")`, duration 3초 |
+
+**Lottie 에셋 준비:**
+- 파일: `assets/animations/empty_dashboard.json`
+- 테마: 깨끗한 작업대 위에 셔틀콕이 놓여있는 장면
+- 색상: `#2563EB` (primary) + `#F5F0EB` (surface-variant)
+- 크기: 120x120px
+- 재생: 무한 루프 (loop: true)
+- 대안: Lottie 에셋 준비 전까지 Material Icon `assignment` 64px + `AnimatedOpacity` 페이드인 사용
+
 ### Flutter 구현 참고
 - [x] StatelessWidget vs StatefulWidget 구분 (실시간 구독 + 로컬 상태 → StatefulWidget/Riverpod 필요)
 - [x] ListView.builder 사용 (목록 화면) (최근 작업 목록 최대 5건 표시)
