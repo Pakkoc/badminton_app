@@ -116,10 +116,10 @@ class _ProfileSetupScreenState
                       }
                     : null,
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: const Color(0xFF16A34A),
+                  backgroundColor: const Color(0xFF22C55E),
                   foregroundColor: const Color(0xFFFFFFFF),
                   disabledBackgroundColor:
-                      const Color(0xFF16A34A).withValues(
+                      const Color(0xFF22C55E).withValues(
                     alpha: 0.5,
                   ),
                   disabledForegroundColor:
@@ -175,7 +175,7 @@ class _RoleCard extends StatelessWidget {
         decoration: BoxDecoration(
           border: Border.all(
             color: isSelected
-                ? const Color(0xFF16A34A)
+                ? const Color(0xFF22C55E)
                 : const Color(0xFFE2E8F0),
             width: isSelected ? 2 : 1,
           ),
@@ -187,7 +187,7 @@ class _RoleCard extends StatelessWidget {
               icon,
               size: 40,
               color: isSelected
-                  ? const Color(0xFF16A34A)
+                  ? const Color(0xFF22C55E)
                   : const Color(0xFF94A3B8),
             ),
             const SizedBox(height: 8),
@@ -197,7 +197,7 @@ class _RoleCard extends StatelessWidget {
                 fontSize: 16,
                 fontWeight: FontWeight.w600,
                 color: isSelected
-                    ? const Color(0xFF16A34A)
+                    ? const Color(0xFF22C55E)
                     : const Color(0xFF64748B),
               ),
             ),

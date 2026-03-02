@@ -212,14 +212,14 @@ class _ImageGallery extends StatelessWidget {
               fit: BoxFit.cover,
               placeholder: (context, url) => Container(
                 height: 200,
-                color: const Color(0xFFF1F5F9),
+                color: const Color(0xFFF0FDF4),
                 child: const Center(
                   child: CircularProgressIndicator(),
                 ),
               ),
               errorWidget: (context, url, error) => Container(
                 height: 200,
-                color: const Color(0xFFF1F5F9),
+                color: const Color(0xFFF0FDF4),
                 child: const Icon(
                   Icons.broken_image_outlined,
                   color: Color(0xFF94A3B8),

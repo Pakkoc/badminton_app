@@ -74,7 +74,7 @@ class MapPreview extends StatelessWidget {
 
   Widget _buildEmpty(BuildContext context) {
     return Container(
-      color: const Color(0xFFF1F5F9),
+      color: const Color(0xFFF0FDF4),
       child: Center(
         child: Column(
           mainAxisSize: MainAxisSize.min,
@@ -100,7 +100,7 @@ class MapPreview extends StatelessWidget {
 
   Widget _buildPlaceholder(BuildContext context) {
     return Container(
-      color: const Color(0xFFF1F5F9),
+      color: const Color(0xFFF0FDF4),
       child: Center(
         child: Column(
           mainAxisSize: MainAxisSize.min,

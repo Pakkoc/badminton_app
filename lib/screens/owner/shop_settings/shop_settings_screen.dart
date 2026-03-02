@@ -100,7 +100,7 @@ class _ShopSettingsScreenState
                     children: [
                       const Icon(
                         Icons.menu,
-                        color: Color(0xFF16A34A),
+                        color: Color(0xFF22C55E),
                         size: 20,
                       ),
                       const SizedBox(width: 6),
@@ -112,7 +112,7 @@ class _ShopSettingsScreenState
                             ?.copyWith(
                               fontSize: 16,
                               fontWeight: FontWeight.w600,
-                              color: const Color(0xFF0F172A),
+                              color: const Color(0xFF1E293B),
                             ),
                       ),
                     ],
@@ -313,7 +313,7 @@ class _SettingsField extends StatelessWidget {
                 color: Color(0xFF94A3B8),
               ),
               filled: true,
-              fillColor: const Color(0xFFF1F5F9),
+              fillColor: const Color(0xFFF0FDF4),
               border: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(8),
                 borderSide: BorderSide.none,
@@ -361,7 +361,7 @@ class _PhoneSettingsField extends StatelessWidget {
           data: Theme.of(context).copyWith(
             inputDecorationTheme: const InputDecorationTheme(
               filled: true,
-              fillColor: Color(0xFFF1F5F9),
+              fillColor: Color(0xFFF0FDF4),
               border: OutlineInputBorder(
                 borderRadius: BorderRadius.all(Radius.circular(8)),
                 borderSide: BorderSide.none,
@@ -439,7 +439,7 @@ class _AddressSettingsField extends StatelessWidget {
                 color: Color(0xFF94A3B8),
               ),
               filled: true,
-              fillColor: const Color(0xFFF1F5F9),
+              fillColor: const Color(0xFFF0FDF4),
               border: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(8),
                 borderSide: BorderSide.none,
@@ -479,7 +479,7 @@ class _SectionHeader extends StatelessWidget {
       children: [
         Icon(
           icon,
-          color: const Color(0xFF16A34A),
+          color: const Color(0xFF22C55E),
           size: 20,
         ),
         const SizedBox(width: 6),
@@ -488,7 +488,7 @@ class _SectionHeader extends StatelessWidget {
           style: Theme.of(context).textTheme.titleMedium?.copyWith(
                 fontSize: 16,
                 fontWeight: FontWeight.w700,
-                color: const Color(0xFF0F172A),
+                color: const Color(0xFF1E293B),
               ),
         ),
       ],
@@ -523,10 +523,10 @@ class _SaveButton extends StatelessWidget {
         child: ElevatedButton(
           onPressed: isSubmitting ? null : onPressed,
           style: ElevatedButton.styleFrom(
-            backgroundColor: const Color(0xFF16A34A),
+            backgroundColor: const Color(0xFF22C55E),
             foregroundColor: const Color(0xFFFFFFFF),
             disabledBackgroundColor:
-                const Color(0xFF16A34A).withValues(alpha: 0.5),
+                const Color(0xFF22C55E).withValues(alpha: 0.5),
             disabledForegroundColor:
                 const Color(0xFFFFFFFF).withValues(alpha: 0.5),
             shape: RoundedRectangleBorder(
@@ -607,7 +607,7 @@ class _MenuItemTile extends StatelessWidget {
           const Divider(
             height: 1,
             thickness: 1,
-            color: Color(0xFFF1F5F9),
+            color: Color(0xFFF0FDF4),
             indent: 0,
             endIndent: 0,
           ),

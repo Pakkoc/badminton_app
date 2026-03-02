@@ -48,7 +48,7 @@ class _OwnerDashboardScreenState
           style: TextStyle(
             fontSize: 20,
             fontWeight: FontWeight.bold,
-            color: Color(0xFF0F172A),
+            color: Color(0xFF1E293B),
           ),
         ),
         actions: [
@@ -86,7 +86,7 @@ class _OwnerDashboardScreenState
             '?shopId=$shopId',
           );
         },
-        backgroundColor: const Color(0xFFF97316),
+        backgroundColor: const Color(0xFFFB923C),
         child: const Icon(Icons.add),
       ),
     );
@@ -179,7 +179,7 @@ class _StatsSectionHeader extends StatelessWidget {
       style: TextStyle(
         fontSize: 16,
         fontWeight: FontWeight.w600,
-        color: Color(0xFF0F172A),
+        color: Color(0xFF1E293B),
       ),
     );
   }
@@ -297,7 +297,7 @@ class _RecentHeader extends StatelessWidget {
           style: TextStyle(
             fontSize: 18,
             fontWeight: FontWeight.w600,
-            color: Color(0xFF0F172A),
+            color: Color(0xFF1E293B),
           ),
         ),
         GestureDetector(
@@ -306,7 +306,7 @@ class _RecentHeader extends StatelessWidget {
             '전체보기',
             style: TextStyle(
               fontSize: 14,
-              color: Color(0xFF16A34A),
+              color: Color(0xFF22C55E),
             ),
           ),
         ),
@@ -386,7 +386,7 @@ class _OrderCard extends StatelessWidget {
                 style: const TextStyle(
                   fontSize: 16,
                   fontWeight: FontWeight.w600,
-                  color: Color(0xFF0F172A),
+                  color: Color(0xFF1E293B),
                 ),
               ),
               _StatusPill(status: order.status),

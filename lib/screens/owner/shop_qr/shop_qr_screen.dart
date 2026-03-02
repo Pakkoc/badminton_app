@@ -19,7 +19,7 @@ class ShopQrScreen extends StatelessWidget {
           style: TextStyle(
             fontSize: 18,
             fontWeight: FontWeight.w500,
-            color: Color(0xFF0F172A),
+            color: Color(0xFF1E293B),
           ),
         ),
         centerTitle: true,
@@ -68,7 +68,7 @@ class _QrCard extends StatelessWidget {
             style: const TextStyle(
               fontSize: 18,
               fontWeight: FontWeight.w700,
-              color: Color(0xFF0F172A),
+              color: Color(0xFF1E293B),
             ),
           ),
           const SizedBox(height: 16),
@@ -122,9 +122,9 @@ class _ButtonRow extends StatelessWidget {
               icon: const Icon(Icons.download, size: 18),
               label: const Text('이미지 저장'),
               style: OutlinedButton.styleFrom(
-                foregroundColor: const Color(0xFF16A34A),
+                foregroundColor: const Color(0xFF22C55E),
                 side: const BorderSide(
-                  color: Color(0xFF16A34A),
+                  color: Color(0xFF22C55E),
                   width: 1.5,
                 ),
                 shape: RoundedRectangleBorder(
@@ -144,7 +144,7 @@ class _ButtonRow extends StatelessWidget {
               icon: const Icon(Icons.share, size: 18),
               label: const Text('공유하기'),
               style: FilledButton.styleFrom(
-                backgroundColor: const Color(0xFF16A34A),
+                backgroundColor: const Color(0xFF22C55E),
                 foregroundColor: Colors.white,
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(10),
@@ -167,7 +167,7 @@ class _InfoCard extends StatelessWidget {
       width: double.infinity,
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: const Color(0xFFF1F5F9),
+        color: const Color(0xFFF0FDF4),
         borderRadius: BorderRadius.circular(12),
       ),
       child: const Column(

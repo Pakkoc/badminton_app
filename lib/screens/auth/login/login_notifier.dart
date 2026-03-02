@@ -22,12 +22,12 @@ class LoginNotifier extends Notifier<LoginState> {
       await authRepository.signInWithNaver();
       state = const LoginState.idle();
     } on AppException catch (e) {
-      state = LoginState.error(e.userMessage);
-      await Future<void>.delayed(const Duration(seconds: 3));
+      state = LoginState.error('네이버AppEx: ${e.code} ${e.message}');
+      await Future<void>.delayed(const Duration(seconds: 8));
       state = const LoginState.idle();
     } catch (e) {
-      state = const LoginState.error('로그인에 실패했습니다');
-      await Future<void>.delayed(const Duration(seconds: 3));
+      state = LoginState.error('네이버 에러: $e');
+      await Future<void>.delayed(const Duration(seconds: 5));
       state = const LoginState.idle();
     }
   }

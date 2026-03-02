@@ -79,7 +79,7 @@ class _SplashScreenState extends ConsumerState<SplashScreen>
                 Icon(
                   Icons.sports_tennis,
                   size: 80,
-                  color: Color(0xFF16A34A),
+                  color: Color(0xFF22C55E),
                 ),
                 SizedBox(height: 16),
                 Text(
@@ -104,7 +104,7 @@ class _SplashScreenState extends ConsumerState<SplashScreen>
                   height: 24,
                   child: CircularProgressIndicator(
                     strokeWidth: 2.5,
-                    color: Color(0xFF16A34A),
+                    color: Color(0xFF22C55E),
                   ),
                 ),
               ],

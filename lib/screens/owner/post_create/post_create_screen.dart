@@ -84,7 +84,7 @@ class _PostCreateScreenState
                     style: TextStyle(
                       fontSize: 14,
                       fontWeight: FontWeight.w500,
-                      color: Color(0xFF0F172A),
+                      color: Color(0xFF1E293B),
                     ),
                   ),
                   const SizedBox(height: 8),
@@ -99,7 +99,7 @@ class _PostCreateScreenState
                           color: Color(0xFF94A3B8),
                         ),
                         filled: true,
-                        fillColor: const Color(0xFFF1F5F9),
+                        fillColor: const Color(0xFFF0FDF4),
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(8),
                           borderSide: BorderSide.none,
@@ -118,7 +118,7 @@ class _PostCreateScreenState
                     style: TextStyle(
                       fontSize: 14,
                       fontWeight: FontWeight.w500,
-                      color: Color(0xFF0F172A),
+                      color: Color(0xFF1E293B),
                     ),
                   ),
                   const SizedBox(height: 8),
@@ -133,7 +133,7 @@ class _PostCreateScreenState
                           color: Color(0xFF94A3B8),
                         ),
                         filled: true,
-                        fillColor: const Color(0xFFF1F5F9),
+                        fillColor: const Color(0xFFF0FDF4),
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(8),
                           borderSide: BorderSide.none,
@@ -242,7 +242,7 @@ class _PostCreateScreenState
                       },
                 style: ElevatedButton.styleFrom(
                   backgroundColor:
-                      const Color(0xFFF97316),
+                      const Color(0xFFFB923C),
                   foregroundColor: Colors.white,
                   shape: RoundedRectangleBorder(
                     borderRadius:
@@ -298,7 +298,7 @@ class _CategoryChip extends StatelessWidget {
         decoration: BoxDecoration(
           color: isSelected
               ? const Color(0xFFDCFCE7)
-              : const Color(0xFFF1F5F9),
+              : const Color(0xFFF0FDF4),
           borderRadius: BorderRadius.circular(18),
         ),
         alignment: Alignment.center,
@@ -308,7 +308,7 @@ class _CategoryChip extends StatelessWidget {
             fontSize: 14,
             fontWeight: FontWeight.w500,
             color: isSelected
-                ? const Color(0xFF16A34A)
+                ? const Color(0xFF22C55E)
                 : const Color(0xFF475569),
           ),
         ),
@@ -413,7 +413,7 @@ class _ImageSection extends StatelessWidget {
           style: TextStyle(
             fontSize: 14,
             fontWeight: FontWeight.w500,
-            color: Color(0xFF0F172A),
+            color: Color(0xFF1E293B),
           ),
         ),
         const SizedBox(height: 4),
@@ -462,7 +462,7 @@ class _ImageThumbnail extends StatelessWidget {
           height: 80,
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(8),
-            color: const Color(0xFFF1F5F9),
+            color: const Color(0xFFF0FDF4),
           ),
           child: const Icon(
             Icons.image,

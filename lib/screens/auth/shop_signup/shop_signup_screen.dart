@@ -126,10 +126,10 @@ class _ShopSignupScreenState
                           }
                         : null,
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: const Color(0xFF16A34A),
+                  backgroundColor: const Color(0xFF22C55E),
                   foregroundColor: const Color(0xFFFFFFFF),
                   disabledBackgroundColor:
-                      const Color(0xFF16A34A).withValues(
+                      const Color(0xFF22C55E).withValues(
                     alpha: 0.5,
                   ),
                   disabledForegroundColor:

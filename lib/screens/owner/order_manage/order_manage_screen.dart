@@ -232,12 +232,12 @@ class _FilterChip extends StatelessWidget {
         ),
         decoration: BoxDecoration(
           color: isSelected
-              ? const Color(0xFF16A34A)
+              ? const Color(0xFF22C55E)
               : Colors.white,
           borderRadius: BorderRadius.circular(999),
           border: Border.all(
             color: isSelected
-                ? const Color(0xFF16A34A)
+                ? const Color(0xFF22C55E)
                 : const Color(0xFFE2E8F0),
           ),
         ),
@@ -291,7 +291,7 @@ class _OrderManageCard extends StatelessWidget {
                 style: const TextStyle(
                   fontSize: 16,
                   fontWeight: FontWeight.w600,
-                  color: Color(0xFF0F172A),
+                  color: Color(0xFF1E293B),
                 ),
               ),
               _StatusPill(status: order.status),

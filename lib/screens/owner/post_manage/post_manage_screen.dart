@@ -74,7 +74,7 @@ class _PostManageScreenState extends ConsumerState<PostManageScreen> {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: _onCreatePost,
-        backgroundColor: const Color(0xFFF97316),
+        backgroundColor: const Color(0xFFFB923C),
         child: const Icon(Icons.add, color: Colors.white),
       ),
     );
@@ -182,8 +182,8 @@ class _TabItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    const activeColor = Color(0xFF16A34A);
-    const activeTextColor = Color(0xFF0F172A);
+    const activeColor = Color(0xFF22C55E);
+    const activeTextColor = Color(0xFF1E293B);
     const inactiveTextColor = Color(0xFF94A3B8);
 
     return GestureDetector(
@@ -253,7 +253,7 @@ class _PostCard extends StatelessWidget {
             style: const TextStyle(
               fontSize: 14,
               fontWeight: FontWeight.bold,
-              color: Color(0xFF0F172A),
+              color: Color(0xFF1E293B),
             ),
           ),
           const SizedBox(height: 4),

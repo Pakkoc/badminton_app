@@ -118,10 +118,10 @@ class _ProfileEditScreenState
                         }
                       },
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: const Color(0xFF16A34A),
+                  backgroundColor: const Color(0xFF22C55E),
                   foregroundColor: const Color(0xFFFFFFFF),
                   disabledBackgroundColor:
-                      const Color(0xFF16A34A).withValues(
+                      const Color(0xFF22C55E).withValues(
                     alpha: 0.5,
                   ),
                   disabledForegroundColor:
@@ -184,7 +184,7 @@ class _ProfileAvatar extends StatelessWidget {
             child: Container(
               padding: const EdgeInsets.all(4),
               decoration: BoxDecoration(
-                color: const Color(0xFF16A34A),
+                color: const Color(0xFF22C55E),
                 shape: BoxShape.circle,
                 border: Border.all(
                   color: Theme.of(context)

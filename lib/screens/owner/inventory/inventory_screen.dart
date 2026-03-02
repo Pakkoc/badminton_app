@@ -152,7 +152,7 @@ class _InventoryScreenState
                   },
                   style: ElevatedButton.styleFrom(
                     backgroundColor:
-                        const Color(0xFFF97316),
+                        const Color(0xFFFB923C),
                     foregroundColor:
                         const Color(0xFFFFFFFF),
                     shape: RoundedRectangleBorder(
@@ -274,7 +274,7 @@ class _InventoryScreenState
                   },
                   style: ElevatedButton.styleFrom(
                     backgroundColor:
-                        const Color(0xFFF97316),
+                        const Color(0xFFFB923C),
                     foregroundColor:
                         const Color(0xFFFFFFFF),
                     shape: RoundedRectangleBorder(
@@ -310,7 +310,7 @@ class _InventoryScreenState
       body: _buildBody(state),
       floatingActionButton: FloatingActionButton(
         onPressed: _showAddItemDialog,
-        backgroundColor: const Color(0xFFF97316),
+        backgroundColor: const Color(0xFFFB923C),
         foregroundColor: Colors.white,
         child: const Icon(Icons.add, size: 28),
       ),
@@ -419,7 +419,7 @@ class _InventoryGridCard extends StatelessWidget {
                         .bodyMedium
                         ?.copyWith(
                       fontWeight: FontWeight.w500,
-                      color: const Color(0xFF0F172A),
+                      color: const Color(0xFF1E293B),
                     ),
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
@@ -489,7 +489,7 @@ class _CardImage extends StatelessWidget {
       width: double.infinity,
       height: 120,
       decoration: const BoxDecoration(
-        color: Color(0xFFF1F5F9),
+        color: Color(0xFFF0FDF4),
         borderRadius: BorderRadius.vertical(
           top: Radius.circular(12),
         ),
