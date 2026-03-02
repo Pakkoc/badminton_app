@@ -9,48 +9,69 @@ class StatusBadge extends StatelessWidget {
     super.key,
     required this.status,
     this.size = StatusBadgeSize.small,
+    this.showDot = false,
   });
 
   final OrderStatus status;
   final StatusBadgeSize size;
+  final bool showDot;
 
   @override
   Widget build(BuildContext context) {
-    final (bgColor, textColor) = _statusColors;
+    final (bgColor, fgColor, txtColor) = _statusColors;
     final isLarge = size == StatusBadgeSize.large;
 
     return Container(
       padding: EdgeInsets.symmetric(
-        horizontal: isLarge ? 12 : 8,
-        vertical: isLarge ? 6 : 4,
+        horizontal: isLarge ? 12 : showDot ? 12 : 10,
+        vertical: isLarge ? 6 : showDot ? 6 : 4,
       ),
       decoration: BoxDecoration(
         color: bgColor,
-        borderRadius: BorderRadius.circular(isLarge ? 8 : 6),
+        borderRadius: BorderRadius.circular(999),
       ),
-      child: Text(
-        status.label,
-        style: TextStyle(
-          color: textColor,
-          fontSize: isLarge ? 14 : 12,
-          fontWeight: FontWeight.w600,
-        ),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          if (showDot) ...[
+            Container(
+              width: 8,
+              height: 8,
+              decoration: BoxDecoration(
+                color: fgColor,
+                shape: BoxShape.circle,
+              ),
+            ),
+            const SizedBox(width: 6),
+          ],
+          Text(
+            status.label,
+            style: TextStyle(
+              color: txtColor,
+              fontSize: isLarge ? 14 : 12,
+              fontWeight: FontWeight.w500,
+            ),
+          ),
+        ],
       ),
     );
   }
 
-  (Color, Color) get _statusColors => switch (status) {
+  (Color, Color, Color) get _statusColors => switch (status) {
         OrderStatus.received => (
           AppTheme.receivedBackground,
           AppTheme.receivedForeground,
+          AppTheme.receivedText,
         ),
         OrderStatus.inProgress => (
           AppTheme.inProgressBackground,
           AppTheme.inProgressForeground,
+          AppTheme.inProgressText,
         ),
         OrderStatus.completed => (
           AppTheme.completedBackground,
           AppTheme.completedForeground,
+          AppTheme.completedText,
         ),
       };
 }

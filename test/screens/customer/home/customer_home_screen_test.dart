@@ -1,7 +1,9 @@
+import 'package:badminton_app/providers/unread_notification_count_provider.dart';
 import 'package:badminton_app/screens/customer/home/customer_home_notifier.dart';
 import 'package:badminton_app/screens/customer/home/customer_home_screen.dart';
 import 'package:badminton_app/screens/customer/home/customer_home_state.dart';
 import 'package:badminton_app/widgets/customer_bottom_nav.dart';
+import 'package:badminton_app/widgets/skeleton_shimmer.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -23,6 +25,16 @@ class FakeCustomerHomeNotifier extends CustomerHomeNotifier {
   Future<void> refresh() async {}
 }
 
+/// Supabase 의존 없이 카운트를 고정값으로 제공하는 Fake.
+class FakeUnreadCountNotifier
+    extends StateNotifier<int>
+    implements UnreadNotificationCountNotifier {
+  FakeUnreadCountNotifier() : super(0);
+
+  @override
+  Future<void> refresh() async {}
+}
+
 void main() {
   Widget createApp({
     required CustomerHomeState state,
@@ -31,6 +43,9 @@ void main() {
       overrides: [
         customerHomeNotifierProvider.overrideWith(
           () => FakeCustomerHomeNotifier(state),
+        ),
+        unreadNotificationCountProvider.overrideWith(
+          (ref) => FakeUnreadCountNotifier(),
         ),
       ],
       child: const MaterialApp(
@@ -41,7 +56,7 @@ void main() {
 
   group('CustomerHomeScreen', () {
     testWidgets(
-      '로딩 중일 때 LoadingIndicator를 표시한다',
+      '로딩 중일 때 shimmer 로딩을 표시한다',
       (tester) async {
         // Arrange & Act
         await tester.pumpWidget(
@@ -50,10 +65,10 @@ void main() {
           ),
         );
 
-        // Assert
+        // Assert — shimmer 카드가 표시됨
         expect(
-          find.byType(CircularProgressIndicator),
-          findsOneWidget,
+          find.byType(SkeletonShimmer),
+          findsWidgets,
         );
       },
     );
@@ -107,7 +122,7 @@ void main() {
     );
 
     testWidgets(
-      'AppBar에 거트알림 타이틀이 녹색으로 표시된다',
+      'AppBar에 거트알림 타이틀이 표시된다',
       (tester) async {
         // Arrange & Act
         await tester.pumpWidget(
