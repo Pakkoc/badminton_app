@@ -1,3 +1,4 @@
+import 'package:badminton_app/app/theme.dart';
 import 'package:badminton_app/core/utils/formatters.dart';
 import 'package:badminton_app/models/enums.dart';
 import 'package:badminton_app/models/notification_item.dart';
@@ -119,37 +120,69 @@ class _NotificationTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final bgColor = notification.isRead
-        ? null
-        : const Color(0xFFEFF6FF);
+        ? AppTheme.surface
+        : AppTheme.primaryContainer;
 
-    return Container(
-      color: bgColor,
-      child: ListTile(
-        leading: CircleAvatar(
-          backgroundColor: Theme.of(context)
-              .colorScheme
-              .primaryContainer,
-          child: Icon(
-            _iconForType(notification.type),
-            color: Theme.of(context)
-                .colorScheme
-                .onPrimaryContainer,
+    return Padding(
+      padding: const EdgeInsets.symmetric(
+        horizontal: 16,
+        vertical: 4,
+      ),
+      child: Material(
+        color: bgColor,
+        borderRadius: BorderRadius.circular(20),
+        child: InkWell(
+          borderRadius: BorderRadius.circular(20),
+          onTap: onTap,
+          child: Padding(
+            padding: const EdgeInsets.all(16),
+            child: Row(
+              children: [
+                CircleAvatar(
+                  backgroundColor:
+                      AppTheme.primaryContainer,
+                  child: Icon(
+                    _iconForType(notification.type),
+                    color: AppTheme.primary,
+                  ),
+                ),
+                const SizedBox(width: 12),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment:
+                        CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        notification.title,
+                        style: TextStyle(
+                          fontWeight: notification.isRead
+                              ? FontWeight.normal
+                              : FontWeight.bold,
+                        ),
+                      ),
+                      const SizedBox(height: 4),
+                      Text(
+                        notification.body,
+                        style: Theme.of(context)
+                            .textTheme
+                            .bodyMedium,
+                      ),
+                    ],
+                  ),
+                ),
+                const SizedBox(width: 8),
+                Text(
+                  Formatters.relativeTime(
+                    notification.createdAt,
+                  ),
+                  style: Theme.of(context)
+                      .textTheme
+                      .bodySmall,
+                ),
+              ],
+            ),
           ),
         ),
-        title: Text(
-          notification.title,
-          style: TextStyle(
-            fontWeight: notification.isRead
-                ? FontWeight.normal
-                : FontWeight.bold,
-          ),
-        ),
-        subtitle: Text(notification.body),
-        trailing: Text(
-          Formatters.relativeTime(notification.createdAt),
-          style: Theme.of(context).textTheme.bodySmall,
-        ),
-        onTap: onTap,
       ),
     );
   }

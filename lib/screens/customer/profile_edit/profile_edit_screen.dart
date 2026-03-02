@@ -80,7 +80,6 @@ class _ProfileEditScreenState
               controller: _nameController,
               decoration: const InputDecoration(
                 labelText: '이름',
-                border: OutlineInputBorder(),
               ),
               validator: Validators.name,
               autovalidateMode:
@@ -120,17 +119,14 @@ class _ProfileEditScreenState
                       },
                 style: ElevatedButton.styleFrom(
                   backgroundColor: AppTheme.primary,
-                  foregroundColor: const Color(0xFFFFFFFF),
+                  foregroundColor: Colors.white,
                   disabledBackgroundColor:
                       AppTheme.primary.withValues(
                     alpha: 0.5,
                   ),
                   disabledForegroundColor:
-                      const Color(0xFFFFFFFF).withValues(
+                      Colors.white.withValues(
                     alpha: 0.5,
-                  ),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(12),
                   ),
                 ),
                 child: state.isSubmitting
