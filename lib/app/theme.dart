@@ -8,23 +8,24 @@ class AppTheme {
   AppTheme._();
 
   // ── Primary (Green) ──────────────────────────
-  static const courtGreen = Color(0xFF16A34A);
-  static const primaryLight = Color(0xFF22C55E);
-  static const primaryDark = Color(0xFF15803D);
-  static const primaryContainer = Color(0xFFDCFCE7);
+  static const courtGreen = Color(0xFF22C55E);
+  static const primaryLight = Color(0xFF86EFAC);
+  static const primaryDark = Color(0xFF16A34A);
+  static const primaryContainer = Color(0xFFF0FDF4);
 
   // ── Secondary (Orange CTA) ───────────────────
-  static const secondary = Color(0xFFF97316);
+  static const secondary = Color(0xFFFB923C);
+  static const secondaryLight = Color(0xFFFDBA74);
 
   // ── Text ─────────────────────────────────────
-  static const textPrimary = Color(0xFF0F172A);
+  static const textPrimary = Color(0xFF1E293B);
   static const textSecondary = Color(0xFF475569);
   static const textTertiary = Color(0xFF94A3B8);
 
   // ── Background & Surface ─────────────────────
-  static const background = Color(0xFFF8FAFC);
+  static const background = Color(0xFFFAFDF7);
   static const surface = Color(0xFFFFFFFF);
-  static const surfaceVariant = Color(0xFFF1F5F9);
+  static const surfaceVariant = Color(0xFFF0FDF4);
 
   // ── Border ───────────────────────────────────
   static const border = Color(0xFFE2E8F0);
@@ -54,7 +55,7 @@ class AppTheme {
   static const completedText = Color(0xFF166534);
 
   // ── Font ────────────────────────────────────
-  static const fontFamily = 'Pretendard';
+  static const fontFamily = 'SUIT';
 
   /// 라이트 테마.
   static ThemeData get lightTheme => ThemeData(
@@ -80,14 +81,14 @@ class AppTheme {
           centerTitle: true,
         ),
 
-        // ElevatedButton (#16A34A, 48px, 12px radius)
+        // ElevatedButton (14px radius)
         elevatedButtonTheme: ElevatedButtonThemeData(
           style: ElevatedButton.styleFrom(
             backgroundColor: courtGreen,
             foregroundColor: Colors.white,
             minimumSize: const Size.fromHeight(48),
             shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(12),
+              borderRadius: BorderRadius.circular(14),
             ),
           ),
         ),
@@ -102,30 +103,30 @@ class AppTheme {
               width: 1.5,
             ),
             shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(12),
+              borderRadius: BorderRadius.circular(14),
             ),
           ),
         ),
 
-        // InputDecoration
+        // InputDecoration (14px radius)
         inputDecorationTheme: InputDecorationTheme(
           border: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(12),
+            borderRadius: BorderRadius.circular(14),
             borderSide: const BorderSide(color: border),
           ),
           enabledBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(12),
+            borderRadius: BorderRadius.circular(14),
             borderSide: const BorderSide(color: border),
           ),
           focusedBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(12),
+            borderRadius: BorderRadius.circular(14),
             borderSide: const BorderSide(
               color: courtGreen,
               width: 2,
             ),
           ),
           errorBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(12),
+            borderRadius: BorderRadius.circular(14),
             borderSide: const BorderSide(
               color: error,
               width: 2,
@@ -201,13 +202,13 @@ class AppTheme {
         // Divider
         dividerColor: border,
 
-        // Card
+        // Card (20px radius, shadow instead of border)
         cardTheme: CardThemeData(
           elevation: 0,
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(16),
-            side: const BorderSide(color: border),
+            borderRadius: BorderRadius.circular(20),
           ),
+          shadowColor: Colors.black.withValues(alpha: 0.06),
         ),
 
         // BottomNavigationBar
