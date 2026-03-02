@@ -8,6 +8,7 @@ import 'package:badminton_app/widgets/confirm_dialog.dart';
 import 'package:badminton_app/widgets/empty_state.dart';
 import 'package:badminton_app/widgets/error_view.dart';
 import 'package:badminton_app/widgets/loading_indicator.dart';
+import 'package:badminton_app/widgets/status_badge.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -270,15 +271,33 @@ class _OrderManageCard extends StatelessWidget {
   final void Function(OrderStatus) onStatusChange;
   final VoidCallback? onDelete;
 
+  Color get _accentColor => switch (order.status) {
+        OrderStatus.received =>
+          AppTheme.receivedForeground,
+        OrderStatus.inProgress =>
+          AppTheme.inProgressForeground,
+        OrderStatus.completed =>
+          AppTheme.completedForeground,
+      };
+
   @override
   Widget build(BuildContext context) {
     final Widget card = Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
         color: Colors.white,
-        borderRadius: BorderRadius.circular(16),
+        borderRadius: BorderRadius.circular(20),
         border: Border.all(
           color: AppTheme.border,
+        ),
+      ),
+      foregroundDecoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(20),
+        border: Border(
+          left: BorderSide(
+            color: _accentColor,
+            width: 4,
+          ),
         ),
       ),
       child: Column(
@@ -295,7 +314,10 @@ class _OrderManageCard extends StatelessWidget {
                   color: AppTheme.textPrimary,
                 ),
               ),
-              _StatusPill(status: order.status),
+              StatusBadge(
+                status: order.status,
+                showDot: true,
+              ),
             ],
           ),
           const SizedBox(height: 8),
@@ -332,7 +354,7 @@ class _OrderManageCard extends StatelessWidget {
           padding: const EdgeInsets.only(right: 16),
           decoration: BoxDecoration(
             color: Colors.red,
-            borderRadius: BorderRadius.circular(16),
+            borderRadius: BorderRadius.circular(20),
           ),
           child: const Icon(
             Icons.delete,
@@ -365,50 +387,6 @@ class _OrderManageCard extends StatelessWidget {
       return '${dt.month}/${dt.day} $h:$m 접수';
     }
   }
-}
-
-class _StatusPill extends StatelessWidget {
-  const _StatusPill({required this.status});
-
-  final OrderStatus status;
-
-  @override
-  Widget build(BuildContext context) {
-    final (bg, text) = _colors;
-    return Container(
-      padding: const EdgeInsets.symmetric(
-        horizontal: 10,
-        vertical: 4,
-      ),
-      decoration: BoxDecoration(
-        color: bg,
-        borderRadius: BorderRadius.circular(999),
-      ),
-      child: Text(
-        status.label,
-        style: TextStyle(
-          fontSize: 12,
-          fontWeight: FontWeight.w600,
-          color: text,
-        ),
-      ),
-    );
-  }
-
-  (Color, Color) get _colors => switch (status) {
-        OrderStatus.received => (
-          const Color(0xFFFEF3C7),
-          const Color(0xFFF59E0B),
-        ),
-        OrderStatus.inProgress => (
-          AppTheme.inProgressBackground,
-          AppTheme.inProgressForeground,
-        ),
-        OrderStatus.completed => (
-          AppTheme.completedBackground,
-          AppTheme.primary,
-        ),
-      };
 }
 
 class _ActionButton extends StatelessWidget {

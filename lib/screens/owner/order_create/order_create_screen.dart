@@ -74,11 +74,11 @@ class _OrderCreateScreenState
                       },
                       style: ElevatedButton.styleFrom(
                         backgroundColor:
-                            AppTheme.secondary,
+                            AppTheme.primary,
                         foregroundColor: Colors.white,
                         shape: RoundedRectangleBorder(
                           borderRadius:
-                              BorderRadius.circular(16),
+                              BorderRadius.circular(20),
                         ),
                         padding: EdgeInsets.zero,
                       ),
@@ -246,7 +246,7 @@ class _OrderCreateScreenState
                         : null,
                     style: ElevatedButton.styleFrom(
                       backgroundColor:
-                          AppTheme.secondary,
+                          AppTheme.primary,
                       foregroundColor: Colors.white,
                       minimumSize:
                           const Size.fromHeight(48),
@@ -317,7 +317,7 @@ class _SelectedMemberCard extends StatelessWidget {
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
         color: Colors.white,
-        borderRadius: BorderRadius.circular(16),
+        borderRadius: BorderRadius.circular(20),
         border: Border.all(color: AppTheme.border),
       ),
       child: Row(
