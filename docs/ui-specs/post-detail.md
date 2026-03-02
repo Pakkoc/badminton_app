@@ -64,18 +64,18 @@
 
 | 컴포넌트 | 타입 | 설명 | 스타일 |
 |----------|------|------|--------|
-| 뒤로가기 | IconButton | 이전 화면으로 복귀 | Material Icon `arrow_back_ios`, 24px, `#0F172A` |
-| 타이틀 | Text | "게시글" | `titleLarge` (20sp, Bold), `#0F172A` |
+| 뒤로가기 | IconButton | 이전 화면으로 복귀 | Material Icon `arrow_back_ios`, 24px, `#1E293B` |
+| 타이틀 | Text | "게시글" | `titleLarge` (20sp, Bold), `#1E293B` |
 
 ### 3.2 게시글 콘텐츠
 
 | 컴포넌트 | 타입 | 설명 | 스타일 |
 |----------|------|------|--------|
-| 카테고리 뱃지 | Chip | "공지사항" 또는 "이벤트" | pill shape, 공지: 배경 `#DCFCE7` 텍스트 `#166534`, 이벤트: 배경 `#FEF3C7` 텍스트 `#92400E` |
-| 제목 | Text | 게시글 제목 | `headlineSmall` (20sp, Bold), `#0F172A` |
+| 카테고리 뱃지 | Chip | "공지사항" 또는 "이벤트" | pill shape, 공지: 배경 `#F0FDF4` 텍스트 `#166534`, 이벤트: 배경 `#FEF3C7` 텍스트 `#92400E` |
+| 제목 | Text | 게시글 제목 | `headlineSmall` (20sp, Bold), `#1E293B` |
 | 메타 정보 Row | Row | 작성자 · 날짜 | `bodySmall` (12sp), `#94A3B8` |
 | 구분선 | Divider | 메타와 본문 구분 | `#E2E8F0`, 1px |
-| 본문 | Text | 게시글 내용 | `bodyMedium` (14sp), `#0F172A`, lineHeight 1.6 |
+| 본문 | Text | 게시글 내용 | `bodyMedium` (14sp), `#1E293B`, lineHeight 1.6 |
 | 이미지 | Image | 첨부 이미지 (있을 경우) | cornerRadius 8px, width 100% (fill_container), `BoxFit.cover` |
 
 **콘텐츠 레이아웃:**

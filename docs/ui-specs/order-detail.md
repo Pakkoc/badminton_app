@@ -77,8 +77,8 @@
 
 | 컴포넌트 | 타입 | 설명 | 스타일 |
 |----------|------|------|--------|
-| 뒤로가기 | IconButton | 이전 화면으로 복귀 | Material Icon `arrow_back_ios`, 크기 24px, 색상 `#0F172A` |
-| 타이틀 | Text | "작업 상세" | `titleLarge` (18sp, SemiBold), 색상 `#0F172A` |
+| 뒤로가기 | IconButton | 이전 화면으로 복귀 | Material Icon `arrow_back_ios`, 크기 24px, 색상 `#1E293B` |
+| 타이틀 | Text | "작업 상세" | `titleLarge` (18sp, SemiBold), 색상 `#1E293B` |
 
 **앱바 스타일:**
 
@@ -106,7 +106,7 @@
 |------|--------|-------------------|--------|
 | `received` (접수됨) | `inventory_2` | `#92400E` | `#FEF3C7` |
 | `in_progress` (작업중) | `build_circle` | `#1E40AF` | `#DBEAFE` |
-| `completed` (완료) | `check_circle` | `#166534` | `#DCFCE7` |
+| `completed` (완료) | `check_circle` | `#166534` | `#F0FDF4` |
 
 **레이아웃:**
 - 앱바 아래 간격: 16px
@@ -118,7 +118,7 @@
 
 | 컴포넌트 | 타입 | 설명 | 스타일 |
 |----------|------|------|--------|
-| 섹션 타이틀 | Text | "진행 상태" | `titleMedium` (16sp, SemiBold), 색상 `#0F172A` |
+| 섹션 타이틀 | Text | "진행 상태" | `titleMedium` (16sp, SemiBold), 색상 `#1E293B` |
 | 카드 컨테이너 | Card | 타임라인 카드 | 배경 `#FFFFFF`, 모서리 16px, 테두리 `#E2E8F0` 1px, 패딩 16px |
 | 타임라인 노드 (활성) | Row | 아이콘 + 상태명 + 시각 | 아이콘: `check_circle` 24px, 상태별 색상 |
 | 타임라인 노드 (비활성) | Row | 아이콘 + 상태명 + "—" | 아이콘: `radio_button_unchecked` 24px, 색상 `#CBD5E1` |
@@ -134,7 +134,7 @@
 |------|-----------|-------------|
 | `received` (접수됨) 도달 | `#F59E0B` | `#F59E0B` |
 | `in_progress` (작업중) 도달 | `#3B82F6` | `#3B82F6` |
-| `completed` (완료) 도달 | `#22C55E` | `#22C55E` |
+| `completed` (완료) 도달 | `#86EFAC` | `#86EFAC` |
 | 미도달 단계 | `#CBD5E1` | `#CBD5E1` (점선) |
 
 **타임라인 규칙:**
@@ -153,8 +153,8 @@
 
 | 컴포넌트 | 타입 | 설명 | 스타일 |
 |----------|------|------|--------|
-| 섹션 타이틀 | Text | "작업 메모" | `titleMedium` (16sp, SemiBold), 색상 `#0F172A` |
-| 메모 카드 | Card | 메모 내용 카드 | 배경 `#F8FAFC`, 모서리 16px, 테두리 `#E2E8F0` 1px, 패딩 16px |
+| 섹션 타이틀 | Text | "작업 메모" | `titleMedium` (16sp, SemiBold), 색상 `#1E293B` |
+| 메모 카드 | Card | 메모 내용 카드 | 배경 `#FAFDF7`, 모서리 16px, 테두리 `#E2E8F0` 1px, 패딩 16px |
 | 메모 텍스트 | Text | 메모 내용 | `bodyMedium` (14sp, Regular), 색상 `#475569`, 줄 높이 1.5 |
 
 **표시 조건:**
@@ -169,13 +169,13 @@
 
 | 컴포넌트 | 타입 | 설명 | 스타일 |
 |----------|------|------|--------|
-| 섹션 타이틀 | Text | "샵 정보" | `titleMedium` (16sp, SemiBold), 색상 `#0F172A` |
+| 섹션 타이틀 | Text | "샵 정보" | `titleMedium` (16sp, SemiBold), 색상 `#1E293B` |
 | 카드 컨테이너 | Card | 샵 정보 카드 | 배경 `#FFFFFF`, 모서리 16px, 테두리 `#E2E8F0` 1px, 패딩 16px |
-| 샵 이름 | Row (Icon + Text) | 샵 이름 표시 | 아이콘: `storefront` 20px `#16A34A`, 텍스트: `bodyLarge` (16sp, SemiBold) `#0F172A` |
+| 샵 이름 | Row (Icon + Text) | 샵 이름 표시 | 아이콘: `storefront` 20px `#22C55E`, 텍스트: `bodyLarge` (16sp, SemiBold) `#1E293B` |
 | 샵 주소 | Row (Icon + Text) | 샵 주소 표시 | 아이콘: `location_on` 20px `#94A3B8`, 텍스트: `bodyMedium` (14sp) `#475569` |
 | 샵 연락처 | Row (Icon + Text) | 샵 전화번호 표시 | 아이콘: `call` 20px `#94A3B8`, 텍스트: `bodyMedium` (14sp) `#475569`. 탭 시 전화 앱 실행 |
-| 전화하기 버튼 | OutlinedButton | 샵에 전화 연결 | 테두리 `#16A34A` 1px, 텍스트 `#16A34A` "전화하기", 아이콘: `call` 20px, 높이 48px, 모서리 12px, 가로 50% (길찾기 버튼과 나란히) |
-| 길찾기 버튼 | FilledButton | 네이버 지도 길찾기 | 배경 `#16A34A`, 텍스트 `#FFFFFF` "길찾기", 아이콘: `directions` 20px, 높이 48px, 모서리 12px, 가로 50% (전화하기 버튼과 나란히) |
+| 전화하기 버튼 | OutlinedButton | 샵에 전화 연결 | 테두리 `#22C55E` 1px, 텍스트 `#22C55E` "전화하기", 아이콘: `call` 20px, 높이 48px, 모서리 12px, 가로 50% (길찾기 버튼과 나란히) |
+| 길찾기 버튼 | FilledButton | 네이버 지도 길찾기 | 배경 `#22C55E`, 텍스트 `#FFFFFF` "길찾기", 아이콘: `directions` 20px, 높이 48px, 모서리 12px, 가로 50% (전화하기 버튼과 나란히) |
 
 **레이아웃:**
 - 섹션 타이틀 ~ 카드: 12px
@@ -196,7 +196,7 @@
 | 샵 정보 스켈레톤 | 높이 180px, 너비 100%, 모서리 16px |
 
 **스켈레톤 스타일:**
-- 배경색: `#E2E8F0` → `#F1F5F9` (shimmer 효과)
+- 배경색: `#E2E8F0` → `#F0FDF4` (shimmer 효과)
 - 애니메이션: 1500ms 반복
 
 ### 3.7 에러 상태
@@ -205,7 +205,7 @@
 |----------|------|------|--------|
 | 에러 아이콘 | Icon | 오류 표시 | `error_outline`, 48px, 색상 `#94A3B8` |
 | 에러 메시지 | Text | "데이터를 불러올 수 없습니다" | `bodyLarge` (16sp), 색상 `#475569` |
-| 재시도 버튼 | FilledButton | "다시 시도" | 배경 `#16A34A`, 텍스트 `#FFFFFF`, 높이 48px, 모서리 12px |
+| 재시도 버튼 | FilledButton | "다시 시도" | 배경 `#22C55E`, 텍스트 `#FFFFFF`, 높이 48px, 모서리 12px |
 
 ---
 
@@ -371,7 +371,7 @@ supabase
 > ui-ux-pro-max 기반 검증
 
 ### 접근성 (CRITICAL)
-- [x] 텍스트 명암비 4.5:1 이상 — 본문 색상 `#0F172A`/`#475569` on `#FFFFFF` 배경 충족
+- [x] 텍스트 명암비 4.5:1 이상 — 본문 색상 `#1E293B`/`#475569` on `#FFFFFF` 배경 충족
 - [x] 아이콘 전용 버튼에 접근성 라벨 명시 — 전화번호 시맨틱 라벨("전화 연결") 포함
 - [x] 색상만으로 정보 구분하지 않음 (아이콘+텍스트 병행) — 타임라인에서 아이콘(체크/빈 원)으로도 구분 가능
 

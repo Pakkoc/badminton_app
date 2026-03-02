@@ -66,15 +66,15 @@
 
 | 속성 | 값 |
 |------|-----|
-| 색상 | `#16A34A` (Court Green) |
+| 색상 | `#22C55E` (Court Green) |
 
 #### 안내 텍스트 스타일
 
 | 속성 | 값 |
 |------|-----|
-| 폰트 | Pretendard |
+| 폰트 | SUIT |
 | 크기 | `bodyLarge` |
-| 색상 | `#0F172A` (Text Primary) |
+| 색상 | `#1E293B` (Text Primary) |
 | 스피너와의 간격 | 24px |
 
 ### 3.2 접수 완료 다이얼로그
@@ -92,13 +92,13 @@
 |------|-----|
 | 아이콘 | `check_circle` (Material Icons) |
 | 크기 | 48px |
-| 색상 | `#16A34A` (Court Green) |
+| 색상 | `#22C55E` (Court Green) |
 
 #### 확인 버튼 스타일
 
 | 속성 | 값 |
 |------|-----|
-| 배경색 | `#16A34A` (Court Green) |
+| 배경색 | `#22C55E` (Court Green) |
 | 텍스트 | "확인" |
 
 ### 3.3 에러 상태
