@@ -352,8 +352,8 @@ lib/
 | 상태 | 배경색 | 텍스트 | 한국어 |
 |------|--------|--------|--------|
 | received | `#FEF3C7` | `#F59E0B` | 접수됨 |
-| inProgress | `#DBEAFE` | `#3B82F6` | 작업중 |
-| completed | `#DCFCE7` | `#22C55E` | 완료 |
+| inProgress | `#EFF6FF` | `#2563EB` | 작업중 |
+| completed | `#D1FAE5` | `#10B981` | 완료 |
 
 ---
 

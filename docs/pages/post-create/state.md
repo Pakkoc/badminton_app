@@ -40,7 +40,7 @@
 
 | 트리거 | 상태 변화 | UI 변화 |
 |--------|-----------|---------|
-| 화면 진입 | 초기 상태 (모든 필드 비어있음, `category = null`) | 빈 폼 표시, 등록 버튼 비활성 (`#E2E8F0`) |
+| 화면 진입 | 초기 상태 (모든 필드 비어있음, `category = null`) | 빈 폼 표시, 등록 버튼 비활성 (`#E8E0D8`) |
 | 카테고리 선택 (공지사항) | `category = PostCategory.notice`, `eventStartDate = null`, `eventEndDate = null`, `dateError = null` | 공지사항 칩 강조, 이벤트 기간 영역 숨김 |
 | 카테고리 선택 (이벤트) | `category = PostCategory.event` | 이벤트 칩 강조, 이벤트 기간 입력 영역 표시 |
 | 제목 입력 | `title = 입력값`, `titleError = null` | 실시간 텍스트 반영, 필수 필드 완료 시 등록 버튼 활성화 |
