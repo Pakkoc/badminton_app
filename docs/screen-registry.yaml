@@ -157,9 +157,16 @@ screens:
     pencil_id: PYHid
     spec_file: docs/ui-specs/shop-qr.md
 
+  owner-post-manage:
+    name: "게시글 관리"
+    description: "내 샵 게시글 목록 조회, 필터링, 삭제"
+    role: shop_owner
+    pencil_id: v8qFN
+    spec_file: docs/ui-specs/post-manage.md
+
   owner-post-create:
-    name: "게시글 작성"
-    description: "공지사항/이벤트 게시글 작성"
+    name: "게시글 작성/수정"
+    description: "공지사항/이벤트 게시글 작성 및 수정"
     role: shop_owner
     pencil_id: zQq8F
     spec_file: docs/ui-specs/post-create.md
