@@ -75,7 +75,7 @@ class _PostManageScreenState extends ConsumerState<PostManageScreen> {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: _onCreatePost,
-        backgroundColor: AppTheme.secondary,
+        backgroundColor: AppTheme.primary,
         child: const Icon(Icons.add, color: Colors.white),
       ),
     );
@@ -235,7 +235,7 @@ class _PostCard extends StatelessWidget {
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
         color: Colors.white,
-        borderRadius: BorderRadius.circular(12),
+        borderRadius: BorderRadius.circular(20),
         border: Border.all(color: AppTheme.border),
       ),
       child: Column(
@@ -345,7 +345,7 @@ class _CategoryBadge extends StatelessWidget {
       padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
       decoration: BoxDecoration(
         color: bgColor,
-        borderRadius: BorderRadius.circular(4),
+        borderRadius: BorderRadius.circular(999),
       ),
       child: Text(
         label,

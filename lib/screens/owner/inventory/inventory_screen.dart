@@ -153,7 +153,7 @@ class _InventoryScreenState
                   },
                   style: ElevatedButton.styleFrom(
                     backgroundColor:
-                        AppTheme.secondary,
+                        AppTheme.primary,
                     foregroundColor:
                         const Color(0xFFFFFFFF),
                     shape: RoundedRectangleBorder(
@@ -275,7 +275,7 @@ class _InventoryScreenState
                   },
                   style: ElevatedButton.styleFrom(
                     backgroundColor:
-                        AppTheme.secondary,
+                        AppTheme.primary,
                     foregroundColor:
                         const Color(0xFFFFFFFF),
                     shape: RoundedRectangleBorder(
@@ -311,7 +311,7 @@ class _InventoryScreenState
       body: _buildBody(state),
       floatingActionButton: FloatingActionButton(
         onPressed: _showAddItemDialog,
-        backgroundColor: AppTheme.secondary,
+        backgroundColor: AppTheme.primary,
         foregroundColor: Colors.white,
         child: const Icon(Icons.add, size: 28),
       ),
@@ -397,7 +397,7 @@ class _InventoryGridCard extends StatelessWidget {
       child: Container(
         decoration: BoxDecoration(
           color: Colors.white,
-          borderRadius: BorderRadius.circular(12),
+          borderRadius: BorderRadius.circular(20),
           border: Border.all(
             color: AppTheme.border,
           ),
@@ -470,7 +470,7 @@ class _CardImage extends StatelessWidget {
     if (imageUrl != null) {
       return ClipRRect(
         borderRadius: const BorderRadius.vertical(
-          top: Radius.circular(12),
+          top: Radius.circular(20),
         ),
         child: CachedNetworkImage(
           imageUrl: imageUrl!,
@@ -492,7 +492,7 @@ class _CardImage extends StatelessWidget {
       decoration: const BoxDecoration(
         color: AppTheme.primaryContainer,
         borderRadius: BorderRadius.vertical(
-          top: Radius.circular(12),
+          top: Radius.circular(20),
         ),
       ),
       child: const Icon(

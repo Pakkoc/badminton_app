@@ -243,7 +243,7 @@ class _PostCreateScreenState
                       },
                 style: ElevatedButton.styleFrom(
                   backgroundColor:
-                      AppTheme.secondary,
+                      AppTheme.primary,
                   foregroundColor: Colors.white,
                   shape: RoundedRectangleBorder(
                     borderRadius:
