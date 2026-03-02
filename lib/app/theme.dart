@@ -7,35 +7,35 @@ import 'package:flutter/material.dart';
 class AppTheme {
   AppTheme._();
 
-  // ── Primary (Green) ──────────────────────────
-  static const courtGreen = Color(0xFF22C55E);
-  static const primaryLight = Color(0xFF86EFAC);
-  static const primaryDark = Color(0xFF16A34A);
-  static const primaryContainer = Color(0xFFF0FDF4);
+  // ── Primary (Sporty Blue) ─────────────────────
+  static const primary = Color(0xFF2563EB);
+  static const primaryLight = Color(0xFF60A5FA);
+  static const primaryDark = Color(0xFF1D4ED8);
+  static const primaryContainer = Color(0xFFEFF6FF);
 
-  // ── Secondary (Orange CTA) ───────────────────
-  static const secondary = Color(0xFFFB923C);
-  static const secondaryLight = Color(0xFFFDBA74);
+  // ── Secondary (Warm Amber — 접수됨 상태 전용) ──
+  static const secondary = Color(0xFFF59E0B);
+  static const secondaryLight = Color(0xFFFCD34D);
 
   // ── Text ─────────────────────────────────────
-  static const textPrimary = Color(0xFF1E293B);
-  static const textSecondary = Color(0xFF475569);
-  static const textTertiary = Color(0xFF94A3B8);
+  static const textPrimary = Color(0xFF1A1A2E);
+  static const textSecondary = Color(0xFF4A4A5A);
+  static const textTertiary = Color(0xFF9CA3AF);
 
   // ── Background & Surface ─────────────────────
-  static const background = Color(0xFFFAFDF7);
+  static const background = Color(0xFFFBF8F4);
   static const surface = Color(0xFFFFFFFF);
-  static const surfaceVariant = Color(0xFFF0FDF4);
+  static const surfaceVariant = Color(0xFFF5F0EB);
 
   // ── Border ───────────────────────────────────
-  static const border = Color(0xFFE2E8F0);
+  static const border = Color(0xFFE8E0D8);
 
   // ── Semantic ─────────────────────────────────
   static const error = Color(0xFFEF4444);
   static const errorBackground = Color(0xFFFEE2E2);
   static const warning = Color(0xFFF59E0B);
-  static const info = Color(0xFF3B82F6);
-  static const success = Color(0xFF22C55E);
+  static const info = Color(0xFF2563EB);
+  static const success = Color(0xFF10B981);
 
   // ── Social Login ─────────────────────────────
   static const kakaoYellow = Color(0xFFFEE500);
@@ -46,45 +46,49 @@ class AppTheme {
   static const receivedForeground = Color(0xFFF59E0B);
   static const receivedText = Color(0xFF92400E);
 
-  static const inProgressBackground = Color(0xFFDBEAFE);
-  static const inProgressForeground = Color(0xFF3B82F6);
+  static const inProgressBackground = Color(0xFFEFF6FF);
+  static const inProgressForeground = Color(0xFF2563EB);
   static const inProgressText = Color(0xFF1E40AF);
 
-  static const completedBackground = Color(0xFFDCFCE7);
-  static const completedForeground = Color(0xFF22C55E);
-  static const completedText = Color(0xFF166534);
+  static const completedBackground = Color(0xFFD1FAE5);
+  static const completedForeground = Color(0xFF10B981);
+  static const completedText = Color(0xFF065F46);
 
   // ── Font ────────────────────────────────────
   static const fontFamily = 'SUIT';
+
+  /// @deprecated `courtGreen` → `primary`로 마이그레이션하세요.
+  static const courtGreen = primary;
 
   /// 라이트 테마.
   static ThemeData get lightTheme => ThemeData(
         useMaterial3: true,
         fontFamily: fontFamily,
         colorScheme: ColorScheme.fromSeed(
-          seedColor: courtGreen,
+          seedColor: primary,
           brightness: Brightness.light,
-          primary: courtGreen,
+          primary: primary,
           secondary: secondary,
           surface: surface,
           error: error,
         ),
 
-        // Scaffold
-        scaffoldBackgroundColor: Colors.white,
+        // Scaffold — 웜크림 배경
+        scaffoldBackgroundColor: background,
 
-        // AppBar
+        // AppBar — 흰색
         appBarTheme: const AppBarTheme(
           backgroundColor: Colors.white,
           foregroundColor: textPrimary,
           elevation: 0,
           centerTitle: true,
+          surfaceTintColor: Colors.transparent,
         ),
 
         // ElevatedButton (14px radius)
         elevatedButtonTheme: ElevatedButtonThemeData(
           style: ElevatedButton.styleFrom(
-            backgroundColor: courtGreen,
+            backgroundColor: primary,
             foregroundColor: Colors.white,
             minimumSize: const Size.fromHeight(48),
             shape: RoundedRectangleBorder(
@@ -96,10 +100,10 @@ class AppTheme {
         // OutlinedButton
         outlinedButtonTheme: OutlinedButtonThemeData(
           style: OutlinedButton.styleFrom(
-            foregroundColor: courtGreen,
+            foregroundColor: primary,
             minimumSize: const Size.fromHeight(48),
             side: const BorderSide(
-              color: courtGreen,
+              color: primary,
               width: 1.5,
             ),
             shape: RoundedRectangleBorder(
@@ -121,7 +125,7 @@ class AppTheme {
           focusedBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(14),
             borderSide: const BorderSide(
-              color: courtGreen,
+              color: primary,
               width: 2,
             ),
           ),
@@ -202,21 +206,59 @@ class AppTheme {
         // Divider
         dividerColor: border,
 
-        // Card (20px radius, shadow instead of border)
+        // Card (20px radius, subtle shadow)
         cardTheme: CardThemeData(
           elevation: 0,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(20),
+            side: const BorderSide(color: border, width: 0.5),
           ),
-          shadowColor: Colors.black.withValues(alpha: 0.06),
+          shadowColor: Colors.black.withValues(alpha: 0.05),
+          color: surface,
         ),
 
-        // BottomNavigationBar
+        // BottomNavigationBar — 흰색
         bottomNavigationBarTheme:
             const BottomNavigationBarThemeData(
           backgroundColor: Colors.white,
-          selectedItemColor: courtGreen,
+          selectedItemColor: primary,
           unselectedItemColor: textTertiary,
+        ),
+
+        // FloatingActionButton — primary with glow
+        floatingActionButtonTheme:
+            const FloatingActionButtonThemeData(
+          backgroundColor: primary,
+          foregroundColor: Colors.white,
+        ),
+
+        // Dialog (20px radius)
+        dialogTheme: DialogThemeData(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(20),
+          ),
+        ),
+
+        // BottomSheet (20px top radius)
+        bottomSheetTheme: const BottomSheetThemeData(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.vertical(
+              top: Radius.circular(20),
+            ),
+          ),
+        ),
+
+        // SnackBar — 다크 네이비
+        snackBarTheme: SnackBarThemeData(
+          backgroundColor: textPrimary,
+          contentTextStyle: const TextStyle(
+            color: Colors.white,
+            fontSize: 14,
+          ),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(12),
+          ),
+          behavior: SnackBarBehavior.floating,
         ),
       );
 }

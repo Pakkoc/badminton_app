@@ -203,7 +203,7 @@ class _ShopNameSection extends StatelessWidget {
               const Icon(
                 Icons.storefront,
                 size: 24,
-                color: AppTheme.courtGreen,
+                color: AppTheme.primary,
               ),
               const SizedBox(width: 8),
               Expanded(
@@ -509,9 +509,9 @@ class _TabBarDelegate extends SliverPersistentHeaderDelegate {
       color: Colors.white,
       child: TabBar(
         controller: tabController,
-        labelColor: AppTheme.courtGreen,
+        labelColor: AppTheme.primary,
         unselectedLabelColor: AppTheme.textTertiary,
-        indicatorColor: AppTheme.courtGreen,
+        indicatorColor: AppTheme.primary,
         indicatorWeight: 2,
         labelStyle: const TextStyle(
           fontSize: 14,

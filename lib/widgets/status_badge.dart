@@ -1,3 +1,4 @@
+import 'package:badminton_app/app/theme.dart';
 import 'package:badminton_app/models/enums.dart';
 import 'package:flutter/material.dart';
 
@@ -44,12 +45,12 @@ class StatusBadge extends StatelessWidget {
           const Color(0xFFF59E0B),
         ),
         OrderStatus.inProgress => (
-          const Color(0xFFDBEAFE),
-          const Color(0xFF3B82F6),
+          AppTheme.inProgressBackground,
+          AppTheme.inProgressForeground,
         ),
         OrderStatus.completed => (
-          const Color(0xFFDCFCE7),
-          const Color(0xFF22C55E),
+          AppTheme.completedBackground,
+          AppTheme.completedForeground,
         ),
       };
 }

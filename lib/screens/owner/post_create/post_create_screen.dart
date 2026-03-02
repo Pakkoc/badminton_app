@@ -1,3 +1,4 @@
+import 'package:badminton_app/app/theme.dart';
 import 'package:badminton_app/core/utils/formatters.dart';
 import 'package:badminton_app/models/enums.dart';
 import 'package:badminton_app/screens/owner/post_create/post_create_notifier.dart';
@@ -84,7 +85,7 @@ class _PostCreateScreenState
                     style: TextStyle(
                       fontSize: 14,
                       fontWeight: FontWeight.w500,
-                      color: Color(0xFF1E293B),
+                      color: AppTheme.textPrimary,
                     ),
                   ),
                   const SizedBox(height: 8),
@@ -96,10 +97,10 @@ class _PostCreateScreenState
                         hintText: '제목을 입력하세요',
                         hintStyle: const TextStyle(
                           fontSize: 14,
-                          color: Color(0xFF94A3B8),
+                          color: AppTheme.textTertiary,
                         ),
                         filled: true,
-                        fillColor: const Color(0xFFF0FDF4),
+                        fillColor: AppTheme.primaryContainer,
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(8),
                           borderSide: BorderSide.none,
@@ -118,7 +119,7 @@ class _PostCreateScreenState
                     style: TextStyle(
                       fontSize: 14,
                       fontWeight: FontWeight.w500,
-                      color: Color(0xFF1E293B),
+                      color: AppTheme.textPrimary,
                     ),
                   ),
                   const SizedBox(height: 8),
@@ -130,10 +131,10 @@ class _PostCreateScreenState
                         hintText: '내용을 입력하세요',
                         hintStyle: const TextStyle(
                           fontSize: 14,
-                          color: Color(0xFF94A3B8),
+                          color: AppTheme.textTertiary,
                         ),
                         filled: true,
-                        fillColor: const Color(0xFFF0FDF4),
+                        fillColor: AppTheme.primaryContainer,
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(8),
                           borderSide: BorderSide.none,
@@ -216,7 +217,7 @@ class _PostCreateScreenState
               color: Colors.white,
               border: Border(
                 top: BorderSide(
-                    color: Color(0xFFE2E8F0)),
+                    color: AppTheme.border),
               ),
             ),
             child: SizedBox(
@@ -242,7 +243,7 @@ class _PostCreateScreenState
                       },
                 style: ElevatedButton.styleFrom(
                   backgroundColor:
-                      const Color(0xFFFB923C),
+                      AppTheme.secondary,
                   foregroundColor: Colors.white,
                   shape: RoundedRectangleBorder(
                     borderRadius:
@@ -297,8 +298,8 @@ class _CategoryChip extends StatelessWidget {
         padding: const EdgeInsets.symmetric(horizontal: 16),
         decoration: BoxDecoration(
           color: isSelected
-              ? const Color(0xFFDCFCE7)
-              : const Color(0xFFF0FDF4),
+              ? AppTheme.completedBackground
+              : AppTheme.primaryContainer,
           borderRadius: BorderRadius.circular(18),
         ),
         alignment: Alignment.center,
@@ -308,8 +309,8 @@ class _CategoryChip extends StatelessWidget {
             fontSize: 14,
             fontWeight: FontWeight.w500,
             color: isSelected
-                ? const Color(0xFF22C55E)
-                : const Color(0xFF475569),
+                ? AppTheme.primary
+                : AppTheme.textSecondary,
           ),
         ),
       ),
@@ -413,7 +414,7 @@ class _ImageSection extends StatelessWidget {
           style: TextStyle(
             fontSize: 14,
             fontWeight: FontWeight.w500,
-            color: Color(0xFF1E293B),
+            color: AppTheme.textPrimary,
           ),
         ),
         const SizedBox(height: 4),
@@ -421,7 +422,7 @@ class _ImageSection extends StatelessWidget {
           '최대 5장',
           style: TextStyle(
             fontSize: 12,
-            color: Color(0xFF94A3B8),
+            color: AppTheme.textTertiary,
           ),
         ),
         const SizedBox(height: 8),
@@ -462,11 +463,11 @@ class _ImageThumbnail extends StatelessWidget {
           height: 80,
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(8),
-            color: const Color(0xFFF0FDF4),
+            color: AppTheme.primaryContainer,
           ),
           child: const Icon(
             Icons.image,
-            color: Color(0xFF94A3B8),
+            color: AppTheme.textTertiary,
           ),
         ),
         Positioned(
@@ -511,12 +512,12 @@ class _AddImageButton extends StatelessWidget {
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(8),
           border: Border.all(
-            color: const Color(0xFFE2E8F0),
+            color: AppTheme.border,
           ),
         ),
         child: const Icon(
           Icons.add_photo_alternate_outlined,
-          color: Color(0xFF94A3B8),
+          color: AppTheme.textTertiary,
         ),
       ),
     );

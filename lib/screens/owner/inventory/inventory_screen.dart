@@ -1,3 +1,4 @@
+import 'package:badminton_app/app/theme.dart';
 import 'package:badminton_app/core/utils/validators.dart';
 import 'package:badminton_app/models/inventory_item.dart';
 import 'package:badminton_app/providers/supabase_provider.dart';
@@ -152,7 +153,7 @@ class _InventoryScreenState
                   },
                   style: ElevatedButton.styleFrom(
                     backgroundColor:
-                        const Color(0xFFFB923C),
+                        AppTheme.secondary,
                     foregroundColor:
                         const Color(0xFFFFFFFF),
                     shape: RoundedRectangleBorder(
@@ -274,7 +275,7 @@ class _InventoryScreenState
                   },
                   style: ElevatedButton.styleFrom(
                     backgroundColor:
-                        const Color(0xFFFB923C),
+                        AppTheme.secondary,
                     foregroundColor:
                         const Color(0xFFFFFFFF),
                     shape: RoundedRectangleBorder(
@@ -310,7 +311,7 @@ class _InventoryScreenState
       body: _buildBody(state),
       floatingActionButton: FloatingActionButton(
         onPressed: _showAddItemDialog,
-        backgroundColor: const Color(0xFFFB923C),
+        backgroundColor: AppTheme.secondary,
         foregroundColor: Colors.white,
         child: const Icon(Icons.add, size: 28),
       ),
@@ -398,7 +399,7 @@ class _InventoryGridCard extends StatelessWidget {
           color: Colors.white,
           borderRadius: BorderRadius.circular(12),
           border: Border.all(
-            color: const Color(0xFFE2E8F0),
+            color: AppTheme.border,
           ),
         ),
         clipBehavior: Clip.hardEdge,
@@ -419,7 +420,7 @@ class _InventoryGridCard extends StatelessWidget {
                         .bodyMedium
                         ?.copyWith(
                       fontWeight: FontWeight.w500,
-                      color: const Color(0xFF1E293B),
+                      color: AppTheme.textPrimary,
                     ),
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
@@ -432,7 +433,7 @@ class _InventoryGridCard extends StatelessWidget {
                           .textTheme
                           .bodySmall
                           ?.copyWith(
-                        color: const Color(0xFF94A3B8),
+                        color: AppTheme.textTertiary,
                       ),
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
@@ -446,7 +447,7 @@ class _InventoryGridCard extends StatelessWidget {
                         .bodySmall
                         ?.copyWith(
                       fontWeight: FontWeight.w600,
-                      color: const Color(0xFF475569),
+                      color: AppTheme.textSecondary,
                     ),
                   ),
                 ],
@@ -489,7 +490,7 @@ class _CardImage extends StatelessWidget {
       width: double.infinity,
       height: 120,
       decoration: const BoxDecoration(
-        color: Color(0xFFF0FDF4),
+        color: AppTheme.primaryContainer,
         borderRadius: BorderRadius.vertical(
           top: Radius.circular(12),
         ),
@@ -497,7 +498,7 @@ class _CardImage extends StatelessWidget {
       child: const Icon(
         Icons.inventory_2,
         size: 40,
-        color: Color(0xFF94A3B8),
+        color: AppTheme.textTertiary,
       ),
     );
   }

@@ -1,3 +1,4 @@
+import 'package:badminton_app/app/theme.dart';
 import 'package:badminton_app/core/utils/formatters.dart';
 import 'package:badminton_app/models/enums.dart';
 import 'package:badminton_app/screens/customer/post_detail/post_detail_notifier.dart';
@@ -103,7 +104,7 @@ class _PostContent extends StatelessWidget {
                 Formatters.date(post.createdAt),
                 style: const TextStyle(
                   fontSize: 13,
-                  color: Color(0xFF94A3B8),
+                  color: AppTheme.textTertiary,
                 ),
               ),
             ],
@@ -162,8 +163,8 @@ class _CategoryBadge extends StatelessWidget {
   Widget build(BuildContext context) {
     final (bgColor, textColor) = switch (category) {
       PostCategory.notice => (
-        const Color(0xFFDBEAFE),
-        const Color(0xFF3B82F6),
+        AppTheme.inProgressBackground,
+        AppTheme.inProgressForeground,
       ),
       PostCategory.event => (
         const Color(0xFFFEF3C7),
@@ -212,17 +213,17 @@ class _ImageGallery extends StatelessWidget {
               fit: BoxFit.cover,
               placeholder: (context, url) => Container(
                 height: 200,
-                color: const Color(0xFFF0FDF4),
+                color: AppTheme.primaryContainer,
                 child: const Center(
                   child: CircularProgressIndicator(),
                 ),
               ),
               errorWidget: (context, url, error) => Container(
                 height: 200,
-                color: const Color(0xFFF0FDF4),
+                color: AppTheme.primaryContainer,
                 child: const Icon(
                   Icons.broken_image_outlined,
-                  color: Color(0xFF94A3B8),
+                  color: AppTheme.textTertiary,
                 ),
               ),
             ),

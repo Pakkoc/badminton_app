@@ -1,3 +1,4 @@
+import 'package:badminton_app/app/theme.dart';
 import 'package:badminton_app/models/enums.dart';
 import 'package:badminton_app/models/order.dart';
 import 'package:badminton_app/providers/owner_shop_provider.dart';
@@ -232,13 +233,13 @@ class _FilterChip extends StatelessWidget {
         ),
         decoration: BoxDecoration(
           color: isSelected
-              ? const Color(0xFF22C55E)
+              ? AppTheme.primary
               : Colors.white,
           borderRadius: BorderRadius.circular(999),
           border: Border.all(
             color: isSelected
-                ? const Color(0xFF22C55E)
-                : const Color(0xFFE2E8F0),
+                ? AppTheme.primary
+                : AppTheme.border,
           ),
         ),
         child: Text(
@@ -248,7 +249,7 @@ class _FilterChip extends StatelessWidget {
             fontWeight: FontWeight.w500,
             color: isSelected
                 ? Colors.white
-                : const Color(0xFF475569),
+                : AppTheme.textSecondary,
           ),
         ),
       ),
@@ -277,7 +278,7 @@ class _OrderManageCard extends StatelessWidget {
         color: Colors.white,
         borderRadius: BorderRadius.circular(16),
         border: Border.all(
-          color: const Color(0xFFE2E8F0),
+          color: AppTheme.border,
         ),
       ),
       child: Column(
@@ -291,7 +292,7 @@ class _OrderManageCard extends StatelessWidget {
                 style: const TextStyle(
                   fontSize: 16,
                   fontWeight: FontWeight.w600,
-                  color: Color(0xFF1E293B),
+                  color: AppTheme.textPrimary,
                 ),
               ),
               _StatusPill(status: order.status),
@@ -302,7 +303,7 @@ class _OrderManageCard extends StatelessWidget {
             _formatTimeLabel(order.createdAt),
             style: const TextStyle(
               fontSize: 12,
-              color: Color(0xFF94A3B8),
+              color: AppTheme.textTertiary,
             ),
           ),
           if (order.status != OrderStatus.completed) ...[
@@ -400,12 +401,12 @@ class _StatusPill extends StatelessWidget {
           const Color(0xFFF59E0B),
         ),
         OrderStatus.inProgress => (
-          const Color(0xFFDBEAFE),
-          const Color(0xFF3B82F6),
+          AppTheme.inProgressBackground,
+          AppTheme.inProgressForeground,
         ),
         OrderStatus.completed => (
-          const Color(0xFFDCFCE7),
-          const Color(0xFF22C55E),
+          AppTheme.completedBackground,
+          AppTheme.primary,
         ),
       };
 }
@@ -424,11 +425,11 @@ class _ActionButton extends StatelessWidget {
     final (label, bg) = switch (status) {
       OrderStatus.received => (
         '작업 시작',
-        const Color(0xFF3B82F6),
+        AppTheme.inProgressForeground,
       ),
       OrderStatus.inProgress => (
         '작업 완료',
-        const Color(0xFF22C55E),
+        AppTheme.primary,
       ),
       _ => ('', Colors.transparent),
     };

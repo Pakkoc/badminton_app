@@ -1,3 +1,4 @@
+import 'package:badminton_app/app/theme.dart';
 import 'package:badminton_app/models/member.dart';
 import 'package:badminton_app/screens/owner/order_create/order_create_notifier.dart';
 import 'package:badminton_app/widgets/loading_indicator.dart';
@@ -52,7 +53,7 @@ class _OrderCreateScreenState
           style: TextStyle(
             fontSize: 20,
             fontWeight: FontWeight.bold,
-            color: Color(0xFF1E293B),
+            color: AppTheme.textPrimary,
           ),
         ),
       ),
@@ -73,7 +74,7 @@ class _OrderCreateScreenState
                       },
                       style: ElevatedButton.styleFrom(
                         backgroundColor:
-                            const Color(0xFFFB923C),
+                            AppTheme.secondary,
                         foregroundColor: Colors.white,
                         shape: RoundedRectangleBorder(
                           borderRadius:
@@ -104,21 +105,21 @@ class _OrderCreateScreenState
                     children: [
                       Expanded(
                         child: Divider(
-                          color: Color(0xFFE2E8F0),
+                          color: AppTheme.border,
                         ),
                       ),
                       SizedBox(width: 12),
                       Text(
                         '또는',
                         style: TextStyle(
-                          color: Color(0xFF94A3B8),
+                          color: AppTheme.textTertiary,
                           fontSize: 12,
                         ),
                       ),
                       SizedBox(width: 12),
                       Expanded(
                         child: Divider(
-                          color: Color(0xFFE2E8F0),
+                          color: AppTheme.border,
                         ),
                       ),
                     ],
@@ -133,15 +134,15 @@ class _OrderCreateScreenState
                         hintText: '회원 이름 또는 연락처 검색',
                         hintStyle: const TextStyle(
                           fontSize: 14,
-                          color: Color(0xFF94A3B8),
+                          color: AppTheme.textTertiary,
                         ),
                         prefixIcon: const Icon(
                           Icons.search,
                           size: 16,
-                          color: Color(0xFF94A3B8),
+                          color: AppTheme.textTertiary,
                         ),
                         filled: true,
-                        fillColor: const Color(0xFFF0FDF4),
+                        fillColor: AppTheme.primaryContainer,
                         border: OutlineInputBorder(
                           borderRadius:
                               BorderRadius.circular(8),
@@ -192,7 +193,7 @@ class _OrderCreateScreenState
                     style: TextStyle(
                       fontSize: 14,
                       fontWeight: FontWeight.w600,
-                      color: Color(0xFF475569),
+                      color: AppTheme.textSecondary,
                     ),
                   ),
                   const SizedBox(height: 12),
@@ -205,10 +206,10 @@ class _OrderCreateScreenState
                         hintText: '메모 (선택사항)',
                         hintStyle: const TextStyle(
                           fontSize: 14,
-                          color: Color(0xFF94A3B8),
+                          color: AppTheme.textTertiary,
                         ),
                         filled: true,
-                        fillColor: const Color(0xFFF0FDF4),
+                        fillColor: AppTheme.primaryContainer,
                         border: OutlineInputBorder(
                           borderRadius:
                               BorderRadius.circular(8),
@@ -245,7 +246,7 @@ class _OrderCreateScreenState
                         : null,
                     style: ElevatedButton.styleFrom(
                       backgroundColor:
-                          const Color(0xFFFB923C),
+                          AppTheme.secondary,
                       foregroundColor: Colors.white,
                       minimumSize:
                           const Size.fromHeight(48),
@@ -317,7 +318,7 @@ class _SelectedMemberCard extends StatelessWidget {
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: const Color(0xFFE2E8F0)),
+        border: Border.all(color: AppTheme.border),
       ),
       child: Row(
         children: [
@@ -330,7 +331,7 @@ class _SelectedMemberCard extends StatelessWidget {
                   style: const TextStyle(
                     fontSize: 16,
                     fontWeight: FontWeight.w600,
-                    color: Color(0xFF1E293B),
+                    color: AppTheme.textPrimary,
                   ),
                 ),
                 const SizedBox(height: 8),
@@ -338,7 +339,7 @@ class _SelectedMemberCard extends StatelessWidget {
                   phone,
                   style: const TextStyle(
                     fontSize: 14,
-                    color: Color(0xFF475569),
+                    color: AppTheme.textSecondary,
                   ),
                 ),
               ],

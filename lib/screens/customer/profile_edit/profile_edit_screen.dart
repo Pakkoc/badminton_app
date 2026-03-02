@@ -1,3 +1,4 @@
+import 'package:badminton_app/app/theme.dart';
 import 'package:badminton_app/core/utils/validators.dart';
 import 'package:badminton_app/screens/customer/profile_edit/profile_edit_notifier.dart';
 import 'package:badminton_app/widgets/phone_input_field.dart';
@@ -118,10 +119,10 @@ class _ProfileEditScreenState
                         }
                       },
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: const Color(0xFF22C55E),
+                  backgroundColor: AppTheme.primary,
                   foregroundColor: const Color(0xFFFFFFFF),
                   disabledBackgroundColor:
-                      const Color(0xFF22C55E).withValues(
+                      AppTheme.primary.withValues(
                     alpha: 0.5,
                   ),
                   disabledForegroundColor:
@@ -184,7 +185,7 @@ class _ProfileAvatar extends StatelessWidget {
             child: Container(
               padding: const EdgeInsets.all(4),
               decoration: BoxDecoration(
-                color: const Color(0xFF22C55E),
+                color: AppTheme.primary,
                 shape: BoxShape.circle,
                 border: Border.all(
                   color: Theme.of(context)

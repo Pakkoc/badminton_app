@@ -1,3 +1,4 @@
+import 'package:badminton_app/app/theme.dart';
 import 'package:badminton_app/core/utils/formatters.dart';
 import 'package:badminton_app/screens/customer/post_list/post_list_notifier.dart';
 import 'package:badminton_app/screens/customer/post_list/post_list_state.dart';
@@ -90,13 +91,13 @@ class _PostListScreenState
               Formatters.date(post.createdAt),
               style: const TextStyle(
                 fontSize: 12,
-                color: Color(0xFF94A3B8),
+                color: AppTheme.textTertiary,
               ),
             ),
             trailing: post.images.isNotEmpty
                 ? const Icon(
                     Icons.image_outlined,
-                    color: Color(0xFF94A3B8),
+                    color: AppTheme.textTertiary,
                   )
                 : null,
             onTap: () {

@@ -1,3 +1,4 @@
+import 'package:badminton_app/app/theme.dart';
 import 'package:badminton_app/models/shop.dart';
 import 'package:flutter/material.dart';
 import 'package:qr_flutter/qr_flutter.dart';
@@ -19,7 +20,7 @@ class ShopQrScreen extends StatelessWidget {
           style: TextStyle(
             fontSize: 18,
             fontWeight: FontWeight.w500,
-            color: Color(0xFF1E293B),
+            color: AppTheme.textPrimary,
           ),
         ),
         centerTitle: true,
@@ -68,7 +69,7 @@ class _QrCard extends StatelessWidget {
             style: const TextStyle(
               fontSize: 18,
               fontWeight: FontWeight.w700,
-              color: Color(0xFF1E293B),
+              color: AppTheme.textPrimary,
             ),
           ),
           const SizedBox(height: 16),
@@ -79,7 +80,7 @@ class _QrCard extends StatelessWidget {
               color: Colors.white,
               borderRadius: BorderRadius.circular(8),
               border: Border.all(
-                color: const Color(0xFFE2E8F0),
+                color: AppTheme.border,
                 width: 2,
               ),
             ),
@@ -98,7 +99,7 @@ class _QrCard extends StatelessWidget {
               textAlign: TextAlign.center,
               style: TextStyle(
                 fontSize: 13,
-                color: Color(0xFF475569),
+                color: AppTheme.textSecondary,
               ),
             ),
           ),
@@ -122,9 +123,9 @@ class _ButtonRow extends StatelessWidget {
               icon: const Icon(Icons.download, size: 18),
               label: const Text('이미지 저장'),
               style: OutlinedButton.styleFrom(
-                foregroundColor: const Color(0xFF22C55E),
+                foregroundColor: AppTheme.primary,
                 side: const BorderSide(
-                  color: Color(0xFF22C55E),
+                  color: AppTheme.primary,
                   width: 1.5,
                 ),
                 shape: RoundedRectangleBorder(
@@ -144,7 +145,7 @@ class _ButtonRow extends StatelessWidget {
               icon: const Icon(Icons.share, size: 18),
               label: const Text('공유하기'),
               style: FilledButton.styleFrom(
-                backgroundColor: const Color(0xFF22C55E),
+                backgroundColor: AppTheme.primary,
                 foregroundColor: Colors.white,
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(10),
@@ -167,7 +168,7 @@ class _InfoCard extends StatelessWidget {
       width: double.infinity,
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: const Color(0xFFF0FDF4),
+        color: AppTheme.primaryContainer,
         borderRadius: BorderRadius.circular(12),
       ),
       child: const Column(
@@ -185,7 +186,7 @@ class _InfoCard extends StatelessWidget {
             '앱이 없는 고객도 QR을 스캔하면 앱 다운로드 페이지로 이동합니다',
             style: TextStyle(
               fontSize: 13,
-              color: Color(0xFF475569),
+              color: AppTheme.textSecondary,
               height: 1.5,
             ),
           ),

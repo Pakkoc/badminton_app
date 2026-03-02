@@ -123,7 +123,7 @@ class _QrOrderScreenState extends ConsumerState<QrOrderScreen> {
       builder: (context) => AlertDialog(
         icon: const Icon(
           Icons.check_circle,
-          color: AppTheme.courtGreen,
+          color: AppTheme.primary,
           size: 48,
         ),
         title: const Text('접수 완료'),
@@ -137,7 +137,7 @@ class _QrOrderScreenState extends ConsumerState<QrOrderScreen> {
               this.context.go('/customer/home');
             },
             style: FilledButton.styleFrom(
-              backgroundColor: AppTheme.courtGreen,
+              backgroundColor: AppTheme.primary,
             ),
             child: const Text('확인'),
           ),
@@ -158,7 +158,7 @@ class _QrOrderScreenState extends ConsumerState<QrOrderScreen> {
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   const CircularProgressIndicator(
-                    color: AppTheme.courtGreen,
+                    color: AppTheme.primary,
                   ),
                   const SizedBox(height: 24),
                   Text(

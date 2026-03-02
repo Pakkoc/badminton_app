@@ -25,7 +25,7 @@ class CustomerHomeScreen extends ConsumerWidget {
         title: Text(
           '거트알림',
           style: Theme.of(context).textTheme.headlineMedium?.copyWith(
-                color: AppTheme.courtGreen,
+                color: AppTheme.primary,
                 fontWeight: FontWeight.bold,
               ),
         ),
@@ -97,7 +97,7 @@ class _EmptyBody extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return RefreshIndicator(
-      color: AppTheme.courtGreen,
+      color: AppTheme.primary,
       onRefresh: onRefresh,
       child: ListView(
         children: [
@@ -167,7 +167,7 @@ class _OrderListBody extends StatelessWidget {
     final showSummary = receivedCount + inProgressCount > 0;
 
     return RefreshIndicator(
-      color: AppTheme.courtGreen,
+      color: AppTheme.primary,
       onRefresh: onRefresh,
       child: ListView.builder(
         padding: const EdgeInsets.all(16),
@@ -364,7 +364,7 @@ class _OrderCard extends StatelessWidget {
                   child: Icon(
                     Icons.directions,
                     size: 24,
-                    color: AppTheme.courtGreen,
+                    color: AppTheme.primary,
                     semanticLabel: '길찾기',
                   ),
                 ),

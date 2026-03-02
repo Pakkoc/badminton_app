@@ -93,7 +93,7 @@ class OrderHistoryScreen extends ConsumerWidget {
     }
 
     return RefreshIndicator(
-      color: AppTheme.courtGreen,
+      color: AppTheme.primary,
       onRefresh: () => ref
           .read(orderHistoryNotifierProvider.notifier)
           .loadHistory(),

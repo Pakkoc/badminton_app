@@ -158,7 +158,7 @@ class _ToggleSegment extends StatelessWidget {
         ),
         decoration: BoxDecoration(
           color: isActive
-              ? AppTheme.courtGreen
+              ? AppTheme.primary
               : Colors.transparent,
           borderRadius: BorderRadius.circular(8),
         ),

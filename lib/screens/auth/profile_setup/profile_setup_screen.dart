@@ -1,3 +1,4 @@
+import 'package:badminton_app/app/theme.dart';
 import 'package:badminton_app/core/utils/validators.dart';
 import 'package:badminton_app/models/enums.dart';
 import 'package:badminton_app/screens/auth/profile_setup/profile_setup_notifier.dart';
@@ -116,10 +117,10 @@ class _ProfileSetupScreenState
                       }
                     : null,
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: const Color(0xFF22C55E),
+                  backgroundColor: AppTheme.primary,
                   foregroundColor: const Color(0xFFFFFFFF),
                   disabledBackgroundColor:
-                      const Color(0xFF22C55E).withValues(
+                      AppTheme.primary.withValues(
                     alpha: 0.5,
                   ),
                   disabledForegroundColor:
@@ -175,8 +176,8 @@ class _RoleCard extends StatelessWidget {
         decoration: BoxDecoration(
           border: Border.all(
             color: isSelected
-                ? const Color(0xFF22C55E)
-                : const Color(0xFFE2E8F0),
+                ? AppTheme.primary
+                : AppTheme.border,
             width: isSelected ? 2 : 1,
           ),
           borderRadius: BorderRadius.circular(12),
@@ -187,8 +188,8 @@ class _RoleCard extends StatelessWidget {
               icon,
               size: 40,
               color: isSelected
-                  ? const Color(0xFF22C55E)
-                  : const Color(0xFF94A3B8),
+                  ? AppTheme.primary
+                  : AppTheme.textTertiary,
             ),
             const SizedBox(height: 8),
             Text(
@@ -197,7 +198,7 @@ class _RoleCard extends StatelessWidget {
                 fontSize: 16,
                 fontWeight: FontWeight.w600,
                 color: isSelected
-                    ? const Color(0xFF22C55E)
+                    ? AppTheme.primary
                     : const Color(0xFF64748B),
               ),
             ),

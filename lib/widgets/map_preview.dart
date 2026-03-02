@@ -1,3 +1,4 @@
+import 'package:badminton_app/app/theme.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_naver_map/flutter_naver_map.dart';
@@ -74,7 +75,7 @@ class MapPreview extends StatelessWidget {
 
   Widget _buildEmpty(BuildContext context) {
     return Container(
-      color: const Color(0xFFF0FDF4),
+      color: AppTheme.primaryContainer,
       child: Center(
         child: Column(
           mainAxisSize: MainAxisSize.min,
@@ -82,14 +83,14 @@ class MapPreview extends StatelessWidget {
             const Icon(
               Icons.map_outlined,
               size: 32,
-              color: Color(0xFF94A3B8),
+              color: AppTheme.textTertiary,
             ),
             const SizedBox(height: 8),
             Text(
               emptyText,
               style: const TextStyle(
                 fontSize: 13,
-                color: Color(0xFF94A3B8),
+                color: AppTheme.textTertiary,
               ),
             ),
           ],
@@ -100,7 +101,7 @@ class MapPreview extends StatelessWidget {
 
   Widget _buildPlaceholder(BuildContext context) {
     return Container(
-      color: const Color(0xFFF0FDF4),
+      color: AppTheme.primaryContainer,
       child: Center(
         child: Column(
           mainAxisSize: MainAxisSize.min,

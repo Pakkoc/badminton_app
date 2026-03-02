@@ -1,3 +1,4 @@
+import 'package:badminton_app/app/theme.dart';
 import 'package:flutter/material.dart';
 
 class AppToast {
@@ -9,7 +10,7 @@ class AppToast {
       ..showSnackBar(
         SnackBar(
           content: Text(message),
-          backgroundColor: const Color(0xFF22C55E),
+          backgroundColor: AppTheme.primary,
           behavior: SnackBarBehavior.floating,
           duration: const Duration(seconds: 2),
         ),

@@ -113,13 +113,13 @@ class _LargeStatusBadge extends StatelessWidget {
         Icons.inventory_2,
       ),
       OrderStatus.inProgress => (
-        const Color(0xFFDBEAFE),
+        AppTheme.inProgressBackground,
         const Color(0xFF1E40AF),
         Icons.build_circle,
       ),
       OrderStatus.completed => (
-        const Color(0xFFDCFCE7),
-        const Color(0xFF166534),
+        AppTheme.completedBackground,
+        AppTheme.completedText,
         Icons.check_circle,
       ),
     };
@@ -203,7 +203,7 @@ class _TimelineSection extends StatelessWidget {
                       ? Formatters.dateTime(inProgressAt!)
                       : '—',
                   isActive: inProgressAt != null,
-                  color: const Color(0xFF3B82F6),
+                  color: AppTheme.inProgressForeground,
                   isLast: false,
                   nextActive: completedAt != null,
                 ),
@@ -213,7 +213,7 @@ class _TimelineSection extends StatelessWidget {
                       ? Formatters.dateTime(completedAt!)
                       : '—',
                   isActive: completedAt != null,
-                  color: const Color(0xFF22C55E),
+                  color: AppTheme.primary,
                   isLast: true,
                   nextActive: false,
                 ),
@@ -383,7 +383,7 @@ class _ShopInfoSection extends StatelessWidget {
                     const Icon(
                       Icons.storefront,
                       size: 20,
-                      color: AppTheme.courtGreen,
+                      color: AppTheme.primary,
                     ),
                     const SizedBox(width: 8),
                     Text(

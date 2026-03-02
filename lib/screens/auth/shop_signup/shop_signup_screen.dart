@@ -1,3 +1,4 @@
+import 'package:badminton_app/app/theme.dart';
 import 'package:badminton_app/core/utils/validators.dart';
 import 'package:badminton_app/screens/auth/shop_signup/shop_signup_notifier.dart';
 import 'package:badminton_app/widgets/map_preview.dart';
@@ -126,10 +127,10 @@ class _ShopSignupScreenState
                           }
                         : null,
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: const Color(0xFF22C55E),
+                  backgroundColor: AppTheme.primary,
                   foregroundColor: const Color(0xFFFFFFFF),
                   disabledBackgroundColor:
-                      const Color(0xFF22C55E).withValues(
+                      AppTheme.primary.withValues(
                     alpha: 0.5,
                   ),
                   disabledForegroundColor:

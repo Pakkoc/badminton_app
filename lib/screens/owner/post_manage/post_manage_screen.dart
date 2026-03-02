@@ -1,3 +1,4 @@
+import 'package:badminton_app/app/theme.dart';
 import 'package:badminton_app/core/utils/formatters.dart';
 import 'package:badminton_app/models/enums.dart';
 import 'package:badminton_app/models/post.dart';
@@ -74,7 +75,7 @@ class _PostManageScreenState extends ConsumerState<PostManageScreen> {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: _onCreatePost,
-        backgroundColor: const Color(0xFFFB923C),
+        backgroundColor: AppTheme.secondary,
         child: const Icon(Icons.add, color: Colors.white),
       ),
     );
@@ -149,7 +150,7 @@ class _CategoryTabs extends StatelessWidget {
       height: 44,
       decoration: const BoxDecoration(
         border: Border(
-          bottom: BorderSide(color: Color(0xFFE2E8F0)),
+          bottom: BorderSide(color: AppTheme.border),
         ),
       ),
       child: Row(
@@ -182,9 +183,9 @@ class _TabItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    const activeColor = Color(0xFF22C55E);
-    const activeTextColor = Color(0xFF1E293B);
-    const inactiveTextColor = Color(0xFF94A3B8);
+    const activeColor = AppTheme.primary;
+    const activeTextColor = AppTheme.textPrimary;
+    const inactiveTextColor = AppTheme.textTertiary;
 
     return GestureDetector(
       onTap: onTap,
@@ -235,7 +236,7 @@ class _PostCard extends StatelessWidget {
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: const Color(0xFFE2E8F0)),
+        border: Border.all(color: AppTheme.border),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -253,7 +254,7 @@ class _PostCard extends StatelessWidget {
             style: const TextStyle(
               fontSize: 14,
               fontWeight: FontWeight.bold,
-              color: Color(0xFF1E293B),
+              color: AppTheme.textPrimary,
             ),
           ),
           const SizedBox(height: 4),
@@ -263,7 +264,7 @@ class _PostCard extends StatelessWidget {
             overflow: TextOverflow.ellipsis,
             style: const TextStyle(
               fontSize: 13,
-              color: Color(0xFF475569),
+              color: AppTheme.textSecondary,
               height: 1.5,
             ),
           ),
@@ -272,7 +273,7 @@ class _PostCard extends StatelessWidget {
             Formatters.date(post.createdAt),
             style: const TextStyle(
               fontSize: 12,
-              color: Color(0xFF94A3B8),
+              color: AppTheme.textTertiary,
             ),
           ),
         ],
@@ -303,7 +304,7 @@ class _CardHeader extends StatelessWidget {
           child: const Icon(
             Icons.edit,
             size: 22,
-            color: Color(0xFF475569),
+            color: AppTheme.textSecondary,
           ),
         ),
         const SizedBox(width: 8),
@@ -329,8 +330,8 @@ class _CategoryBadge extends StatelessWidget {
   Widget build(BuildContext context) {
     final (bgColor, textColor, label) = switch (category) {
       PostCategory.notice => (
-          const Color(0xFFDCFCE7),
-          const Color(0xFF166534),
+          AppTheme.completedBackground,
+          AppTheme.completedText,
           '공지사항',
         ),
       PostCategory.event => (

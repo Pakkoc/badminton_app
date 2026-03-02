@@ -1,3 +1,4 @@
+import 'package:badminton_app/app/theme.dart';
 import 'package:badminton_app/screens/auth/login/login_notifier.dart';
 import 'package:badminton_app/screens/auth/login/login_state.dart';
 import 'package:badminton_app/widgets/toast.dart';
@@ -43,7 +44,7 @@ class LoginScreen extends ConsumerWidget {
               const Icon(
                 Icons.sports_tennis,
                 size: 56,
-                color: Color(0xFF22C55E),
+                color: AppTheme.primary,
               ),
               const SizedBox(height: 12),
               const Text(
@@ -51,7 +52,7 @@ class LoginScreen extends ConsumerWidget {
                 style: TextStyle(
                   fontSize: 28,
                   fontWeight: FontWeight.bold,
-                  color: Color(0xFF1E293B),
+                  color: AppTheme.textPrimary,
                 ),
               ),
               const SizedBox(height: 32),
@@ -60,7 +61,7 @@ class LoginScreen extends ConsumerWidget {
                 style: TextStyle(
                   fontSize: 22,
                   fontWeight: FontWeight.bold,
-                  color: Color(0xFF1E293B),
+                  color: AppTheme.textPrimary,
                 ),
               ),
               const SizedBox(height: 8),
@@ -68,7 +69,7 @@ class LoginScreen extends ConsumerWidget {
                 '간편하게 시작하세요',
                 style: TextStyle(
                   fontSize: 16,
-                  color: Color(0xFF475569),
+                  color: AppTheme.textSecondary,
                 ),
               ),
               const Spacer(),
@@ -103,8 +104,8 @@ class LoginScreen extends ConsumerWidget {
               _SocialLoginButton(
                 label: 'Gmail로 시작하기',
                 backgroundColor: const Color(0xFFFFFFFF),
-                textColor: const Color(0xFF1E293B),
-                borderColor: const Color(0xFFE2E8F0),
+                textColor: AppTheme.textPrimary,
+                borderColor: AppTheme.border,
                 isLoading:
                     isLoading && loadingProvider == 'google',
                 isDisabled: isLoading,

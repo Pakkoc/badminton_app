@@ -1,3 +1,4 @@
+import 'package:badminton_app/app/theme.dart';
 import 'package:badminton_app/models/enums.dart';
 import 'package:badminton_app/models/order.dart';
 import 'package:badminton_app/providers/supabase_provider.dart';
@@ -48,14 +49,14 @@ class _OwnerDashboardScreenState
           style: TextStyle(
             fontSize: 20,
             fontWeight: FontWeight.bold,
-            color: Color(0xFF1E293B),
+            color: AppTheme.textPrimary,
           ),
         ),
         actions: [
           IconButton(
             icon: const Icon(
               Icons.settings,
-              color: Color(0xFF475569),
+              color: AppTheme.textSecondary,
               size: 24,
             ),
             onPressed: () {
@@ -86,7 +87,7 @@ class _OwnerDashboardScreenState
             '?shopId=$shopId',
           );
         },
-        backgroundColor: const Color(0xFFFB923C),
+        backgroundColor: AppTheme.secondary,
         child: const Icon(Icons.add),
       ),
     );
@@ -179,7 +180,7 @@ class _StatsSectionHeader extends StatelessWidget {
       style: TextStyle(
         fontSize: 16,
         fontWeight: FontWeight.w600,
-        color: Color(0xFF1E293B),
+        color: AppTheme.textPrimary,
       ),
     );
   }
@@ -214,9 +215,9 @@ class _StatusCountCards extends StatelessWidget {
           child: _CountCard(
             label: '작업중',
             count: inProgressCount,
-            numberColor: const Color(0xFF3B82F6),
+            numberColor: AppTheme.inProgressForeground,
             labelColor: const Color(0xFF1E40AF),
-            bgColor: const Color(0xFFDBEAFE),
+            bgColor: AppTheme.inProgressBackground,
           ),
         ),
         const SizedBox(width: 8),
@@ -224,9 +225,9 @@ class _StatusCountCards extends StatelessWidget {
           child: _CountCard(
             label: '완료',
             count: completedCount,
-            numberColor: const Color(0xFF22C55E),
-            labelColor: const Color(0xFF166534),
-            bgColor: const Color(0xFFDCFCE7),
+            numberColor: AppTheme.primary,
+            labelColor: AppTheme.completedText,
+            bgColor: AppTheme.completedBackground,
           ),
         ),
       ],
@@ -297,7 +298,7 @@ class _RecentHeader extends StatelessWidget {
           style: TextStyle(
             fontSize: 18,
             fontWeight: FontWeight.w600,
-            color: Color(0xFF1E293B),
+            color: AppTheme.textPrimary,
           ),
         ),
         GestureDetector(
@@ -306,7 +307,7 @@ class _RecentHeader extends StatelessWidget {
             '전체보기',
             style: TextStyle(
               fontSize: 14,
-              color: Color(0xFF22C55E),
+              color: AppTheme.primary,
             ),
           ),
         ),
@@ -336,7 +337,7 @@ class _EmptyOrdersView extends StatelessWidget {
             style: TextStyle(
               fontSize: 16,
               fontWeight: FontWeight.w500,
-              color: Color(0xFF475569),
+              color: AppTheme.textSecondary,
             ),
           ),
           SizedBox(height: 12),
@@ -344,7 +345,7 @@ class _EmptyOrdersView extends StatelessWidget {
             '\'+\' 버튼으로 새 작업을 접수하세요',
             style: TextStyle(
               fontSize: 13,
-              color: Color(0xFF94A3B8),
+              color: AppTheme.textTertiary,
             ),
           ),
         ],
@@ -372,7 +373,7 @@ class _OrderCard extends StatelessWidget {
         color: Colors.white,
         borderRadius: BorderRadius.circular(16),
         border: Border.all(
-          color: const Color(0xFFE2E8F0),
+          color: AppTheme.border,
         ),
       ),
       child: Column(
@@ -386,7 +387,7 @@ class _OrderCard extends StatelessWidget {
                 style: const TextStyle(
                   fontSize: 16,
                   fontWeight: FontWeight.w600,
-                  color: Color(0xFF1E293B),
+                  color: AppTheme.textPrimary,
                 ),
               ),
               _StatusPill(status: order.status),
@@ -397,7 +398,7 @@ class _OrderCard extends StatelessWidget {
             '접수 ${_formatTime(order.createdAt)}',
             style: const TextStyle(
               fontSize: 12,
-              color: Color(0xFF94A3B8),
+              color: AppTheme.textTertiary,
             ),
           ),
           if (order.status != OrderStatus.completed) ...[
@@ -458,12 +459,12 @@ class _StatusPill extends StatelessWidget {
           const Color(0xFFF59E0B),
         ),
         OrderStatus.inProgress => (
-          const Color(0xFFDBEAFE),
-          const Color(0xFF3B82F6),
+          AppTheme.inProgressBackground,
+          AppTheme.inProgressForeground,
         ),
         OrderStatus.completed => (
-          const Color(0xFFDCFCE7),
-          const Color(0xFF22C55E),
+          AppTheme.completedBackground,
+          AppTheme.primary,
         ),
       };
 }
@@ -480,10 +481,10 @@ class _ActionButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final (label, bg) = switch (status) {
-      OrderStatus.received => ('작업 시작', const Color(0xFF3B82F6)),
+      OrderStatus.received => ('작업 시작', AppTheme.inProgressForeground),
       OrderStatus.inProgress => (
         '작업 완료',
-        const Color(0xFF22C55E)
+        AppTheme.primary
       ),
       _ => ('', Colors.transparent),
     };

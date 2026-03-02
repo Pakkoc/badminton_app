@@ -1,3 +1,4 @@
+import 'package:badminton_app/app/theme.dart';
 import 'package:badminton_app/core/utils/validators.dart';
 import 'package:badminton_app/screens/owner/shop_settings/shop_settings_notifier.dart';
 import 'package:badminton_app/widgets/loading_indicator.dart';
@@ -100,7 +101,7 @@ class _ShopSettingsScreenState
                     children: [
                       const Icon(
                         Icons.menu,
-                        color: Color(0xFF22C55E),
+                        color: AppTheme.primary,
                         size: 20,
                       ),
                       const SizedBox(width: 6),
@@ -112,7 +113,7 @@ class _ShopSettingsScreenState
                             ?.copyWith(
                               fontSize: 16,
                               fontWeight: FontWeight.w600,
-                              color: const Color(0xFF1E293B),
+                              color: AppTheme.textPrimary,
                             ),
                       ),
                     ],
@@ -123,7 +124,7 @@ class _ShopSettingsScreenState
                       color: const Color(0xFFFFFFFF),
                       borderRadius: BorderRadius.circular(16),
                       border: Border.all(
-                        color: const Color(0xFFE2E8F0),
+                        color: AppTheme.border,
                       ),
                     ),
                     child: Column(
@@ -310,10 +311,10 @@ class _SettingsField extends StatelessWidget {
             decoration: InputDecoration(
               hintStyle: const TextStyle(
                 fontSize: 14,
-                color: Color(0xFF94A3B8),
+                color: AppTheme.textTertiary,
               ),
               filled: true,
-              fillColor: const Color(0xFFF0FDF4),
+              fillColor: AppTheme.primaryContainer,
               border: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(8),
                 borderSide: BorderSide.none,
@@ -361,7 +362,7 @@ class _PhoneSettingsField extends StatelessWidget {
           data: Theme.of(context).copyWith(
             inputDecorationTheme: const InputDecorationTheme(
               filled: true,
-              fillColor: Color(0xFFF0FDF4),
+              fillColor: AppTheme.primaryContainer,
               border: OutlineInputBorder(
                 borderRadius: BorderRadius.all(Radius.circular(8)),
                 borderSide: BorderSide.none,
@@ -436,10 +437,10 @@ class _AddressSettingsField extends StatelessWidget {
             decoration: InputDecoration(
               hintStyle: const TextStyle(
                 fontSize: 14,
-                color: Color(0xFF94A3B8),
+                color: AppTheme.textTertiary,
               ),
               filled: true,
-              fillColor: const Color(0xFFF0FDF4),
+              fillColor: AppTheme.primaryContainer,
               border: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(8),
                 borderSide: BorderSide.none,
@@ -451,7 +452,7 @@ class _AddressSettingsField extends StatelessWidget {
               suffixIcon: IconButton(
                 icon: const Icon(
                   Icons.search,
-                  color: Color(0xFF94A3B8),
+                  color: AppTheme.textTertiary,
                 ),
                 tooltip: '주소 검색',
                 onPressed: onSearch,
@@ -479,7 +480,7 @@ class _SectionHeader extends StatelessWidget {
       children: [
         Icon(
           icon,
-          color: const Color(0xFF22C55E),
+          color: AppTheme.primary,
           size: 20,
         ),
         const SizedBox(width: 6),
@@ -488,7 +489,7 @@ class _SectionHeader extends StatelessWidget {
           style: Theme.of(context).textTheme.titleMedium?.copyWith(
                 fontSize: 16,
                 fontWeight: FontWeight.w700,
-                color: const Color(0xFF1E293B),
+                color: AppTheme.textPrimary,
               ),
         ),
       ],
@@ -510,7 +511,7 @@ class _SaveButton extends StatelessWidget {
     return Container(
       decoration: const BoxDecoration(
         border: Border(
-          top: BorderSide(color: Color(0xFFE2E8F0)),
+          top: BorderSide(color: AppTheme.border),
         ),
       ),
       padding: const EdgeInsets.symmetric(
@@ -523,10 +524,10 @@ class _SaveButton extends StatelessWidget {
         child: ElevatedButton(
           onPressed: isSubmitting ? null : onPressed,
           style: ElevatedButton.styleFrom(
-            backgroundColor: const Color(0xFF22C55E),
+            backgroundColor: AppTheme.primary,
             foregroundColor: const Color(0xFFFFFFFF),
             disabledBackgroundColor:
-                const Color(0xFF22C55E).withValues(alpha: 0.5),
+                AppTheme.primary.withValues(alpha: 0.5),
             disabledForegroundColor:
                 const Color(0xFFFFFFFF).withValues(alpha: 0.5),
             shape: RoundedRectangleBorder(
@@ -583,7 +584,7 @@ class _MenuItemTile extends StatelessWidget {
                 children: [
                   Icon(
                     icon,
-                    color: const Color(0xFF475569),
+                    color: AppTheme.textSecondary,
                     size: 22,
                   ),
                   const SizedBox(width: 12),
@@ -595,7 +596,7 @@ class _MenuItemTile extends StatelessWidget {
                   ),
                   const Icon(
                     Icons.chevron_right,
-                    color: Color(0xFF94A3B8),
+                    color: AppTheme.textTertiary,
                     size: 20,
                   ),
                 ],
@@ -607,7 +608,7 @@ class _MenuItemTile extends StatelessWidget {
           const Divider(
             height: 1,
             thickness: 1,
-            color: Color(0xFFF0FDF4),
+            color: AppTheme.primaryContainer,
             indent: 0,
             endIndent: 0,
           ),

@@ -5,18 +5,18 @@ import 'package:flutter_test/flutter_test.dart';
 void main() {
   group('AppTheme', () {
     group('색상 상수', () {
-      test('courtGreen이 #22C55E이다', () {
+      test('primary가 #2563EB이다', () {
         // Arrange & Act & Assert
         expect(
-          AppTheme.courtGreen,
-          const Color(0xFF22C55E),
+          AppTheme.primary,
+          const Color(0xFF2563EB),
         );
       });
 
-      test('textPrimary가 #1E293B이다', () {
+      test('textPrimary가 #1A1A2E이다', () {
         expect(
           AppTheme.textPrimary,
-          const Color(0xFF1E293B),
+          const Color(0xFF1A1A2E),
         );
       });
 
@@ -27,10 +27,10 @@ void main() {
         );
       });
 
-      test('border가 #E2E8F0이다', () {
+      test('border가 #E8E0D8이다', () {
         expect(
           AppTheme.border,
-          const Color(0xFFE2E8F0),
+          const Color(0xFFE8E0D8),
         );
       });
 
@@ -57,17 +57,17 @@ void main() {
         );
       });
 
-      test('inProgress 상태 배경색이 #DBEAFE이다', () {
+      test('inProgress 상태 배경색이 #EFF6FF이다', () {
         expect(
           AppTheme.inProgressBackground,
-          const Color(0xFFDBEAFE),
+          const Color(0xFFEFF6FF),
         );
       });
 
-      test('completed 상태 배경색이 #DCFCE7이다', () {
+      test('completed 상태 배경색이 #D1FAE5이다', () {
         expect(
           AppTheme.completedBackground,
-          const Color(0xFFDCFCE7),
+          const Color(0xFFD1FAE5),
         );
       });
     });
@@ -85,11 +85,11 @@ void main() {
         expect(theme.useMaterial3, isTrue);
       });
 
-      test('primary 색상이 courtGreen이다', () {
+      test('primary 색상이 올바르다', () {
         // Assert
         expect(
           theme.colorScheme.primary,
-          AppTheme.courtGreen,
+          AppTheme.primary,
         );
       });
 
@@ -101,11 +101,11 @@ void main() {
         );
       });
 
-      test('scaffoldBackgroundColor가 white이다', () {
+      test('scaffoldBackgroundColor가 웜크림이다', () {
         // Assert
         expect(
           theme.scaffoldBackgroundColor,
-          Colors.white,
+          AppTheme.background,
         );
       });
 

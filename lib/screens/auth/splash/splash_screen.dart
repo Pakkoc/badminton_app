@@ -1,3 +1,4 @@
+import 'package:badminton_app/app/theme.dart';
 import 'package:badminton_app/screens/auth/splash/splash_providers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -79,7 +80,7 @@ class _SplashScreenState extends ConsumerState<SplashScreen>
                 Icon(
                   Icons.sports_tennis,
                   size: 80,
-                  color: Color(0xFF22C55E),
+                  color: AppTheme.primary,
                 ),
                 SizedBox(height: 16),
                 Text(
@@ -87,7 +88,7 @@ class _SplashScreenState extends ConsumerState<SplashScreen>
                   style: TextStyle(
                     fontSize: 32,
                     fontWeight: FontWeight.bold,
-                    color: Color(0xFF1E293B),
+                    color: AppTheme.textPrimary,
                   ),
                 ),
                 SizedBox(height: 8),
@@ -95,7 +96,7 @@ class _SplashScreenState extends ConsumerState<SplashScreen>
                   '배드민턴 거트 추적 서비스',
                   style: TextStyle(
                     fontSize: 14,
-                    color: Color(0xFF94A3B8),
+                    color: AppTheme.textTertiary,
                   ),
                 ),
                 SizedBox(height: 48),
@@ -104,7 +105,7 @@ class _SplashScreenState extends ConsumerState<SplashScreen>
                   height: 24,
                   child: CircularProgressIndicator(
                     strokeWidth: 2.5,
-                    color: Color(0xFF22C55E),
+                    color: AppTheme.primary,
                   ),
                 ),
               ],
