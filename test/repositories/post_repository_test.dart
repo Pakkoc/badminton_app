@@ -23,6 +23,18 @@ void main() {
     test('SupabaseClient를 생성자로 주입받는다', () {
       expect(repository.client, equals(mockClient));
     });
+
+    test('update 메서드가 정의되어 있다', () {
+      expect(repository.update, isA<Function>());
+    });
+
+    test('delete 메서드가 정의되어 있다', () {
+      expect(repository.delete, isA<Function>());
+    });
+
+    test('getByShop 메서드가 정의되어 있다', () {
+      expect(repository.getByShop, isA<Function>());
+    });
   });
 
   group('postRepositoryProvider', () {
