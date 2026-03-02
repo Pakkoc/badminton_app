@@ -34,7 +34,7 @@ class LoginScreen extends ConsumerWidget {
     );
 
     return Scaffold(
-      backgroundColor: const Color(0xFFFFFFFF),
+      backgroundColor: AppTheme.surface,
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 24),
@@ -75,7 +75,7 @@ class LoginScreen extends ConsumerWidget {
               const Spacer(),
               _SocialLoginButton(
                 label: '카카오로 시작하기',
-                backgroundColor: const Color(0xFFFEE500),
+                backgroundColor: AppTheme.kakaoYellow,
                 textColor: const Color(0xFF191919),
                 isLoading:
                     isLoading && loadingProvider == 'kakao',
@@ -89,8 +89,8 @@ class LoginScreen extends ConsumerWidget {
               const SizedBox(height: 12),
               _SocialLoginButton(
                 label: '네이버로 시작하기',
-                backgroundColor: const Color(0xFF03C75A),
-                textColor: const Color(0xFFFFFFFF),
+                backgroundColor: AppTheme.naverGreen,
+                textColor: Colors.white,
                 isLoading:
                     isLoading && loadingProvider == 'naver',
                 isDisabled: isLoading,
@@ -103,7 +103,7 @@ class LoginScreen extends ConsumerWidget {
               const SizedBox(height: 12),
               _SocialLoginButton(
                 label: 'Gmail로 시작하기',
-                backgroundColor: const Color(0xFFFFFFFF),
+                backgroundColor: AppTheme.surface,
                 textColor: AppTheme.textPrimary,
                 borderColor: AppTheme.border,
                 isLoading:
@@ -159,7 +159,7 @@ class _SocialLoginButton extends StatelessWidget {
               textColor.withValues(alpha: 0.6),
           elevation: 0,
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(12),
+            borderRadius: BorderRadius.circular(20),
             side: borderColor != null
                 ? BorderSide(color: borderColor!)
                 : BorderSide.none,

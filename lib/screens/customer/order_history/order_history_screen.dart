@@ -84,7 +84,7 @@ class OrderHistoryScreen extends ConsumerWidget {
                   .textTheme
                   .bodySmall
                   ?.copyWith(
-                    color: const Color(0xFFCBD5E1),
+                    color: AppTheme.textTertiary,
                   ),
             ),
           ],
@@ -137,13 +137,22 @@ class _HistoryCard extends StatelessWidget {
     return Card(
       elevation: 0,
       shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(16),
+        borderRadius: BorderRadius.circular(20),
         side: const BorderSide(color: AppTheme.border),
       ),
+      clipBehavior: Clip.antiAlias,
       child: InkWell(
         onTap: onTap,
-        borderRadius: BorderRadius.circular(16),
-        child: Padding(
+        borderRadius: BorderRadius.circular(20),
+        child: Container(
+          decoration: const BoxDecoration(
+            border: Border(
+              left: BorderSide(
+                color: AppTheme.completedForeground,
+                width: 4,
+              ),
+            ),
+          ),
           padding: const EdgeInsets.all(16),
           child: Row(
             children: [
@@ -183,7 +192,7 @@ class _HistoryCard extends StatelessWidget {
                   color: AppTheme.completedBackground,
                   borderRadius: BorderRadius.circular(10),
                 ),
-                child: Text(
+                child: const Text(
                   '완료',
                   style: TextStyle(
                     color: AppTheme.completedText,

@@ -1,7 +1,6 @@
 import 'package:badminton_app/app/theme.dart';
 import 'package:badminton_app/core/utils/formatters.dart';
 import 'package:badminton_app/models/enums.dart';
-import 'package:badminton_app/models/order.dart';
 import 'package:badminton_app/models/shop.dart';
 import 'package:badminton_app/screens/customer/order_detail/order_detail_notifier.dart';
 import 'package:badminton_app/screens/customer/order_detail/order_detail_state.dart';
@@ -129,7 +128,7 @@ class _LargeStatusBadge extends StatelessWidget {
       padding: const EdgeInsets.all(24),
       decoration: BoxDecoration(
         color: bgColor,
-        borderRadius: BorderRadius.circular(16),
+        borderRadius: BorderRadius.circular(20),
       ),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -182,7 +181,7 @@ class _TimelineSection extends StatelessWidget {
         Card(
           elevation: 0,
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(16),
+            borderRadius: BorderRadius.circular(20),
             side: const BorderSide(color: AppTheme.border),
           ),
           child: Padding(
@@ -329,7 +328,7 @@ class _MemoSection extends StatelessWidget {
           padding: const EdgeInsets.all(16),
           decoration: BoxDecoration(
             color: AppTheme.background,
-            borderRadius: BorderRadius.circular(16),
+            borderRadius: BorderRadius.circular(20),
             border: Border.all(color: AppTheme.border),
           ),
           child: Text(
@@ -370,7 +369,7 @@ class _ShopInfoSection extends StatelessWidget {
         Card(
           elevation: 0,
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(16),
+            borderRadius: BorderRadius.circular(20),
             side: const BorderSide(color: AppTheme.border),
           ),
           child: Padding(

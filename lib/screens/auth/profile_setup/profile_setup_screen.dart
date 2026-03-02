@@ -118,17 +118,17 @@ class _ProfileSetupScreenState
                     : null,
                 style: ElevatedButton.styleFrom(
                   backgroundColor: AppTheme.primary,
-                  foregroundColor: const Color(0xFFFFFFFF),
+                  foregroundColor: Colors.white,
                   disabledBackgroundColor:
                       AppTheme.primary.withValues(
                     alpha: 0.5,
                   ),
                   disabledForegroundColor:
-                      const Color(0xFFFFFFFF).withValues(
+                      Colors.white.withValues(
                     alpha: 0.5,
                   ),
                   shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(12),
+                    borderRadius: BorderRadius.circular(14),
                   ),
                 ),
                 child: state.isSubmitting
@@ -180,7 +180,7 @@ class _RoleCard extends StatelessWidget {
                 : AppTheme.border,
             width: isSelected ? 2 : 1,
           ),
-          borderRadius: BorderRadius.circular(12),
+          borderRadius: BorderRadius.circular(20),
         ),
         child: Column(
           children: [
@@ -199,7 +199,7 @@ class _RoleCard extends StatelessWidget {
                 fontWeight: FontWeight.w600,
                 color: isSelected
                     ? AppTheme.primary
-                    : const Color(0xFF64748B),
+                    : AppTheme.textSecondary,
               ),
             ),
           ],

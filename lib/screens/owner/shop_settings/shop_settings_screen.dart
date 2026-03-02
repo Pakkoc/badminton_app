@@ -121,8 +121,8 @@ class _ShopSettingsScreenState
                   const SizedBox(height: 12),
                   Container(
                     decoration: BoxDecoration(
-                      color: const Color(0xFFFFFFFF),
-                      borderRadius: BorderRadius.circular(16),
+                      color: AppTheme.surface,
+                      borderRadius: BorderRadius.circular(20),
                       border: Border.all(
                         color: AppTheme.border,
                       ),
@@ -170,8 +170,8 @@ class _ShopSettingsScreenState
                   Container(
                     padding: const EdgeInsets.all(14),
                     decoration: BoxDecoration(
-                      color: const Color(0xFFFFFFFF),
-                      borderRadius: BorderRadius.circular(16),
+                      color: AppTheme.surface,
+                      borderRadius: BorderRadius.circular(20),
                     ),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -224,8 +224,8 @@ class _ShopSettingsScreenState
                   Container(
                     padding: const EdgeInsets.all(14),
                     decoration: BoxDecoration(
-                      color: const Color(0xFFFFFFFF),
-                      borderRadius: BorderRadius.circular(16),
+                      color: AppTheme.surface,
+                      borderRadius: BorderRadius.circular(20),
                     ),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -296,7 +296,7 @@ class _SettingsField extends StatelessWidget {
           label,
           style: const TextStyle(
             fontSize: 12,
-            color: Color(0xFF64748B),
+            color: AppTheme.textSecondary,
           ),
         ),
         const SizedBox(height: 6),
@@ -354,7 +354,7 @@ class _PhoneSettingsField extends StatelessWidget {
           label,
           style: const TextStyle(
             fontSize: 12,
-            color: Color(0xFF64748B),
+            color: AppTheme.textSecondary,
           ),
         ),
         const SizedBox(height: 6),
@@ -377,11 +377,11 @@ class _PhoneSettingsField extends StatelessWidget {
               ),
               errorBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.all(Radius.circular(8)),
-                borderSide: BorderSide(color: Color(0xFFEF4444)),
+                borderSide: BorderSide(color: AppTheme.error),
               ),
               focusedErrorBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.all(Radius.circular(8)),
-                borderSide: BorderSide(color: Color(0xFFEF4444)),
+                borderSide: BorderSide(color: AppTheme.error),
               ),
               contentPadding: EdgeInsets.symmetric(
                 horizontal: 16,
@@ -424,7 +424,7 @@ class _AddressSettingsField extends StatelessWidget {
           '주소',
           style: TextStyle(
             fontSize: 12,
-            color: Color(0xFF64748B),
+            color: AppTheme.textSecondary,
           ),
         ),
         const SizedBox(height: 6),
@@ -525,11 +525,11 @@ class _SaveButton extends StatelessWidget {
           onPressed: isSubmitting ? null : onPressed,
           style: ElevatedButton.styleFrom(
             backgroundColor: AppTheme.primary,
-            foregroundColor: const Color(0xFFFFFFFF),
+            foregroundColor: Colors.white,
             disabledBackgroundColor:
                 AppTheme.primary.withValues(alpha: 0.5),
             disabledForegroundColor:
-                const Color(0xFFFFFFFF).withValues(alpha: 0.5),
+                Colors.white.withValues(alpha: 0.5),
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(12),
             ),
@@ -572,8 +572,8 @@ class _MenuItemTile extends StatelessWidget {
           borderRadius: showDivider
               ? BorderRadius.zero
               : const BorderRadius.only(
-                  bottomLeft: Radius.circular(16),
-                  bottomRight: Radius.circular(16),
+                  bottomLeft: Radius.circular(20),
+                  bottomRight: Radius.circular(20),
                 ),
           child: SizedBox(
             height: 52,

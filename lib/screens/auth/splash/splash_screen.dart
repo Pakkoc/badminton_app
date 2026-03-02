@@ -68,7 +68,7 @@ class _SplashScreenState extends ConsumerState<SplashScreen>
     );
 
     return Scaffold(
-      backgroundColor: const Color(0xFFFFFFFF),
+      backgroundColor: AppTheme.background,
       body: Center(
         child: FadeTransition(
           opacity: _fadeAnimation,

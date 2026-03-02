@@ -128,17 +128,17 @@ class _ShopSignupScreenState
                         : null,
                 style: ElevatedButton.styleFrom(
                   backgroundColor: AppTheme.primary,
-                  foregroundColor: const Color(0xFFFFFFFF),
+                  foregroundColor: Colors.white,
                   disabledBackgroundColor:
                       AppTheme.primary.withValues(
                     alpha: 0.5,
                   ),
                   disabledForegroundColor:
-                      const Color(0xFFFFFFFF).withValues(
+                      Colors.white.withValues(
                     alpha: 0.5,
                   ),
                   shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(12),
+                    borderRadius: BorderRadius.circular(14),
                   ),
                 ),
                 child: state.isSubmitting

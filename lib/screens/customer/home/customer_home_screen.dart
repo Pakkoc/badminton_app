@@ -7,7 +7,7 @@ import 'package:badminton_app/screens/customer/home/customer_home_notifier.dart'
 import 'package:badminton_app/screens/customer/home/customer_home_state.dart';
 import 'package:badminton_app/widgets/customer_bottom_nav.dart';
 import 'package:badminton_app/widgets/error_view.dart';
-import 'package:badminton_app/widgets/loading_indicator.dart';
+import 'package:badminton_app/widgets/skeleton_shimmer.dart';
 import 'package:badminton_app/widgets/status_badge.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -59,7 +59,7 @@ class CustomerHomeScreen extends ConsumerWidget {
     CustomerHomeState state,
   ) {
     if (state.isLoading) {
-      return const LoadingIndicator();
+      return const _ShimmerLoading();
     }
 
     if (state.error != null) {
@@ -237,7 +237,7 @@ class _SummaryCard extends StatelessWidget {
     return Card(
       elevation: 0,
       shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(16),
+        borderRadius: BorderRadius.circular(20),
         side: const BorderSide(color: AppTheme.border),
       ),
       child: Padding(
@@ -286,23 +286,43 @@ class _OrderCard extends StatelessWidget {
   final String shopName;
   final VoidCallback onTap;
 
+  Color get _accentColor => switch (order.status) {
+        OrderStatus.received => AppTheme.receivedForeground,
+        OrderStatus.inProgress =>
+          AppTheme.inProgressForeground,
+        OrderStatus.completed =>
+          AppTheme.completedForeground,
+      };
+
   @override
   Widget build(BuildContext context) {
     return Card(
       elevation: 1,
       shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(16),
+        borderRadius: BorderRadius.circular(20),
         side: const BorderSide(color: AppTheme.border),
       ),
+      clipBehavior: Clip.antiAlias,
       child: InkWell(
         onTap: onTap,
-        borderRadius: BorderRadius.circular(16),
-        child: Padding(
+        borderRadius: BorderRadius.circular(20),
+        child: Container(
+          decoration: BoxDecoration(
+            border: Border(
+              left: BorderSide(
+                color: _accentColor,
+                width: 4,
+              ),
+            ),
+          ),
           padding: const EdgeInsets.all(16),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              StatusBadge(status: order.status),
+              StatusBadge(
+                status: order.status,
+                showDot: true,
+              ),
               const SizedBox(height: 8),
               Text(
                 shopName,
@@ -359,7 +379,7 @@ class _OrderCard extends StatelessWidget {
               ],
               if (order.status == OrderStatus.completed) ...[
                 const SizedBox(height: 8),
-                Align(
+                const Align(
                   alignment: Alignment.centerRight,
                   child: Icon(
                     Icons.directions,
@@ -372,6 +392,58 @@ class _OrderCard extends StatelessWidget {
             ],
           ),
         ),
+      ),
+    );
+  }
+}
+
+/// 로딩 시 shimmer 카드 3개를 보여주는 위젯.
+class _ShimmerLoading extends StatelessWidget {
+  const _ShimmerLoading();
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.all(16),
+      child: Column(
+        children: List.generate(3, (index) {
+          return Padding(
+            padding: const EdgeInsets.only(bottom: 12),
+            child: Card(
+              elevation: 0,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(20),
+                side: const BorderSide(
+                  color: AppTheme.border,
+                ),
+              ),
+              child: const Padding(
+                padding: EdgeInsets.all(16),
+                child: Column(
+                  crossAxisAlignment:
+                      CrossAxisAlignment.start,
+                  children: [
+                    SkeletonShimmer(
+                      width: 60,
+                      height: 24,
+                      borderRadius: 12,
+                    ),
+                    SizedBox(height: 8),
+                    SkeletonShimmer(
+                      width: 120,
+                      height: 16,
+                    ),
+                    SizedBox(height: 8),
+                    SkeletonShimmer(
+                      width: 80,
+                      height: 14,
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          );
+        }),
       ),
     );
   }
