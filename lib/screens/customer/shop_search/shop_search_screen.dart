@@ -239,7 +239,7 @@ class _EmptyView extends StatelessWidget {
           const Icon(
             Icons.storefront,
             size: 120,
-            color: Color(0xFFCBD5E1),
+            color: AppTheme.border,
           ),
           const SizedBox(height: 24),
           Text(
@@ -317,12 +317,12 @@ class _ShopCard extends StatelessWidget {
     return Card(
       elevation: 1,
       shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(16),
+        borderRadius: BorderRadius.circular(20),
         side: const BorderSide(color: AppTheme.border),
       ),
       child: InkWell(
         onTap: onTap,
-        borderRadius: BorderRadius.circular(16),
+        borderRadius: BorderRadius.circular(20),
         child: Padding(
           padding: const EdgeInsets.all(16),
           child: Column(
@@ -386,7 +386,7 @@ class _ShopCard extends StatelessWidget {
                     child: Text(
                       '·',
                       style: TextStyle(
-                        color: Color(0xFFCBD5E1),
+                        color: AppTheme.border,
                       ),
                     ),
                   ),
@@ -587,7 +587,7 @@ class _BottomSheetCard extends StatelessWidget {
             width: 40,
             height: 4,
             decoration: BoxDecoration(
-              color: const Color(0xFFCBD5E1),
+              color: AppTheme.border,
               borderRadius: BorderRadius.circular(999),
             ),
           ),

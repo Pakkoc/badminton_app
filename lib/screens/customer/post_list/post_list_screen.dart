@@ -1,5 +1,7 @@
 import 'package:badminton_app/app/theme.dart';
 import 'package:badminton_app/core/utils/formatters.dart';
+import 'package:badminton_app/models/enums.dart';
+import 'package:badminton_app/models/post.dart';
 import 'package:badminton_app/screens/customer/post_list/post_list_notifier.dart';
 import 'package:badminton_app/screens/customer/post_list/post_list_state.dart';
 import 'package:badminton_app/widgets/empty_state.dart';
@@ -78,28 +80,14 @@ class _PostListScreenState
       padding: const EdgeInsets.all(16),
       itemBuilder: (context, index) {
         final post = state.posts[index];
-        return Card(
-          margin: const EdgeInsets.only(bottom: 8),
-          child: ListTile(
-            title: Text(
-              post.title,
-              style: const TextStyle(
-                fontWeight: FontWeight.w600,
-              ),
-            ),
-            subtitle: Text(
-              Formatters.date(post.createdAt),
-              style: const TextStyle(
-                fontSize: 12,
-                color: AppTheme.textTertiary,
-              ),
-            ),
-            trailing: post.images.isNotEmpty
-                ? const Icon(
-                    Icons.image_outlined,
-                    color: AppTheme.textTertiary,
-                  )
-                : null,
+        return Padding(
+          padding: EdgeInsets.only(
+            bottom: index < state.posts.length - 1
+                ? 12
+                : 0,
+          ),
+          child: _PostCard(
+            post: post,
             onTap: () {
               context.push(
                 '/customer/shop/${widget.shopId}'
@@ -109,6 +97,134 @@ class _PostListScreenState
           ),
         );
       },
+    );
+  }
+}
+
+/// 게시글 카드 — cornerRadius 20.
+class _PostCard extends StatelessWidget {
+  const _PostCard({
+    required this.post,
+    required this.onTap,
+  });
+
+  final Post post;
+  final VoidCallback onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    return Card(
+      elevation: 0,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(20),
+        side: const BorderSide(color: AppTheme.border),
+      ),
+      child: InkWell(
+        onTap: onTap,
+        borderRadius: BorderRadius.circular(20),
+        child: Padding(
+          padding: const EdgeInsets.all(16),
+          child: Column(
+            crossAxisAlignment:
+                CrossAxisAlignment.start,
+            children: [
+              Row(
+                children: [
+                  _CategoryBadge(
+                    category: post.category,
+                  ),
+                  const SizedBox(width: 8),
+                  Text(
+                    Formatters.date(post.createdAt),
+                    style: Theme.of(context)
+                        .textTheme
+                        .bodySmall
+                        ?.copyWith(
+                          color: AppTheme.textTertiary,
+                        ),
+                  ),
+                  const Spacer(),
+                  if (post.images.isNotEmpty)
+                    const Icon(
+                      Icons.image_outlined,
+                      size: 18,
+                      color: AppTheme.textTertiary,
+                    ),
+                ],
+              ),
+              const SizedBox(height: 8),
+              Text(
+                post.title,
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+                style: Theme.of(context)
+                    .textTheme
+                    .titleSmall
+                    ?.copyWith(
+                      fontWeight: FontWeight.w600,
+                      color: AppTheme.textPrimary,
+                    ),
+              ),
+              if (post.content.isNotEmpty) ...[
+                const SizedBox(height: 4),
+                Text(
+                  post.content,
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
+                  style: Theme.of(context)
+                      .textTheme
+                      .bodySmall
+                      ?.copyWith(
+                        fontSize: 13,
+                        height: 1.5,
+                        color: AppTheme.textSecondary,
+                      ),
+                ),
+              ],
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+/// 카테고리 뱃지 — pill 형태.
+class _CategoryBadge extends StatelessWidget {
+  const _CategoryBadge({required this.category});
+
+  final PostCategory category;
+
+  @override
+  Widget build(BuildContext context) {
+    final (bgColor, textColor) = switch (category) {
+      PostCategory.notice => (
+        AppTheme.primaryContainer,
+        const Color(0xFF065F46),
+      ),
+      PostCategory.event => (
+        const Color(0xFFFEF3C7),
+        const Color(0xFF92400E),
+      ),
+    };
+
+    return Container(
+      padding: const EdgeInsets.symmetric(
+        horizontal: 10,
+        vertical: 4,
+      ),
+      decoration: BoxDecoration(
+        color: bgColor,
+        borderRadius: BorderRadius.circular(999),
+      ),
+      child: Text(
+        category.label,
+        style: TextStyle(
+          color: textColor,
+          fontSize: 11,
+          fontWeight: FontWeight.w500,
+        ),
+      ),
     );
   }
 }

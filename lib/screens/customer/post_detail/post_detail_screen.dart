@@ -118,7 +118,7 @@ class _PostContent extends StatelessWidget {
                 const Icon(
                   Icons.event_outlined,
                   size: 16,
-                  color: Color(0xFF64748B),
+                  color: AppTheme.textSecondary,
                 ),
                 const SizedBox(width: 4),
                 Text(
@@ -127,7 +127,7 @@ class _PostContent extends StatelessWidget {
                   '${Formatters.date(post.eventEndDate!)}',
                   style: const TextStyle(
                     fontSize: 13,
-                    color: Color(0xFF64748B),
+                    color: AppTheme.textSecondary,
                   ),
                 ),
               ],
@@ -141,7 +141,7 @@ class _PostContent extends StatelessWidget {
             style: const TextStyle(
               fontSize: 15,
               height: 1.6,
-              color: Color(0xFF334155),
+              color: AppTheme.textPrimary,
             ),
           ),
           if (post.images.isNotEmpty) ...[
@@ -163,30 +163,30 @@ class _CategoryBadge extends StatelessWidget {
   Widget build(BuildContext context) {
     final (bgColor, textColor) = switch (category) {
       PostCategory.notice => (
-        AppTheme.inProgressBackground,
-        AppTheme.inProgressForeground,
+        AppTheme.primaryContainer,
+        const Color(0xFF065F46),
       ),
       PostCategory.event => (
         const Color(0xFFFEF3C7),
-        const Color(0xFFF59E0B),
+        const Color(0xFF92400E),
       ),
     };
 
     return Container(
       padding: const EdgeInsets.symmetric(
-        horizontal: 8,
+        horizontal: 10,
         vertical: 4,
       ),
       decoration: BoxDecoration(
         color: bgColor,
-        borderRadius: BorderRadius.circular(6),
+        borderRadius: BorderRadius.circular(999),
       ),
       child: Text(
         category.label,
         style: TextStyle(
           color: textColor,
-          fontSize: 12,
-          fontWeight: FontWeight.w600,
+          fontSize: 11,
+          fontWeight: FontWeight.w500,
         ),
       ),
     );

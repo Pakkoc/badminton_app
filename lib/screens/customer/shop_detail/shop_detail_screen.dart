@@ -269,7 +269,7 @@ class _OrderStatusCard extends StatelessWidget {
             padding: const EdgeInsets.all(20),
             decoration: BoxDecoration(
               color: AppTheme.background,
-              borderRadius: BorderRadius.circular(16),
+              borderRadius: BorderRadius.circular(20),
             ),
             child: Row(
               children: [
@@ -365,7 +365,7 @@ class _ContactSection extends StatelessWidget {
           Card(
             elevation: 0,
             shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(16),
+              borderRadius: BorderRadius.circular(20),
               side: const BorderSide(
                 color: AppTheme.border,
               ),
@@ -571,7 +571,7 @@ class _NoticeTab extends StatelessWidget {
           child: Card(
             elevation: 0,
             shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(12),
+              borderRadius: BorderRadius.circular(20),
               side: const BorderSide(
                 color: AppTheme.border,
               ),
@@ -580,7 +580,7 @@ class _NoticeTab extends StatelessWidget {
               onTap: () => context.push(
                 '/customer/shop/$shopId/post/${post.id}',
               ),
-              borderRadius: BorderRadius.circular(12),
+              borderRadius: BorderRadius.circular(20),
               child: Padding(
                 padding: const EdgeInsets.all(16),
                 child: Column(
@@ -615,11 +615,14 @@ class _NoticeTab extends StatelessWidget {
                       post.content,
                       maxLines: 2,
                       overflow: TextOverflow.ellipsis,
-                      style: TextStyle(
-                        fontSize: 13,
-                        height: 1.5,
-                        color: AppTheme.textSecondary,
-                      ),
+                      style: Theme.of(context)
+                          .textTheme
+                          .bodySmall
+                          ?.copyWith(
+                            fontSize: 13,
+                            height: 1.5,
+                            color: AppTheme.textSecondary,
+                          ),
                     ),
                   ],
                 ),
@@ -670,7 +673,7 @@ class _EventTab extends StatelessWidget {
           child: Card(
             elevation: 0,
             shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(12),
+              borderRadius: BorderRadius.circular(20),
               side: const BorderSide(
                 color: AppTheme.border,
               ),
@@ -679,7 +682,7 @@ class _EventTab extends StatelessWidget {
               onTap: () => context.push(
                 '/customer/shop/$shopId/post/${post.id}',
               ),
-              borderRadius: BorderRadius.circular(12),
+              borderRadius: BorderRadius.circular(20),
               child: Padding(
                 padding: const EdgeInsets.all(12),
                 child: Row(
@@ -860,7 +863,7 @@ class _InventoryCard extends StatelessWidget {
     return Card(
       elevation: 0,
       shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(12),
+        borderRadius: BorderRadius.circular(20),
         side: const BorderSide(
           color: AppTheme.border,
         ),
