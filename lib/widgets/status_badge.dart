@@ -41,8 +41,8 @@ class StatusBadge extends StatelessWidget {
 
   (Color, Color) get _statusColors => switch (status) {
         OrderStatus.received => (
-          const Color(0xFFFEF3C7),
-          const Color(0xFFF59E0B),
+          AppTheme.receivedBackground,
+          AppTheme.receivedForeground,
         ),
         OrderStatus.inProgress => (
           AppTheme.inProgressBackground,

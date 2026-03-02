@@ -205,9 +205,9 @@ class _StatusCountCards extends StatelessWidget {
           child: _CountCard(
             label: '접수됨',
             count: receivedCount,
-            numberColor: const Color(0xFFF59E0B),
-            labelColor: const Color(0xFF92400E),
-            bgColor: const Color(0xFFFEF3C7),
+            numberColor: AppTheme.receivedForeground,
+            labelColor: AppTheme.receivedText,
+            bgColor: AppTheme.receivedBackground,
           ),
         ),
         const SizedBox(width: 8),
@@ -216,7 +216,7 @@ class _StatusCountCards extends StatelessWidget {
             label: '작업중',
             count: inProgressCount,
             numberColor: AppTheme.inProgressForeground,
-            labelColor: const Color(0xFF1E40AF),
+            labelColor: AppTheme.inProgressText,
             bgColor: AppTheme.inProgressBackground,
           ),
         ),
@@ -225,7 +225,7 @@ class _StatusCountCards extends StatelessWidget {
           child: _CountCard(
             label: '완료',
             count: completedCount,
-            numberColor: AppTheme.primary,
+            numberColor: AppTheme.completedForeground,
             labelColor: AppTheme.completedText,
             bgColor: AppTheme.completedBackground,
           ),
@@ -263,7 +263,7 @@ class _CountCard extends StatelessWidget {
           Text(
             '$count',
             style: TextStyle(
-              fontSize: 32,
+              fontSize: 36,
               fontWeight: FontWeight.bold,
               color: numberColor,
             ),
@@ -329,7 +329,7 @@ class _EmptyOrdersView extends StatelessWidget {
           Icon(
             Icons.assignment,
             size: 64,
-            color: Color(0xFFCBD5E1),
+            color: AppTheme.textTertiary,
           ),
           SizedBox(height: 12),
           Text(
@@ -455,8 +455,8 @@ class _StatusPill extends StatelessWidget {
 
   (Color, Color) get _colors => switch (status) {
         OrderStatus.received => (
-          const Color(0xFFFEF3C7),
-          const Color(0xFFF59E0B),
+          AppTheme.receivedBackground,
+          AppTheme.receivedForeground,
         ),
         OrderStatus.inProgress => (
           AppTheme.inProgressBackground,
@@ -464,7 +464,7 @@ class _StatusPill extends StatelessWidget {
         ),
         OrderStatus.completed => (
           AppTheme.completedBackground,
-          AppTheme.primary,
+          AppTheme.completedForeground,
         ),
       };
 }
@@ -484,7 +484,7 @@ class _ActionButton extends StatelessWidget {
       OrderStatus.received => ('작업 시작', AppTheme.inProgressForeground),
       OrderStatus.inProgress => (
         '작업 완료',
-        AppTheme.primary
+        AppTheme.completedForeground,
       ),
       _ => ('', Colors.transparent),
     };
