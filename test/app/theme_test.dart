@@ -5,18 +5,18 @@ import 'package:flutter_test/flutter_test.dart';
 void main() {
   group('AppTheme', () {
     group('색상 상수', () {
-      test('courtGreen이 #16A34A이다', () {
+      test('courtGreen이 #22C55E이다', () {
         // Arrange & Act & Assert
         expect(
           AppTheme.courtGreen,
-          const Color(0xFF16A34A),
+          const Color(0xFF22C55E),
         );
       });
 
-      test('textPrimary가 #0F172A이다', () {
+      test('textPrimary가 #1E293B이다', () {
         expect(
           AppTheme.textPrimary,
-          const Color(0xFF0F172A),
+          const Color(0xFF1E293B),
         );
       });
 
