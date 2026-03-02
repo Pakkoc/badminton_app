@@ -276,5 +276,117 @@ void main() {
         '게시글 등록에 실패했습니다',
       );
     });
+
+    test('초기 상태는 작성 모드이다', () {
+      // Arrange & Act
+      final state =
+          container.read(postCreateNotifierProvider);
+
+      // Assert
+      expect(state.editingPostId, isNull);
+      expect(state.isLoadingPost, false);
+    });
+
+    test('loadPost 호출 시 기존 게시글 데이터를 로드한다', () async {
+      // Arrange
+      when(
+        () => mockPostRepository.getById(testPostNotice.id),
+      ).thenAnswer((_) async => testPostNotice);
+
+      final notifier = container.read(
+        postCreateNotifierProvider.notifier,
+      );
+
+      // Act
+      await notifier.loadPost(testPostNotice.id);
+
+      // Assert
+      final state =
+          container.read(postCreateNotifierProvider);
+      expect(state.editingPostId, testPostNotice.id);
+      expect(state.title, testPostNotice.title);
+      expect(state.content, testPostNotice.content);
+      expect(state.category, testPostNotice.category);
+      expect(state.isLoadingPost, false);
+    });
+
+    test(
+      'loadPost에서 게시글을 찾지 못하면 에러 메시지를 설정한다',
+      () async {
+        // Arrange
+        when(
+          () => mockPostRepository.getById('nonexistent'),
+        ).thenAnswer((_) async => null);
+
+        final notifier = container.read(
+          postCreateNotifierProvider.notifier,
+        );
+
+        // Act
+        await notifier.loadPost('nonexistent');
+
+        // Assert
+        final state =
+            container.read(postCreateNotifierProvider);
+        expect(state.editingPostId, isNull);
+        expect(state.errorMessage, '게시글을 찾을 수 없습니다');
+      },
+    );
+
+    test('submit은 수정 모드일 때 update를 호출한다', () async {
+      // Arrange
+      when(
+        () => mockPostRepository.getById(testPostNotice.id),
+      ).thenAnswer((_) async => testPostNotice);
+      when(
+        () => mockPostRepository.update(
+          testPostNotice.id,
+          any(),
+        ),
+      ).thenAnswer((_) async => testPostNotice);
+
+      final notifier = container.read(
+        postCreateNotifierProvider.notifier,
+      );
+      await notifier.loadPost(testPostNotice.id);
+
+      // Act
+      final result = await notifier.submit(testPostNotice.shopId);
+
+      // Assert
+      expect(result, true);
+      verify(
+        () => mockPostRepository.update(
+          testPostNotice.id,
+          any(),
+        ),
+      ).called(1);
+      verifyNever(() => mockPostRepository.create(any()));
+    });
+
+    test('submit은 작성 모드일 때 create를 호출한다', () async {
+      // Arrange
+      when(
+        () => mockPostRepository.create(any()),
+      ).thenAnswer((_) async => testPostNotice);
+
+      final notifier = container.read(
+        postCreateNotifierProvider.notifier,
+      );
+      notifier.updateTitle('테스트 제목');
+      notifier.updateContent('테스트 내용입니다. 충분한 길이.');
+
+      // Act
+      final result =
+          await notifier.submit(testPostNotice.shopId);
+
+      // Assert
+      expect(result, true);
+      verify(() => mockPostRepository.create(any()))
+          .called(1);
+      verifyNever(
+        () => mockPostRepository.update(any(), any()),
+      );
+    });
   });
 }

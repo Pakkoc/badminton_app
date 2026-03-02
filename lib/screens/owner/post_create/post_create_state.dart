@@ -14,5 +14,7 @@ class PostCreateState with _$PostCreateState {
     DateTime? eventEndDate,
     @Default(false) bool isSubmitting,
     String? errorMessage,
+    String? editingPostId,
+    @Default(false) bool isLoadingPost,
   }) = _PostCreateState;
 }

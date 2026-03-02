@@ -66,6 +66,37 @@ class PostCreateNotifier extends Notifier<PostCreateState> {
     );
   }
 
+  /// 기존 게시글을 수정 모드로 로드한다.
+  Future<void> loadPost(String postId) async {
+    state = state.copyWith(isLoadingPost: true, errorMessage: null);
+    try {
+      final repo = ref.read(postRepositoryProvider);
+      final post = await repo.getById(postId);
+      if (post == null) {
+        state = state.copyWith(
+          isLoadingPost: false,
+          errorMessage: '게시글을 찾을 수 없습니다',
+        );
+        return;
+      }
+      state = state.copyWith(
+        editingPostId: post.id,
+        category: post.category,
+        title: post.title,
+        content: post.content,
+        images: post.images,
+        eventStartDate: post.eventStartDate,
+        eventEndDate: post.eventEndDate,
+        isLoadingPost: false,
+      );
+    } on AppException catch (e) {
+      state = state.copyWith(
+        isLoadingPost: false,
+        errorMessage: e.userMessage,
+      );
+    }
+  }
+
   Future<bool> submit(String shopId) async {
     final titleError = Validators.postTitle(state.title);
     if (titleError != null) {
@@ -107,7 +138,11 @@ class PostCreateNotifier extends Notifier<PostCreateState> {
         eventEndDate: state.eventEndDate,
         createdAt: DateTime.now(),
       );
-      await postRepository.create(post);
+      if (state.editingPostId != null) {
+        await postRepository.update(state.editingPostId!, post);
+      } else {
+        await postRepository.create(post);
+      }
       state = state.copyWith(isSubmitting: false);
       return true;
     } on AppException catch (e) {
@@ -119,7 +154,9 @@ class PostCreateNotifier extends Notifier<PostCreateState> {
     } catch (e) {
       state = state.copyWith(
         isSubmitting: false,
-        errorMessage: '게시글 등록에 실패했습니다',
+        errorMessage: state.editingPostId != null
+            ? '게시글 수정에 실패했습니다'
+            : '게시글 등록에 실패했습니다',
       );
       return false;
     }
