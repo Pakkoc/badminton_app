@@ -24,6 +24,7 @@ import 'package:badminton_app/screens/owner/order_create/order_create_screen.dar
 import 'package:badminton_app/screens/owner/order_manage/order_manage_screen.dart';
 import 'package:badminton_app/screens/owner/owner_shell_screen.dart';
 import 'package:badminton_app/screens/owner/post_create/post_create_screen.dart';
+import 'package:badminton_app/screens/owner/post_manage/post_manage_screen.dart';
 import 'package:badminton_app/screens/owner/shop_qr/shop_qr_screen.dart';
 import 'package:badminton_app/screens/owner/shop_settings/shop_settings_screen.dart';
 import 'package:flutter/material.dart';
@@ -217,14 +218,41 @@ final routerProvider = Provider<GoRouter>((ref) {
                       const InventoryScreen(),
                 ),
                 GoRoute(
-                  path: 'post-create',
+                  path: 'post-manage',
                   builder: (context, state) {
                     final shopId = state.uri
                             .queryParameters['shopId'] ??
                         '';
-                    return PostCreateScreen(
+                    return PostManageScreen(
                         shopId: shopId);
                   },
+                  routes: [
+                    GoRoute(
+                      path: 'create',
+                      builder: (context, state) {
+                        final shopId = state.uri
+                                .queryParameters[
+                            'shopId'] ??
+                            '';
+                        return PostCreateScreen(
+                            shopId: shopId);
+                      },
+                    ),
+                    GoRoute(
+                      path: 'edit/:postId',
+                      builder: (context, state) {
+                        final shopId = state.uri
+                                .queryParameters[
+                            'shopId'] ??
+                            '';
+                        return PostCreateScreen(
+                          shopId: shopId,
+                          postId: state
+                              .pathParameters['postId'],
+                        );
+                      },
+                    ),
+                  ],
                 ),
                 GoRoute(
                   path: 'shop-qr',

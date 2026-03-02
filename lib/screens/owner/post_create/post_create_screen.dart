@@ -6,22 +6,65 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
-class PostCreateScreen extends ConsumerWidget {
+class PostCreateScreen extends ConsumerStatefulWidget {
   const PostCreateScreen({
     super.key,
     required this.shopId,
+    this.postId,
   });
 
   final String shopId;
+  final String? postId;
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<PostCreateScreen> createState() =>
+      _PostCreateScreenState();
+}
+
+class _PostCreateScreenState
+    extends ConsumerState<PostCreateScreen> {
+  final _titleController = TextEditingController();
+  final _contentController = TextEditingController();
+
+  bool get _isEditMode => widget.postId != null;
+
+  @override
+  void initState() {
+    super.initState();
+    if (_isEditMode) {
+      Future.microtask(() async {
+        final notifier =
+            ref.read(postCreateNotifierProvider.notifier);
+        await notifier.loadPost(widget.postId!);
+        final state = ref.read(postCreateNotifierProvider);
+        _titleController.text = state.title;
+        _contentController.text = state.content;
+      });
+    }
+  }
+
+  @override
+  void dispose() {
+    _titleController.dispose();
+    _contentController.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
     final state = ref.watch(postCreateNotifierProvider);
     final notifier = ref.read(postCreateNotifierProvider.notifier);
 
+    if (state.isLoadingPost) {
+      return Scaffold(
+        appBar: AppBar(title: const Text('게시글 수정')),
+        body: const Center(child: CircularProgressIndicator()),
+      );
+    }
+
     return Scaffold(
       appBar: AppBar(
-        title: const Text('게시글 작성'),
+        title: Text(_isEditMode ? '게시글 수정' : '게시글 작성'),
       ),
       body: Column(
         children: [
@@ -48,6 +91,7 @@ class PostCreateScreen extends ConsumerWidget {
                   SizedBox(
                     height: 48,
                     child: TextField(
+                      controller: _titleController,
                       decoration: InputDecoration(
                         hintText: '제목을 입력하세요',
                         hintStyle: const TextStyle(
@@ -60,7 +104,8 @@ class PostCreateScreen extends ConsumerWidget {
                           borderRadius: BorderRadius.circular(8),
                           borderSide: BorderSide.none,
                         ),
-                        contentPadding: const EdgeInsets.symmetric(
+                        contentPadding:
+                            const EdgeInsets.symmetric(
                           horizontal: 14,
                         ),
                       ),
@@ -80,6 +125,7 @@ class PostCreateScreen extends ConsumerWidget {
                   SizedBox(
                     height: 160,
                     child: TextField(
+                      controller: _contentController,
                       decoration: InputDecoration(
                         hintText: '내용을 입력하세요',
                         hintStyle: const TextStyle(
@@ -92,15 +138,18 @@ class PostCreateScreen extends ConsumerWidget {
                           borderRadius: BorderRadius.circular(8),
                           borderSide: BorderSide.none,
                         ),
-                        contentPadding: const EdgeInsets.all(14),
+                        contentPadding:
+                            const EdgeInsets.all(14),
                       ),
                       maxLines: null,
                       expands: true,
-                      textAlignVertical: TextAlignVertical.top,
+                      textAlignVertical:
+                          TextAlignVertical.top,
                       onChanged: notifier.updateContent,
                     ),
                   ),
-                  if (state.category == PostCategory.event) ...[
+                  if (state.category ==
+                      PostCategory.event) ...[
                     const SizedBox(height: 20),
                     _DateRangeSection(
                       startDate: state.eventStartDate,
@@ -109,29 +158,34 @@ class PostCreateScreen extends ConsumerWidget {
                         final date = await showDatePicker(
                           context: context,
                           initialDate:
-                              state.eventStartDate ?? DateTime.now(),
+                              state.eventStartDate ??
+                                  DateTime.now(),
                           firstDate: DateTime.now(),
                           lastDate: DateTime.now().add(
                             const Duration(days: 365),
                           ),
                         );
                         if (date != null) {
-                          notifier.setEventDates(startDate: date);
+                          notifier.setEventDates(
+                              startDate: date);
                         }
                       },
                       onSelectEnd: () async {
                         final date = await showDatePicker(
                           context: context,
                           initialDate:
-                              state.eventEndDate ?? DateTime.now(),
-                          firstDate: state.eventStartDate ??
-                              DateTime.now(),
+                              state.eventEndDate ??
+                                  DateTime.now(),
+                          firstDate:
+                              state.eventStartDate ??
+                                  DateTime.now(),
                           lastDate: DateTime.now().add(
                             const Duration(days: 365),
                           ),
                         );
                         if (date != null) {
-                          notifier.setEventDates(endDate: date);
+                          notifier.setEventDates(
+                              endDate: date);
                         }
                       },
                     ),
@@ -161,7 +215,8 @@ class PostCreateScreen extends ConsumerWidget {
             decoration: const BoxDecoration(
               color: Colors.white,
               border: Border(
-                top: BorderSide(color: Color(0xFFE2E8F0)),
+                top: BorderSide(
+                    color: Color(0xFFE2E8F0)),
               ),
             ),
             child: SizedBox(
@@ -172,34 +227,43 @@ class PostCreateScreen extends ConsumerWidget {
                     ? null
                     : () async {
                         final success =
-                            await notifier.submit(shopId);
-                        if (success && context.mounted) {
+                            await notifier
+                                .submit(widget.shopId);
+                        if (success &&
+                            context.mounted) {
                           AppToast.success(
                             context,
-                            '게시글이 등록되었습니다',
+                            _isEditMode
+                                ? '게시글이 수정되었습니다'
+                                : '게시글이 등록되었습니다',
                           );
-                          context.pop();
+                          context.pop(true);
                         }
                       },
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: const Color(0xFFF97316),
+                  backgroundColor:
+                      const Color(0xFFF97316),
                   foregroundColor: Colors.white,
                   shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(12),
+                    borderRadius:
+                        BorderRadius.circular(12),
                   ),
                 ),
                 child: state.isSubmitting
                     ? const SizedBox(
                         width: 20,
                         height: 20,
-                        child: CircularProgressIndicator(
+                        child:
+                            CircularProgressIndicator(
                           strokeWidth: 2,
                           color: Colors.white,
                         ),
                       )
-                    : const Text(
-                        '등록하기',
-                        style: TextStyle(
+                    : Text(
+                        _isEditMode
+                            ? '수정하기'
+                            : '등록하기',
+                        style: const TextStyle(
                           fontSize: 16,
                           fontWeight: FontWeight.bold,
                         ),

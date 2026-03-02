@@ -138,11 +138,11 @@ class _ShopSettingsScreenState
                           ),
                         ),
                         _MenuItemTile(
-                          icon: Icons.edit_note,
-                          label: '게시글 작성',
+                          icon: Icons.article,
+                          label: '게시글 관리',
                           showDivider: true,
                           onTap: () => context.push(
-                            '/owner/settings/post-create'
+                            '/owner/settings/post-manage'
                             '?shopId=${state.shop!.id}',
                           ),
                         ),
