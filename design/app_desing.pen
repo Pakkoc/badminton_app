@@ -11057,7 +11057,6 @@
                   "id": "qYK3B",
                   "name": "Stat 1",
                   "width": "fill_container",
-                  "height": 72,
                   "fill": "$--status-received-bg",
                   "cornerRadius": 20,
                   "layout": "vertical",
@@ -11069,21 +11068,21 @@
                       "type": "text",
                       "id": "wl92Z",
                       "name": "e3s1n",
-                      "fill": "#2563EB",
+                      "fill": "$--status-received",
                       "content": "0",
                       "fontFamily": "SUIT",
-                      "fontSize": 28,
+                      "fontSize": 36,
                       "fontWeight": "Bold"
                     },
                     {
                       "type": "text",
                       "id": "9z2UL",
                       "name": "e3s1l",
-                      "fill": "#2563EB",
+                      "fill": "$--status-received-text",
                       "content": "접수됨",
                       "fontFamily": "SUIT",
                       "fontSize": 12,
-                      "fontWeight": "normal"
+                      "fontWeight": "Medium"
                     }
                   ]
                 },
@@ -11092,7 +11091,6 @@
                   "id": "NUwvZ",
                   "name": "Stat 2",
                   "width": "fill_container",
-                  "height": 72,
                   "fill": "$--status-progress-bg",
                   "cornerRadius": 20,
                   "layout": "vertical",
@@ -11104,21 +11102,21 @@
                       "type": "text",
                       "id": "ZCZES",
                       "name": "e3s2n",
-                      "fill": "#D97706",
+                      "fill": "$--status-progress",
                       "content": "0",
                       "fontFamily": "SUIT",
-                      "fontSize": 28,
+                      "fontSize": 36,
                       "fontWeight": "Bold"
                     },
                     {
                       "type": "text",
                       "id": "Khujf",
                       "name": "e3s2l",
-                      "fill": "#D97706",
+                      "fill": "$--status-progress-text",
                       "content": "작업중",
                       "fontFamily": "SUIT",
                       "fontSize": 12,
-                      "fontWeight": "normal"
+                      "fontWeight": "Medium"
                     }
                   ]
                 },
@@ -11127,7 +11125,6 @@
                   "id": "pbGqb",
                   "name": "Stat 3",
                   "width": "fill_container",
-                  "height": 72,
                   "fill": "$--status-completed-bg",
                   "cornerRadius": 20,
                   "layout": "vertical",
@@ -11139,21 +11136,21 @@
                       "type": "text",
                       "id": "k30FI",
                       "name": "e3s3n",
-                      "fill": "#1D4ED8",
+                      "fill": "$--status-completed",
                       "content": "0",
                       "fontFamily": "SUIT",
-                      "fontSize": 28,
+                      "fontSize": 36,
                       "fontWeight": "Bold"
                     },
                     {
                       "type": "text",
                       "id": "o4IjP",
                       "name": "e3s3l",
-                      "fill": "#1D4ED8",
+                      "fill": "$--status-completed-text",
                       "content": "완료",
                       "fontFamily": "SUIT",
                       "fontSize": 12,
-                      "fontWeight": "normal"
+                      "fontWeight": "Medium"
                     }
                   ]
                 }

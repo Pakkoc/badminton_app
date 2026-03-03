@@ -268,8 +268,15 @@ class _OrderStatusCard extends StatelessWidget {
             width: double.infinity,
             padding: const EdgeInsets.all(20),
             decoration: BoxDecoration(
-              color: AppTheme.background,
+              color: AppTheme.surface,
               borderRadius: BorderRadius.circular(20),
+              boxShadow: const [
+                BoxShadow(
+                  color: Color(0x0A000000),
+                  blurRadius: 12,
+                  offset: Offset(0, 2),
+                ),
+              ],
             ),
             child: Row(
               children: [
