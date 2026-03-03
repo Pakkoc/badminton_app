@@ -42,6 +42,7 @@ class GutAlimApp extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final router = ref.watch(routerProvider);
+    FcmService.setRouter(router);
     return MaterialApp.router(
       title: '거트알림',
       theme: AppTheme.lightTheme,
