@@ -165,6 +165,14 @@ class _StatusFilterTabs extends StatelessWidget {
         OrderStatus.completed => '완료',
       };
 
+  Color _dotColor(OrderStatus status) => switch (status) {
+        OrderStatus.received => AppTheme.receivedForeground,
+        OrderStatus.inProgress =>
+          AppTheme.inProgressForeground,
+        OrderStatus.completed =>
+          AppTheme.completedForeground,
+      };
+
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
@@ -189,6 +197,7 @@ class _StatusFilterTabs extends StatelessWidget {
                     '${_tabLabel(status)} '
                     '${countByStatus[status] ?? 0}',
                 isSelected: selectedFilter == status,
+                dotColor: _dotColor(status),
                 onTap: () => onFilterChanged(status),
               ),
             ),
@@ -204,11 +213,13 @@ class _FilterChip extends StatelessWidget {
     required this.label,
     required this.isSelected,
     required this.onTap,
+    this.dotColor,
   });
 
   final String label;
   final bool isSelected;
   final VoidCallback onTap;
+  final Color? dotColor;
 
   @override
   Widget build(BuildContext context) {
@@ -231,15 +242,31 @@ class _FilterChip extends StatelessWidget {
                 : AppTheme.border,
           ),
         ),
-        child: Text(
-          label,
-          style: TextStyle(
-            fontSize: 13,
-            fontWeight: FontWeight.w500,
-            color: isSelected
-                ? Colors.white
-                : AppTheme.textSecondary,
-          ),
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            if (dotColor != null && !isSelected) ...[
+              Container(
+                width: 6,
+                height: 6,
+                decoration: BoxDecoration(
+                  color: dotColor,
+                  shape: BoxShape.circle,
+                ),
+              ),
+              const SizedBox(width: 6),
+            ],
+            Text(
+              label,
+              style: TextStyle(
+                fontSize: 13,
+                fontWeight: FontWeight.w500,
+                color: isSelected
+                    ? Colors.white
+                    : AppTheme.textSecondary,
+              ),
+            ),
+          ],
         ),
       ),
     );
