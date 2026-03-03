@@ -28,6 +28,116 @@ const STATUS_TRANSITIONS: Record<string, StatusConfig> = {
   },
 };
 
+// --- FCM v1 OAuth2 헬퍼 ---
+
+function base64url(data: string | ArrayBuffer): string {
+  const str =
+    typeof data === "string"
+      ? btoa(data)
+      : btoa(String.fromCharCode(...new Uint8Array(data)));
+  return str.replace(/\+/g, "-").replace(/\//g, "_").replace(/=+$/g, "");
+}
+
+async function getAccessToken(
+  clientEmail: string,
+  privateKeyPem: string,
+): Promise<string> {
+  // PEM → DER
+  const pemBody = privateKeyPem
+    .replace(/-----BEGIN PRIVATE KEY-----/, "")
+    .replace(/-----END PRIVATE KEY-----/, "")
+    .replace(/\s/g, "");
+  const binaryDer = Uint8Array.from(atob(pemBody), (c) => c.charCodeAt(0));
+
+  const key = await crypto.subtle.importKey(
+    "pkcs8",
+    binaryDer,
+    { name: "RSASSA-PKCS1-v1_5", hash: "SHA-256" },
+    false,
+    ["sign"],
+  );
+
+  const now = Math.floor(Date.now() / 1000);
+  const header = base64url(JSON.stringify({ alg: "RS256", typ: "JWT" }));
+  const payload = base64url(
+    JSON.stringify({
+      iss: clientEmail,
+      scope: "https://www.googleapis.com/auth/firebase.messaging",
+      aud: "https://oauth2.googleapis.com/token",
+      iat: now,
+      exp: now + 3600,
+    }),
+  );
+
+  const signingInput = new TextEncoder().encode(`${header}.${payload}`);
+  const signature = await crypto.subtle.sign(
+    "RSASSA-PKCS1-v1_5",
+    key,
+    signingInput,
+  );
+
+  const jwt = `${header}.${payload}.${base64url(signature)}`;
+
+  const tokenRes = await fetch("https://oauth2.googleapis.com/token", {
+    method: "POST",
+    headers: { "Content-Type": "application/x-www-form-urlencoded" },
+    body: `grant_type=urn%3Aietf%3Aparams%3Aoauth%3Agrant-type%3Ajwt-bearer&assertion=${jwt}`,
+  });
+
+  if (!tokenRes.ok) {
+    const err = await tokenRes.text();
+    throw new Error(`OAuth2 token exchange failed: ${err}`);
+  }
+
+  const { access_token } = await tokenRes.json();
+  return access_token;
+}
+
+async function sendFcmV1(
+  projectId: string,
+  accessToken: string,
+  deviceToken: string,
+  title: string,
+  body: string,
+  data: Record<string, string>,
+): Promise<boolean> {
+  const res = await fetch(
+    `https://fcm.googleapis.com/v1/projects/${projectId}/messages:send`,
+    {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        message: {
+          token: deviceToken,
+          notification: { title, body },
+          data,
+          android: {
+            priority: "high",
+            notification: {
+              channel_id: "order_status",
+              sound: "default",
+            },
+          },
+        },
+      }),
+    },
+  );
+
+  if (res.ok) {
+    console.log("FCM v1 push sent successfully");
+    return true;
+  } else {
+    const err = await res.text();
+    console.error("FCM v1 push failed:", err);
+    return false;
+  }
+}
+
+// --- 메인 핸들러 ---
+
 Deno.serve(async (req: Request) => {
   try {
     const payload: WebhookPayload = await req.json();
@@ -47,18 +157,20 @@ Deno.serve(async (req: Request) => {
     // 지원하지 않는 상태 변경이면 무시
     if (!config) {
       return new Response(
-        JSON.stringify({ message: `unsupported transition: ${transitionKey}` }),
+        JSON.stringify({
+          message: `unsupported transition: ${transitionKey}`,
+        }),
         { headers: { "Content-Type": "application/json" } },
       );
     }
 
-    // Supabase admin client (service_role key)
+    // Supabase admin client
     const supabase = createClient(
       Deno.env.get("SUPABASE_URL")!,
       Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!,
     );
 
-    // 1. member → user_id 조회
+    // 1. member → user_id
     const { data: member, error: memberError } = await supabase
       .from("members")
       .select("user_id")
@@ -73,7 +185,6 @@ Deno.serve(async (req: Request) => {
       );
     }
 
-    // member에 user_id가 연결되어 있지 않으면 푸시 불가
     if (!member.user_id) {
       return new Response(
         JSON.stringify({ message: "member has no linked user" }),
@@ -81,7 +192,7 @@ Deno.serve(async (req: Request) => {
       );
     }
 
-    // 2. user → fcm_token 조회
+    // 2. user → fcm_token
     const { data: user, error: userError } = await supabase
       .from("users")
       .select("fcm_token")
@@ -96,7 +207,7 @@ Deno.serve(async (req: Request) => {
       );
     }
 
-    // 3. shop 이름 조회
+    // 3. shop 이름
     const { data: shop, error: shopError } = await supabase
       .from("shops")
       .select("name")
@@ -114,45 +225,38 @@ Deno.serve(async (req: Request) => {
     const title = config.title;
     const body = config.bodyTemplate.replace("{shopName}", shop.name);
 
-    // 4. FCM 푸시 알림 전송
+    // 4. FCM v1 푸시 알림
     let fcmSuccess = false;
     if (user.fcm_token) {
-      const fcmServerKey = Deno.env.get("FCM_SERVER_KEY");
-      if (fcmServerKey) {
-        const fcmResponse = await fetch(
-          "https://fcm.googleapis.com/fcm/send",
-          {
-            method: "POST",
-            headers: {
-              "Authorization": `key=${fcmServerKey}`,
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-              to: user.fcm_token,
-              notification: { title, body },
-              data: {
-                order_id: record.id as string,
-                type: config.type,
-              },
-            }),
-          },
-        );
+      const projectId = Deno.env.get("FIREBASE_PROJECT_ID");
+      const clientEmail = Deno.env.get("FIREBASE_CLIENT_EMAIL");
+      const privateKey = Deno.env.get("FIREBASE_PRIVATE_KEY");
 
-        if (fcmResponse.ok) {
-          fcmSuccess = true;
-          console.log("FCM push sent successfully");
-        } else {
-          const fcmError = await fcmResponse.text();
-          console.error("FCM push failed:", fcmError);
+      if (projectId && clientEmail && privateKey) {
+        try {
+          const accessToken = await getAccessToken(clientEmail, privateKey);
+          fcmSuccess = await sendFcmV1(
+            projectId,
+            accessToken,
+            user.fcm_token,
+            title,
+            body,
+            {
+              order_id: record.id as string,
+              type: config.type,
+            },
+          );
+        } catch (e) {
+          console.error("FCM v1 error:", e);
         }
       } else {
-        console.warn("FCM_SERVER_KEY not configured");
+        console.warn("Firebase credentials not configured");
       }
     } else {
       console.warn("User has no fcm_token");
     }
 
-    // 5. notifications 테이블에 알림 기록 INSERT
+    // 5. notifications 테이블에 알림 기록
     const { error: notifError } = await supabase
       .from("notifications")
       .insert({
