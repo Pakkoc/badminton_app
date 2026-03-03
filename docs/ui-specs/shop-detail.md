@@ -159,7 +159,7 @@
 |----------|------|------|--------|
 | 섹션 타이틀 | Text | "작업 현황" | `titleMedium` (16sp, SemiBold), 색상 `#1A1A2E` |
 | 카드 컨테이너 | Container | 작업 현황 카드 | 배경 `#FFFFFF` (`$--surface`), 모서리 20px, 패딩 20px, shadow (blur 12, y:2, `#0000000A`) |
-| 현황 행 | Row | 접수 건수 + 구분점 + 작업중 건수 | 가로 중앙 정렬, 간격 16px |
+| 현황 행 | Row | 접수 건수 + 구분점 + 작업중 건수 | 균등 분할 (Expanded 50:50), 구분선 사이 |
 | 접수 건수 | Column | 건수 + 라벨 | 건수: `headlineLarge` (24sp, Bold) `#F59E0B`. 라벨: `bodySmall` (12sp) `#9CA3AF` "접수" |
 | 구분선 | Container | 세로 구분선 | 너비 1px, 높이 40px, 색상 `#E8E0D8` |
 | 작업중 건수 | Column | 건수 + 라벨 | 건수: `headlineLarge` (24sp, Bold) `#2563EB`. 라벨: `bodySmall` (12sp) `#9CA3AF` "작업중" |
