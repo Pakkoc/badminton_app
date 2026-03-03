@@ -71,18 +71,18 @@
 
 | 컴포넌트 | 타입 | 설명 | 상태 |
 |----------|------|------|------|
-| 전체 탭 | FilterChip | "전체 (N)" | 기본 선택 |
-| 접수됨 탭 | FilterChip | "접수됨 (N)" | 선택 시 접수됨만 필터 |
-| 작업중 탭 | FilterChip | "작업중 (N)" | 선택 시 작업중만 필터 |
-| 완료 탭 | FilterChip | "완료 (N)" | 선택 시 완료만 필터 |
+| 전체 탭 | FilterChip | "전체 N" | 기본 선택, dot 없음 |
+| 접수 탭 | FilterChip | "접수 N" | 접수 상태 dot + 텍스트 |
+| 작업중 탭 | FilterChip | "작업중 N" | 작업중 상태 dot + 텍스트 |
+| 완료 탭 | FilterChip | "완료 N" | 완료 상태 dot + 텍스트 |
 
 **필터 탭 스타일:**
-- 선택됨: 배경 `#2563EB`, 텍스트 `#FFFFFF`, 모서리 `radius_full` (999px)
-- 미선택: 배경 `#EFF6FF`, 텍스트 `#4A4A5A`, 모서리 `radius_full` (999px)
-- 높이: 36px
+- 선택됨: 배경 `#2563EB`, 텍스트 `#FFFFFF`, 모서리 `radius_full` (999px), dot 숨김
+- 미선택: 배경 `#FFFFFF`, 텍스트 `#6B7280` (`$--text-secondary`), 테두리 `$--border` 1px, 모서리 `radius_full` (999px)
+- 상태 dot: 6x6 원형, 접수 `$--status-received`, 작업중 `$--status-progress`, 완료 `$--status-completed`, dot과 텍스트 간격 6px
 - 탭 간 간격: 8px
 - 수평 패딩: 16px, 수직 패딩: 8px
-- 각 탭에 해당 상태의 건수를 괄호 안에 표시
+- 각 탭에 해당 상태의 건수를 텍스트 뒤에 표시
 
 ### 3.3 작업 카드 (리스트 아이템)
 

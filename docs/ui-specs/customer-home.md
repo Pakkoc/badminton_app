@@ -110,10 +110,12 @@
 
 | 컴포넌트 | 타입 | 설명 | 스타일 |
 |----------|------|------|--------|
-| 요약 카드 컨테이너 | Card | 진행 중 작업 건수 요약 | 배경 `#FFFFFF` (`$--surface`), 모서리 20px, 패딩 16px |
-| 건수 영역 | Row | 접수/작업중 건수를 가로 배치 | 간격 16px |
-| 접수 건수 | Text | "접수 N건" | `bodyMedium` (14sp, SemiBold), 색상 `#1A1A2E` (`$--text-primary`) |
-| 작업중 건수 | Text | "작업중 N건" | `bodyMedium` (14sp, SemiBold), 색상 `#1A1A2E` (`$--text-primary`) |
+| 요약 카드 컨테이너 | Container | 진행 중 작업 건수 요약 | 배경 `#FFFFFF` (`$--surface`), 모서리 20px, 패딩 16px, shadow (blur 12, y:2, `#0000000A`) |
+| 건수 영역 | Row | 접수/작업중 건수를 균등 2칸 center 배치 | 간격 16px, 각 칸 `Expanded` + center 정렬 |
+| 접수 dot | Container | 접수 상태 색상 원 | 8x8 원형, 색상 `$--status-received` (`#F59E0B`) |
+| 접수 건수 | Text | "접수 N건" | 14sp, SemiBold, 색상 `#1A1A2E` (`$--text-primary`), dot과 간격 8px |
+| 작업중 dot | Container | 작업중 상태 색상 원 | 8x8 원형, 색상 `$--status-progress` (`#2563EB`) |
+| 작업중 건수 | Text | "작업중 N건" | 14sp, SemiBold, 색상 `#1A1A2E` (`$--text-primary`), dot과 간격 8px |
 
 **표시 조건:**
 - 접수됨 + 작업중 합계가 1건 이상일 때만 표시
