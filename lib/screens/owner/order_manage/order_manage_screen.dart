@@ -35,7 +35,7 @@ class _OrderManageScreenState
     });
   }
 
-  void _loadOrders() {
+  Future<void> _loadOrders() async {
     final shopId = widget.shopId;
     if (shopId != null && shopId.isNotEmpty) {
       ref
@@ -43,29 +43,17 @@ class _OrderManageScreenState
           .loadOrders(shopId);
       return;
     }
-    final shopAsync = ref.read(currentOwnerShopProvider);
-    shopAsync.whenData((shop) {
-      if (shop != null) {
-        ref
-            .read(orderManageNotifierProvider.notifier)
-            .loadOrders(shop.id);
-      }
-    });
+    final shop =
+        await ref.read(currentOwnerShopProvider.future);
+    if (shop != null && mounted) {
+      ref
+          .read(orderManageNotifierProvider.notifier)
+          .loadOrders(shop.id);
+    }
   }
 
   @override
   Widget build(BuildContext context) {
-    if (widget.shopId == null || widget.shopId!.isEmpty) {
-      ref.listen(currentOwnerShopProvider, (prev, next) {
-        next.whenData((shop) {
-          if (shop != null) {
-            ref
-                .read(orderManageNotifierProvider.notifier)
-                .loadOrders(shop.id);
-          }
-        });
-      });
-    }
 
     final state = ref.watch(orderManageNotifierProvider);
 
