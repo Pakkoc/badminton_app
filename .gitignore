@@ -37,3 +37,12 @@ GoogleService-Info.plist
 
 # 로그
 *.log
+
+# Crash dumps
+*.stackdump
+
+# Python cache
+__pycache__/
+
+# Supabase temp
+supabase/.temp/
