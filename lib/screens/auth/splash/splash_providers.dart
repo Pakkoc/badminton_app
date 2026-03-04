@@ -8,6 +8,7 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 enum SplashRoute {
   login,
   customerHome,
+  ownerDashboard,
   profileSetup,
 }
 
@@ -79,6 +80,17 @@ Future<SplashRoute> _resolveRoute(Ref ref) async {
           .saveTokenToDb(userId, client)
           .catchError((_) {}),
     );
+
+    // 샵 보유 여부 확인
+    final shop = await client
+        .from('shops')
+        .select('id')
+        .eq('owner_id', userId)
+        .maybeSingle();
+
+    if (shop != null) {
+      return SplashRoute.ownerDashboard;
+    }
 
     return SplashRoute.customerHome;
   } catch (_) {
