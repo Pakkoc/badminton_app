@@ -1508,14 +1508,64 @@
                   ]
                 },
                 {
-                  "type": "text",
-                  "id": "Ap4NM",
-                  "name": "row3c1",
-                  "fill": "$--text-tertiary",
-                  "content": "접수 14:30",
-                  "fontFamily": "SUIT",
-                  "fontSize": 12,
-                  "fontWeight": "normal"
+                  "type": "frame",
+                  "id": "1zIWl",
+                  "name": "Timeline",
+                  "width": "fill_container",
+                  "gap": 3,
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "uFwaS",
+                      "name": "t1a",
+                      "fill": "$--text-tertiary",
+                      "content": "접수 3/4 14:30",
+                      "fontFamily": "SUIT",
+                      "fontSize": 11,
+                      "fontWeight": "Medium"
+                    },
+                    {
+                      "type": "text",
+                      "id": "eWVhT",
+                      "name": "t1b",
+                      "fill": "#CBD5E1",
+                      "content": "→",
+                      "fontFamily": "SUIT",
+                      "fontSize": 11,
+                      "fontWeight": "normal"
+                    },
+                    {
+                      "type": "text",
+                      "id": "JWe9c",
+                      "name": "t1c",
+                      "fill": "#CBD5E1",
+                      "content": "시작 ──",
+                      "fontFamily": "SUIT",
+                      "fontSize": 11,
+                      "fontWeight": "normal"
+                    },
+                    {
+                      "type": "text",
+                      "id": "lzQr0",
+                      "name": "t1d",
+                      "fill": "#CBD5E1",
+                      "content": "→",
+                      "fontFamily": "SUIT",
+                      "fontSize": 11,
+                      "fontWeight": "normal"
+                    },
+                    {
+                      "type": "text",
+                      "id": "7DuMa",
+                      "name": "t1e",
+                      "fill": "#CBD5E1",
+                      "content": "완료 ──",
+                      "fontFamily": "SUIT",
+                      "fontSize": 11,
+                      "fontWeight": "normal"
+                    }
+                  ]
                 },
                 {
                   "type": "frame",
@@ -1619,14 +1669,64 @@
                   ]
                 },
                 {
-                  "type": "text",
-                  "id": "hfBuX",
-                  "name": "row3c2",
-                  "fill": "$--text-tertiary",
-                  "content": "접수 13:15",
-                  "fontFamily": "SUIT",
-                  "fontSize": 12,
-                  "fontWeight": "normal"
+                  "type": "frame",
+                  "id": "0JDgO",
+                  "name": "Timeline",
+                  "width": "fill_container",
+                  "gap": 3,
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "0BExP",
+                      "name": "t2a",
+                      "fill": "$--text-tertiary",
+                      "content": "접수 3/4 13:15",
+                      "fontFamily": "SUIT",
+                      "fontSize": 11,
+                      "fontWeight": "Medium"
+                    },
+                    {
+                      "type": "text",
+                      "id": "npy27",
+                      "name": "t2b",
+                      "fill": "$--text-tertiary",
+                      "content": "→",
+                      "fontFamily": "SUIT",
+                      "fontSize": 11,
+                      "fontWeight": "normal"
+                    },
+                    {
+                      "type": "text",
+                      "id": "ec7hA",
+                      "name": "t2c",
+                      "fill": "$--text-tertiary",
+                      "content": "시작 3/4 13:40",
+                      "fontFamily": "SUIT",
+                      "fontSize": 11,
+                      "fontWeight": "Medium"
+                    },
+                    {
+                      "type": "text",
+                      "id": "q31OY",
+                      "name": "t2d",
+                      "fill": "#CBD5E1",
+                      "content": "→",
+                      "fontFamily": "SUIT",
+                      "fontSize": 11,
+                      "fontWeight": "normal"
+                    },
+                    {
+                      "type": "text",
+                      "id": "9qWip",
+                      "name": "t2e",
+                      "fill": "#CBD5E1",
+                      "content": "완료 ──",
+                      "fontFamily": "SUIT",
+                      "fontSize": 11,
+                      "fontWeight": "normal"
+                    }
+                  ]
                 },
                 {
                   "type": "frame",
@@ -1730,14 +1830,64 @@
                   ]
                 },
                 {
-                  "type": "text",
-                  "id": "ZXXj9",
-                  "name": "row3c3",
-                  "fill": "$--text-tertiary",
-                  "content": "완료 16:20",
-                  "fontFamily": "SUIT",
-                  "fontSize": 12,
-                  "fontWeight": "normal"
+                  "type": "frame",
+                  "id": "s8hEZ",
+                  "name": "Timeline",
+                  "width": "fill_container",
+                  "gap": 3,
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "ZFiZx",
+                      "name": "t3a",
+                      "fill": "$--text-tertiary",
+                      "content": "접수 3/4 12:00",
+                      "fontFamily": "SUIT",
+                      "fontSize": 11,
+                      "fontWeight": "Medium"
+                    },
+                    {
+                      "type": "text",
+                      "id": "YRPCh",
+                      "name": "t3b",
+                      "fill": "$--text-tertiary",
+                      "content": "→",
+                      "fontFamily": "SUIT",
+                      "fontSize": 11,
+                      "fontWeight": "normal"
+                    },
+                    {
+                      "type": "text",
+                      "id": "POzJv",
+                      "name": "t3c",
+                      "fill": "$--text-tertiary",
+                      "content": "시작 3/4 12:30",
+                      "fontFamily": "SUIT",
+                      "fontSize": 11,
+                      "fontWeight": "Medium"
+                    },
+                    {
+                      "type": "text",
+                      "id": "XSEr7",
+                      "name": "t3d",
+                      "fill": "$--text-tertiary",
+                      "content": "→",
+                      "fontFamily": "SUIT",
+                      "fontSize": 11,
+                      "fontWeight": "normal"
+                    },
+                    {
+                      "type": "text",
+                      "id": "3sig1",
+                      "name": "t3e",
+                      "fill": "$--text-tertiary",
+                      "content": "완료 3/4 16:20",
+                      "fontFamily": "SUIT",
+                      "fontSize": 11,
+                      "fontWeight": "Medium"
+                    }
+                  ]
                 }
               ]
             }
@@ -4374,8 +4524,18 @@
                   "id": "XZ9lV",
                   "name": "Status Card",
                   "width": "fill_container",
-                  "fill": "#FBF8F4",
+                  "fill": "$--surface",
                   "cornerRadius": 20,
+                  "effect": {
+                    "type": "shadow",
+                    "shadowType": "outer",
+                    "color": "#0000000A",
+                    "offset": {
+                      "x": 0,
+                      "y": 2
+                    },
+                    "blur": 12
+                  },
                   "gap": 16,
                   "padding": 20,
                   "justifyContent": "center",
@@ -4385,6 +4545,7 @@
                       "type": "frame",
                       "id": "FdkxV",
                       "name": "Received Col",
+                      "width": "fill_container",
                       "layout": "vertical",
                       "gap": 4,
                       "alignItems": "center",
@@ -4423,6 +4584,7 @@
                       "type": "frame",
                       "id": "rVS4g",
                       "name": "InProgress Col",
+                      "width": "fill_container",
                       "layout": "vertical",
                       "gap": 4,
                       "alignItems": "center",

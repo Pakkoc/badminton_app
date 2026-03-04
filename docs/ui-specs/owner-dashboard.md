@@ -1,6 +1,6 @@
 # 사장님 대시보드 — UI 화면 스펙
 
-> 최종 수정일: 2026-03-03
+> 최종 수정일: 2026-03-04
 
 ---
 
@@ -100,10 +100,21 @@
 
 | 컴포넌트 | 타입 | 설명 | 상태 |
 |----------|------|------|------|
-| 회원 이름 | Text | `titleMedium` (16sp, Medium) | 항상 표시 |
+| 회원 이름 | Text | `titleMedium` (16sp, SemiBold) | 항상 표시 |
 | 상태 뱃지 | StatusBadge | 접수됨/작업중/완료 (showDot: true) | 카드 우측 상단 |
-| 접수 시간 | Text | "접수 14:30" (`bodySmall`, 12sp, `#9CA3AF`) | 항상 표시 |
+| 타임라인 Row | Row | 접수/시작/완료 시간을 가로 한 줄로 표시 (11sp) | 항상 표시 |
 | 상태 변경 버튼 | Button | 다음 상태로 변경하는 버튼 | 완료 상태이면 숨김 |
+
+**타임라인 Row 규칙:**
+
+| 단계 | 포맷 | 활성 조건 | 활성 스타일 | 비활성 스타일 |
+|------|------|-----------|-------------|---------------|
+| 접수 | `접수 M/D HH:MM` | 항상 활성 | 11sp, Medium, `$--text-tertiary` | - |
+| 시작 | `시작 M/D HH:MM` / `시작 ──` | `inProgressAt != null` | 11sp, Medium, `$--text-tertiary` | 11sp, `#CBD5E1` |
+| 완료 | `완료 M/D HH:MM` / `완료 ──` | `completedAt != null` | 11sp, Medium, `$--text-tertiary` | 11sp, `#CBD5E1` |
+
+- 각 단계 사이에 `→` 구분자 표시 (활성/비활성 동일 규칙 적용)
+- 예시: `접수 3/4 14:30 → 시작 ── → 완료 ──` (접수됨 상태)
 
 **상태 변경 버튼 규칙:**
 
@@ -158,7 +169,9 @@
 | completed_count | int | orders COUNT | 숫자 (32sp) | 오늘 완료 상태 건수 |
 | member_name | String | members.name | 텍스트 | 회원 이름 |
 | status | Enum | orders.status | StatusBadge | 작업 상태 |
-| created_at | Timestamp | orders.created_at | "HH:mm 접수" | 접수 시간 |
+| created_at | Timestamp | orders.created_at | "M/D HH:MM" | 접수 시간 |
+| in_progress_at | Timestamp? | orders.in_progress_at | "M/D HH:MM" / "──" | 작업 시작 시간 (null이면 "──") |
+| completed_at | Timestamp? | orders.completed_at | "M/D HH:MM" / "──" | 작업 완료 시간 (null이면 "──") |
 
 ---
 
