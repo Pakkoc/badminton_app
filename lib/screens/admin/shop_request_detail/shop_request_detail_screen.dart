@@ -82,6 +82,7 @@ class _ShopRequestDetailScreenState
             maxLines: 3,
             decoration: const InputDecoration(
               hintText: '거절 사유를 입력하세요',
+              border: OutlineInputBorder(),
             ),
             validator: (value) {
               if (value == null || value.trim().isEmpty) {
