@@ -20,8 +20,11 @@ class PostRepository {
   /// 게시글을 생성한다.
   Future<Post> create(Post post) async {
     try {
+      final json = post.toJson()
+        ..remove('id')
+        ..remove('created_at');
       final data =
-          await client.from('posts').insert(post.toJson()).select().single();
+          await client.from('posts').insert(json).select().single();
       return Post.fromJson(data);
     } catch (e) {
       throw ErrorHandler.handle(e);
@@ -61,9 +64,12 @@ class PostRepository {
   /// 게시글을 수정한다.
   Future<Post> update(String postId, Post post) async {
     try {
+      final json = post.toJson()
+        ..remove('id')
+        ..remove('created_at');
       final data = await client
           .from('posts')
-          .update(post.toJson())
+          .update(json)
           .eq('id', postId)
           .select()
           .single();
