@@ -1,5 +1,6 @@
 import 'package:badminton_app/app/theme.dart';
 import 'package:badminton_app/core/utils/formatters.dart';
+import 'package:badminton_app/providers/app_mode_provider.dart';
 import 'package:badminton_app/providers/auth_provider.dart';
 import 'package:badminton_app/providers/supabase_provider.dart';
 import 'package:badminton_app/services/fcm_service.dart';
@@ -55,6 +56,8 @@ class _MypageScreenState extends ConsumerState<MypageScreen> {
                 onPushChanged: _onPushChanged,
                 phone: Formatters.phone(user.phone),
               ),
+              const SizedBox(height: 16),
+              _ShopModeCard(ref: ref),
               const SizedBox(height: 16),
               const _AppInfoCard(),
               const SizedBox(height: 16),
@@ -262,6 +265,89 @@ class _SettingsCard extends StatelessWidget {
             ),
           ),
         ],
+      ),
+    );
+  }
+}
+
+class _ShopModeCard extends StatelessWidget {
+  const _ShopModeCard({required this.ref});
+
+  final WidgetRef ref;
+
+  @override
+  Widget build(BuildContext context) {
+    final hasShopAsync = ref.watch(hasShopProvider);
+
+    return Container(
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(20),
+        boxShadow: const [
+          BoxShadow(
+            color: Color(0x0A000000),
+            blurRadius: 12,
+            offset: Offset(0, 2),
+          ),
+        ],
+      ),
+      child: hasShopAsync.when(
+        data: (hasShop) => GestureDetector(
+          behavior: HitTestBehavior.opaque,
+          onTap: () {
+            if (hasShop) {
+              ref.read(activeModeProvider.notifier).state =
+                  AppMode.owner;
+              context.go('/owner/dashboard');
+            } else {
+              context.push('/shop-register');
+            }
+          },
+          child: SizedBox(
+            height: 48,
+            child: Row(
+              children: [
+                Icon(
+                  hasShop
+                      ? Icons.swap_horiz
+                      : Icons.storefront,
+                  color: AppTheme.primary,
+                  size: 22,
+                ),
+                const SizedBox(width: 12),
+                Text(
+                  hasShop
+                      ? '사장님 모드 전환'
+                      : '샵 사장님 등록',
+                  style: const TextStyle(
+                    fontSize: 15,
+                    color: AppTheme.textPrimary,
+                  ),
+                ),
+                const Spacer(),
+                const Icon(
+                  Icons.chevron_right,
+                  color: AppTheme.textTertiary,
+                  size: 20,
+                ),
+              ],
+            ),
+          ),
+        ),
+        loading: () => const SizedBox(
+          height: 48,
+          child: Center(
+            child: SizedBox(
+              width: 20,
+              height: 20,
+              child: CircularProgressIndicator(
+                strokeWidth: 2,
+              ),
+            ),
+          ),
+        ),
+        error: (_, _) => const SizedBox.shrink(),
       ),
     );
   }
