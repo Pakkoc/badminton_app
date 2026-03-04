@@ -17221,6 +17221,7 @@
             0,
             16
           ],
+          "justifyContent": "space_between",
           "alignItems": "center",
           "children": [
             {
@@ -17232,6 +17233,31 @@
               "fontFamily": "SUIT",
               "fontSize": 18,
               "fontWeight": "700"
+            },
+            {
+              "type": "frame",
+              "id": "KJ07L",
+              "name": "Admin Badge",
+              "fill": "#FEE2E2",
+              "cornerRadius": 12,
+              "padding": [
+                4,
+                10
+              ],
+              "justifyContent": "center",
+              "alignItems": "center",
+              "children": [
+                {
+                  "type": "text",
+                  "id": "HLUdD",
+                  "name": "adminText",
+                  "fill": "#EF4444",
+                  "content": "관리자",
+                  "fontFamily": "SUIT",
+                  "fontSize": 12,
+                  "fontWeight": "700"
+                }
+              ]
             }
           ]
         },
@@ -17921,6 +17947,18 @@
           ]
         }
       ]
+    },
+    {
+      "type": "text",
+      "id": "UoIEh",
+      "x": 0,
+      "y": 6490,
+      "name": "flowNote",
+      "fill": "#94A3B8",
+      "content": "로그인 화면에서 admin 계정으로 로그인 → 자동 리다이렉트",
+      "fontFamily": "SUIT",
+      "fontSize": 12,
+      "fontWeight": "normal"
     }
   ],
   "variables": {
