@@ -1,5 +1,4 @@
 import 'package:badminton_app/app/theme.dart';
-import 'package:badminton_app/core/utils/formatters.dart';
 import 'package:badminton_app/models/enums.dart';
 import 'package:badminton_app/models/order.dart';
 import 'package:badminton_app/providers/unread_notification_count_provider.dart';
@@ -8,6 +7,7 @@ import 'package:badminton_app/screens/customer/home/customer_home_state.dart';
 import 'package:badminton_app/widgets/customer_bottom_nav.dart';
 import 'package:badminton_app/widgets/error_view.dart';
 import 'package:badminton_app/widgets/skeleton_shimmer.dart';
+import 'package:badminton_app/widgets/order_timeline_row.dart';
 import 'package:badminton_app/widgets/status_badge.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -365,25 +365,7 @@ class _OrderCard extends StatelessWidget {
                     ?.copyWith(color: AppTheme.textSecondary),
               ),
               const SizedBox(height: 8),
-              Row(
-                children: [
-                  const Icon(
-                    Icons.schedule,
-                    size: 16,
-                    color: AppTheme.textTertiary,
-                  ),
-                  const SizedBox(width: 4),
-                  Text(
-                    Formatters.fixedTime(order.createdAt),
-                    style: Theme.of(context)
-                        .textTheme
-                        .bodySmall
-                        ?.copyWith(
-                          color: AppTheme.textTertiary,
-                        ),
-                  ),
-                ],
-              ),
+              OrderTimelineRow(order: order),
               if (order.memo != null) ...[
                 const SizedBox(height: 8),
                 Row(
