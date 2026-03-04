@@ -10,24 +10,17 @@
 
 | 이름 | 타입 | 초기값 | 설명 |
 |------|------|--------|------|
-| `shopRequestDetailState` | `AsyncValue<ShopRequestDetailState>` | `AsyncLoading` | 샵 등록 요청 상세 전체 상태 |
+| `shopRequestDetailState` | `ShopRequestDetailState` | `ShopRequestDetailState()` | 샵 등록 요청 상세 전체 상태 (isLoading, shop, owner, isProcessing, error 포함) |
 
 ### ShopRequestDetailState (freezed)
 
 | 필드 | 타입 | 초기값 | 설명 |
 |------|------|--------|------|
-| `shop` | `Shop` | DB에서 로드 | 샵 상세 정보 (status, reject_reason, reviewed_at 포함) |
-| `ownerName` | `String` | DB에서 로드 | 신청자(사장님) 이름 (users.name) |
-| `ownerPhone` | `String` | DB에서 로드 | 신청자 연락처 (users.phone) |
-| `ownerCreatedAt` | `DateTime` | DB에서 로드 | 신청자 가입일 (users.created_at) |
-| `processingAction` | `ShopReviewAction?` | `null` | 현재 처리 중인 액션 (승인/거절). null이면 미처리 |
-
-### ShopReviewAction (Enum)
-
-| 값 | 설명 |
-|----|------|
-| `approving` | 승인 처리 중 |
-| `rejecting` | 거절 처리 중 |
+| `shop` | `Shop?` | `null` | 샵 상세 정보 (status, reject_reason, reviewed_at 포함) |
+| `owner` | `User?` | `null` | 신청자(사장님) 정보 (User 모델 전체) |
+| `isLoading` | `bool` | `true` | 데이터 로딩 중 여부 |
+| `isProcessing` | `bool` | `false` | 승인/거절 처리 중 여부 |
+| `error` | `String?` | `null` | 에러 메시지 (에러 발생 시) |
 
 ---
 
@@ -38,6 +31,7 @@
 | `authState` | `authStateProvider` (M3) | 현재 인증된 사용자. role이 admin인지 확인 |
 | `shopRepository` | `shopRepositoryProvider` (M5) | shops 테이블 조회 및 UPDATE (status, reject_reason, reviewed_at) |
 | `userRepository` | `userRepositoryProvider` (M5) | users 테이블 조회 (사장님 정보) |
+| `notificationRepository` | `notificationRepositoryProvider` (M5) | 승인/거절 알림 생성 (shopApproval, shopRejection) |
 
 ---
 
@@ -67,22 +61,24 @@ flowchart TD
         AUTH[authStateProvider<br/>StreamProvider, M3]
         shopRepository["shopRepositoryProvider\n(Provider, M5)"]
         userRepository["userRepositoryProvider\n(Provider, M5)"]
+        notificationRepository["notificationRepositoryProvider\n(Provider, M5)"]
     end
 
     subgraph 요청상세_화면["샵 등록 요청 상세 화면"]
-        shopRequestDetailNotifier["shopRequestDetailNotifierProvider\n(AsyncNotifierProvider.family)"]
+        shopRequestDetailNotifier["shopRequestDetailNotifierProvider\n(StateNotifierProvider.autoDispose)"]
     end
 
     AUTH -->|"currentUser (admin 확인)"| shopRequestDetailNotifier
-    shopRepository -->|"getById / update (status)"| shopRequestDetailNotifier
+    shopRepository -->|"getById / approve / reject"| shopRequestDetailNotifier
     userRepository -->|"getById (사장님 정보)"| shopRequestDetailNotifier
+    notificationRepository -->|"create (승인/거절 알림)"| shopRequestDetailNotifier
 ```
 
 ### Provider 상세
 
 | Provider | 타입 | 역할 |
 |----------|------|------|
-| `shopRequestDetailNotifierProvider` | `AsyncNotifierProvider.family<ShopRequestDetailNotifier, ShopRequestDetailState, String>` | 샵 등록 요청 상세 상태 관리. shopId를 family 파라미터로 받음. 상세 조회, 승인/거절 처리 |
+| `shopRequestDetailNotifierProvider` | `StateNotifierProvider.autoDispose<ShopRequestDetailNotifier, ShopRequestDetailState>` | 샵 등록 요청 상세 상태 관리. loadDetail(shopId)로 데이터 로드. 승인/거절 처리 + 알림 생성. 화면 이탈 시 자동 해제(autoDispose) |
 
 ---
 
@@ -92,14 +88,15 @@ flowchart TD
 
 | Provider | 타입 | 설명 |
 |----------|------|------|
-| `shopRequestDetailNotifierProvider(shopId)` | `AsyncNotifierProvider.family<..., ShopRequestDetailState, String>` | 샵 등록 요청 상세 전체 상태 |
+| `shopRequestDetailNotifierProvider` | `StateNotifierProvider.autoDispose<ShopRequestDetailNotifier, ShopRequestDetailState>` | 샵 등록 요청 상세 전체 상태. 화면 이탈 시 자동 해제 |
 
 ### 쓰기 (Actions)
 
-| 메서드 | 파라미터 | 설명 |
-|--------|---------|------|
-| `approve()` | - | 샵 승인 처리. shops.status = 'approved', reviewed_at = now(). 성공 시 목록으로 복귀 |
-| `reject(String reason)` | `String` | 샵 거절 처리. shops.status = 'rejected', reject_reason = reason, reviewed_at = now(). 성공 시 목록으로 복귀 |
+| 메서드 | 파라미터 | 반환 | 설명 |
+|--------|---------|------|------|
+| `loadDetail(String shopId)` | `String` | `Future<void>` | shopId로 샵 상세 + 사장님 정보 조회 |
+| `approve()` | - | `Future<bool>` | 샵 승인 처리. shops.status = 'approved'. 성공 시 shopApproval 알림 생성. 반환값: 성공 여부 |
+| `reject(String reason)` | `String` | `Future<bool>` | 샵 거절 처리. shops.status = 'rejected', reject_reason = reason. 성공 시 shopRejection 알림 생성. 반환값: 성공 여부 |
 
 ---
 
@@ -110,6 +107,7 @@ flowchart TD
 | M1 (supabaseProvider) | Supabase 클라이언트 |
 | M3 (authStateProvider) | 현재 인증 사용자 정보 (admin 역할 확인) |
 | M4 (Shop, User) | 샵/사용자 데이터 모델 |
-| M5 (ShopRepository, UserRepository) | shops 조회/UPDATE, users 조회 |
+| M5 (ShopRepository, UserRepository, NotificationRepository) | shops 조회/승인/거절, users 조회, 알림 생성 |
 | M6 (AppException, ErrorHandler) | 에러 처리 및 사용자 메시지 매핑 |
+| M8 (NotificationType) | shopApproval, shopRejection 알림 타입 |
 | M9 (ConfirmDialog, ErrorView, SkeletonShimmer, AppToast) | 승인 확인 다이얼로그, 에러 화면, 스켈레톤 로딩, 성공/에러 스낵바 |

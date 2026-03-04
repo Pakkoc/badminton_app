@@ -10,24 +10,15 @@
 
 | 이름 | 타입 | 초기값 | 설명 |
 |------|------|--------|------|
-| `shopRequestsState` | `AsyncValue<ShopRequestsState>` | `AsyncLoading` | 샵 등록 요청 목록 전체 상태 |
+| `shopRequestsState` | `ShopRequestsState` | `ShopRequestsState()` | 샵 등록 요청 목록 전체 상태 (isLoading, requests, error 포함) |
 
 ### ShopRequestsState (freezed)
 
 | 필드 | 타입 | 초기값 | 설명 |
 |------|------|--------|------|
-| `shops` | `List<Shop>` | `[]` | 필터링된 샵 등록 요청 목록 |
-| `selectedFilter` | `ShopStatusFilter` | `all` | 현재 선택된 필터 |
-| `pendingCount` | `int` | `0` | 대기 중 요청 건수 (뱃지 표시용) |
-
-### ShopStatusFilter (Enum)
-
-| 값 | 설명 |
-|----|------|
-| `all` | 전체 요청 |
-| `pending` | 대기 중 요청 |
-| `approved` | 승인된 요청 |
-| `rejected` | 거절된 요청 |
+| `requests` | `List<Shop>` | `[]` | 대기 중 샵 등록 요청 목록 |
+| `isLoading` | `bool` | `true` | 데이터 로딩 중 여부 |
+| `error` | `String?` | `null` | 에러 메시지 (에러 발생 시) |
 
 ---
 
@@ -64,21 +55,18 @@ flowchart TD
     end
 
     subgraph 요청목록_화면["샵 등록 요청 목록 화면"]
-        shopRequestsNotifier["shopRequestsNotifierProvider\n(AsyncNotifierProvider)"]
-        pendingCountProvider["pendingCountProvider\n(FutureProvider)"]
+        shopRequestsNotifier["shopRequestsNotifierProvider\n(StateNotifierProvider.autoDispose)"]
     end
 
     AUTH -->|"currentUser (admin 확인)"| shopRequestsNotifier
-    shopRepository -->|"getAll / getByStatus"| shopRequestsNotifier
-    shopRepository -->|"countByStatus('pending')"| pendingCountProvider
+    shopRepository -->|"getPendingShops"| shopRequestsNotifier
 ```
 
 ### Provider 상세
 
 | Provider | 타입 | 역할 |
 |----------|------|------|
-| `shopRequestsNotifierProvider` | `AsyncNotifierProvider<ShopRequestsNotifier, ShopRequestsState>` | 샵 등록 요청 목록 전체 상태 관리. 목록 조회, 필터링, 새로고침 |
-| `pendingCountProvider` | `FutureProvider<int>` | 대기 중 요청 건수 조회. 필터 탭 뱃지 표시용 |
+| `shopRequestsNotifierProvider` | `StateNotifierProvider.autoDispose<ShopRequestsNotifier, ShopRequestsState>` | 샵 등록 요청 목록 전체 상태 관리. 목록 조회, 새로고침. 화면 이탈 시 자동 해제(autoDispose) |
 
 ---
 
@@ -88,15 +76,13 @@ flowchart TD
 
 | Provider | 타입 | 설명 |
 |----------|------|------|
-| `shopRequestsNotifierProvider` | `AsyncNotifierProvider<ShopRequestsNotifier, ShopRequestsState>` | 요청 목록 전체 상태 |
-| `pendingCountProvider` | `FutureProvider<int>` | 대기 중 건수 |
+| `shopRequestsNotifierProvider` | `StateNotifierProvider.autoDispose<ShopRequestsNotifier, ShopRequestsState>` | 요청 목록 전체 상태. 화면 이탈 시 자동 해제 |
 
 ### 쓰기 (Actions)
 
 | 메서드 | 파라미터 | 설명 |
 |--------|---------|------|
-| `setFilter(ShopStatusFilter filter)` | `ShopStatusFilter` | 필터 변경. 해당 상태의 요청만 조회 |
-| `refresh()` | - | 목록 데이터 재조회. 상세 화면에서 복귀 시 또는 pull-to-refresh 시 호출 |
+| `loadRequests()` | - | 대기 중(pending) 샵 등록 요청 목록 조회. 화면 진입 시, 상세 화면에서 복귀 시 호출 |
 
 ---
 
