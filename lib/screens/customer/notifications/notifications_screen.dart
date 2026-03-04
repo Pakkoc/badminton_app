@@ -115,6 +115,10 @@ class _NotificationTile extends StatelessWidget {
           Icons.campaign_outlined,
         NotificationType.receipt =>
           Icons.receipt_long_outlined,
+        NotificationType.shopApproval =>
+          Icons.check_circle,
+        NotificationType.shopRejection =>
+          Icons.cancel_outlined,
       };
 
   @override
