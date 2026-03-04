@@ -1,4 +1,5 @@
 import 'package:badminton_app/core/error/app_exception.dart';
+import 'package:badminton_app/models/enums.dart';
 import 'package:badminton_app/models/inventory_item.dart';
 import 'package:badminton_app/repositories/inventory_repository.dart';
 import 'package:badminton_app/screens/owner/inventory/inventory_state.dart';
@@ -35,7 +36,7 @@ class InventoryNotifier extends Notifier<InventoryState> {
   Future<bool> addItem({
     required String shopId,
     required String name,
-    String? category,
+    required InventoryCategory category,
     required int quantity,
   }) async {
     try {

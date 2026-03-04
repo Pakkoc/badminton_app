@@ -60,6 +60,48 @@ enum PostCategory {
       };
 }
 
+enum InventoryCategory {
+  racket,
+  top,
+  bottom,
+  bag,
+  shoes,
+  accessories,
+  other;
+
+  String toJson() => switch (this) {
+        racket => 'racket',
+        top => 'top',
+        bottom => 'bottom',
+        bag => 'bag',
+        shoes => 'shoes',
+        accessories => 'accessories',
+        other => 'other',
+      };
+
+  static InventoryCategory fromJson(String value) =>
+      switch (value) {
+        'racket' => racket,
+        'top' => top,
+        'bottom' => bottom,
+        'bag' => bag,
+        'shoes' => shoes,
+        'accessories' => accessories,
+        'other' => other,
+        _ => other,
+      };
+
+  String get label => switch (this) {
+        racket => '라켓',
+        top => '상의',
+        bottom => '하의',
+        bag => '가방',
+        shoes => '신발',
+        accessories => '악세서리',
+        other => '기타',
+      };
+}
+
 enum NotificationType {
   statusChange,
   completion,

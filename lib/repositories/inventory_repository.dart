@@ -19,9 +19,12 @@ class InventoryRepository {
   /// 재고 아이템을 생성한다.
   Future<InventoryItem> create(InventoryItem item) async {
     try {
+      final json = item.toJson()
+        ..remove('id')
+        ..remove('created_at');
       final data = await client
           .from('inventory')
-          .insert(item.toJson())
+          .insert(json)
           .select()
           .single();
       return InventoryItem.fromJson(data);

@@ -1,5 +1,6 @@
 import 'package:badminton_app/app/theme.dart';
 import 'package:badminton_app/core/utils/validators.dart';
+import 'package:badminton_app/models/enums.dart';
 import 'package:badminton_app/models/inventory_item.dart';
 import 'package:badminton_app/providers/supabase_provider.dart';
 import 'package:badminton_app/repositories/shop_repository.dart';
@@ -54,7 +55,7 @@ class _InventoryScreenState
     if (_shopId == null) return;
 
     final nameController = TextEditingController();
-    final categoryController = TextEditingController();
+    var selectedCategory = InventoryCategory.other;
     final quantityController =
         TextEditingController(text: '0');
     final formKey = GlobalKey<FormState>();
@@ -62,109 +63,125 @@ class _InventoryScreenState
     showModalBottomSheet<void>(
       context: context,
       isScrollControlled: true,
-      builder: (sheetContext) => Padding(
-        padding: EdgeInsets.only(
-          left: 24,
-          right: 24,
-          top: 24,
-          bottom: MediaQuery.of(sheetContext)
-                  .viewInsets
-                  .bottom +
-              24,
-        ),
-        child: Form(
-          key: formKey,
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                '상품 추가',
-                style: Theme.of(sheetContext)
-                    .textTheme
-                    .titleLarge,
-              ),
-              const SizedBox(height: 16),
-              TextFormField(
-                controller: nameController,
-                decoration: const InputDecoration(
-                  labelText: '상품명',
-                  border: OutlineInputBorder(),
+      builder: (sheetContext) => StatefulBuilder(
+        builder: (sheetContext, setSheetState) => Padding(
+          padding: EdgeInsets.only(
+            left: 24,
+            right: 24,
+            top: 24,
+            bottom: MediaQuery.of(sheetContext)
+                    .viewInsets
+                    .bottom +
+                24,
+          ),
+          child: Form(
+            key: formKey,
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment:
+                  CrossAxisAlignment.start,
+              children: [
+                Text(
+                  '상품 추가',
+                  style: Theme.of(sheetContext)
+                      .textTheme
+                      .titleLarge,
                 ),
-                validator: Validators.productName,
-                autovalidateMode:
-                    AutovalidateMode.onUserInteraction,
-              ),
-              const SizedBox(height: 12),
-              TextFormField(
-                controller: categoryController,
-                decoration: const InputDecoration(
-                  labelText: '카테고리 (선택)',
-                  border: OutlineInputBorder(),
+                const SizedBox(height: 16),
+                TextFormField(
+                  controller: nameController,
+                  decoration: const InputDecoration(
+                    labelText: '상품명',
+                    border: OutlineInputBorder(),
+                  ),
+                  validator: Validators.productName,
+                  autovalidateMode:
+                      AutovalidateMode.onUserInteraction,
                 ),
-              ),
-              const SizedBox(height: 12),
-              TextFormField(
-                controller: quantityController,
-                decoration: const InputDecoration(
-                  labelText: '수량',
-                  border: OutlineInputBorder(),
-                ),
-                keyboardType: TextInputType.number,
-                validator: Validators.quantity,
-                autovalidateMode:
-                    AutovalidateMode.onUserInteraction,
-              ),
-              const SizedBox(height: 16),
-              SizedBox(
-                width: double.infinity,
-                height: 48,
-                child: ElevatedButton(
-                  onPressed: () async {
-                    if (!formKey.currentState!.validate()) {
-                      return;
-                    }
-                    final success = await ref
-                        .read(
-                          inventoryNotifierProvider
-                              .notifier,
-                        )
-                        .addItem(
-                          shopId: _shopId!,
-                          name: nameController.text,
-                          category: categoryController
-                                  .text.isEmpty
-                              ? null
-                              : categoryController.text,
-                          quantity: int.parse(
-                            quantityController.text,
-                          ),
-                        );
-                    if (success &&
-                        sheetContext.mounted) {
-                      Navigator.of(sheetContext).pop();
-                    }
-                    if (success && mounted) {
-                      AppToast.success(
-                        context,
-                        '상품이 추가되었습니다',
+                const SizedBox(height: 12),
+                DropdownButtonFormField<InventoryCategory>(
+                  value: selectedCategory,
+                  decoration: const InputDecoration(
+                    labelText: '카테고리',
+                    border: OutlineInputBorder(),
+                  ),
+                  items: InventoryCategory.values
+                      .map(
+                        (c) => DropdownMenuItem(
+                          value: c,
+                          child: Text(c.label),
+                        ),
+                      )
+                      .toList(),
+                  onChanged: (value) {
+                    if (value != null) {
+                      setSheetState(
+                        () => selectedCategory = value,
                       );
                     }
                   },
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor:
-                        AppTheme.primary,
-                    foregroundColor:
-                        const Color(0xFFFFFFFF),
-                    shape: RoundedRectangleBorder(
-                      borderRadius:
-                          BorderRadius.circular(12),
-                    ),
-                  ),
-                  child: const Text('추가'),
                 ),
-              ),
-            ],
+                const SizedBox(height: 12),
+                TextFormField(
+                  controller: quantityController,
+                  decoration: const InputDecoration(
+                    labelText: '수량',
+                    border: OutlineInputBorder(),
+                  ),
+                  keyboardType: TextInputType.number,
+                  validator: Validators.quantity,
+                  autovalidateMode:
+                      AutovalidateMode.onUserInteraction,
+                ),
+                const SizedBox(height: 16),
+                SizedBox(
+                  width: double.infinity,
+                  height: 48,
+                  child: ElevatedButton(
+                    onPressed: () async {
+                      if (!formKey.currentState!
+                          .validate()) {
+                        return;
+                      }
+                      final success = await ref
+                          .read(
+                            inventoryNotifierProvider
+                                .notifier,
+                          )
+                          .addItem(
+                            shopId: _shopId!,
+                            name: nameController.text,
+                            category: selectedCategory,
+                            quantity: int.parse(
+                              quantityController.text,
+                            ),
+                          );
+                      if (success &&
+                          sheetContext.mounted) {
+                        Navigator.of(sheetContext).pop();
+                      }
+                      if (success && mounted) {
+                        AppToast.success(
+                          context,
+                          '상품이 추가되었습니다',
+                        );
+                      }
+                    },
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor:
+                          AppTheme.primary,
+                      foregroundColor:
+                          const Color(0xFFFFFFFF),
+                      shape: RoundedRectangleBorder(
+                        borderRadius:
+                            BorderRadius.circular(12),
+                      ),
+                    ),
+                    child: const Text('추가'),
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
       ),
@@ -174,8 +191,7 @@ class _InventoryScreenState
   void _showEditItemDialog(InventoryItem item) {
     final nameController =
         TextEditingController(text: item.name);
-    final categoryController =
-        TextEditingController(text: item.category ?? '');
+    var selectedCategory = item.category;
     final quantityController =
         TextEditingController(text: item.quantity.toString());
     final formKey = GlobalKey<FormState>();
@@ -183,110 +199,127 @@ class _InventoryScreenState
     showModalBottomSheet<void>(
       context: context,
       isScrollControlled: true,
-      builder: (sheetContext) => Padding(
-        padding: EdgeInsets.only(
-          left: 24,
-          right: 24,
-          top: 24,
-          bottom: MediaQuery.of(sheetContext)
-                  .viewInsets
-                  .bottom +
-              24,
-        ),
-        child: Form(
-          key: formKey,
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                '상품 수정',
-                style: Theme.of(sheetContext)
-                    .textTheme
-                    .titleLarge,
-              ),
-              const SizedBox(height: 16),
-              TextFormField(
-                controller: nameController,
-                decoration: const InputDecoration(
-                  labelText: '상품명',
-                  border: OutlineInputBorder(),
+      builder: (sheetContext) => StatefulBuilder(
+        builder: (sheetContext, setSheetState) => Padding(
+          padding: EdgeInsets.only(
+            left: 24,
+            right: 24,
+            top: 24,
+            bottom: MediaQuery.of(sheetContext)
+                    .viewInsets
+                    .bottom +
+                24,
+          ),
+          child: Form(
+            key: formKey,
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment:
+                  CrossAxisAlignment.start,
+              children: [
+                Text(
+                  '상품 수정',
+                  style: Theme.of(sheetContext)
+                      .textTheme
+                      .titleLarge,
                 ),
-                validator: Validators.productName,
-                autovalidateMode:
-                    AutovalidateMode.onUserInteraction,
-              ),
-              const SizedBox(height: 12),
-              TextFormField(
-                controller: categoryController,
-                decoration: const InputDecoration(
-                  labelText: '카테고리 (선택)',
-                  border: OutlineInputBorder(),
+                const SizedBox(height: 16),
+                TextFormField(
+                  controller: nameController,
+                  decoration: const InputDecoration(
+                    labelText: '상품명',
+                    border: OutlineInputBorder(),
+                  ),
+                  validator: Validators.productName,
+                  autovalidateMode:
+                      AutovalidateMode.onUserInteraction,
                 ),
-              ),
-              const SizedBox(height: 12),
-              TextFormField(
-                controller: quantityController,
-                decoration: const InputDecoration(
-                  labelText: '수량',
-                  border: OutlineInputBorder(),
-                ),
-                keyboardType: TextInputType.number,
-                validator: Validators.quantity,
-                autovalidateMode:
-                    AutovalidateMode.onUserInteraction,
-              ),
-              const SizedBox(height: 16),
-              SizedBox(
-                width: double.infinity,
-                height: 48,
-                child: ElevatedButton(
-                  onPressed: () async {
-                    if (!formKey.currentState!.validate()) {
-                      return;
-                    }
-                    final updates = <String, dynamic>{
-                      'name': nameController.text,
-                      'quantity': int.parse(
-                        quantityController.text,
-                      ),
-                    };
-                    final cat =
-                        categoryController.text.trim();
-                    updates['category'] =
-                        cat.isEmpty ? null : cat;
-
-                    await ref
-                        .read(
-                          inventoryNotifierProvider
-                              .notifier,
-                        )
-                        .updateItem(item.id, updates);
-
-                    if (sheetContext.mounted) {
-                      Navigator.of(sheetContext).pop();
-                    }
-                    if (mounted) {
-                      AppToast.success(
-                        context,
-                        '상품이 수정되었습니다',
+                const SizedBox(height: 12),
+                DropdownButtonFormField<InventoryCategory>(
+                  value: selectedCategory,
+                  decoration: const InputDecoration(
+                    labelText: '카테고리',
+                    border: OutlineInputBorder(),
+                  ),
+                  items: InventoryCategory.values
+                      .map(
+                        (c) => DropdownMenuItem(
+                          value: c,
+                          child: Text(c.label),
+                        ),
+                      )
+                      .toList(),
+                  onChanged: (value) {
+                    if (value != null) {
+                      setSheetState(
+                        () => selectedCategory = value,
                       );
                     }
                   },
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor:
-                        AppTheme.primary,
-                    foregroundColor:
-                        const Color(0xFFFFFFFF),
-                    shape: RoundedRectangleBorder(
-                      borderRadius:
-                          BorderRadius.circular(12),
-                    ),
-                  ),
-                  child: const Text('수정'),
                 ),
-              ),
-            ],
+                const SizedBox(height: 12),
+                TextFormField(
+                  controller: quantityController,
+                  decoration: const InputDecoration(
+                    labelText: '수량',
+                    border: OutlineInputBorder(),
+                  ),
+                  keyboardType: TextInputType.number,
+                  validator: Validators.quantity,
+                  autovalidateMode:
+                      AutovalidateMode.onUserInteraction,
+                ),
+                const SizedBox(height: 16),
+                SizedBox(
+                  width: double.infinity,
+                  height: 48,
+                  child: ElevatedButton(
+                    onPressed: () async {
+                      if (!formKey.currentState!
+                          .validate()) {
+                        return;
+                      }
+                      final updates = <String, dynamic>{
+                        'name': nameController.text,
+                        'category':
+                            selectedCategory.toJson(),
+                        'quantity': int.parse(
+                          quantityController.text,
+                        ),
+                      };
+
+                      await ref
+                          .read(
+                            inventoryNotifierProvider
+                                .notifier,
+                          )
+                          .updateItem(item.id, updates);
+
+                      if (sheetContext.mounted) {
+                        Navigator.of(sheetContext).pop();
+                      }
+                      if (mounted) {
+                        AppToast.success(
+                          context,
+                          '상품이 수정되었습니다',
+                        );
+                      }
+                    },
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor:
+                          AppTheme.primary,
+                      foregroundColor:
+                          const Color(0xFFFFFFFF),
+                      shape: RoundedRectangleBorder(
+                        borderRadius:
+                            BorderRadius.circular(12),
+                      ),
+                    ),
+                    child: const Text('수정'),
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
       ),
@@ -425,20 +458,18 @@ class _InventoryGridCard extends StatelessWidget {
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
                   ),
-                  if (item.category != null) ...[
-                    const SizedBox(height: 2),
-                    Text(
-                      item.category!,
-                      style: Theme.of(context)
-                          .textTheme
-                          .bodySmall
-                          ?.copyWith(
-                        color: AppTheme.textTertiary,
-                      ),
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
+                  const SizedBox(height: 2),
+                  Text(
+                    item.category.label,
+                    style: Theme.of(context)
+                        .textTheme
+                        .bodySmall
+                        ?.copyWith(
+                      color: AppTheme.textTertiary,
                     ),
-                  ],
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                  ),
                   const SizedBox(height: 4),
                   Text(
                     '${item.quantity}개',

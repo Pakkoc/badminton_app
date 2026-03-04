@@ -133,7 +133,7 @@
 | id | UUID | PK, DEFAULT uuid_generate_v7() | 상품 고유 ID |
 | shop_id | UUID | NOT NULL, FK → shops(id) ON DELETE CASCADE | 샵 |
 | name | TEXT | NOT NULL | 상품명 |
-| category | TEXT | NULLABLE | 카테고리 (자유 입력) |
+| category | TEXT | NOT NULL, DEFAULT 'other', CHECK (category IN ('racket', 'top', 'bottom', 'bag', 'shoes', 'accessories', 'other')) | 카테고리 (라켓/상의/하의/가방/신발/악세서리/기타) |
 | quantity | INTEGER | NOT NULL, DEFAULT 0, CHECK (quantity >= 0) | 재고 수량 |
 | image_url | TEXT | NULLABLE | 상품 이미지 URL (없으면 기본 이미지) |
 | created_at | TIMESTAMPTZ | NOT NULL, DEFAULT now() | 등록일 |

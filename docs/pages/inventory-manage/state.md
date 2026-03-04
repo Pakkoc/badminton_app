@@ -24,7 +24,7 @@
 |------|------|------|
 | `shopId` | `currentUserProvider` → `ShopRepository.getByOwner()` | 현재 사장님의 샵 ID. 인증 모듈(M3)에서 제공하는 사용자 정보로 조회 |
 | `supabaseClient` | `supabaseProvider` (M1) | Supabase 클라이언트 인스턴스 |
-| `categoryOptions` | 상수 | 고정 카테고리 목록: `['라켓', '상의', '하의', '가방', '신발', '악세서리']` |
+| `categoryOptions` | `InventoryCategory.values` | 고정 카테고리 enum: 라켓, 상의, 하의, 가방, 신발, 악세서리, 기타 (`enums.dart`에 정의) |
 
 ---
 
@@ -99,8 +99,8 @@ flowchart TD
 | 메서드 | 파라미터 | 설명 |
 |--------|----------|------|
 | `loadItems()` | 없음 | 재고 목록 조회. `InventoryRepository.getByShop(shopId)` 호출 (name ASC) |
-| `addItem(name, category, quantity, imageFile?)` | `String name`, `String category`, `int quantity`, `File? imageFile` | 상품 추가. 이미지가 있으면 Storage 업로드 후 `InventoryRepository.create()` 호출 |
-| `updateItem(itemId, name, category, quantity, imageFile?, imageChanged)` | `String itemId`, `String name`, `String category`, `int quantity`, `File? imageFile`, `bool imageChanged` | 상품 수정. 이미지 변경 시 Storage 업로드 후 `InventoryRepository.update()` 호출 |
+| `addItem(shopId, name, category, quantity)` | `String shopId`, `String name`, `InventoryCategory category`, `int quantity` | 상품 추가. `InventoryRepository.create()` 호출 |
+| `updateItem(itemId, data)` | `String itemId`, `Map<String, dynamic> data` | 상품 수정. `InventoryRepository.update()` 호출 |
 | `deleteItem(itemId)` | `String itemId` | 상품 삭제. `InventoryRepository.delete(itemId)` 호출 |
 
 ---

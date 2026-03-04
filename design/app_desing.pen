@@ -8815,6 +8815,16 @@
                 },
                 {
                   "type": "text",
+                  "id": "7oBqG",
+                  "name": "cat1",
+                  "fill": "#9CA3AF",
+                  "content": "라켓",
+                  "fontFamily": "SUIT",
+                  "fontSize": 11,
+                  "fontWeight": "normal"
+                },
+                {
+                  "type": "text",
                   "id": "tBSVU",
                   "name": "t1q",
                   "fill": "#4A4A5A",
@@ -8879,6 +8889,16 @@
                 },
                 {
                   "type": "text",
+                  "id": "XqUb4",
+                  "name": "cat2",
+                  "fill": "#9CA3AF",
+                  "content": "기타",
+                  "fontFamily": "SUIT",
+                  "fontSize": 11,
+                  "fontWeight": "normal"
+                },
+                {
+                  "type": "text",
                   "id": "06N7K",
                   "name": "t2q",
                   "fill": "#4A4A5A",
@@ -8940,6 +8960,16 @@
                   "fontFamily": "SUIT",
                   "fontSize": 13,
                   "fontWeight": "500"
+                },
+                {
+                  "type": "text",
+                  "id": "Rs1iU",
+                  "name": "cat3",
+                  "fill": "#9CA3AF",
+                  "content": "악세서리",
+                  "fontFamily": "SUIT",
+                  "fontSize": 11,
+                  "fontWeight": "normal"
                 },
                 {
                   "type": "text",
@@ -9009,6 +9039,16 @@
                   "fontFamily": "SUIT",
                   "fontSize": 13,
                   "fontWeight": "500"
+                },
+                {
+                  "type": "text",
+                  "id": "xYMpH",
+                  "name": "cat4",
+                  "fill": "#9CA3AF",
+                  "content": "가방",
+                  "fontFamily": "SUIT",
+                  "fontSize": 11,
+                  "fontWeight": "normal"
                 },
                 {
                   "type": "text",
@@ -9466,6 +9506,16 @@
                 },
                 {
                   "type": "text",
+                  "id": "xNHwt",
+                  "name": "ecat1",
+                  "fill": "#9CA3AF",
+                  "content": "라켓",
+                  "fontFamily": "SUIT",
+                  "fontSize": 11,
+                  "fontWeight": "normal"
+                },
+                {
+                  "type": "text",
                   "id": "a2z05",
                   "name": "et1q",
                   "fill": "#4A4A5A",
@@ -9530,6 +9580,16 @@
                 },
                 {
                   "type": "text",
+                  "id": "0m6jQ",
+                  "name": "ecat2",
+                  "fill": "#9CA3AF",
+                  "content": "기타",
+                  "fontFamily": "SUIT",
+                  "fontSize": 11,
+                  "fontWeight": "normal"
+                },
+                {
+                  "type": "text",
                   "id": "bGmOA",
                   "name": "et2q",
                   "fill": "#4A4A5A",
@@ -9591,6 +9651,16 @@
                   "fontFamily": "SUIT",
                   "fontSize": 13,
                   "fontWeight": "500"
+                },
+                {
+                  "type": "text",
+                  "id": "lCeb5",
+                  "name": "ecat3",
+                  "fill": "#9CA3AF",
+                  "content": "악세서리",
+                  "fontFamily": "SUIT",
+                  "fontSize": 11,
+                  "fontWeight": "normal"
                 },
                 {
                   "type": "text",
@@ -9660,6 +9730,16 @@
                   "fontFamily": "SUIT",
                   "fontSize": 13,
                   "fontWeight": "500"
+                },
+                {
+                  "type": "text",
+                  "id": "EftQY",
+                  "name": "ecat4",
+                  "fill": "#9CA3AF",
+                  "content": "가방",
+                  "fontFamily": "SUIT",
+                  "fontSize": 11,
+                  "fontWeight": "normal"
                 },
                 {
                   "type": "text",
