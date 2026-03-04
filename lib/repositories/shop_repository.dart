@@ -110,4 +110,58 @@ class ShopRepository {
       throw ErrorHandler.handle(e);
     }
   }
+
+  /// 승인 대기 중인 샵 목록을 조회한다.
+  Future<List<Shop>> getPendingShops() async {
+    try {
+      final data = await _client
+          .from(_table)
+          .select()
+          .eq('status', 'pending')
+          .order('created_at');
+      return data.map(Shop.fromJson).toList();
+    } catch (e) {
+      throw ErrorHandler.handle(e);
+    }
+  }
+
+  /// 샵 등록을 승인한다.
+  Future<Shop> approve(String id) async {
+    try {
+      final data = await _client
+          .from(_table)
+          .update({
+            'status': 'approved',
+            'reject_reason': null,
+            'reviewed_at':
+                DateTime.now().toIso8601String(),
+          })
+          .eq('id', id)
+          .select()
+          .single();
+      return Shop.fromJson(data);
+    } catch (e) {
+      throw ErrorHandler.handle(e);
+    }
+  }
+
+  /// 샵 등록을 거절한다.
+  Future<Shop> reject(String id, String reason) async {
+    try {
+      final data = await _client
+          .from(_table)
+          .update({
+            'status': 'rejected',
+            'reject_reason': reason,
+            'reviewed_at':
+                DateTime.now().toIso8601String(),
+          })
+          .eq('id', id)
+          .select()
+          .single();
+      return Shop.fromJson(data);
+    } catch (e) {
+      throw ErrorHandler.handle(e);
+    }
+  }
 }
