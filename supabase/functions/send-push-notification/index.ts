@@ -15,7 +15,7 @@ interface StatusConfig {
   bodyTemplate: string;
 }
 
-const STATUS_TRANSITIONS: Record<string, StatusConfig> = {
+const ORDER_STATUS_TRANSITIONS: Record<string, StatusConfig> = {
   "received->in_progress": {
     type: "status_change",
     title: "작업 시작",
@@ -25,6 +25,21 @@ const STATUS_TRANSITIONS: Record<string, StatusConfig> = {
     type: "completion",
     title: "작업 완료",
     bodyTemplate: "{shopName}에서 거트 작업이 완료되었습니다",
+  },
+};
+
+const SHOP_STATUS_TRANSITIONS: Record<string, StatusConfig> = {
+  "pending->approved": {
+    type: "shop_approval",
+    title: "샵 등록 승인",
+    bodyTemplate:
+      "샵 등록이 승인되었습니다! 사장님 모드로 전환할 수 있습니다.",
+  },
+  "pending->rejected": {
+    type: "shop_rejection",
+    title: "샵 등록 거절",
+    bodyTemplate:
+      "샵 등록이 거절되었습니다. 사유: {rejectReason}",
   },
 };
 
@@ -138,10 +153,76 @@ async function sendFcmV1(
 
 // --- 메인 핸들러 ---
 
+// --- 주문 상태 변경 처리 ---
+
+async function handleOrderStatusChange(
+  supabase: ReturnType<typeof createClient>,
+  record: Record<string, unknown>,
+  config: StatusConfig,
+): Promise<{ userId: string; title: string; body: string; data: Record<string, string> }> {
+  // 1. member → user_id
+  const { data: member, error: memberError } = await supabase
+    .from("members")
+    .select("user_id")
+    .eq("id", record.member_id)
+    .single();
+
+  if (memberError || !member) {
+    throw new Error(`Member lookup failed: ${JSON.stringify(memberError)}`);
+  }
+
+  if (!member.user_id) {
+    throw new Error("member has no linked user");
+  }
+
+  // shop 이름
+  const { data: shop, error: shopError } = await supabase
+    .from("shops")
+    .select("name")
+    .eq("id", record.shop_id)
+    .single();
+
+  if (shopError || !shop) {
+    throw new Error(`Shop lookup failed: ${JSON.stringify(shopError)}`);
+  }
+
+  const title = config.title;
+  const body = config.bodyTemplate.replace("{shopName}", shop.name);
+
+  return {
+    userId: member.user_id,
+    title,
+    body,
+    data: { order_id: record.id as string, type: config.type },
+  };
+}
+
+// --- 샵 상태 변경 처리 ---
+
+async function handleShopStatusChange(
+  record: Record<string, unknown>,
+  config: StatusConfig,
+): Promise<{ userId: string; title: string; body: string; data: Record<string, string> }> {
+  const title = config.title;
+  const body = config.bodyTemplate.replace(
+    "{rejectReason}",
+    (record.reject_reason as string) ?? "",
+  );
+
+  return {
+    userId: record.owner_id as string,
+    title,
+    body,
+    data: { shop_id: record.id as string, type: config.type },
+  };
+}
+
+// --- 메인 핸들러 ---
+
 Deno.serve(async (req: Request) => {
   try {
     const payload: WebhookPayload = await req.json();
-    const { old_record, record } = payload;
+    const { old_record, record, table } = payload;
 
     // 상태가 변경되지 않았으면 무시
     if (old_record.status === record.status) {
@@ -152,7 +233,12 @@ Deno.serve(async (req: Request) => {
     }
 
     const transitionKey = `${old_record.status}->${record.status}`;
-    const config = STATUS_TRANSITIONS[transitionKey];
+
+    // 테이블에 따라 상태 전환 매핑 선택
+    const isShop = table === "shops";
+    const config = isShop
+      ? SHOP_STATUS_TRANSITIONS[transitionKey]
+      : ORDER_STATUS_TRANSITIONS[transitionKey];
 
     // 지원하지 않는 상태 변경이면 무시
     if (!config) {
@@ -170,33 +256,16 @@ Deno.serve(async (req: Request) => {
       Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!,
     );
 
-    // 1. member → user_id
-    const { data: member, error: memberError } = await supabase
-      .from("members")
-      .select("user_id")
-      .eq("id", record.member_id)
-      .single();
+    // 테이블에 따라 알림 데이터 구성
+    const { userId, title, body, data } = isShop
+      ? await handleShopStatusChange(record, config)
+      : await handleOrderStatusChange(supabase, record, config);
 
-    if (memberError || !member) {
-      console.error("Member lookup failed:", memberError);
-      return new Response(
-        JSON.stringify({ error: "member not found" }),
-        { status: 404, headers: { "Content-Type": "application/json" } },
-      );
-    }
-
-    if (!member.user_id) {
-      return new Response(
-        JSON.stringify({ message: "member has no linked user" }),
-        { headers: { "Content-Type": "application/json" } },
-      );
-    }
-
-    // 2. user → fcm_token
+    // user → fcm_token
     const { data: user, error: userError } = await supabase
       .from("users")
       .select("fcm_token")
-      .eq("id", member.user_id)
+      .eq("id", userId)
       .single();
 
     if (userError || !user) {
@@ -207,25 +276,7 @@ Deno.serve(async (req: Request) => {
       );
     }
 
-    // 3. shop 이름
-    const { data: shop, error: shopError } = await supabase
-      .from("shops")
-      .select("name")
-      .eq("id", record.shop_id)
-      .single();
-
-    if (shopError || !shop) {
-      console.error("Shop lookup failed:", shopError);
-      return new Response(
-        JSON.stringify({ error: "shop not found" }),
-        { status: 404, headers: { "Content-Type": "application/json" } },
-      );
-    }
-
-    const title = config.title;
-    const body = config.bodyTemplate.replace("{shopName}", shop.name);
-
-    // 4. FCM v1 푸시 알림
+    // FCM v1 푸시 알림
     let fcmSuccess = false;
     if (user.fcm_token) {
       const projectId = Deno.env.get("FIREBASE_PROJECT_ID");
@@ -241,10 +292,7 @@ Deno.serve(async (req: Request) => {
             user.fcm_token,
             title,
             body,
-            {
-              order_id: record.id as string,
-              type: config.type,
-            },
+            data,
           );
         } catch (e) {
           console.error("FCM v1 error:", e);
@@ -256,16 +304,22 @@ Deno.serve(async (req: Request) => {
       console.warn("User has no fcm_token");
     }
 
-    // 5. notifications 테이블에 알림 기록
+    // notifications 테이블에 알림 기록
+    const notifPayload: Record<string, unknown> = {
+      user_id: userId,
+      type: config.type,
+      title,
+      body,
+    };
+
+    // 주문 관련이면 order_id 추가
+    if (!isShop) {
+      notifPayload.order_id = record.id as string;
+    }
+
     const { error: notifError } = await supabase
       .from("notifications")
-      .insert({
-        user_id: member.user_id,
-        type: config.type,
-        title,
-        body,
-        order_id: record.id as string,
-      });
+      .insert(notifPayload);
 
     if (notifError) {
       console.error("Notification insert failed:", notifError);
@@ -280,6 +334,7 @@ Deno.serve(async (req: Request) => {
         message: "notification processed",
         fcm_sent: fcmSuccess,
         transition: transitionKey,
+        table,
       }),
       { headers: { "Content-Type": "application/json" } },
     );

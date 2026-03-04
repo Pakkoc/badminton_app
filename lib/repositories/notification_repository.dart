@@ -1,4 +1,5 @@
 import 'package:badminton_app/core/error/app_exception.dart';
+import 'package:badminton_app/models/enums.dart';
 import 'package:badminton_app/models/notification_item.dart';
 import 'package:badminton_app/providers/supabase_provider.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -50,6 +51,25 @@ class NotificationRepository {
           .update({'is_read': true})
           .eq('user_id', userId)
           .eq('is_read', false);
+    } catch (e) {
+      throw ErrorHandler.handle(e);
+    }
+  }
+
+  /// 알림 레코드를 생성한다.
+  Future<void> create({
+    required String userId,
+    required NotificationType type,
+    required String title,
+    required String body,
+  }) async {
+    try {
+      await client.from('notifications').insert({
+        'user_id': userId,
+        'type': type.toJson(),
+        'title': title,
+        'body': body,
+      });
     } catch (e) {
       throw ErrorHandler.handle(e);
     }

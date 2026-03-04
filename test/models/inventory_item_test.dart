@@ -1,3 +1,4 @@
+import 'package:badminton_app/models/enums.dart';
 import 'package:badminton_app/models/inventory_item.dart';
 import 'package:flutter_test/flutter_test.dart';
 
@@ -17,7 +18,7 @@ void main() {
       final item = InventoryItem.fromJson(json);
       expect(item.id, 'aa0e8400-e29b-41d4-a716-446655440006');
       expect(item.name, 'BG65');
-      expect(item.category, '거트');
+      expect(item.category, InventoryCategory.other);
       expect(item.quantity, 50);
     });
 
@@ -32,7 +33,7 @@ void main() {
         ..remove('category')
         ..remove('image_url');
       final item = InventoryItem.fromJson(minimalJson);
-      expect(item.category, isNull);
+      expect(item.category, InventoryCategory.other);
       expect(item.imageUrl, isNull);
     });
 

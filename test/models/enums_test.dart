@@ -70,6 +70,14 @@ void main() {
       expect(NotificationType.completion.toJson(), 'completion');
       expect(NotificationType.notice.toJson(), 'notice');
       expect(NotificationType.receipt.toJson(), 'receipt');
+      expect(
+        NotificationType.shopApproval.toJson(),
+        'shop_approval',
+      );
+      expect(
+        NotificationType.shopRejection.toJson(),
+        'shop_rejection',
+      );
     });
 
     test('fromJson은 snake_case 문자열에서 enum을 반환한다', () {
@@ -88,6 +96,14 @@ void main() {
       expect(
         NotificationType.fromJson('receipt'),
         NotificationType.receipt,
+      );
+      expect(
+        NotificationType.fromJson('shop_approval'),
+        NotificationType.shopApproval,
+      );
+      expect(
+        NotificationType.fromJson('shop_rejection'),
+        NotificationType.shopRejection,
       );
     });
   });

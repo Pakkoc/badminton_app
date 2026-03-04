@@ -94,7 +94,7 @@ final testInventoryItem = InventoryItem(
   id: 'aa0e8400-e29b-41d4-a716-446655440006',
   shopId: '660e8400-e29b-41d4-a716-446655440001',
   name: 'BG65',
-  category: '거트',
+  category: InventoryCategory.other,
   quantity: 50,
   imageUrl: 'https://example.com/bg65.jpg',
   createdAt: DateTime(2026, 1, 10, 9),
