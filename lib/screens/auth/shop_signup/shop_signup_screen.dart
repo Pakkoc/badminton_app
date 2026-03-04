@@ -173,7 +173,7 @@ class _ShopSignupScreenState
                                 context,
                                 '샵 등록 신청이 완료되었습니다',
                               );
-                              context.go('/mypage');
+                              context.go('/customer/mypage');
                             }
                           }
                         : null,
