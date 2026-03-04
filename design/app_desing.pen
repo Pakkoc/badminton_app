@@ -5773,7 +5773,7 @@
                       "id": "6uPLV",
                       "name": "labelText",
                       "fill": "#1A1A2E",
-                      "content": "샵 사장님 등록",
+                      "content": "샵 등록 신청",
                       "fontFamily": "SUIT",
                       "fontSize": 15,
                       "fontWeight": "500"
@@ -7376,6 +7376,52 @@
                       "name": "contactPlaceholder",
                       "fill": "#9CA3AF",
                       "content": "연락처를 입력하세요",
+                      "fontFamily": "SUIT",
+                      "fontSize": 14,
+                      "fontWeight": "normal"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "DX8Qz",
+              "name": "bizNumberInput",
+              "width": "fill_container",
+              "layout": "vertical",
+              "gap": 6,
+              "children": [
+                {
+                  "type": "text",
+                  "id": "4ZRO9",
+                  "name": "bizLabel",
+                  "fill": "#1A1A2E",
+                  "content": "사업자등록번호 *",
+                  "fontFamily": "SUIT",
+                  "fontSize": 13,
+                  "fontWeight": "500"
+                },
+                {
+                  "type": "frame",
+                  "id": "XAutd",
+                  "name": "bizField",
+                  "width": "fill_container",
+                  "height": 48,
+                  "fill": "$--surface-variant",
+                  "cornerRadius": 14,
+                  "padding": [
+                    0,
+                    14
+                  ],
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "DR9nf",
+                      "name": "bizHint",
+                      "fill": "$--text-tertiary",
+                      "content": "000-00-00000",
                       "fontFamily": "SUIT",
                       "fontSize": 14,
                       "fontWeight": "normal"
@@ -17106,6 +17152,773 @@
           "iconFontName": "add",
           "iconFontFamily": "Material Symbols Rounded",
           "fill": "#FFFFFF"
+        }
+      ]
+    },
+    {
+      "type": "text",
+      "id": "1o86C",
+      "x": 0,
+      "y": 6450,
+      "name": "secLabel",
+      "fill": "#EF4444",
+      "content": "관리자 흐름",
+      "fontFamily": "SUIT",
+      "fontSize": 28,
+      "fontWeight": "bold"
+    },
+    {
+      "type": "text",
+      "id": "p6nYx",
+      "x": 90,
+      "y": 7410,
+      "name": "n_list",
+      "fill": "#94A3B8",
+      "content": "샵 등록 요청 목록",
+      "fontFamily": "SUIT",
+      "fontSize": 14,
+      "fontWeight": "normal"
+    },
+    {
+      "type": "text",
+      "id": "x843Z",
+      "x": 560,
+      "y": 7410,
+      "name": "n_detail",
+      "fill": "#94A3B8",
+      "content": "샵 등록 요청 상세",
+      "fontFamily": "SUIT",
+      "fontSize": 14,
+      "fontWeight": "normal"
+    },
+    {
+      "type": "frame",
+      "id": "IDxit",
+      "x": 0,
+      "y": 6520,
+      "name": "Admin Shop Requests",
+      "clip": true,
+      "width": 390,
+      "height": 844,
+      "fill": "$--background",
+      "layout": "vertical",
+      "children": [
+        {
+          "type": "frame",
+          "id": "oPwvm",
+          "name": "App Bar",
+          "width": "fill_container",
+          "height": 56,
+          "fill": "$--surface",
+          "stroke": {
+            "align": "inside",
+            "thickness": {
+              "bottom": 0.5
+            },
+            "fill": "$--border"
+          },
+          "padding": [
+            0,
+            16
+          ],
+          "alignItems": "center",
+          "children": [
+            {
+              "type": "text",
+              "id": "TSq0F",
+              "name": "title1",
+              "fill": "$--text-primary",
+              "content": "샵 등록 요청",
+              "fontFamily": "SUIT",
+              "fontSize": 18,
+              "fontWeight": "700"
+            }
+          ]
+        },
+        {
+          "type": "frame",
+          "id": "jHRJ9",
+          "name": "Request List",
+          "width": "fill_container",
+          "height": "fill_container",
+          "layout": "vertical",
+          "gap": 12,
+          "padding": [
+            12,
+            16
+          ],
+          "children": [
+            {
+              "type": "frame",
+              "id": "OLSv9",
+              "name": "Request Card 1",
+              "width": "fill_container",
+              "fill": "#FFFFFF",
+              "cornerRadius": 16,
+              "effect": {
+                "type": "shadow",
+                "shadowType": "outer",
+                "color": "#0000000A",
+                "offset": {
+                  "x": 0,
+                  "y": 2
+                },
+                "blur": 12
+              },
+              "layout": "vertical",
+              "gap": 8,
+              "padding": 16,
+              "children": [
+                {
+                  "type": "frame",
+                  "id": "Ez6XZ",
+                  "name": "Top Row",
+                  "width": "fill_container",
+                  "justifyContent": "space_between",
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "9QMGS",
+                      "name": "shopName1",
+                      "fill": "$--text-primary",
+                      "content": "배드민턴 프로샵",
+                      "fontFamily": "SUIT",
+                      "fontSize": 16,
+                      "fontWeight": "700"
+                    },
+                    {
+                      "type": "frame",
+                      "id": "VyIqX",
+                      "name": "Badge",
+                      "fill": "#FEF3C7",
+                      "cornerRadius": 12,
+                      "padding": [
+                        4,
+                        10
+                      ],
+                      "justifyContent": "center",
+                      "alignItems": "center",
+                      "children": [
+                        {
+                          "type": "text",
+                          "id": "vVsFU",
+                          "name": "badgeText1",
+                          "fill": "#D97706",
+                          "content": "대기 중",
+                          "fontFamily": "SUIT",
+                          "fontSize": 12,
+                          "fontWeight": "500"
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "UbS7D",
+                  "name": "Info Row",
+                  "width": "fill_container",
+                  "gap": 16,
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "F3Pif",
+                      "name": "bizLabel1",
+                      "fill": "$--text-tertiary",
+                      "content": "사업자번호",
+                      "fontFamily": "SUIT",
+                      "fontSize": 13,
+                      "fontWeight": "normal"
+                    },
+                    {
+                      "type": "text",
+                      "id": "r5wxB",
+                      "name": "bizVal1",
+                      "fill": "$--text-secondary",
+                      "content": "123-45-67890",
+                      "fontFamily": "SUIT",
+                      "fontSize": 13,
+                      "fontWeight": "500"
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "Bzxi4",
+                  "name": "Date Row",
+                  "width": "fill_container",
+                  "gap": 16,
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "n4Jw5",
+                      "name": "dateLabel1",
+                      "fill": "$--text-tertiary",
+                      "content": "신청일",
+                      "fontFamily": "SUIT",
+                      "fontSize": 13,
+                      "fontWeight": "normal"
+                    },
+                    {
+                      "type": "text",
+                      "id": "69cjW",
+                      "name": "dateVal1",
+                      "fill": "$--text-secondary",
+                      "content": "2026.03.05",
+                      "fontFamily": "SUIT",
+                      "fontSize": 13,
+                      "fontWeight": "500"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "VkeXy",
+              "name": "Request Card 2",
+              "width": "fill_container",
+              "fill": "#FFFFFF",
+              "cornerRadius": 16,
+              "effect": {
+                "type": "shadow",
+                "shadowType": "outer",
+                "color": "#0000000A",
+                "offset": {
+                  "x": 0,
+                  "y": 2
+                },
+                "blur": 12
+              },
+              "layout": "vertical",
+              "gap": 8,
+              "padding": 16,
+              "children": [
+                {
+                  "type": "frame",
+                  "id": "5q4gk",
+                  "name": "Top Row",
+                  "width": "fill_container",
+                  "justifyContent": "space_between",
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "JqH5H",
+                      "name": "c2name",
+                      "fill": "$--text-primary",
+                      "content": "스매시 배드민턴",
+                      "fontFamily": "SUIT",
+                      "fontSize": 16,
+                      "fontWeight": "700"
+                    },
+                    {
+                      "type": "frame",
+                      "id": "s8x5K",
+                      "name": "Badge",
+                      "fill": "#FEF3C7",
+                      "cornerRadius": 12,
+                      "padding": [
+                        4,
+                        10
+                      ],
+                      "justifyContent": "center",
+                      "alignItems": "center",
+                      "children": [
+                        {
+                          "type": "text",
+                          "id": "pV6HJ",
+                          "name": "c2bt",
+                          "fill": "#D97706",
+                          "content": "대기 중",
+                          "fontFamily": "SUIT",
+                          "fontSize": 12,
+                          "fontWeight": "500"
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "rMRVa",
+                  "name": "Info Row",
+                  "width": "fill_container",
+                  "gap": 16,
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "kNs3c",
+                      "name": "c2bl",
+                      "fill": "$--text-tertiary",
+                      "content": "사업자번호",
+                      "fontFamily": "SUIT",
+                      "fontSize": 13,
+                      "fontWeight": "normal"
+                    },
+                    {
+                      "type": "text",
+                      "id": "kc9VF",
+                      "name": "c2bv",
+                      "fill": "$--text-secondary",
+                      "content": "987-65-43210",
+                      "fontFamily": "SUIT",
+                      "fontSize": 13,
+                      "fontWeight": "500"
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "a0oFx",
+                  "name": "Date Row",
+                  "width": "fill_container",
+                  "gap": 16,
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "4oGdZ",
+                      "name": "c2dl",
+                      "fill": "$--text-tertiary",
+                      "content": "신청일",
+                      "fontFamily": "SUIT",
+                      "fontSize": 13,
+                      "fontWeight": "normal"
+                    },
+                    {
+                      "type": "text",
+                      "id": "xhfZA",
+                      "name": "c2dv",
+                      "fill": "$--text-secondary",
+                      "content": "2026.03.04",
+                      "fontFamily": "SUIT",
+                      "fontSize": 13,
+                      "fontWeight": "500"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "frame",
+      "id": "giYeu",
+      "x": 470,
+      "y": 6520,
+      "name": "Admin Shop Request Detail",
+      "clip": true,
+      "width": 390,
+      "height": 844,
+      "fill": "$--background",
+      "layout": "vertical",
+      "children": [
+        {
+          "type": "frame",
+          "id": "W2VyY",
+          "name": "App Bar",
+          "width": "fill_container",
+          "height": 56,
+          "fill": "$--surface",
+          "stroke": {
+            "align": "inside",
+            "thickness": {
+              "bottom": 0.5
+            },
+            "fill": "$--border"
+          },
+          "gap": 12,
+          "padding": [
+            0,
+            16
+          ],
+          "alignItems": "center",
+          "children": [
+            {
+              "type": "icon_font",
+              "id": "uF7iB",
+              "name": "backIcon",
+              "width": 24,
+              "height": 24,
+              "iconFontName": "arrow_back",
+              "iconFontFamily": "Material Symbols Rounded",
+              "fill": "$--text-primary"
+            },
+            {
+              "type": "text",
+              "id": "U1IHn",
+              "name": "title2",
+              "fill": "$--text-primary",
+              "content": "등록 요청 상세",
+              "fontFamily": "SUIT",
+              "fontSize": 18,
+              "fontWeight": "700"
+            }
+          ]
+        },
+        {
+          "type": "frame",
+          "id": "FbE8m",
+          "name": "Scroll Content",
+          "width": "fill_container",
+          "height": "fill_container",
+          "layout": "vertical",
+          "gap": 16,
+          "padding": 16,
+          "children": [
+            {
+              "type": "frame",
+              "id": "YQhf3",
+              "name": "Shop Info Card",
+              "width": "fill_container",
+              "fill": "#FFFFFF",
+              "cornerRadius": 16,
+              "effect": {
+                "type": "shadow",
+                "shadowType": "outer",
+                "color": "#0000000A",
+                "offset": {
+                  "x": 0,
+                  "y": 2
+                },
+                "blur": 12
+              },
+              "layout": "vertical",
+              "gap": 12,
+              "padding": 16,
+              "children": [
+                {
+                  "type": "text",
+                  "id": "VJvQW",
+                  "name": "shopHeader",
+                  "fill": "$--text-primary",
+                  "content": "샵 정보",
+                  "fontFamily": "SUIT",
+                  "fontSize": 16,
+                  "fontWeight": "700"
+                },
+                {
+                  "type": "frame",
+                  "id": "OPt2s",
+                  "name": "Name Row",
+                  "width": "fill_container",
+                  "justifyContent": "space_between",
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "kQAXG",
+                      "name": "r1l",
+                      "fill": "$--text-tertiary",
+                      "content": "샵 이름",
+                      "fontFamily": "SUIT",
+                      "fontSize": 14,
+                      "fontWeight": "normal"
+                    },
+                    {
+                      "type": "text",
+                      "id": "SG473",
+                      "name": "r1v",
+                      "fill": "$--text-primary",
+                      "content": "배드민턴 프로샵",
+                      "fontFamily": "SUIT",
+                      "fontSize": 14,
+                      "fontWeight": "500"
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "OuOTM",
+                  "name": "Addr Row",
+                  "width": "fill_container",
+                  "justifyContent": "space_between",
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "ksGJ6",
+                      "name": "r2l",
+                      "fill": "$--text-tertiary",
+                      "content": "주소",
+                      "fontFamily": "SUIT",
+                      "fontSize": 14,
+                      "fontWeight": "normal"
+                    },
+                    {
+                      "type": "text",
+                      "id": "SqmOZ",
+                      "name": "r2v",
+                      "fill": "$--text-primary",
+                      "content": "서울시 강남구 역삼동",
+                      "fontFamily": "SUIT",
+                      "fontSize": 14,
+                      "fontWeight": "500"
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "SNROV",
+                  "name": "Phone Row",
+                  "width": "fill_container",
+                  "justifyContent": "space_between",
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "U4zD5",
+                      "name": "r3l",
+                      "fill": "$--text-tertiary",
+                      "content": "연락처",
+                      "fontFamily": "SUIT",
+                      "fontSize": 14,
+                      "fontWeight": "normal"
+                    },
+                    {
+                      "type": "text",
+                      "id": "uhQA6",
+                      "name": "r3v",
+                      "fill": "$--text-primary",
+                      "content": "010-1234-5678",
+                      "fontFamily": "SUIT",
+                      "fontSize": 14,
+                      "fontWeight": "500"
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "booL0",
+                  "name": "Biz Row",
+                  "width": "fill_container",
+                  "justifyContent": "space_between",
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "aUoLe",
+                      "name": "r4l",
+                      "fill": "$--text-tertiary",
+                      "content": "사업자번호",
+                      "fontFamily": "SUIT",
+                      "fontSize": 14,
+                      "fontWeight": "normal"
+                    },
+                    {
+                      "type": "text",
+                      "id": "5MWUk",
+                      "name": "r4v",
+                      "fill": "$--text-primary",
+                      "content": "123-45-67890",
+                      "fontFamily": "SUIT",
+                      "fontSize": 14,
+                      "fontWeight": "500"
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "Z29HM",
+                  "name": "Desc Row",
+                  "width": "fill_container",
+                  "layout": "vertical",
+                  "gap": 4,
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "VXhE3",
+                      "name": "r5l",
+                      "fill": "$--text-tertiary",
+                      "content": "소개글",
+                      "fontFamily": "SUIT",
+                      "fontSize": 14,
+                      "fontWeight": "normal"
+                    },
+                    {
+                      "type": "text",
+                      "id": "c05k5",
+                      "name": "r5v",
+                      "fill": "$--text-primary",
+                      "content": "배드민턴 라켓 전문 스트링 서비스",
+                      "fontFamily": "SUIT",
+                      "fontSize": 14,
+                      "fontWeight": "normal"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "k6Wpr",
+              "name": "Owner Info Card",
+              "width": "fill_container",
+              "fill": "#FFFFFF",
+              "cornerRadius": 16,
+              "effect": {
+                "type": "shadow",
+                "shadowType": "outer",
+                "color": "#0000000A",
+                "offset": {
+                  "x": 0,
+                  "y": 2
+                },
+                "blur": 12
+              },
+              "layout": "vertical",
+              "gap": 12,
+              "padding": 16,
+              "children": [
+                {
+                  "type": "text",
+                  "id": "8ru0u",
+                  "name": "ownerH",
+                  "fill": "$--text-primary",
+                  "content": "사장님 정보",
+                  "fontFamily": "SUIT",
+                  "fontSize": 16,
+                  "fontWeight": "700"
+                },
+                {
+                  "type": "frame",
+                  "id": "NXsiQ",
+                  "name": "Name Row",
+                  "width": "fill_container",
+                  "justifyContent": "space_between",
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "zhbPD",
+                      "name": "o1l",
+                      "fill": "$--text-tertiary",
+                      "content": "이름",
+                      "fontFamily": "SUIT",
+                      "fontSize": 14,
+                      "fontWeight": "normal"
+                    },
+                    {
+                      "type": "text",
+                      "id": "eWvbj",
+                      "name": "o1v",
+                      "fill": "$--text-primary",
+                      "content": "홍길동",
+                      "fontFamily": "SUIT",
+                      "fontSize": 14,
+                      "fontWeight": "500"
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "rXmcf",
+                  "name": "Phone Row",
+                  "width": "fill_container",
+                  "justifyContent": "space_between",
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "SunJR",
+                      "name": "o2l",
+                      "fill": "$--text-tertiary",
+                      "content": "연락처",
+                      "fontFamily": "SUIT",
+                      "fontSize": 14,
+                      "fontWeight": "normal"
+                    },
+                    {
+                      "type": "text",
+                      "id": "MrA7W",
+                      "name": "o2v",
+                      "fill": "$--text-primary",
+                      "content": "010-9876-5432",
+                      "fontFamily": "SUIT",
+                      "fontSize": 14,
+                      "fontWeight": "500"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "frame",
+          "id": "z41A5",
+          "name": "Bottom Action Bar",
+          "width": "fill_container",
+          "fill": "$--surface",
+          "stroke": {
+            "align": "inside",
+            "thickness": {
+              "top": 0.5
+            },
+            "fill": "$--border"
+          },
+          "gap": 12,
+          "padding": 16,
+          "children": [
+            {
+              "type": "frame",
+              "id": "G2LYw",
+              "name": "Approve Button",
+              "width": "fill_container",
+              "height": 48,
+              "fill": "#22C55E",
+              "cornerRadius": 12,
+              "justifyContent": "center",
+              "alignItems": "center",
+              "children": [
+                {
+                  "type": "text",
+                  "id": "VpNuv",
+                  "name": "approveTxt",
+                  "fill": "#FFFFFF",
+                  "content": "승인",
+                  "fontFamily": "SUIT",
+                  "fontSize": 16,
+                  "fontWeight": "700"
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "OR793",
+              "name": "Reject Button",
+              "width": "fill_container",
+              "height": 48,
+              "fill": "#FFFFFF",
+              "cornerRadius": 12,
+              "stroke": {
+                "align": "inside",
+                "thickness": 1,
+                "fill": "#EF4444"
+              },
+              "justifyContent": "center",
+              "alignItems": "center",
+              "children": [
+                {
+                  "type": "text",
+                  "id": "cEcYL",
+                  "name": "rejectTxt",
+                  "fill": "#EF4444",
+                  "content": "거절",
+                  "fontFamily": "SUIT",
+                  "fontSize": 16,
+                  "fontWeight": "700"
+                }
+              ]
+            }
+          ]
         }
       ]
     }
