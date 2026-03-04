@@ -59,25 +59,10 @@ void main() {
 
       // Assert
       expect(state, const ProfileSetupState());
-      expect(state.selectedRole, isNull);
       expect(state.name, isEmpty);
       expect(state.phone, isEmpty);
       expect(state.isSubmitting, isFalse);
       expect(state.errorMessage, isNull);
-    });
-
-    test('selectRole은 역할을 업데이트한다', () {
-      // Arrange
-      final notifier = container.read(
-        profileSetupNotifierProvider.notifier,
-      );
-
-      // Act
-      notifier.selectRole(UserRole.customer);
-
-      // Assert
-      final state = container.read(profileSetupNotifierProvider);
-      expect(state.selectedRole, UserRole.customer);
     });
 
     test('updateName은 이름을 업데이트한다', () {
@@ -109,33 +94,18 @@ void main() {
     });
 
     group('isValid', () {
-      test('모든 필드가 유효하면 true를 반환한다', () {
+      test('이름과 전화번호가 유효하면 true를 반환한다', () {
         // Arrange
         final notifier = container.read(
           profileSetupNotifierProvider.notifier,
         );
 
         // Act
-        notifier.selectRole(UserRole.customer);
         notifier.updateName('홍길동');
         notifier.updatePhone('010-1234-5678');
 
         // Assert
         expect(notifier.isValid, isTrue);
-      });
-
-      test('역할이 없으면 false를 반환한다', () {
-        // Arrange
-        final notifier = container.read(
-          profileSetupNotifierProvider.notifier,
-        );
-
-        // Act
-        notifier.updateName('홍길동');
-        notifier.updatePhone('010-1234-5678');
-
-        // Assert
-        expect(notifier.isValid, isFalse);
       });
 
       test('이름이 유효하지 않으면 false를 반환한다', () {
@@ -145,7 +115,6 @@ void main() {
         );
 
         // Act
-        notifier.selectRole(UserRole.customer);
         notifier.updateName('홍');
         notifier.updatePhone('010-1234-5678');
 
@@ -160,7 +129,6 @@ void main() {
         );
 
         // Act
-        notifier.selectRole(UserRole.customer);
         notifier.updateName('홍길동');
         notifier.updatePhone('123');
 
@@ -170,12 +138,11 @@ void main() {
     });
 
     group('submit', () {
-      test('고객 역할이면 /customer/home을 반환한다', () async {
+      test('항상 /customer/home을 반환한다', () async {
         // Arrange
         final notifier = container.read(
           profileSetupNotifierProvider.notifier,
         );
-        notifier.selectRole(UserRole.customer);
         notifier.updateName('홍길동');
         notifier.updatePhone('010-1234-5678');
 
@@ -199,37 +166,6 @@ void main() {
 
         // Assert
         expect(route, '/customer/home');
-      });
-
-      test('사장님 역할이면 /shop-register를 반환한다', () async {
-        // Arrange
-        final notifier = container.read(
-          profileSetupNotifierProvider.notifier,
-        );
-        notifier.selectRole(UserRole.shopOwner);
-        notifier.updateName('김사장');
-        notifier.updatePhone('010-9876-5432');
-
-        when(() => mockUserRepo.create(any()))
-            .thenAnswer((_) async => User(
-                  id: 'test-user-id',
-                  role: UserRole.shopOwner,
-                  name: '김사장',
-                  phone: '010-9876-5432',
-                  createdAt: DateTime.now(),
-                ));
-        when(
-          () => mockUserRepo.matchMembersByPhone(
-            any(),
-            any(),
-          ),
-        ).thenAnswer((_) async {});
-
-        // Act
-        final route = await notifier.submit();
-
-        // Assert
-        expect(route, '/shop-register');
       });
 
       test('유효하지 않으면 null을 반환한다', () async {

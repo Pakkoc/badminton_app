@@ -69,16 +69,6 @@ void main() {
       );
     });
 
-    testWidgets('역할 선택 카드 2개를 표시한다', (tester) async {
-      await tester.pumpWidget(buildSubject());
-      await tester.pumpAndSettle();
-
-      expect(find.text('고객'), findsOneWidget);
-      expect(find.text('사장님'), findsOneWidget);
-      expect(find.byIcon(Icons.person), findsOneWidget);
-      expect(find.byIcon(Icons.store), findsOneWidget);
-    });
-
     testWidgets('이름 입력 필드를 표시한다', (tester) async {
       await tester.pumpWidget(buildSubject());
       await tester.pumpAndSettle();

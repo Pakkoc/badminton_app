@@ -1,6 +1,5 @@
 import 'package:badminton_app/app/theme.dart';
 import 'package:badminton_app/core/utils/validators.dart';
-import 'package:badminton_app/models/enums.dart';
 import 'package:badminton_app/screens/auth/profile_setup/profile_setup_notifier.dart';
 import 'package:badminton_app/widgets/phone_input_field.dart';
 import 'package:badminton_app/widgets/toast.dart';
@@ -61,32 +60,6 @@ class _ProfileSetupScreenState
               style: Theme.of(context).textTheme.bodyLarge,
             ),
             const SizedBox(height: 24),
-            Row(
-              children: [
-                Expanded(
-                  child: _RoleCard(
-                    icon: Icons.person,
-                    label: '고객',
-                    isSelected:
-                        state.selectedRole == UserRole.customer,
-                    onTap: () =>
-                        notifier.selectRole(UserRole.customer),
-                  ),
-                ),
-                const SizedBox(width: 12),
-                Expanded(
-                  child: _RoleCard(
-                    icon: Icons.store,
-                    label: '사장님',
-                    isSelected:
-                        state.selectedRole == UserRole.shopOwner,
-                    onTap: () =>
-                        notifier.selectRole(UserRole.shopOwner),
-                  ),
-                ),
-              ],
-            ),
-            const SizedBox(height: 24),
             TextFormField(
               controller: _nameController,
               decoration: const InputDecoration(
@@ -140,66 +113,7 @@ class _ProfileSetupScreenState
                           color: Colors.white,
                         ),
                       )
-                    : Text(
-                        state.selectedRole == UserRole.shopOwner
-                            ? '다음'
-                            : '시작하기',
-                      ),
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-}
-
-class _RoleCard extends StatelessWidget {
-  const _RoleCard({
-    required this.icon,
-    required this.label,
-    required this.isSelected,
-    required this.onTap,
-  });
-
-  final IconData icon;
-  final String label;
-  final bool isSelected;
-  final VoidCallback onTap;
-
-  @override
-  Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: onTap,
-      child: Container(
-        padding: const EdgeInsets.symmetric(vertical: 24),
-        decoration: BoxDecoration(
-          border: Border.all(
-            color: isSelected
-                ? AppTheme.primary
-                : AppTheme.border,
-            width: isSelected ? 2 : 1,
-          ),
-          borderRadius: BorderRadius.circular(20),
-        ),
-        child: Column(
-          children: [
-            Icon(
-              icon,
-              size: 40,
-              color: isSelected
-                  ? AppTheme.primary
-                  : AppTheme.textTertiary,
-            ),
-            const SizedBox(height: 8),
-            Text(
-              label,
-              style: TextStyle(
-                fontSize: 16,
-                fontWeight: FontWeight.w600,
-                color: isSelected
-                    ? AppTheme.primary
-                    : AppTheme.textSecondary,
+                    : const Text('시작하기'),
               ),
             ),
           ],

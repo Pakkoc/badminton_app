@@ -16,10 +16,6 @@ class ProfileSetupNotifier extends Notifier<ProfileSetupState> {
   @override
   ProfileSetupState build() => const ProfileSetupState();
 
-  void selectRole(UserRole role) {
-    state = state.copyWith(selectedRole: role);
-  }
-
   void updateName(String name) {
     state = state.copyWith(name: name);
   }
@@ -29,7 +25,6 @@ class ProfileSetupNotifier extends Notifier<ProfileSetupState> {
   }
 
   bool get isValid =>
-      state.selectedRole != null &&
       Validators.name(state.name) == null &&
       Validators.phone(state.phone) == null;
 
@@ -43,7 +38,7 @@ class ProfileSetupNotifier extends Notifier<ProfileSetupState> {
           ref.read(supabaseProvider).auth.currentUser!.id;
       final user = User(
         id: userId,
-        role: state.selectedRole!,
+        role: UserRole.customer,
         name: state.name,
         phone: state.phone,
         createdAt: DateTime.now(),
@@ -54,11 +49,7 @@ class ProfileSetupNotifier extends Notifier<ProfileSetupState> {
           .read(userRepositoryProvider)
           .matchMembersByPhone(state.phone, userId);
 
-      if (state.selectedRole == UserRole.customer) {
-        return '/customer/home';
-      } else {
-        return '/shop-register';
-      }
+      return '/customer/home';
     } on AppException catch (e) {
       state = state.copyWith(
         isSubmitting: false,
