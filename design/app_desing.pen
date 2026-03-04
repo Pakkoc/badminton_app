@@ -364,170 +364,6 @@
         },
         {
           "type": "frame",
-          "id": "md4pZ",
-          "name": "StepIndicator",
-          "width": "fill_container",
-          "height": 40,
-          "padding": [
-            0,
-            60
-          ],
-          "justifyContent": "center",
-          "alignItems": "center",
-          "children": [
-            {
-              "type": "ellipse",
-              "id": "klKpR",
-              "name": "dot1Active",
-              "fill": "#2563EB",
-              "width": 10,
-              "height": 10
-            },
-            {
-              "type": "text",
-              "id": "lzatx",
-              "name": "stepLabel1",
-              "fill": "#1D4ED8",
-              "content": " 정보 입력 ",
-              "fontFamily": "SUIT",
-              "fontSize": 12,
-              "fontWeight": "500"
-            },
-            {
-              "type": "frame",
-              "id": "jmozs",
-              "name": "stepLine",
-              "width": 40,
-              "height": 2,
-              "fill": "#E8E0D8"
-            },
-            {
-              "type": "ellipse",
-              "id": "mcLDp",
-              "name": "dot2Inactive",
-              "fill": "#9CA3AF",
-              "width": 10,
-              "height": 10
-            },
-            {
-              "type": "text",
-              "id": "zBffW",
-              "name": "stepLabel2",
-              "fill": "#9CA3AF",
-              "content": " 샵 등록",
-              "fontFamily": "SUIT",
-              "fontSize": 12,
-              "fontWeight": "normal"
-            }
-          ]
-        },
-        {
-          "type": "frame",
-          "id": "Lgq4k",
-          "name": "Role Selection",
-          "width": "fill_container",
-          "gap": 12,
-          "children": [
-            {
-              "type": "frame",
-              "id": "VDKuy",
-              "name": "고객 Card",
-              "width": "fill_container",
-              "fill": "$--surface",
-              "cornerRadius": 20,
-              "stroke": {
-                "align": "inside",
-                "thickness": 1.5,
-                "fill": "$--border"
-              },
-              "layout": "vertical",
-              "gap": 8,
-              "padding": 16,
-              "children": [
-                {
-                  "type": "icon_font",
-                  "id": "lwwxn",
-                  "name": "custIcon",
-                  "width": 32,
-                  "height": 32,
-                  "iconFontName": "person",
-                  "iconFontFamily": "Material Symbols Rounded",
-                  "fill": "$--text-secondary"
-                },
-                {
-                  "type": "text",
-                  "id": "DZ0RR",
-                  "name": "custTitle",
-                  "fill": "$--text-primary",
-                  "content": "고객",
-                  "fontFamily": "SUIT",
-                  "fontSize": 16,
-                  "fontWeight": "600"
-                },
-                {
-                  "type": "text",
-                  "id": "KRm5J",
-                  "name": "custDesc",
-                  "fill": "$--text-tertiary",
-                  "content": "작업 현황 확인",
-                  "fontFamily": "SUIT",
-                  "fontSize": 12,
-                  "fontWeight": "normal"
-                }
-              ]
-            },
-            {
-              "type": "frame",
-              "id": "SN7Ed",
-              "name": "샵 사장님 Card",
-              "width": "fill_container",
-              "fill": "$--surface",
-              "cornerRadius": 20,
-              "stroke": {
-                "align": "inside",
-                "thickness": 1.5,
-                "fill": "$--border"
-              },
-              "layout": "vertical",
-              "gap": 8,
-              "padding": 16,
-              "children": [
-                {
-                  "type": "icon_font",
-                  "id": "DHf3h",
-                  "name": "shopIcon",
-                  "width": 32,
-                  "height": 32,
-                  "iconFontName": "storefront",
-                  "iconFontFamily": "Material Symbols Rounded",
-                  "fill": "$--text-secondary"
-                },
-                {
-                  "type": "text",
-                  "id": "0LzJW",
-                  "name": "shopTitle",
-                  "fill": "$--text-primary",
-                  "content": "샵 사장님",
-                  "fontFamily": "SUIT",
-                  "fontSize": 16,
-                  "fontWeight": "600"
-                },
-                {
-                  "type": "text",
-                  "id": "X6HOv",
-                  "name": "shopDesc",
-                  "fill": "$--text-tertiary",
-                  "content": "작업 관리",
-                  "fontFamily": "SUIT",
-                  "fontSize": 12,
-                  "fontWeight": "normal"
-                }
-              ]
-            }
-          ]
-        },
-        {
-          "type": "frame",
           "id": "5YlFn",
           "name": "Form Fields",
           "width": "fill_container",
@@ -5864,6 +5700,85 @@
                       "fontWeight": "normal"
                     }
                   ]
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "Af4AD",
+              "name": "Shop Registration Card",
+              "width": "fill_container",
+              "height": 56,
+              "fill": "#FFFFFF",
+              "cornerRadius": 20,
+              "effect": {
+                "type": "shadow",
+                "shadowType": "outer",
+                "color": "#0000000A",
+                "offset": {
+                  "x": 0,
+                  "y": 2
+                },
+                "blur": 12
+              },
+              "padding": [
+                0,
+                16
+              ],
+              "justifyContent": "space_between",
+              "alignItems": "center",
+              "children": [
+                {
+                  "type": "frame",
+                  "id": "A7vke",
+                  "name": "Left Row",
+                  "gap": 12,
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "frame",
+                      "id": "b1z88",
+                      "name": "Icon Wrap",
+                      "width": 36,
+                      "height": 36,
+                      "fill": "#EFF6FF",
+                      "cornerRadius": 10,
+                      "justifyContent": "center",
+                      "alignItems": "center",
+                      "children": [
+                        {
+                          "type": "icon_font",
+                          "id": "B0MiN",
+                          "name": "storeIcon",
+                          "width": 20,
+                          "height": 20,
+                          "iconFontName": "storefront",
+                          "iconFontFamily": "Material Symbols Rounded",
+                          "fill": "#2563EB"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "text",
+                      "id": "6uPLV",
+                      "name": "labelText",
+                      "fill": "#1A1A2E",
+                      "content": "샵 사장님 등록",
+                      "fontFamily": "SUIT",
+                      "fontSize": 15,
+                      "fontWeight": "500"
+                    }
+                  ]
+                },
+                {
+                  "type": "icon_font",
+                  "id": "JbBUo",
+                  "name": "chevron",
+                  "width": 20,
+                  "height": 20,
+                  "iconFontName": "chevron_right",
+                  "iconFontFamily": "Material Symbols Rounded",
+                  "fill": "#9CA3AF"
                 }
               ]
             },
