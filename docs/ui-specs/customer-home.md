@@ -1,6 +1,6 @@
 # 고객 홈 — UI 화면 스펙
 
-> 최종 수정일: 2026-03-03
+> 최종 수정일: 2026-03-04
 
 ---
 
@@ -35,14 +35,14 @@
 │  │  작업 카드 1                 │  │    (Pull-to-refresh)
 │  │  ● 작업중                   │  │
 │  │  OO 거트샵                   │  │
-│  │  📅 접수 14:30               │  │
+│  │  접수 3/4 14:30→시작 ──→완료 ──│  │
 │  └────────────────────────────┘  │
 │           12px 간격               │
 │  ┌────────────────────────────┐  │
 │  │  작업 카드 2                 │  │
 │  │  ● 접수됨                   │  │
 │  │  XX 스트링                   │  │
-│  │  📅 접수 15:20               │  │
+│  │  접수 3/4 15:20→시작 ──→완료 ──│  │
 │  └────────────────────────────┘  │
 │           ...                    │
 │                                  │
@@ -135,7 +135,7 @@
 │                                         │
 │  ● 작업중                               │  ← 상태 뱃지
 │  OO 거트 스트링샵                        │  ← 샵 이름 (텍스트)
-│  📅 접수 14:30                           │  ← 접수일 (아이콘 + 고정시간)
+│  접수 3/4 14:30 → 시작 3/4 15:00 → 완료 ──│  ← 타임라인 (OrderTimelineRow)
 │  📝 메모 내용 (있을 때만 표시)             │  ← 메모 (아이콘 + 텍스트, 선택)
 │                                    ▸    │  ← 완료 상태일 때 길찾기 아이콘 추가
 └─────────────────────────────────────────┘
@@ -146,7 +146,7 @@
 | 카드 컨테이너 | Card (탭 가능) | 개별 작업 정보 카드 | 아래 카드 스타일 참조 |
 | 상태 뱃지 | StatusBadge | 접수됨/작업중/완료 상태 | 아래 상태 뱃지 스타일 참조 |
 | 샵 이름 | Text | 샵 이름 | `bodyMedium` `#4A4A5A` |
-| 접수일 | Row (Icon + Text) | 시계 아이콘 + 고정 시간 | 아이콘: `schedule` 16px `#9CA3AF`, 텍스트: `bodySmall` (12sp) `#9CA3AF`. 형식: "접수 HH:mm" |
+| 타임라인 | OrderTimelineRow | 접수→시작→완료 3단계 타임라인을 가로 한 줄로 표시 | 폰트 11sp, Medium 500. 도달 단계: `#9CA3AF`, 미도달 단계: `#CBD5E1`. 형식: "접수 M/D HH:mm → 시작 M/D HH:mm → 완료 ──". 미도달 시간은 "──"로 표시 |
 | 메모 | Row (Icon + Text) | 메모 아이콘 + 메모 텍스트 (있을 때만 표시) | 아이콘: `notes` 16px `#9CA3AF`, 텍스트: `bodySmall` (12sp) `#9CA3AF`. 최대 1줄, overflow ellipsis |
 | 길찾기 아이콘 | IconButton | 완료 상태일 때만 표시 | `directions` 24px, 색상 `#2563EB`. 탭 시 네이버 지도 길찾기 실행 |
 
@@ -263,16 +263,21 @@
 |--------|------|-------------|-----------|------|
 | status | Enum | orders.status | StatusBadge 컴포넌트 | `received` / `in_progress` / `completed` |
 | shop_name | String | shops.name | 텍스트 | 작업을 맡긴 샵 이름 |
-| created_at | Timestamp | orders.created_at | "접수 HH:mm" 고정 형식 | 접수 일시 |
+| created_at | Timestamp | orders.created_at | "접수 M/D HH:mm" | 접수 일시 (타임라인에서 사용) |
+| in_progress_at | Timestamp? | orders.in_progress_at | "시작 M/D HH:mm" 또는 "시작 ──" | 작업 시작 일시 (타임라인에서 사용, null이면 "──") |
+| completed_at | Timestamp? | orders.completed_at | "완료 M/D HH:mm" 또는 "완료 ──" | 작업 완료 일시 (타임라인에서 사용, null이면 "──") |
 | memo | String? | orders.memo | 텍스트, 앞에 `notes` 아이콘. 최대 1줄 | 메모. 값이 있을 때만 표시 |
 | shop_latitude | Double | shops.latitude | 내부 사용 (길찾기용) | 샵 위도 |
 | shop_longitude | Double | shops.longitude | 내부 사용 (길찾기용) | 샵 경도 |
 
 ### 시간 표시 규칙
 
+타임라인 Row에서 각 단계의 시간을 표시한다.
+
 | 조건 | 표시 형식 | 예시 |
 |------|-----------|------|
-| 모든 경우 | "접수 HH:mm" | 접수 14:30 |
+| 도달한 단계 | "단계 M/D HH:mm" | 접수 3/4 14:30 |
+| 미도달 단계 | "단계 ──" | 완료 ── |
 
 ---
 

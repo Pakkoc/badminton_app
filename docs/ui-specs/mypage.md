@@ -86,7 +86,7 @@
 | 프로필 아이콘 | Icon | `person`, 크기 48x48px, 아이콘 28px, 배경 `#EFF6FF`, 아이콘 색상 `#2563EB` | 항상 표시 |
 | 사용자 이름 | Text | `titleLarge` (18sp, Bold 700) | 항상 표시 |
 | 연락처 | Text | `bodyMedium` (14sp, `#4A4A5A`) | 항상 표시 |
-| 이메일 | Text | `bodyMedium` (14sp, `#4A4A5A`) | 이메일 등록 시 표시 |
+| 이메일 | Text | `bodyMedium` (14sp, `#4A4A5A`) | 이메일 등록 시 표시. 네이버 로그인의 placeholder 이메일(`placeholder` 문자열 포함)은 숨김 처리 |
 | 프로필 수정 버튼 | OutlinedButton | "프로필 수정" (13sp, Medium 500, `#2563EB`), 탭 시 프로필 수정 화면(`customer-profile-edit`)으로 이동 | 항상 표시 |
 
 **프로필 섹션 레이아웃:**

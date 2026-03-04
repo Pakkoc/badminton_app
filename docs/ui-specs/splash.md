@@ -1,6 +1,6 @@
 # 스플래시 — UI 화면 스펙
 
-> 최종 수정일: 2026-03-03
+> 최종 수정일: 2026-03-04
 
 ---
 
@@ -135,10 +135,15 @@ Supabase Auth 세션 확인
   ↓
 ├── 세션 있음 (로그인 상태)
 │     ↓
-│   users 테이블에서 role 조회
+│   users 테이블 조회
 │     ↓
-│   ├── role = "customer" → 고객 홈 화면으로 이동
-│   └── role = "shop_owner" → 사장님 대시보드로 이동
+│   ├── users 레코드 없음 → 프로필 설정 화면으로 이동
+│   └── users 레코드 있음
+│         ↓
+│       shops 테이블에서 owner_id로 샵 보유 여부 확인
+│         ↓
+│       ├── 샵 보유 → 사장님 대시보드로 이동
+│       └── 샵 미보유 → 고객 홈 화면으로 이동
 │
 └── 세션 없음 (미로그인)
       ↓
@@ -154,7 +159,8 @@ Supabase Auth 세션 확인
 | API | 테이블 | 조건 | 반환 데이터 | 호출 시점 |
 |-----|--------|------|-------------|-----------|
 | 인증 세션 확인 | Supabase Auth | `supabase.auth.currentSession` | Session 또는 null | 화면 진입 시 |
-| 사용자 역할 조회 | `users` | `id = 현재_사용자_id` | `role` | 세션이 유효할 때 |
+| 사용자 레코드 조회 | `users` | `id = 현재_사용자_id` | user 전체 또는 null | 세션이 유효할 때 |
+| 샵 보유 여부 확인 | `shops` | `owner_id = 현재_사용자_id` | shop.id 또는 null | 사용자 레코드가 존재할 때 |
 
 **Supabase 쿼리 예시:**
 
@@ -162,13 +168,31 @@ Supabase Auth 세션 확인
 // 1. 세션 확인
 final session = supabase.auth.currentSession;
 
-// 2. 역할 조회 (세션이 있을 때)
+// 2. 사용자 레코드 조회 (세션이 있을 때)
 if (session != null) {
-  final user = await supabase
+  final userId = session.user.id;
+  final data = await supabase
     .from('users')
-    .select('role')
-    .eq('id', session.user.id)
-    .single();
+    .select()
+    .eq('id', userId)
+    .maybeSingle();
+
+  if (data == null) {
+    // → 프로필 설정 화면으로 이동
+  }
+
+  // 3. 샵 보유 여부 확인
+  final shop = await supabase
+    .from('shops')
+    .select('id')
+    .eq('owner_id', userId)
+    .maybeSingle();
+
+  if (shop != null) {
+    // → 사장님 대시보드로 이동
+  } else {
+    // → 고객 홈 화면으로 이동
+  }
 }
 ```
 
@@ -213,9 +237,10 @@ if (session != null) {
 
 | 대상 화면 | 동작 | 전달 파라미터 |
 |-----------|------|---------------|
-| 로그인 (`login`) | 미로그인 상태일 때 자동 이동 | 없음 |
-| 고객 홈 (`customer-home`) | 로그인 상태 + role이 `customer`일 때 자동 이동 | 없음 |
-| 사장님 대시보드 (`owner-dashboard`) | 로그인 상태 + role이 `shop_owner`일 때 자동 이동 | 없음 |
+| 로그인 (`login`) | 미로그인 상태 또는 세션 확인 타임아웃 시 자동 이동 | 없음 |
+| 프로필 설정 (`profile-setup`) | 로그인 상태이나 users 레코드가 없을 때 자동 이동 | 없음 |
+| 고객 홈 (`customer-home`) | 로그인 상태 + 샵 미보유 시 자동 이동 | 없음 |
+| 사장님 대시보드 (`owner-dashboard`) | 로그인 상태 + 샵 보유 시 자동 이동 | 없음 |
 
 ---
 
