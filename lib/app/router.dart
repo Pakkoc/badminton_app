@@ -20,6 +20,8 @@ import 'package:badminton_app/screens/customer/profile_edit/profile_edit_screen.
 import 'package:badminton_app/screens/customer/qr_order/qr_order_screen.dart';
 import 'package:badminton_app/screens/customer/shop_detail/shop_detail_screen.dart';
 import 'package:badminton_app/screens/customer/shop_search/shop_search_screen.dart';
+import 'package:badminton_app/screens/admin/shop_request_detail/shop_request_detail_screen.dart';
+import 'package:badminton_app/screens/admin/shop_requests/shop_requests_screen.dart';
 import 'package:badminton_app/screens/owner/dashboard/owner_dashboard_screen.dart';
 import 'package:badminton_app/screens/owner/inventory/inventory_screen.dart';
 import 'package:badminton_app/screens/owner/order_create/order_create_screen.dart';
@@ -202,17 +204,15 @@ final routerProvider = Provider<GoRouter>((ref) {
       // 관리자 라우트
       GoRoute(
         path: '/admin/shop-requests',
-        builder: (context, state) => Scaffold(
-          appBar: AppBar(title: const Text('승인 요청 목록')),
-          body: const Center(child: Text('준비 중')),
-        ),
+        builder: (context, state) =>
+            const ShopRequestsScreen(),
         routes: [
           GoRoute(
             path: ':id',
-            builder: (context, state) => Scaffold(
-              appBar:
-                  AppBar(title: const Text('승인 요청 상세')),
-              body: const Center(child: Text('준비 중')),
+            builder: (context, state) =>
+                ShopRequestDetailScreen(
+              shopId:
+                  state.pathParameters['id']!,
             ),
           ),
         ],
