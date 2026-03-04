@@ -8,6 +8,7 @@ import 'package:badminton_app/widgets/error_view.dart';
 import 'package:badminton_app/widgets/loading_indicator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class OrderDetailScreen extends ConsumerWidget {
@@ -377,25 +378,37 @@ class _ShopInfoSection extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Row(
-                  children: [
-                    const Icon(
-                      Icons.storefront,
-                      size: 20,
-                      color: AppTheme.primary,
-                    ),
-                    const SizedBox(width: 8),
-                    Text(
-                      shop.name,
-                      style: Theme.of(context)
-                          .textTheme
-                          .bodyLarge
-                          ?.copyWith(
-                            fontWeight: FontWeight.w600,
-                            color: AppTheme.textPrimary,
-                          ),
-                    ),
-                  ],
+                GestureDetector(
+                  onTap: () => context.push(
+                    '/customer/shop/${shop.id}',
+                  ),
+                  child: Row(
+                    children: [
+                      const Icon(
+                        Icons.storefront,
+                        size: 20,
+                        color: AppTheme.primary,
+                      ),
+                      const SizedBox(width: 8),
+                      Expanded(
+                        child: Text(
+                          shop.name,
+                          style: Theme.of(context)
+                              .textTheme
+                              .bodyLarge
+                              ?.copyWith(
+                                fontWeight: FontWeight.w600,
+                                color: AppTheme.primary,
+                              ),
+                        ),
+                      ),
+                      const Icon(
+                        Icons.chevron_right,
+                        size: 20,
+                        color: AppTheme.textTertiary,
+                      ),
+                    ],
+                  ),
                 ),
                 const SizedBox(height: 12),
                 Row(
