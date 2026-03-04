@@ -177,3 +177,18 @@ screens:
     role: shop_owner
     pencil_id: frCH8
     spec_file: docs/ui-specs/inventory-manage.md
+
+  # ─── 관리자 흐름 ───
+  admin-shop-requests:
+    name: "샵 등록 요청 목록"
+    description: "관리자가 샵 등록 요청을 목록으로 조회하고 필터링"
+    role: admin
+    pencil_id: ""
+    spec_file: docs/ui-specs/admin-shop-requests.md
+
+  admin-shop-request-detail:
+    name: "샵 등록 요청 상세"
+    description: "관리자가 개별 샵 등록 요청을 검토하고 승인/거절 처리"
+    role: admin
+    pencil_id: ""
+    spec_file: docs/ui-specs/admin-shop-request-detail.md

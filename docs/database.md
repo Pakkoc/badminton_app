@@ -9,10 +9,13 @@
 2. 신규 사용자 → 프로필 설정 화면에서 역할(customer/shop_owner), 이름, 연락처 입력 → `users` 테이블에 INSERT
 3. 기존 사용자 → `users` 테이블에서 role 조회 → 역할별 홈으로 이동
 
-### 샵 등록
-1. 사장님 가입 2단계 → 샵 이름, 주소, 연락처, 소개글 입력
-2. 주소 입력 시 네이버 Geocoding API로 위도/경도 자동 변환
-3. `shops` 테이블에 INSERT (owner_id = 현재 사용자)
+### 샵 등록 (승인 플로우)
+1. 사장님 가입 2단계 → 샵 이름, 주소, 연락처, 소개글, 사업자등록번호 입력
+2. 주소 입력 시 카카오맵 Geocoding API로 위도/경도 자동 변환
+3. `shops` 테이블에 INSERT (owner_id = 현재 사용자, status = 'pending')
+4. 관리자가 샵 등록 요청을 검토하여 승인(approved) 또는 거절(rejected) 처리
+5. 승인 완료 시 사장님 앱에서 대시보드 등 샵 기능 이용 가능
+6. 거절 시 거절 사유를 확인하고 재신청 가능
 
 ### QR 스캔 회원 등록
 1. 고객이 가게 QR코드 스캔 → `shop_id` 인식
@@ -58,7 +61,7 @@
 | 컬럼 | 타입 | 제약조건 | 설명 |
 |------|------|---------|------|
 | id | UUID | PK, REFERENCES auth.users(id) | Supabase Auth UID와 동일 |
-| role | TEXT | NOT NULL, CHECK (role IN ('customer', 'shop_owner')) | 사용자 역할 |
+| role | TEXT | NOT NULL, CHECK (role IN ('customer', 'shop_owner', 'admin')) | 사용자 역할 |
 | name | TEXT | NOT NULL | 이름 |
 | phone | TEXT | NOT NULL | 연락처 |
 | profile_image_url | TEXT | NULLABLE | 프로필 이미지 URL (Storage) |
@@ -79,6 +82,10 @@
 | longitude | DOUBLE PRECISION | NOT NULL | 경도 (Geocoding) |
 | phone | TEXT | NOT NULL | 샵 연락처 |
 | description | TEXT | NULLABLE | 소개글 |
+| business_number | TEXT | NULLABLE | 사업자등록번호 (10자리, 하이픈 없이 저장) |
+| status | TEXT | NOT NULL, DEFAULT 'pending', CHECK (status IN ('pending', 'approved', 'rejected')) | 샵 승인 상태 |
+| reject_reason | TEXT | NULLABLE | 거절 사유 (status가 'rejected'일 때) |
+| reviewed_at | TIMESTAMPTZ | NULLABLE | 관리자 검토 완료 시각 |
 | created_at | TIMESTAMPTZ | NOT NULL, DEFAULT now() | 등록일 |
 
 ### 테이블: members — 샵별 회원 관리
@@ -186,6 +193,10 @@ erDiagram
         DOUBLE_PRECISION longitude
         TEXT phone
         TEXT description
+        TEXT business_number
+        TEXT status
+        TEXT reject_reason
+        TIMESTAMPTZ reviewed_at
         TIMESTAMPTZ created_at
     }
 
@@ -292,7 +303,8 @@ $$;
 ### shops 테이블
 - **SELECT**: 모든 인증된 사용자가 조회 가능 (주변 샵 검색, 샵 상세 등)
 - **INSERT**: `(select auth.uid()) = owner_id`
-- **UPDATE**: `(select auth.uid()) = owner_id`
+- **UPDATE (owner)**: `(select auth.uid()) = owner_id` — 자기 샵 정보 수정
+- **UPDATE (admin)**: `users.role = 'admin'` — 관리자가 샵 승인/거절 처리 (status, reject_reason, reviewed_at 수정)
 
 ### members 테이블
 - **SELECT**: shop owner이거나, 자신이 연결된 회원인 경우 (`is_shop_owner(shop_id)` OR `(select auth.uid()) = user_id`)
@@ -354,6 +366,7 @@ $$;
 | orders | (shop_id, status) | B-tree 복합 | 샵별 상태 필터링 (대시보드, 작업 관리) |
 | orders | (shop_id, created_at) | B-tree 복합 | 오늘의 작업 현황 조회 (대시보드) |
 | posts | (shop_id, category, created_at DESC) | B-tree 복합 | 샵별 카테고리 필터링 + 최신순 정렬 |
+| shops | (status, created_at DESC) | B-tree 복합 | 관리자 샵 승인 요청 목록 (상태별 필터링 + 최신순) |
 | notifications | (user_id, created_at DESC) | B-tree 복합 | 사용자별 최신순 알림 조회 |
 
 ### 부분 인덱스 (Partial Index)
@@ -411,7 +424,7 @@ $$;
 -- PK: auth.users(id) 참조이므로 UUID 유지 (auth가 UUIDv4 사용)
 create table users (
   id uuid primary key references auth.users(id) on delete cascade,
-  role text not null check (role in ('customer', 'shop_owner')),
+  role text not null check (role in ('customer', 'shop_owner', 'admin')),
   name text not null,
   phone text not null,
   profile_image_url text,
@@ -429,6 +442,11 @@ create table shops (
   longitude double precision not null,
   phone text not null,
   description text,
+  business_number text,
+  status text not null default 'pending'
+    check (status in ('pending', 'approved', 'rejected')),
+  reject_reason text,
+  reviewed_at timestamptz,
   created_at timestamptz not null default now()
 );
 
@@ -534,6 +552,9 @@ create index idx_notifications_unread on notifications (user_id)
 
 -- shops: 좌표 범위 조회
 create index idx_shops_location on shops (latitude, longitude);
+
+-- shops: 승인 상태별 조회 (관리자 화면)
+create index idx_shops_status on shops (status, created_at desc);
 
 -- ============================================
 -- 트리거: updated_at 자동 갱신 (orders)
@@ -659,6 +680,16 @@ create policy "shops_update_owner" on shops
   for update to authenticated
   using ((select auth.uid()) = owner_id)
   with check ((select auth.uid()) = owner_id);
+
+-- 관리자: 샵 승인/거절 (status, reject_reason, reviewed_at 수정)
+create policy "shops_update_admin" on shops
+  for update to authenticated
+  using (
+    exists (
+      select 1 from public.users
+      where id = (select auth.uid()) and role = 'admin'
+    )
+  );
 
 -- ============================================
 -- RLS 정책: members

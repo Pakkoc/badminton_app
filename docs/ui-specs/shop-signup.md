@@ -10,9 +10,9 @@
 |------|------|
 | **화면 ID** | `owner-shop-signup` |
 | **화면 명** | 샵 등록 |
-| **목적** | 사장님 가입 2단계로, 운영할 샵의 기본 정보(이름, 주소, 연락처, 소개글)를 등록하여 서비스 이용을 시작한다 |
+| **목적** | 사장님 가입 2단계로, 운영할 샵의 기본 정보(이름, 주소, 연락처, 소개글, 사업자등록번호)를 등록하여 관리자 승인을 요청한다. 거절된 경우 재신청이 가능하다. |
 | **사용자 역할** | shop_owner |
-| **진입 조건** | 로그인 필수, role이 `shop_owner`, 샵 미등록 상태 (프로필 설정 직후 자동 이동) |
+| **진입 조건** | 로그인 필수, role이 `shop_owner`, 샵 미등록 또는 거절(rejected) 상태 |
 
 ---
 
@@ -49,6 +49,11 @@
 │  └───────────────────────┘  │
 │                             │
 │  ┌───────────────────────┐  │
+│  │ 사업자등록번호           │  │
+│  │ [                    ]│  │
+│  └───────────────────────┘  │
+│                             │
+│  ┌───────────────────────┐  │
 │  │ 소개글                  │  │
 │  │ [                    ]│  │
 │  │ [                    ]│  │
@@ -71,6 +76,7 @@
 | 주소 | 주소 입력 + 검색 기능 (필수) | 카카오 주소 API(Daum 우편번호 서비스) 웹뷰로 검색, 카카오맵 SDK로 좌표 변환 |
 | 지도 미리보기 | 입력된 주소의 위치를 지도에 마커로 표시 | 주소 입력 후 표시 |
 | 연락처 | 샵 연락처 입력 (필수) | 전화번호 형식 |
+| 사업자등록번호 | 사업자등록번호 입력 (선택) | 10자리 숫자 |
 | 소개글 | 샵 소개글 입력 (선택) | 멀티라인 |
 | 등록 버튼 | 등록 완료 CTA 버튼 | 필수 필드 완료 시 활성화 |
 
@@ -212,7 +218,28 @@
 | 입력 포맷 | 자동 하이픈 삽입 |
 | 수평 패딩 | 16px |
 
-### 3.7 소개글 입력
+### 3.7 사업자등록번호 입력
+
+| 컴포넌트 | 타입 | 설명 | 상태 |
+|----------|------|------|------|
+| 라벨 | Text | "사업자등록번호" (`bodyMedium`, 14sp, `#4A4A5A`) | 항상 표시 |
+| 입력 필드 | TextField | 사업자등록번호 입력 | 선택 |
+
+**스타일:**
+
+| 속성 | 값 |
+|------|-----|
+| 높이 | 48px |
+| 배경색 | `#EFF6FF` |
+| 모서리 둥글기 | 14px |
+| 힌트 텍스트 | "000-00-00000" |
+| 좌측 아이콘 | `badge`, 색상 `#9CA3AF` |
+| 키보드 타입 | `TextInputType.number` |
+| 입력 포맷 | 자동 하이픈 삽입 (3-2-5) |
+| 최대 길이 | 12자 (하이픈 포함) |
+| 수평 패딩 | 16px |
+
+### 3.8 소개글 입력
 
 | 컴포넌트 | 타입 | 설명 | 상태 |
 |----------|------|------|------|
@@ -231,7 +258,7 @@
 | 최대 글자 수 | 200자 |
 | 수평 패딩 | 16px |
 
-### 3.8 등록 완료 버튼
+### 3.9 등록 완료 버튼
 
 | 컴포넌트 | 타입 | 설명 | 상태 |
 |----------|------|------|------|
@@ -264,6 +291,7 @@
 | latitude | Double | Y | null | 주소 검색 시 자동 설정 | 위도 |
 | longitude | Double | Y | null | 주소 검색 시 자동 설정 | 경도 |
 | phone | String | Y | "" | 전화번호 형식 (010-XXXX-XXXX 또는 02-XXX-XXXX 등) | 샵 연락처 |
+| business_number | String | N | "" | 10자리 숫자 (하이픈 제거 후 저장) | 사업자등록번호 |
 | description | String | N | "" | 0~200자 | 샵 소개글 |
 
 ### 검증 규칙 상세
@@ -275,6 +303,7 @@
 | address | 등록 버튼 탭 시 | 빈 값 (미검색) | "주소를 검색해주세요" |
 | phone | 포커스 해제 시 + 등록 버튼 탭 시 | 빈 값 | "연락처를 입력해주세요" |
 | phone | 포커스 해제 시 | 전화번호 형식 | "올바른 연락처를 입력해주세요" |
+| business_number | 포커스 해제 시 | 10자리 숫자 (입력한 경우만 검증) | "올바른 사업자등록번호를 입력해주세요" |
 
 ---
 
@@ -286,13 +315,15 @@
 | 2 | 주소 검색 | "검색" 버튼 또는 주소 필드 탭 | 주소 검색 바텀시트 표시 | 검색어 입력 → 결과 리스트 표시 |
 | 3 | 주소 선택 | 검색 결과에서 주소 선택 | 주소 텍스트 + 좌표 자동 입력 | 주소 필드에 텍스트 표시, 지도 미리보기에 마커 표시 |
 | 4 | 연락처 입력 | 연락처 필드에 숫자 입력 | `phone` 상태 업데이트 + 자동 하이픈 | 포맷팅된 연락처 표시 |
-| 5 | 소개글 입력 | 소개글 필드에 텍스트 입력 | `description` 상태 업데이트 | 실시간 텍스트 반영 + 글자 수 카운터 갱신 |
-| 6 | 등록 완료 탭 | "등록 완료" 버튼 터치 | 필수 필드 검증 → shops 테이블 INSERT | 성공: 대시보드로 이동 + "샵이 등록되었습니다!" 토스트 / 실패: 에러 표시 |
+| 5 | 사업자등록번호 입력 | 사업자등록번호 필드에 숫자 입력 | `businessNumber` 상태 업데이트 + 자동 하이픈 | 포맷팅된 사업자등록번호 표시 |
+| 6 | 소개글 입력 | 소개글 필드에 텍스트 입력 | `description` 상태 업데이트 | 실시간 텍스트 반영 + 글자 수 카운터 갱신 |
+| 7 | 등록 완료 탭 (신규) | "등록 완료" 버튼 터치 | 필수 필드 검증 → shops 테이블 INSERT (status='pending') | 성공: 마이페이지로 이동 + "샵 등록 요청이 완료되었습니다" 토스트 / 실패: 에러 표시 |
+| 8 | 재신청 탭 (재신청 모드) | "재신청" 버튼 터치 | 필수 필드 검증 → shops 테이블 UPDATE (status='pending', reject_reason=null) | 성공: 마이페이지로 이동 + "샵 등록 재신청이 완료되었습니다" 토스트 / 실패: 에러 표시 |
 
 ### 등록 처리 흐름
 
 ```
-등록 완료 버튼 탭
+등록 완료 / 재신청 버튼 탭
   ↓
 클라이언트 전체 입력값 검증
   ↓
@@ -302,14 +333,20 @@
       ↓
     버튼을 로딩 상태로 전환 (스피너 표시)
       ↓
-    shops 테이블에 샵 정보 INSERT
-    (owner_id, name, address, latitude, longitude, phone, description)
+    ┌── 신규 등록: shops 테이블에 샵 정보 INSERT
+    │   (owner_id, name, address, latitude, longitude, phone, description,
+    │    business_number, status='pending')
+    │
+    └── 재신청: shops 테이블 UPDATE
+        (name, address, latitude, longitude, phone, description,
+         business_number, status='pending', reject_reason=null)
       ↓
     ├── 성공
     │     ↓
-    │   "샵이 등록되었습니다!" 성공 토스트 표시
+    │   신규: "샵 등록 요청이 완료되었습니다" 성공 토스트 표시
+    │   재신청: "샵 등록 재신청이 완료되었습니다" 성공 토스트 표시
     │     ↓
-    │   사장님 대시보드로 이동
+    │   마이페이지로 이동
     │
     └── 실패
           ↓
@@ -319,6 +356,20 @@
           ├── 네트워크 오류 → "네트워크 연결을 확인해주세요"
           └── 기타 오류 → "등록에 실패했습니다. 다시 시도해주세요"
 ```
+
+### 재신청 모드
+
+거절(rejected) 상태의 샵이 있는 경우, 이 화면은 **재신청 모드**로 진입한다.
+
+| 항목 | 신규 등록 | 재신청 모드 |
+|------|----------|-----------|
+| 앱바 타이틀 | "샵 등록" | "샵 등록 재신청" |
+| 안내 문구 | "샵 정보를 등록해주세요" | "등록이 거절되었습니다. 정보를 수정하고 재신청해주세요" |
+| 거절 사유 배너 | 미표시 | 상단에 거절 사유 배너 표시 (배경 `#FEF2F2`, 테두리 `#EF4444`, 아이콘 `warning`) |
+| 폼 초기값 | 빈 값 | 기존 등록 정보로 프리필 |
+| CTA 버튼 텍스트 | "등록 완료" | "재신청" |
+| API 동작 | INSERT | UPDATE (status='pending', reject_reason=null) |
+| 성공 후 이동 | 마이페이지 | 마이페이지 |
 
 ---
 
@@ -334,12 +385,14 @@
 
 | API | 테이블 | 동작 | 파라미터 | 호출 시점 |
 |-----|--------|------|----------|-----------|
-| 샵 등록 | `shops` | INSERT | `{owner_id, name, address, latitude, longitude, phone, description}` | "등록 완료" 버튼 탭 시 |
+| 샵 등록 (신규) | `shops` | INSERT | `{owner_id, name, address, latitude, longitude, phone, description, business_number, status: 'pending'}` | "등록 완료" 버튼 탭 시 |
+| 샵 재신청 | `shops` | UPDATE | `{name, address, latitude, longitude, phone, description, business_number, status: 'pending', reject_reason: null}` | "재신청" 버튼 탭 시 |
+| 기존 샵 조회 (재신청) | `shops` | SELECT | `owner_id = 현재 사용자` | 재신청 모드 진입 시 기존 정보 프리필 |
 
 **Supabase 쿼리 예시:**
 
 ```dart
-// 샵 등록
+// 샵 등록 (신규)
 await supabase.from('shops').insert({
   'owner_id': supabase.auth.currentUser!.id,
   'name': shopName,
@@ -348,8 +401,22 @@ await supabase.from('shops').insert({
   'longitude': longitude,
   'phone': phone,
   'description': description.isNotEmpty ? description : null,
-  'created_at': DateTime.now().toIso8601String(),
+  'business_number': businessNumber.isNotEmpty ? businessNumber : null,
+  'status': 'pending',
 });
+
+// 샵 재신청 (기존 샵 UPDATE)
+await supabase.from('shops').update({
+  'name': shopName,
+  'address': address,
+  'latitude': latitude,
+  'longitude': longitude,
+  'phone': phone,
+  'description': description.isNotEmpty ? description : null,
+  'business_number': businessNumber.isNotEmpty ? businessNumber : null,
+  'status': 'pending',
+  'reject_reason': null,
+}).eq('owner_id', supabase.auth.currentUser!.id);
 ```
 
 ### 6.3 실시간 구독
@@ -380,7 +447,10 @@ await supabase.from('shops').insert({
 | `latitude` | double? | null | 위도 (주소 검색으로 설정) |
 | `longitude` | double? | null | 경도 (주소 검색으로 설정) |
 | `phone` | String | "" | 연락처 입력값 |
+| `businessNumber` | String | "" | 사업자등록번호 입력값 |
 | `description` | String | "" | 소개글 입력값 |
+| `isResubmitMode` | bool | false | 재신청 모드 여부 |
+| `rejectReason` | String? | null | 거절 사유 (재신청 모드에서만 사용) |
 | `isSubmitting` | bool | false | 제출 중 여부 |
 | `shopNameError` | String? | null | 샵 이름 에러 메시지 |
 | `addressError` | String? | null | 주소 에러 메시지 |
@@ -395,12 +465,13 @@ await supabase.from('shops').insert({
 | 출발 화면 | 동작 | 전달 파라미터 |
 |-----------|------|---------------|
 | 프로필 설정 (`profile-setup`) | 사장님 역할로 프로필 설정 완료 후 자동 이동 | 없음 |
+| 마이페이지 (`customer-mypage`) | "샵 사장님 등록" 또는 "재신청" 메뉴 터치 | 없음 (재신청 모드는 기존 샵 status로 판별) |
 
 ### 8.2 이동 가능 화면
 
 | 대상 화면 | 동작 | 전달 파라미터 |
 |-----------|------|---------------|
-| 사장님 대시보드 (`owner-dashboard`) | 등록 완료 후 자동 이동 | 없음 |
+| 마이페이지 (`customer-mypage`) | 등록/재신청 완료 후 자동 이동 | 없음 |
 
 ---
 

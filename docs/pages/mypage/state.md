@@ -22,6 +22,8 @@
 | `profileImageUrl` | `String?` | DB에서 로드 | 프로필 이미지 URL (users.profile_image_url) |
 | `pushEnabled` | `bool` | `true` | 푸시 알림 활성화 여부 (로컬 + fcm_token 존재 여부) |
 | `appVersion` | `String` | 패키지 정보 | 앱 버전 문자열 (예: "v1.0.0") |
+| `shopStatus` | `ShopRegistrationStatus?` | `null` | 샵 등록 상태 (미신청: null, pending/approved/rejected) |
+| `shopRejectReason` | `String?` | `null` | 샵 등록 거절 사유 (rejected 상태에서만) |
 | `isTogglingPush` | `bool` | `false` | 푸시 알림 토글 변경 중 여부 |
 | `isLoggingOut` | `bool` | `false` | 로그아웃 처리 중 여부 |
 
@@ -34,6 +36,7 @@
 | `authState` | `authStateProvider` (M3) | 현재 인증된 사용자. `auth.currentUser.id`로 users 조회, `auth.currentUser.email`로 이메일 표시 |
 | `authRepository` | `authRepositoryProvider` (M3) | 로그아웃 API 호출. `signOut()` |
 | `userRepository` | `userRepositoryProvider` (M5) | users 테이블 조회. `getById()`, FCM 토큰 등록/삭제 `update()` |
+| `shopRepository` | `shopRepositoryProvider` (M5) | shops 테이블 조회. 샵 등록 상태(status, reject_reason) 확인 |
 | `fcmService` | `fcmServiceProvider` (M8) | FCM 토큰 취득. `getToken()`, `saveTokenToDb()` |
 
 ---
@@ -42,7 +45,7 @@
 
 | 트리거 | 상태 변화 | UI 변화 |
 |--------|----------|---------|
-| 화면 진입 | `AsyncLoading` → users 조회 + 이메일/앱 버전 로드 → `AsyncData(MypageState)` | 프로필 섹션 스켈레톤 shimmer → 이름, 연락처, 이메일, 프로필 이미지 표시 |
+| 화면 진입 | `AsyncLoading` → users 조회 + 이메일/앱 버전 + 샵 상태 로드 → `AsyncData(MypageState)` | 프로필 섹션 스켈레톤 shimmer → 이름, 연락처, 이메일, 프로필 이미지, 샵 등록 상태 메뉴 표시 |
 | 데이터 로드 실패 | `AsyncError` | ErrorView "프로필을 불러올 수 없습니다" + 재시도 버튼 |
 | 프로필 수정 후 복귀 | `userName`, `userPhone`, `profileImageUrl` 갱신 | 프로필 섹션의 이름/연락처/이미지 갱신 반영 |
 | 푸시 알림 토글 ON | `isTogglingPush` = true → FCM 토큰 등록 → `pushEnabled` = true, `isTogglingPush` = false | 토글 로딩 → 토글 ON 상태 |
@@ -51,6 +54,7 @@
 | 로그아웃 버튼 탭 | - | 확인 다이얼로그 "로그아웃 하시겠습니까?" |
 | 로그아웃 확인 | `isLoggingOut` = true → signOut() → 세션 삭제 | 로그인 화면으로 이동 |
 | 로그아웃 실패 | `isLoggingOut` = false | 에러 스낵바 "로그아웃에 실패했습니다" |
+| 샵 등록 화면에서 복귀 | `shopStatus` 재조회 → 갱신 | 샵 등록 상태 메뉴 최신 상태 반영 |
 | 프로필 수정 버튼 탭 | - | 프로필 수정 화면(`customer-profile-edit`)으로 이동 |
 | 하단 탭 전환 | - | 해당 화면으로 이동 (go_router) |
 
@@ -65,6 +69,7 @@ flowchart TD
         AUTH[authStateProvider<br/>StreamProvider, M3]
         authRepository["authRepositoryProvider\n(Provider, M3)"]
         userRepository["userRepositoryProvider\n(Provider, M5)"]
+        shopRepository["shopRepositoryProvider\n(Provider, M5)"]
         fcmService["fcmServiceProvider\n(Provider, M8)"]
     end
 
@@ -74,6 +79,7 @@ flowchart TD
 
     AUTH -->|"currentUser.id / email"| mypageNotifier
     userRepository -->|"getById / update (fcm_token)"| mypageNotifier
+    shopRepository -->|"getByOwnerId (status)"| mypageNotifier
     authRepository -->|"signOut"| mypageNotifier
     fcmService -->|"getToken / saveTokenToDb"| mypageNotifier
 ```
@@ -112,6 +118,7 @@ flowchart TD
 | M3 (authStateProvider, authRepositoryProvider) | 현재 인증 사용자 정보, 로그아웃 |
 | M4 (User) | 사용자 데이터 모델 |
 | M5 (UserRepository) | users 테이블 조회 (`getById`), FCM 토큰 업데이트 (`update`) |
+| M5 (ShopRepository) | shops 테이블 조회 (`getByOwnerId`) — 샵 등록 상태(status, reject_reason) 확인 |
 | M6 (AppException, ErrorHandler) | 에러 처리 및 사용자 메시지 매핑 |
 | M8 (FcmService) | FCM 토큰 취득/저장 (푸시 알림 토글) |
 | M9 (ConfirmDialog, ErrorView, SkeletonShimmer, AppToast) | 로그아웃 확인 다이얼로그, 에러 화면, 스켈레톤 로딩, 성공/에러 스낵바 |
