@@ -13,6 +13,7 @@ class PostCreateState with _$PostCreateState {
     DateTime? eventStartDate,
     DateTime? eventEndDate,
     @Default(false) bool isSubmitting,
+    @Default(false) bool isUploadingImage,
     String? errorMessage,
     String? editingPostId,
     @Default(false) bool isLoadingPost,

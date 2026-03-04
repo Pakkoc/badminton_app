@@ -6,6 +6,7 @@ import 'package:badminton_app/widgets/toast.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:image_picker/image_picker.dart';
 
 class PostCreateScreen extends ConsumerStatefulWidget {
   const PostCreateScreen({
@@ -44,11 +45,32 @@ class _PostCreateScreenState
     }
   }
 
+  final _picker = ImagePicker();
+
   @override
   void dispose() {
     _titleController.dispose();
     _contentController.dispose();
     super.dispose();
+  }
+
+  Future<void> _pickAndUploadImage(
+    PostCreateNotifier notifier,
+  ) async {
+    final xFile = await _picker.pickImage(
+      source: ImageSource.gallery,
+      maxWidth: 1024,
+      maxHeight: 1024,
+      imageQuality: 80,
+    );
+    if (xFile == null) return;
+    final bytes = await xFile.readAsBytes();
+    final ext = xFile.path.split('.').last.toLowerCase();
+    final extension =
+        ['jpg', 'jpeg', 'png', 'webp'].contains(ext)
+            ? ext
+            : 'jpg';
+    await notifier.addImage(bytes, extension);
   }
 
   @override
@@ -194,7 +216,10 @@ class _PostCreateScreenState
                   const SizedBox(height: 20),
                   _ImageSection(
                     images: state.images,
-                    onAdd: notifier.addImage,
+                    isUploading: state.isUploadingImage,
+                    onAdd: () => _pickAndUploadImage(
+                      notifier,
+                    ),
                     onRemove: notifier.removeImage,
                   ),
                   if (state.errorMessage != null) ...[
@@ -396,12 +421,14 @@ class _DateRangeSection extends StatelessWidget {
 class _ImageSection extends StatelessWidget {
   const _ImageSection({
     required this.images,
+    required this.isUploading,
     required this.onAdd,
     required this.onRemove,
   });
 
   final List<String> images;
-  final ValueChanged<String> onAdd;
+  final bool isUploading;
+  final VoidCallback onAdd;
   final ValueChanged<int> onRemove;
 
   @override
@@ -436,7 +463,21 @@ class _ImageSection extends StatelessWidget {
                     onRemove: () => onRemove(entry.key),
                   ),
                 ),
-            if (images.length < 5)
+            if (isUploading)
+              const SizedBox(
+                width: 80,
+                height: 80,
+                child: Center(
+                  child: SizedBox(
+                    width: 24,
+                    height: 24,
+                    child: CircularProgressIndicator(
+                      strokeWidth: 2,
+                    ),
+                  ),
+                ),
+              )
+            else if (images.length < 5)
               _AddImageButton(onAdd: onAdd),
           ],
         ),
@@ -458,16 +499,22 @@ class _ImageThumbnail extends StatelessWidget {
   Widget build(BuildContext context) {
     return Stack(
       children: [
-        Container(
-          width: 80,
-          height: 80,
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(8),
-            color: AppTheme.primaryContainer,
-          ),
-          child: const Icon(
-            Icons.image,
-            color: AppTheme.textTertiary,
+        ClipRRect(
+          borderRadius: BorderRadius.circular(8),
+          child: Image.network(
+            url,
+            width: 80,
+            height: 80,
+            fit: BoxFit.cover,
+            errorBuilder: (_, _, _) => Container(
+              width: 80,
+              height: 80,
+              color: AppTheme.primaryContainer,
+              child: const Icon(
+                Icons.image,
+                color: AppTheme.textTertiary,
+              ),
+            ),
           ),
         ),
         Positioned(
@@ -497,15 +544,12 @@ class _ImageThumbnail extends StatelessWidget {
 class _AddImageButton extends StatelessWidget {
   const _AddImageButton({required this.onAdd});
 
-  final ValueChanged<String> onAdd;
+  final VoidCallback onAdd;
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () {
-        // TODO: image_picker 연동
-        onAdd('https://placeholder.com/image.jpg');
-      },
+      onTap: onAdd,
       child: Container(
         width: 80,
         height: 80,

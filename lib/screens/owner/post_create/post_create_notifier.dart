@@ -1,8 +1,12 @@
+import 'dart:typed_data';
+
 import 'package:badminton_app/core/error/app_exception.dart';
 import 'package:badminton_app/core/utils/validators.dart';
 import 'package:badminton_app/models/enums.dart';
 import 'package:badminton_app/models/post.dart';
+import 'package:badminton_app/providers/supabase_provider.dart';
 import 'package:badminton_app/repositories/post_repository.dart';
+import 'package:badminton_app/repositories/storage_repository.dart';
 import 'package:badminton_app/screens/owner/post_create/post_create_state.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -36,7 +40,8 @@ class PostCreateNotifier extends Notifier<PostCreateState> {
     }
   }
 
-  void addImage(String imageUrl) {
+  /// 이미지 파일을 Storage에 업로드하고 URL을 state에 추가한다.
+  Future<void> addImage(Uint8List bytes, String extension) async {
     if (state.images.length >= 5) {
       state = state.copyWith(
         errorMessage: '이미지는 최대 5장까지 등록할 수 있습니다',
@@ -44,9 +49,35 @@ class PostCreateNotifier extends Notifier<PostCreateState> {
       return;
     }
     state = state.copyWith(
-      images: [...state.images, imageUrl],
+      isUploadingImage: true,
       errorMessage: null,
     );
+    try {
+      final storage = ref.read(storageRepositoryProvider);
+      final userId =
+          ref.read(supabaseProvider).auth.currentUser!.id;
+      final ts = DateTime.now().microsecondsSinceEpoch;
+      final path = '$userId/$ts.$extension';
+      final url = await storage.uploadImage(
+        'post-images',
+        bytes,
+        path,
+      );
+      state = state.copyWith(
+        images: [...state.images, url],
+        isUploadingImage: false,
+      );
+    } on AppException catch (e) {
+      state = state.copyWith(
+        isUploadingImage: false,
+        errorMessage: e.userMessage,
+      );
+    } catch (_) {
+      state = state.copyWith(
+        isUploadingImage: false,
+        errorMessage: '이미지 업로드에 실패했습니다',
+      );
+    }
   }
 
   void removeImage(int index) {
