@@ -1,5 +1,6 @@
 import 'package:badminton_app/app/theme.dart';
 import 'package:badminton_app/core/utils/formatters.dart';
+import 'package:badminton_app/models/enums.dart';
 import 'package:badminton_app/providers/app_mode_provider.dart';
 import 'package:badminton_app/providers/auth_provider.dart';
 import 'package:badminton_app/providers/supabase_provider.dart';
@@ -7,6 +8,7 @@ import 'package:badminton_app/services/fcm_service.dart';
 import 'package:badminton_app/widgets/confirm_dialog.dart';
 import 'package:badminton_app/widgets/customer_bottom_nav.dart';
 import 'package:badminton_app/widgets/loading_indicator.dart';
+import 'package:badminton_app/widgets/toast.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -285,7 +287,8 @@ class _ShopModeCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final hasShopAsync = ref.watch(hasShopProvider);
+    final statusAsync = ref.watch(shopStatusProvider);
+    final shopAsync = ref.watch(myShopProvider);
 
     return Container(
       padding: const EdgeInsets.all(16),
@@ -300,49 +303,83 @@ class _ShopModeCard extends StatelessWidget {
           ),
         ],
       ),
-      child: hasShopAsync.when(
-        data: (hasShop) => GestureDetector(
-          behavior: HitTestBehavior.opaque,
-          onTap: () {
-            if (hasShop) {
-              ref.read(activeModeProvider.notifier).state =
-                  AppMode.owner;
-              context.go('/owner/dashboard');
-            } else {
-              context.push('/shop-register');
-            }
-          },
-          child: SizedBox(
-            height: 48,
-            child: Row(
+      child: statusAsync.when(
+        data: (status) {
+          final shop = shopAsync.valueOrNull;
+          final config = _shopMenuConfig(status);
+          final isRejected =
+              status == ShopStatus.rejected;
+          final isPending =
+              status == ShopStatus.pending;
+
+          return GestureDetector(
+            behavior: HitTestBehavior.opaque,
+            onTap: () => _onTap(
+              context,
+              status,
+            ),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
               children: [
-                Icon(
-                  hasShop
-                      ? Icons.swap_horiz
-                      : Icons.storefront,
-                  color: AppTheme.primary,
-                  size: 22,
-                ),
-                const SizedBox(width: 12),
-                Text(
-                  hasShop
-                      ? '사장님 모드 전환'
-                      : '샵 사장님 등록',
-                  style: const TextStyle(
-                    fontSize: 15,
-                    color: AppTheme.textPrimary,
+                SizedBox(
+                  height: 48,
+                  child: Row(
+                    children: [
+                      Icon(
+                        config.icon,
+                        color: isRejected
+                            ? AppTheme.error
+                            : AppTheme.primary,
+                        size: 22,
+                      ),
+                      const SizedBox(width: 12),
+                      Expanded(
+                        child: Text(
+                          config.label,
+                          style: TextStyle(
+                            fontSize: 15,
+                            color: isRejected
+                                ? AppTheme.error
+                                : AppTheme.textPrimary,
+                          ),
+                        ),
+                      ),
+                      if (!isPending)
+                        const Icon(
+                          Icons.chevron_right,
+                          color: AppTheme.textTertiary,
+                          size: 20,
+                        ),
+                    ],
                   ),
                 ),
-                const Spacer(),
-                const Icon(
-                  Icons.chevron_right,
-                  color: AppTheme.textTertiary,
-                  size: 20,
-                ),
+                if (isRejected &&
+                    shop?.rejectReason != null) ...[
+                  const Divider(
+                    height: 1,
+                    color: AppTheme.border,
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(
+                      top: 8,
+                      left: 34,
+                    ),
+                    child: Align(
+                      alignment: Alignment.centerLeft,
+                      child: Text(
+                        '사유: ${shop!.rejectReason}',
+                        style: const TextStyle(
+                          fontSize: 13,
+                          color: AppTheme.textSecondary,
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
               ],
             ),
-          ),
-        ),
+          );
+        },
         loading: () => const SizedBox(
           height: 48,
           child: Center(
@@ -359,6 +396,45 @@ class _ShopModeCard extends StatelessWidget {
       ),
     );
   }
+
+  void _onTap(BuildContext context, ShopStatus? status) {
+    switch (status) {
+      case null:
+      case ShopStatus.rejected:
+        context.push('/shop-register');
+      case ShopStatus.approved:
+        ref.read(activeModeProvider.notifier).state =
+            AppMode.owner;
+        context.go('/owner/dashboard');
+      case ShopStatus.pending:
+        AppToast.success(
+          context,
+          '샵 등록 승인 대기 중입니다',
+        );
+    }
+  }
+
+  ({IconData icon, String label}) _shopMenuConfig(
+    ShopStatus? status,
+  ) =>
+      switch (status) {
+        null => (
+          icon: Icons.storefront,
+          label: '샵 등록 신청',
+        ),
+        ShopStatus.pending => (
+          icon: Icons.hourglass_top,
+          label: '승인 대기 중',
+        ),
+        ShopStatus.approved => (
+          icon: Icons.swap_horiz,
+          label: '사장님 모드 전환',
+        ),
+        ShopStatus.rejected => (
+          icon: Icons.error_outline,
+          label: '샵 등록 거절됨 — 재신청',
+        ),
+      };
 }
 
 class _AppInfoCard extends StatelessWidget {
