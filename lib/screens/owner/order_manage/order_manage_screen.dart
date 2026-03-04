@@ -8,6 +8,7 @@ import 'package:badminton_app/widgets/confirm_dialog.dart';
 import 'package:badminton_app/widgets/empty_state.dart';
 import 'package:badminton_app/widgets/error_view.dart';
 import 'package:badminton_app/widgets/loading_indicator.dart';
+import 'package:badminton_app/widgets/order_timeline_row.dart';
 import 'package:badminton_app/widgets/status_badge.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -336,13 +337,7 @@ class _OrderManageCard extends StatelessWidget {
             ],
           ),
           const SizedBox(height: 8),
-          Text(
-            _formatTimeLabel(order.createdAt),
-            style: const TextStyle(
-              fontSize: 12,
-              color: AppTheme.textTertiary,
-            ),
-          ),
+          OrderTimelineRow(order: order),
           if (order.status != OrderStatus.completed) ...[
             const SizedBox(height: 8),
             _ActionButton(
@@ -384,24 +379,6 @@ class _OrderManageCard extends StatelessWidget {
     return card;
   }
 
-  String _formatTimeLabel(DateTime dt) {
-    final now = DateTime.now();
-    final today = DateTime(now.year, now.month, now.day);
-    final yesterday =
-        today.subtract(const Duration(days: 1));
-    final dtDate = DateTime(dt.year, dt.month, dt.day);
-
-    final h = dt.hour.toString().padLeft(2, '0');
-    final m = dt.minute.toString().padLeft(2, '0');
-
-    if (dtDate == today) {
-      return '오늘 $h:$m 접수';
-    } else if (dtDate == yesterday) {
-      return '어제 $h:$m 접수';
-    } else {
-      return '${dt.month}/${dt.day} $h:$m 접수';
-    }
-  }
 }
 
 class _ActionButton extends StatelessWidget {

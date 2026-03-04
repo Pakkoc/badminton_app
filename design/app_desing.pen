@@ -2669,14 +2669,64 @@
                   ]
                 },
                 {
-                  "type": "text",
-                  "id": "bk3AY",
-                  "name": "card1Row3",
-                  "fill": "$--text-tertiary",
-                  "content": "오늘 14:30 접수",
-                  "fontFamily": "SUIT",
-                  "fontSize": 12,
-                  "fontWeight": "normal"
+                  "type": "frame",
+                  "id": "dCjYZ",
+                  "name": "Timeline",
+                  "width": "fill_container",
+                  "gap": 3,
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "UvfHf",
+                      "name": "a1",
+                      "fill": "$--text-tertiary",
+                      "content": "접수 3/4 14:30",
+                      "fontFamily": "SUIT",
+                      "fontSize": 11,
+                      "fontWeight": "Medium"
+                    },
+                    {
+                      "type": "text",
+                      "id": "Crsfj",
+                      "name": "b1",
+                      "fill": "#CBD5E1",
+                      "content": "→",
+                      "fontFamily": "SUIT",
+                      "fontSize": 11,
+                      "fontWeight": "normal"
+                    },
+                    {
+                      "type": "text",
+                      "id": "PIVf6",
+                      "name": "c1",
+                      "fill": "#CBD5E1",
+                      "content": "시작 ──",
+                      "fontFamily": "SUIT",
+                      "fontSize": 11,
+                      "fontWeight": "normal"
+                    },
+                    {
+                      "type": "text",
+                      "id": "dWGck",
+                      "name": "d1",
+                      "fill": "#CBD5E1",
+                      "content": "→",
+                      "fontFamily": "SUIT",
+                      "fontSize": 11,
+                      "fontWeight": "normal"
+                    },
+                    {
+                      "type": "text",
+                      "id": "qOP9z",
+                      "name": "e1",
+                      "fill": "#CBD5E1",
+                      "content": "완료 ──",
+                      "fontFamily": "SUIT",
+                      "fontSize": 11,
+                      "fontWeight": "normal"
+                    }
+                  ]
                 },
                 {
                   "type": "frame",
@@ -2776,14 +2826,64 @@
                   ]
                 },
                 {
-                  "type": "text",
-                  "id": "rjbOH",
-                  "name": "card2Row3",
-                  "fill": "$--text-tertiary",
-                  "content": "오늘 13:00 접수",
-                  "fontFamily": "SUIT",
-                  "fontSize": 12,
-                  "fontWeight": "normal"
+                  "type": "frame",
+                  "id": "MVYyx",
+                  "name": "Timeline",
+                  "width": "fill_container",
+                  "gap": 3,
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "HAM55",
+                      "name": "a2",
+                      "fill": "$--text-tertiary",
+                      "content": "접수 3/4 13:00",
+                      "fontFamily": "SUIT",
+                      "fontSize": 11,
+                      "fontWeight": "Medium"
+                    },
+                    {
+                      "type": "text",
+                      "id": "9nHPU",
+                      "name": "b2",
+                      "fill": "$--text-tertiary",
+                      "content": "→",
+                      "fontFamily": "SUIT",
+                      "fontSize": 11,
+                      "fontWeight": "normal"
+                    },
+                    {
+                      "type": "text",
+                      "id": "wJEut",
+                      "name": "c2",
+                      "fill": "$--text-tertiary",
+                      "content": "시작 3/4 13:25",
+                      "fontFamily": "SUIT",
+                      "fontSize": 11,
+                      "fontWeight": "Medium"
+                    },
+                    {
+                      "type": "text",
+                      "id": "KA21x",
+                      "name": "d2",
+                      "fill": "#CBD5E1",
+                      "content": "→",
+                      "fontFamily": "SUIT",
+                      "fontSize": 11,
+                      "fontWeight": "normal"
+                    },
+                    {
+                      "type": "text",
+                      "id": "t8oVP",
+                      "name": "e2",
+                      "fill": "#CBD5E1",
+                      "content": "완료 ──",
+                      "fontFamily": "SUIT",
+                      "fontSize": 11,
+                      "fontWeight": "normal"
+                    }
+                  ]
                 },
                 {
                   "type": "frame",
@@ -2883,14 +2983,64 @@
                   ]
                 },
                 {
-                  "type": "text",
-                  "id": "7P3y4",
-                  "name": "card3Row3",
-                  "fill": "$--text-tertiary",
-                  "content": "어제 16:00 완료",
-                  "fontFamily": "SUIT",
-                  "fontSize": 12,
-                  "fontWeight": "normal"
+                  "type": "frame",
+                  "id": "SqbPr",
+                  "name": "Timeline",
+                  "width": "fill_container",
+                  "gap": 3,
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "OMdxX",
+                      "name": "a3",
+                      "fill": "$--text-tertiary",
+                      "content": "접수 3/3 15:00",
+                      "fontFamily": "SUIT",
+                      "fontSize": 11,
+                      "fontWeight": "Medium"
+                    },
+                    {
+                      "type": "text",
+                      "id": "2Tnuc",
+                      "name": "b3",
+                      "fill": "$--text-tertiary",
+                      "content": "→",
+                      "fontFamily": "SUIT",
+                      "fontSize": 11,
+                      "fontWeight": "normal"
+                    },
+                    {
+                      "type": "text",
+                      "id": "NdZst",
+                      "name": "c3",
+                      "fill": "$--text-tertiary",
+                      "content": "시작 3/3 15:20",
+                      "fontFamily": "SUIT",
+                      "fontSize": 11,
+                      "fontWeight": "Medium"
+                    },
+                    {
+                      "type": "text",
+                      "id": "jp3Vo",
+                      "name": "d3",
+                      "fill": "$--text-tertiary",
+                      "content": "→",
+                      "fontFamily": "SUIT",
+                      "fontSize": 11,
+                      "fontWeight": "normal"
+                    },
+                    {
+                      "type": "text",
+                      "id": "5QoTi",
+                      "name": "e3",
+                      "fill": "$--text-tertiary",
+                      "content": "완료 3/3 16:00",
+                      "fontFamily": "SUIT",
+                      "fontSize": 11,
+                      "fontWeight": "Medium"
+                    }
+                  ]
                 }
               ]
             }

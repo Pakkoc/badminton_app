@@ -1,6 +1,6 @@
 # 작업 관리 — UI 화면 스펙
 
-> 최종 수정일: 2026-03-03
+> 최종 수정일: 2026-03-04
 
 ---
 
@@ -91,9 +91,20 @@
 | 카드 컨테이너 | Card | 작업 한 건의 전체 영역 | 탭 시 상세 바텀시트 |
 | 회원 이름 | Text | `titleMedium` (16sp, Medium) | 항상 표시 |
 | 상태 뱃지 | StatusBadge | 접수됨/작업중/완료 (showDot: true) | 카드 우측 상단 |
-| 접수 시간 | Text | "14:30" 또는 "어제 14:30" (`bodySmall`, 12sp, `#9CA3AF`) | 카드 좌측 하단 |
+| 타임라인 Row | Row | 접수/시작/완료 시간을 가로 한 줄로 표시 (11sp) | 항상 표시 |
 | 메모 아이콘 | Icon | `note` 아이콘 (12px, `#9CA3AF`) | 메모가 있을 때만 표시 |
 | 상태 변경 버튼 | FilledButton (compact) | 다음 상태로 변경 | 완료 상태이면 숨김 |
+
+**타임라인 Row 규칙:**
+
+| 단계 | 포맷 | 활성 조건 | 활성 스타일 | 비활성 스타일 |
+|------|------|-----------|-------------|---------------|
+| 접수 | `접수 M/D HH:MM` | 항상 활성 | 11sp, Medium, `$--text-tertiary` | - |
+| 시작 | `시작 M/D HH:MM` / `시작 ──` | `inProgressAt != null` | 11sp, Medium, `$--text-tertiary` | 11sp, `#CBD5E1` |
+| 완료 | `완료 M/D HH:MM` / `완료 ──` | `completedAt != null` | 11sp, Medium, `$--text-tertiary` | 11sp, `#CBD5E1` |
+
+- 각 단계 사이에 `→` 구분자 표시 (활성/비활성 동일 규칙 적용)
+- 공통 위젯: `OrderTimelineRow` (`lib/widgets/order_timeline_row.dart`)
 
 **작업 카드 스타일:**
 - 배경: `#FFFFFF`
@@ -137,7 +148,9 @@
 | member_name | String | members.name | 텍스트 | 회원 이름 |
 | status | Enum | orders.status | StatusBadge | 작업 상태 |
 | memo | String | orders.memo | 메모 아이콘 (있을 때) | 작업 메모 |
-| created_at | Timestamp | orders.created_at | "HH:mm" 또는 "M/D HH:mm" | 접수 시간 |
+| created_at | Timestamp | orders.created_at | "M/D HH:MM" | 접수 시간 |
+| in_progress_at | Timestamp? | orders.in_progress_at | "M/D HH:MM" / "──" | 작업 시작 시간 (null이면 "──") |
+| completed_at | Timestamp? | orders.completed_at | "M/D HH:MM" / "──" | 작업 완료 시간 (null이면 "──") |
 
 ---
 
