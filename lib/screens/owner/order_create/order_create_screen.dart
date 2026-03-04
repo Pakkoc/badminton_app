@@ -59,7 +59,7 @@ class _OrderCreateScreenState
       ),
       body: state.isSubmitting
           ? const LoadingIndicator()
-          : Padding(
+          : SingleChildScrollView(
               padding: const EdgeInsets.all(16),
               child: Column(
                 crossAxisAlignment:
@@ -198,9 +198,7 @@ class _OrderCreateScreenState
                   ),
                   const SizedBox(height: 12),
                   // 메모 입력
-                  SizedBox(
-                    height: 80,
-                    child: TextField(
+                  TextField(
                       controller: _memoController,
                       decoration: InputDecoration(
                         hintText: '메모 (선택사항)',
@@ -218,8 +216,7 @@ class _OrderCreateScreenState
                         contentPadding:
                             const EdgeInsets.all(16),
                       ),
-                      maxLines: null,
-                      expands: true,
+                      maxLines: 3,
                       textAlignVertical:
                           TextAlignVertical.top,
                       onChanged: (memo) {
@@ -230,7 +227,6 @@ class _OrderCreateScreenState
                             )
                             .updateMemo(memo);
                       },
-                    ),
                   ),
                   const SizedBox(height: 24),
                   ElevatedButton(
