@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:badminton_app/models/enums.dart';
 import 'package:badminton_app/models/shop.dart';
 import 'package:badminton_app/providers/app_mode_provider.dart';
+import 'package:badminton_app/providers/auth_provider.dart';
 import 'package:badminton_app/providers/supabase_provider.dart';
 import 'package:badminton_app/screens/auth/login/login_screen.dart';
 import 'package:badminton_app/screens/auth/profile_setup/profile_setup_screen.dart';
@@ -61,7 +62,7 @@ final routerProvider = Provider<GoRouter>((ref) {
   return GoRouter(
     initialLocation: '/splash',
     refreshListenable: refreshNotifier,
-    redirect: (context, state) {
+    redirect: (context, state) async {
       final session = client.auth.currentSession;
       final isPublic = _publicPaths.contains(state.matchedLocation);
 
@@ -73,6 +74,21 @@ final routerProvider = Provider<GoRouter>((ref) {
       // 세션이 있는데 /login에 있으면 → 스플래시로 (라우트 해석)
       if (state.matchedLocation == '/login') {
         return '/splash';
+      }
+
+      // admin 사용자 → /admin/shop-requests로 리다이렉트
+      final role = ref.read(userRoleProvider);
+      if (role == UserRole.admin &&
+          !state.matchedLocation.startsWith('/admin') &&
+          state.matchedLocation != '/splash') {
+        return '/admin/shop-requests';
+      }
+
+      // /owner/* 라우트는 approved 샵이 있을 때만 접근 가능
+      if (state.matchedLocation.startsWith('/owner')) {
+        final hasShop =
+            await ref.read(hasShopProvider.future);
+        if (!hasShop) return '/customer/home';
       }
 
       return null;
@@ -93,9 +109,14 @@ final routerProvider = Provider<GoRouter>((ref) {
       GoRoute(
         path: '/shop-register',
         redirect: (context, state) async {
-          final hasShop =
-              await ref.read(hasShopProvider.future);
-          return hasShop ? '/owner/dashboard' : null;
+          final shopStatus =
+              await ref.read(shopStatusProvider.future);
+          return switch (shopStatus) {
+            ShopStatus.approved => '/owner/dashboard',
+            ShopStatus.pending => '/customer/mypage',
+            ShopStatus.rejected => null,
+            null => null,
+          };
         },
         builder: (context, state) => const ShopSignupScreen(),
       ),
@@ -174,6 +195,25 @@ final routerProvider = Provider<GoRouter>((ref) {
             path: '/customer/profile-edit',
             builder: (context, state) =>
                 const ProfileEditScreen(),
+          ),
+        ],
+      ),
+
+      // 관리자 라우트
+      GoRoute(
+        path: '/admin/shop-requests',
+        builder: (context, state) => Scaffold(
+          appBar: AppBar(title: const Text('승인 요청 목록')),
+          body: const Center(child: Text('준비 중')),
+        ),
+        routes: [
+          GoRoute(
+            path: ':id',
+            builder: (context, state) => Scaffold(
+              appBar:
+                  AppBar(title: const Text('승인 요청 상세')),
+              body: const Center(child: Text('준비 중')),
+            ),
           ),
         ],
       ),
