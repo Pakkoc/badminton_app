@@ -2,6 +2,7 @@ import 'package:badminton_app/app/theme.dart';
 import 'package:badminton_app/core/utils/formatters.dart';
 import 'package:badminton_app/models/enums.dart';
 import 'package:badminton_app/screens/owner/post_create/post_create_notifier.dart';
+import 'package:badminton_app/widgets/confirm_dialog.dart';
 import 'package:badminton_app/widgets/toast.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -78,6 +79,10 @@ class _PostCreateScreenState
     final state = ref.watch(postCreateNotifierProvider);
     final notifier = ref.read(postCreateNotifierProvider.notifier);
 
+    bool hasContent = state.title.isNotEmpty ||
+        state.content.isNotEmpty ||
+        state.images.isNotEmpty;
+
     if (state.isLoadingPost) {
       return Scaffold(
         appBar: AppBar(title: const Text('게시글 수정')),
@@ -85,11 +90,27 @@ class _PostCreateScreenState
       );
     }
 
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(_isEditMode ? '게시글 수정' : '게시글 작성'),
-      ),
-      body: Column(
+    return PopScope(
+      canPop: !hasContent,
+      onPopInvokedWithResult: (didPop, _) async {
+        if (didPop) return;
+        final confirmed = await showConfirmDialog(
+          context: context,
+          title: '작성 취소',
+          content: '작성 중인 내용이 사라집니다.\n정말 나가시겠습니까?',
+          onConfirm: () {},
+          confirmLabel: '나가기',
+        );
+        if (confirmed == true && context.mounted) {
+          context.pop();
+        }
+      },
+      child: Scaffold(
+        appBar: AppBar(
+          title: Text(
+              _isEditMode ? '게시글 수정' : '게시글 작성'),
+        ),
+        body: Column(
         children: [
           Expanded(
             child: SingleChildScrollView(
@@ -298,6 +319,7 @@ class _PostCreateScreenState
             ),
           ),
         ],
+      ),
       ),
     );
   }
