@@ -1,3 +1,5 @@
+import 'dart:typed_data';
+
 import 'package:badminton_app/app/theme.dart';
 import 'package:badminton_app/core/utils/validators.dart';
 import 'package:badminton_app/models/enums.dart';
@@ -14,6 +16,7 @@ import 'package:badminton_app/widgets/toast.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:image_picker/image_picker.dart';
 
 class InventoryScreen extends ConsumerStatefulWidget {
   const InventoryScreen({super.key});
@@ -26,6 +29,7 @@ class InventoryScreen extends ConsumerStatefulWidget {
 class _InventoryScreenState
     extends ConsumerState<InventoryScreen> {
   String? _shopId;
+  final _picker = ImagePicker();
 
   @override
   void initState() {
@@ -59,6 +63,8 @@ class _InventoryScreenState
     final quantityController =
         TextEditingController(text: '0');
     final formKey = GlobalKey<FormState>();
+    Uint8List? pickedImageBytes;
+    String? pickedImageExt;
 
     showModalBottomSheet<void>(
       context: context,
@@ -133,6 +139,40 @@ class _InventoryScreenState
                   autovalidateMode:
                       AutovalidateMode.onUserInteraction,
                 ),
+                const SizedBox(height: 12),
+                _ImagePickerTile(
+                  imageBytes: pickedImageBytes,
+                  onPick: () async {
+                    final xFile =
+                        await _picker.pickImage(
+                      source: ImageSource.gallery,
+                      maxWidth: 1024,
+                      maxHeight: 1024,
+                      imageQuality: 80,
+                    );
+                    if (xFile == null) return;
+                    final bytes =
+                        await xFile.readAsBytes();
+                    final ext = xFile.path
+                        .split('.')
+                        .last
+                        .toLowerCase();
+                    setSheetState(() {
+                      pickedImageBytes = bytes;
+                      pickedImageExt =
+                          ['jpg', 'jpeg', 'png', 'webp']
+                                  .contains(ext)
+                              ? ext
+                              : 'jpg';
+                    });
+                  },
+                  onRemove: () {
+                    setSheetState(() {
+                      pickedImageBytes = null;
+                      pickedImageExt = null;
+                    });
+                  },
+                ),
                 const SizedBox(height: 16),
                 SizedBox(
                   width: double.infinity,
@@ -155,6 +195,9 @@ class _InventoryScreenState
                             quantity: int.parse(
                               quantityController.text,
                             ),
+                            imageBytes: pickedImageBytes,
+                            imageExtension:
+                                pickedImageExt,
                           );
                       if (success &&
                           sheetContext.mounted) {
@@ -193,8 +236,12 @@ class _InventoryScreenState
         TextEditingController(text: item.name);
     var selectedCategory = item.category;
     final quantityController =
-        TextEditingController(text: item.quantity.toString());
+        TextEditingController(
+            text: item.quantity.toString());
     final formKey = GlobalKey<FormState>();
+    Uint8List? pickedImageBytes;
+    String? pickedImageExt;
+    String? existingImageUrl = item.imageUrl;
 
     showModalBottomSheet<void>(
       context: context,
@@ -269,6 +316,43 @@ class _InventoryScreenState
                   autovalidateMode:
                       AutovalidateMode.onUserInteraction,
                 ),
+                const SizedBox(height: 12),
+                _ImagePickerTile(
+                  imageBytes: pickedImageBytes,
+                  existingUrl: existingImageUrl,
+                  onPick: () async {
+                    final xFile =
+                        await _picker.pickImage(
+                      source: ImageSource.gallery,
+                      maxWidth: 1024,
+                      maxHeight: 1024,
+                      imageQuality: 80,
+                    );
+                    if (xFile == null) return;
+                    final bytes =
+                        await xFile.readAsBytes();
+                    final ext = xFile.path
+                        .split('.')
+                        .last
+                        .toLowerCase();
+                    setSheetState(() {
+                      pickedImageBytes = bytes;
+                      pickedImageExt =
+                          ['jpg', 'jpeg', 'png', 'webp']
+                                  .contains(ext)
+                              ? ext
+                              : 'jpg';
+                      existingImageUrl = null;
+                    });
+                  },
+                  onRemove: () {
+                    setSheetState(() {
+                      pickedImageBytes = null;
+                      pickedImageExt = null;
+                      existingImageUrl = null;
+                    });
+                  },
+                ),
                 const SizedBox(height: 16),
                 SizedBox(
                   width: double.infinity,
@@ -287,13 +371,23 @@ class _InventoryScreenState
                           quantityController.text,
                         ),
                       };
+                      if (existingImageUrl == null &&
+                          pickedImageBytes == null) {
+                        updates['image_url'] = null;
+                      }
 
                       await ref
                           .read(
                             inventoryNotifierProvider
                                 .notifier,
                           )
-                          .updateItem(item.id, updates);
+                          .updateItem(
+                            item.id,
+                            updates,
+                            imageBytes: pickedImageBytes,
+                            imageExtension:
+                                pickedImageExt,
+                          );
 
                       if (sheetContext.mounted) {
                         Navigator.of(sheetContext).pop();
@@ -531,6 +625,102 @@ class _CardImage extends StatelessWidget {
         size: 40,
         color: AppTheme.textTertiary,
       ),
+    );
+  }
+}
+
+class _ImagePickerTile extends StatelessWidget {
+  const _ImagePickerTile({
+    this.imageBytes,
+    this.existingUrl,
+    required this.onPick,
+    required this.onRemove,
+  });
+
+  final Uint8List? imageBytes;
+  final String? existingUrl;
+  final VoidCallback onPick;
+  final VoidCallback onRemove;
+
+  bool get _hasImage =>
+      imageBytes != null || existingUrl != null;
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        const Text(
+          '이미지 (선택)',
+          style: TextStyle(
+            fontSize: 14,
+            fontWeight: FontWeight.w500,
+            color: AppTheme.textPrimary,
+          ),
+        ),
+        const SizedBox(height: 8),
+        if (_hasImage)
+          Stack(
+            children: [
+              ClipRRect(
+                borderRadius:
+                    BorderRadius.circular(8),
+                child: imageBytes != null
+                    ? Image.memory(
+                        imageBytes!,
+                        width: 80,
+                        height: 80,
+                        fit: BoxFit.cover,
+                      )
+                    : CachedNetworkImage(
+                        imageUrl: existingUrl!,
+                        width: 80,
+                        height: 80,
+                        fit: BoxFit.cover,
+                      ),
+              ),
+              Positioned(
+                top: 0,
+                right: 0,
+                child: GestureDetector(
+                  onTap: onRemove,
+                  child: Container(
+                    padding:
+                        const EdgeInsets.all(2),
+                    decoration: const BoxDecoration(
+                      color: Color(0xFFEF4444),
+                      shape: BoxShape.circle,
+                    ),
+                    child: const Icon(
+                      Icons.close,
+                      size: 14,
+                      color: Colors.white,
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          )
+        else
+          GestureDetector(
+            onTap: onPick,
+            child: Container(
+              width: 80,
+              height: 80,
+              decoration: BoxDecoration(
+                borderRadius:
+                    BorderRadius.circular(8),
+                border: Border.all(
+                  color: AppTheme.border,
+                ),
+              ),
+              child: const Icon(
+                Icons.add_photo_alternate_outlined,
+                color: AppTheme.textTertiary,
+              ),
+            ),
+          ),
+      ],
     );
   }
 }
