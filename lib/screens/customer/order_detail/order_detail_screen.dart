@@ -212,7 +212,7 @@ class _TimelineSection extends StatelessWidget {
                       ? Formatters.dateTime(completedAt!)
                       : '—',
                   isActive: completedAt != null,
-                  color: AppTheme.primary,
+                  color: AppTheme.completedForeground,
                   isLast: true,
                   nextActive: false,
                 ),
