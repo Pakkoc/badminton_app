@@ -62,6 +62,13 @@ class _MypageScreenState extends ConsumerState<MypageScreen> {
               ),
               const SizedBox(height: 16),
               _ShopModeCard(ref: ref),
+              if (user.role == UserRole.admin) ...[
+                const SizedBox(height: 16),
+                _AdminMenuCard(
+                  onTap: () =>
+                      context.push('/admin/shop-requests'),
+                ),
+              ],
               const SizedBox(height: 16),
               const _AppInfoCard(),
               const SizedBox(height: 16),
@@ -275,6 +282,69 @@ class _SettingsCard extends StatelessWidget {
             ),
           ),
         ],
+      ),
+    );
+  }
+}
+
+class _AdminMenuCard extends StatelessWidget {
+  const _AdminMenuCard({required this.onTap});
+
+  final VoidCallback onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: onTap,
+      child: Container(
+        height: 56,
+        padding: const EdgeInsets.symmetric(
+          horizontal: 16,
+        ),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(20),
+          boxShadow: const [
+            BoxShadow(
+              color: Color(0x0A000000),
+              blurRadius: 12,
+              offset: Offset(0, 2),
+            ),
+          ],
+        ),
+        child: Row(
+          children: [
+            Container(
+              width: 36,
+              height: 36,
+              decoration: BoxDecoration(
+                color: const Color(0xFFFEE2E2),
+                borderRadius:
+                    BorderRadius.circular(10),
+              ),
+              child: const Icon(
+                Icons.admin_panel_settings,
+                size: 20,
+                color: Color(0xFFEF4444),
+              ),
+            ),
+            const SizedBox(width: 12),
+            const Text(
+              '관리자 페이지',
+              style: TextStyle(
+                fontSize: 15,
+                fontWeight: FontWeight.w500,
+                color: AppTheme.textPrimary,
+              ),
+            ),
+            const Spacer(),
+            const Icon(
+              Icons.chevron_right,
+              size: 20,
+              color: Color(0xFF9CA3AF),
+            ),
+          ],
+        ),
       ),
     );
   }
