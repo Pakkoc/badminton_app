@@ -1,6 +1,6 @@
 # 작업 상세 — UI 화면 스펙
 
-> 최종 수정일: 2026-03-03
+> 최종 수정일: 2026-03-04
 
 ---
 
@@ -171,7 +171,7 @@
 |----------|------|------|--------|
 | 섹션 타이틀 | Text | "샵 정보" | `titleMedium` (16sp, SemiBold), 색상 `#1A1A2E` |
 | 카드 컨테이너 | Card | 샵 정보 카드 | 배경 `#FFFFFF`, 모서리 20px, 테두리 `#E8E0D8` 1px, 패딩 16px |
-| 샵 이름 | Row (Icon + Text) | 샵 이름 표시 | 아이콘: `storefront` 20px `#2563EB`, 텍스트: `bodyLarge` (16sp, SemiBold) `#1A1A2E` |
+| 샵 이름 | GestureDetector > Row (Icon + Text + chevron_right) | 샵 이름 표시. 탭 시 샵 상세 화면으로 이동 | 아이콘: `storefront` 20px `#2563EB`, 텍스트: `bodyLarge` (16sp, SemiBold) `#2563EB` (Primary), 우측: `chevron_right` 20px `#9CA3AF` |
 | 샵 주소 | Row (Icon + Text) | 샵 주소 표시 | 아이콘: `location_on` 20px `#9CA3AF`, 텍스트: `bodyMedium` (14sp) `#4A4A5A` |
 | 샵 연락처 | Row (Icon + Text) | 샵 전화번호 표시 | 아이콘: `call` 20px `#9CA3AF`, 텍스트: `bodyMedium` (14sp) `#4A4A5A`. 탭 시 전화 앱 실행 |
 | 전화하기 버튼 | OutlinedButton | 샵에 전화 연결 | 테두리 `#2563EB` 1px, 텍스트 `#2563EB` "전화하기", 아이콘: `call` 20px, 높이 48px, 모서리 14px, 가로 50% (길찾기 버튼과 나란히) |
@@ -238,7 +238,8 @@
 | 2 | 전화하기 버튼 탭 | 샵 정보 섹션 "전화하기" 버튼 터치 | 전화 앱 실행 | `tel:` URL Scheme으로 전화 앱 실행 |
 | 3 | 길찾기 버튼 탭 | 샵 정보 섹션 "길찾기" 버튼 터치 | 네이버 지도 앱 길찾기 호출 | `nmap://route/...` URL Scheme으로 네이버 지도 앱 실행. 미설치 시 웹 지도 폴백 |
 | 4 | 연락처 탭 | 샵 전화번호 텍스트 터치 | 전화 앱 실행 | `tel:` URL Scheme으로 전화 앱 실행 |
-| 5 | 에러 재시도 | "다시 시도" 버튼 터치 | 데이터 재조회 | 로딩 상태 전환 후 API 재호출 |
+| 5 | 샵 이름 탭 | 샵 이름 영역 터치 | 샵 상세 화면으로 이동 | `context.push('/customer/shop/${shop.id}')` |
+| 6 | 에러 재시도 | "다시 시도" 버튼 터치 | 데이터 재조회 | 로딩 상태 전환 후 API 재호출 |
 
 ---
 
@@ -325,6 +326,7 @@ supabase
 
 | 대상 화면 | 화면 ID | 동작 | 전달 파라미터 |
 |-----------|---------|------|---------------|
+| 샵 상세 | `customer-shop-detail` | 샵 이름 탭 | `shop_id` (String, UUID) |
 | 네이버 지도 (외부 앱) | — | 길찾기 버튼 탭 | 목적지 위도/경도 (shops.latitude, shops.longitude) |
 | 전화 앱 (외부 앱) | — | 연락처 탭 | 전화번호 (shops.phone) |
 

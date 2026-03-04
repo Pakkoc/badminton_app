@@ -1,6 +1,6 @@
 # 게시글 작성/수정 — UI 화면 스펙
 
-> 최종 수정일: 2026-03-03
+> 최종 수정일: 2026-03-04
 
 ---
 
@@ -227,7 +227,7 @@
 | category | Enum | Y | null | `notice` 또는 `event` 중 하나 선택 | 게시글 카테고리 |
 | title | String | Y | "" | 1~100자, 공백만 불가 | 게시글 제목 |
 | content | String | Y | "" | 1~2000자 | 게시글 내용 |
-| images | List\<File\> | N | [] | 최대 5장, 각 이미지 10MB 이하 | 첨부 이미지 |
+| images | List\<String\> | N | [] | 최대 5장, 각 이미지 10MB 이하 | 첨부 이미지 URL 목록 (업로드 후 URL 저장) |
 | event_start_date | Date | Y (이벤트 시) | null | 오늘 이후 | 이벤트 시작일 |
 | event_end_date | Date | Y (이벤트 시) | null | 시작일 이후 | 이벤트 종료일 |
 
@@ -240,11 +240,11 @@
 | 1 | 카테고리 선택 | 공지사항 또는 이벤트 칩 탭 | `category` 상태 업데이트 | 선택 칩 강조, 이벤트 선택 시 기간 입력 영역 표시 |
 | 2 | 제목 입력 | 제목 필드에 텍스트 입력 | `title` 상태 업데이트 | 실시간 텍스트 반영 |
 | 3 | 내용 입력 | 내용 필드에 텍스트 입력 | `content` 상태 업데이트 | 실시간 텍스트 반영 + 글자 수 카운터 갱신 |
-| 4 | 이미지 추가 | 이미지 추가 버튼 탭 | 카메라/갤러리 선택 바텀시트 표시 | 선택한 이미지를 첨부 리스트에 추가 |
+| 4 | 이미지 추가 | 이미지 추가 버튼 탭 | 갤러리에서 이미지 선택 → Storage 즉시 업로드 | 업로드 완료 후 이미지 URL을 첨부 리스트에 추가. 업로드 중 `isUploadingImage` 표시 |
 | 5 | 이미지 삭제 | 이미지 삭제 (X) 버튼 탭 | 해당 이미지를 리스트에서 제거 | 이미지 썸네일 제거 |
 | 6 | 시작일 선택 | 시작일 필드 탭 | DatePicker 표시 | 선택한 날짜를 시작일에 설정 |
 | 7 | 종료일 선택 | 종료일 필드 탭 | DatePicker 표시 | 선택한 날짜를 종료일에 설정 |
-| 8 | 등록 | "등록하기" 버튼 탭 | 필수 필드 검증 → 이미지 업로드 → posts 테이블 INSERT | 성공: 이전 화면으로 복귀 + "게시글이 등록되었습니다" 토스트 |
+| 8 | 등록 | "등록하기" 버튼 탭 | 필수 필드 검증 → posts 테이블 INSERT (이미지 URL은 이미 업로드 완료 상태) | 성공: 이전 화면으로 복귀 + "게시글이 등록되었습니다" 토스트 |
 | 9 | 뒤로가기 | 앱바 뒤로가기 또는 시스템 백 | 입력 내용 있으면 확인 다이얼로그 | "작성 중인 내용이 있습니다. 나가시겠습니까?" |
 
 ---
@@ -263,32 +263,29 @@
 
 | API | 테이블/서비스 | 동작 | 파라미터 | 호출 시점 |
 |-----|--------|------|----------|-----------|
-| 이미지 업로드 | Supabase Storage | UPLOAD | 이미지 파일 (최대 5개) | 등록 버튼 탭 시 (게시글 INSERT 전) |
-| 게시글 등록 | `posts` | INSERT | `{shop_id, category, title, content, images, event_start_date, event_end_date}` | 이미지 업로드 완료 후 |
+| 이미지 업로드 | Supabase Storage (`post-images` 버킷) | UPLOAD | 이미지 바이트 데이터 (`Uint8List`) + 확장자 | 이미지 추가 시 즉시 업로드 (개별 업로드, 최대 5회) |
+| 게시글 등록 | `posts` | INSERT | `{shop_id, category, title, content, images(URL 목록), event_start_date, event_end_date}` | 등록 버튼 탭 시 |
 
 **Supabase 쿼리 예시:**
 
 ```dart
-// 1. 이미지 업로드 (있는 경우)
-final imageUrls = <String>[];
-for (final image in images) {
-  final path = 'posts/${myShopId}/${DateTime.now().millisecondsSinceEpoch}_${image.name}';
-  await supabase.storage.from('post-images').upload(path, image);
-  final url = supabase.storage.from('post-images').getPublicUrl(path);
-  imageUrls.add(url);
-}
+// 1. 이미지 업로드 (이미지 추가 시 즉시 수행 — addImage 메서드)
+final userId = supabase.auth.currentUser!.id;
+final ts = DateTime.now().microsecondsSinceEpoch;
+final path = '$userId/$ts.$extension';
+final url = await storageRepository.uploadImage('post-images', bytes, path);
+// URL을 state.images에 추가
 
-// 2. 게시글 등록
-await supabase.from('posts').insert({
-  'shop_id': myShopId,
-  'category': category,  // 'notice' 또는 'event'
-  'title': title,
-  'content': content,
-  'images': imageUrls.isNotEmpty ? imageUrls : null,
-  'event_start_date': category == 'event' ? eventStartDate.toIso8601String() : null,
-  'event_end_date': category == 'event' ? eventEndDate.toIso8601String() : null,
-  'created_at': DateTime.now().toIso8601String(),
-});
+// 2. 게시글 등록 (submit 시 이미 업로드된 URL 목록 사용)
+await postRepository.create(Post(
+  shopId: shopId,
+  category: state.category,
+  title: state.title,
+  content: state.content,
+  images: state.images,  // 이미 업로드된 URL 목록
+  eventStartDate: state.eventStartDate,
+  eventEndDate: state.eventEndDate,
+));
 ```
 
 ### 6.3 실시간 구독
@@ -315,7 +312,8 @@ await supabase.from('posts').insert({
 | `category` | String? | null | 선택된 카테고리 (`notice` / `event`) |
 | `title` | String | "" | 제목 입력값 |
 | `content` | String | "" | 내용 입력값 |
-| `images` | List\<File\> | [] | 첨부된 이미지 파일 목록 |
+| `images` | List\<String\> | [] | 첨부된 이미지 URL 목록 (업로드 즉시 Storage에 업로드하여 URL 저장) |
+| `isUploadingImage` | bool | false | 이미지 업로드 중 여부 |
 | `eventStartDate` | DateTime? | null | 이벤트 시작일 |
 | `eventEndDate` | DateTime? | null | 이벤트 종료일 |
 | `isSubmitting` | bool | false | 제출 중 여부 |

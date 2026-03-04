@@ -1,6 +1,6 @@
 # 재고 관리 — UI 화면 스펙
 
-> 최종 수정일: 2026-03-03
+> 최종 수정일: 2026-03-04
 
 ---
 
@@ -145,12 +145,13 @@
 - 자유 입력은 불가, 목록에서만 선택
 - 기본값: '기타'
 
-**이미지 영역 동작:**
-- 탭 시 카메라/갤러리 선택 바텀시트 표시
-- 이미지가 등록되면 썸네일로 표시 (80x80px, 모서리 8px, `BoxFit.cover`)
-- 이미지 썸네일 우측 상단에 삭제 버튼 표시: `close` 아이콘 14px, 원형 배경 `#1A1A2E` 20x20px, 아이콘 색상 `#FFFFFF`
-- 삭제 버튼 탭 시 이미지 즉시 제거
-- 이미지가 없으면 "이미지 추가" 안내 + 카메라 아이콘 표시
+**이미지 영역 동작 (`_ImagePickerTile` 위젯):**
+- 탭 시 `image_picker` 패키지로 갤러리에서 이미지 선택 (maxWidth: 1024, maxHeight: 1024, imageQuality: 80)
+- 이미지가 등록되면 `Image.memory` (새 이미지) 또는 `CachedNetworkImage` (기존 이미지)로 썸네일 표시 (80x80px, 모서리 8px, `BoxFit.cover`)
+- 이미지 썸네일 우측 상단에 삭제 버튼 표시: `close` 아이콘 14px, 원형 배경 `#EF4444`, 아이콘 색상 `#FFFFFF`
+- 삭제 버튼 탭 시 이미지 바이트와 기존 URL 모두 null로 초기화
+- 이미지가 없으면 `add_photo_alternate_outlined` 아이콘 표시 (80x80px 점선 박스)
+- 확장자 검증: jpg, jpeg, png, webp만 허용, 그 외는 jpg로 폴백
 
 ### 3.5 삭제 확인 다이얼로그
 
@@ -197,7 +198,8 @@
 | name | String | Y | "" | 1~50자, 공백만 불가 | 상품명 |
 | category | InventoryCategory (enum) | Y | other | 라켓/상의/하의/가방/신발/악세서리/기타 중 택1 | 상품 카테고리 |
 | quantity | Int | Y | 0 | 0~9999, 정수 | 재고 수량 |
-| image | File | N | null | 10MB 이하 | 상품 이미지 |
+| imageBytes | Uint8List? | N | null | 10MB 이하 | 상품 이미지 바이트 데이터 |
+| imageExtension | String? | N | null | jpg/jpeg/png/webp | 이미지 파일 확장자 |
 
 ---
 
@@ -247,7 +249,7 @@ final categories = await supabase
 
 | API | 테이블/서비스 | 동작 | 파라미터 | 호출 시점 |
 |-----|--------|------|----------|-----------|
-| 이미지 업로드 | Supabase Storage | UPLOAD | 이미지 파일 | 저장 버튼 탭 시 (이미지 변경 시) |
+| 이미지 업로드 | Supabase Storage (`inventory-images` 버킷) | UPLOAD | 이미지 바이트 데이터 (`Uint8List`) + 확장자 | 저장 버튼 탭 시 (이미지 변경 시), `StorageRepository.uploadImage()` 사용 |
 | 상품 추가 | `inventory` | INSERT | `{shop_id, name, category, quantity, image_url}` | 추가 바텀시트 "저장" 탭 시 |
 | 상품 수정 | `inventory` | UPDATE | `{name, category, quantity, image_url}` | 수정 바텀시트 "저장" 탭 시 |
 | 상품 삭제 | `inventory` | DELETE | `id` | 삭제 확인 다이얼로그에서 "삭제" 탭 시 |
@@ -255,12 +257,13 @@ final categories = await supabase
 **Supabase 쿼리 예시:**
 
 ```dart
-// 이미지 업로드
+// 이미지 업로드 (Uint8List 바이트 데이터 사용)
 String? imageUrl;
-if (imageFile != null) {
-  final path = 'inventory/${myShopId}/${DateTime.now().millisecondsSinceEpoch}.jpg';
-  await supabase.storage.from('inventory-images').upload(path, imageFile);
-  imageUrl = supabase.storage.from('inventory-images').getPublicUrl(path);
+if (imageBytes != null && imageExtension != null) {
+  final userId = supabase.auth.currentUser!.id;
+  final ts = DateTime.now().microsecondsSinceEpoch;
+  final path = '$userId/$ts.$imageExtension';
+  imageUrl = await storageRepository.uploadImage('inventory-images', imageBytes, path);
 }
 
 // 상품 추가
@@ -305,17 +308,20 @@ await supabase.from('inventory').delete().eq('id', itemId);
 
 | 변수명 | 타입 | 초기값 | 설명 |
 |--------|------|--------|------|
-| `isLoading` | bool | true | 데이터 로딩 중 여부 |
-| `inventoryItems` | List\<Inventory\> | [] | 재고 상품 목록 |
-| `hasError` | bool | false | 에러 발생 여부 |
-| `isBottomSheetOpen` | bool | false | 바텀시트 표시 여부 |
-| `editingItem` | Inventory? | null | 수정 중인 상품 (null이면 추가 모드) |
-| `productName` | String | "" | 바텀시트 상품명 입력값 |
-| `productCategory` | String | "" | 바텀시트 카테고리 입력값 |
-| `productQuantity` | int | 0 | 바텀시트 재고 수량 입력값 |
-| `productImage` | File? | null | 바텀시트 이미지 |
-| `existingCategories` | List\<String\> | [] | 기존 카테고리 목록 (드롭다운용) |
-| `isSaving` | bool | false | 저장 중 여부 |
+| `items` | List\<InventoryItem\> | [] | 재고 상품 목록 |
+| `isLoading` | bool | false | 데이터 로딩 중 여부 |
+| `error` | String? | null | 에러 메시지 |
+
+**바텀시트 로컬 상태 (StatefulBuilder 내):**
+
+| 변수명 | 타입 | 초기값 | 설명 |
+|--------|------|--------|------|
+| `nameController` | TextEditingController | "" / 기존 이름 | 바텀시트 상품명 입력 컨트롤러 |
+| `selectedCategory` | InventoryCategory | other / 기존 값 | 선택된 카테고리 |
+| `quantityController` | TextEditingController | "0" / 기존 수량 | 바텀시트 수량 입력 컨트롤러 |
+| `pickedImageBytes` | Uint8List? | null | 선택된 이미지 바이트 데이터 |
+| `pickedImageExt` | String? | null | 선택된 이미지 확장자 |
+| `existingImageUrl` | String? | null / 기존 URL | 기존 이미지 URL (수정 모드) |
 
 ---
 
