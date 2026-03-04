@@ -42,11 +42,13 @@ class _MypageScreenState extends ConsumerState<MypageScreen> {
             children: [
               _ProfileCard(
                 name: user.name,
-                email: ref
-                    .read(supabaseProvider)
-                    .auth
-                    .currentUser
-                    ?.email,
+                email: _resolveEmail(
+                  ref
+                      .read(supabaseProvider)
+                      .auth
+                      .currentUser
+                      ?.email,
+                ),
                 onEditTap: () =>
                     context.push('/customer/profile-edit'),
               ),
@@ -73,6 +75,12 @@ class _MypageScreenState extends ConsumerState<MypageScreen> {
         ),
       ),
     );
+  }
+
+  String? _resolveEmail(String? email) {
+    if (email == null) return null;
+    if (email.contains('placeholder')) return null;
+    return email;
   }
 
   void _onPushChanged(bool value) {
