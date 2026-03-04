@@ -1,7 +1,5 @@
 import 'dart:async';
 
-import 'package:badminton_app/models/enums.dart';
-import 'package:badminton_app/models/user.dart' as app;
 import 'package:badminton_app/providers/fcm_provider.dart';
 import 'package:badminton_app/providers/supabase_provider.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -10,9 +8,7 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 enum SplashRoute {
   login,
   customerHome,
-  ownerDashboard,
   profileSetup,
-  shopRegister,
 }
 
 /// autoDispose로 변경하여 스플래시 화면 재진입 시 항상 재실행.
@@ -76,8 +72,6 @@ Future<SplashRoute> _resolveRoute(Ref ref) async {
       return SplashRoute.profileSetup;
     }
 
-    final user = app.User.fromJson(data);
-
     // FCM 토큰 저장 (비동기, 실패해도 라우팅 진행)
     unawaited(
       ref
@@ -85,19 +79,6 @@ Future<SplashRoute> _resolveRoute(Ref ref) async {
           .saveTokenToDb(userId, client)
           .catchError((_) {}),
     );
-
-    if (user.role == UserRole.shopOwner) {
-      // 사장님인데 샵이 없으면 샵 등록으로
-      final shop = await client
-          .from('shops')
-          .select('id')
-          .eq('owner_id', userId)
-          .maybeSingle();
-      if (shop == null) {
-        return SplashRoute.shopRegister;
-      }
-      return SplashRoute.ownerDashboard;
-    }
 
     return SplashRoute.customerHome;
   } catch (_) {

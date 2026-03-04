@@ -51,9 +51,7 @@ class _SplashScreenState extends ConsumerState<SplashScreen>
     final path = switch (route) {
       SplashRoute.login => '/login',
       SplashRoute.customerHome => '/customer/home',
-      SplashRoute.ownerDashboard => '/owner/dashboard',
       SplashRoute.profileSetup => '/profile-setup',
-      SplashRoute.shopRegister => '/shop-register',
     };
     context.go(path);
   }
