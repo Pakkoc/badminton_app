@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:badminton_app/models/enums.dart';
 import 'package:badminton_app/models/shop.dart';
+import 'package:badminton_app/providers/app_mode_provider.dart';
 import 'package:badminton_app/providers/supabase_provider.dart';
 import 'package:badminton_app/screens/auth/login/login_screen.dart';
 import 'package:badminton_app/screens/auth/profile_setup/profile_setup_screen.dart';
@@ -9,13 +10,13 @@ import 'package:badminton_app/screens/auth/shop_signup/shop_signup_screen.dart';
 import 'package:badminton_app/screens/auth/splash/splash_screen.dart';
 import 'package:badminton_app/screens/customer/home/customer_home_screen.dart';
 import 'package:badminton_app/screens/customer/mypage/mypage_screen.dart';
-import 'package:badminton_app/screens/customer/qr_order/qr_order_screen.dart';
 import 'package:badminton_app/screens/customer/notifications/notifications_screen.dart';
 import 'package:badminton_app/screens/customer/order_detail/order_detail_screen.dart';
 import 'package:badminton_app/screens/customer/order_history/order_history_screen.dart';
 import 'package:badminton_app/screens/customer/post_detail/post_detail_screen.dart';
 import 'package:badminton_app/screens/customer/post_list/post_list_screen.dart';
 import 'package:badminton_app/screens/customer/profile_edit/profile_edit_screen.dart';
+import 'package:badminton_app/screens/customer/qr_order/qr_order_screen.dart';
 import 'package:badminton_app/screens/customer/shop_detail/shop_detail_screen.dart';
 import 'package:badminton_app/screens/customer/shop_search/shop_search_screen.dart';
 import 'package:badminton_app/screens/owner/dashboard/owner_dashboard_screen.dart';
@@ -91,6 +92,11 @@ final routerProvider = Provider<GoRouter>((ref) {
       ),
       GoRoute(
         path: '/shop-register',
+        redirect: (context, state) async {
+          final hasShop =
+              await ref.read(hasShopProvider.future);
+          return hasShop ? '/owner/dashboard' : null;
+        },
         builder: (context, state) => const ShopSignupScreen(),
       ),
 
