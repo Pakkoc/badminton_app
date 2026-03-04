@@ -1,5 +1,6 @@
 import 'package:badminton_app/app/theme.dart';
 import 'package:badminton_app/core/utils/validators.dart';
+import 'package:badminton_app/providers/app_mode_provider.dart';
 import 'package:badminton_app/screens/owner/shop_settings/shop_settings_notifier.dart';
 import 'package:badminton_app/widgets/loading_indicator.dart';
 import 'package:badminton_app/widgets/map_preview.dart';
@@ -150,9 +151,22 @@ class _ShopSettingsScreenState
                         _MenuItemTile(
                           icon: Icons.inventory_2,
                           label: '재고 관리',
-                          showDivider: false,
+                          showDivider: true,
                           onTap: () => context
                               .push('/owner/settings/inventory'),
+                        ),
+                        _MenuItemTile(
+                          icon: Icons.swap_horiz,
+                          label: '고객 모드 전환',
+                          showDivider: false,
+                          onTap: () {
+                            ref
+                                .read(
+                                  activeModeProvider.notifier,
+                                )
+                                .state = AppMode.customer;
+                            context.go('/customer/home');
+                          },
                         ),
                       ],
                     ),
