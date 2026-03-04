@@ -3476,11 +3476,21 @@
                           "type": "text",
                           "id": "Qxewa",
                           "name": "shopName",
-                          "fill": "#1A1A2E",
+                          "fill": "#2563EB",
                           "content": "OO 거트 스트링샵",
                           "fontFamily": "SUIT",
                           "fontSize": 16,
-                          "fontWeight": "600"
+                          "fontWeight": "500"
+                        },
+                        {
+                          "type": "icon_font",
+                          "id": "wVLge",
+                          "name": "chevronIcon",
+                          "width": 20,
+                          "height": 20,
+                          "iconFontName": "chevron_right",
+                          "iconFontFamily": "Material Symbols Rounded",
+                          "fill": "#2563EB"
                         }
                       ]
                     },
@@ -8148,31 +8158,6 @@
                               "fill": "#FFFFFF"
                             }
                           ]
-                        },
-                        {
-                          "type": "frame",
-                          "id": "o2CzU",
-                          "x": 65,
-                          "y": -4,
-                          "name": "deleteBtn",
-                          "width": 20,
-                          "height": 20,
-                          "fill": "#1A1A2E",
-                          "cornerRadius": 10,
-                          "justifyContent": "center",
-                          "alignItems": "center",
-                          "children": [
-                            {
-                              "type": "icon_font",
-                              "id": "49uuv",
-                              "name": "deleteIcon",
-                              "width": 14,
-                              "height": 14,
-                              "iconFontName": "close",
-                              "iconFontFamily": "Material Symbols Rounded",
-                              "fill": "#FFFFFF"
-                            }
-                          ]
                         }
                       ]
                     }
@@ -9301,7 +9286,8 @@
                   "id": "ogHZs",
                   "name": "Image Row",
                   "width": "fill_container",
-                  "gap": 12,
+                  "layout": "vertical",
+                  "gap": 8,
                   "alignItems": "center",
                   "children": [
                     {
@@ -9316,29 +9302,87 @@
                     },
                     {
                       "type": "frame",
-                      "id": "oQX6E",
-                      "name": "Image Add Box",
-                      "width": 64,
-                      "height": 64,
-                      "fill": "$--surface-variant",
-                      "cornerRadius": 14,
-                      "stroke": {
-                        "align": "inside",
-                        "thickness": 1,
-                        "fill": "#E8E0D8"
-                      },
-                      "justifyContent": "center",
-                      "alignItems": "center",
+                      "id": "eoApE",
+                      "name": "imgThumbRow",
+                      "width": "fill_container",
+                      "gap": 8,
                       "children": [
                         {
-                          "type": "icon_font",
-                          "id": "iaK1o",
-                          "name": "imgIcon",
-                          "width": 24,
-                          "height": 24,
-                          "iconFontName": "add_a_photo",
-                          "iconFontFamily": "Material Symbols Rounded",
-                          "fill": "#9CA3AF"
+                          "type": "frame",
+                          "id": "oQX6E",
+                          "name": "Image Add Box",
+                          "width": 80,
+                          "height": 80,
+                          "fill": "$--surface-variant",
+                          "cornerRadius": 8,
+                          "stroke": {
+                            "align": "inside",
+                            "thickness": 1,
+                            "fill": "#E8E0D8"
+                          },
+                          "justifyContent": "center",
+                          "alignItems": "center",
+                          "children": [
+                            {
+                              "type": "icon_font",
+                              "id": "iaK1o",
+                              "name": "imgIcon",
+                              "width": 28,
+                              "height": 28,
+                              "iconFontName": "add_photo_alternate",
+                              "iconFontFamily": "Material Symbols Rounded",
+                              "fill": "#9CA3AF"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "frame",
+                          "id": "cyXs6",
+                          "name": "previewThumb",
+                          "width": 80,
+                          "height": 80,
+                          "fill": "#E8E0D8",
+                          "cornerRadius": 8,
+                          "layout": "none",
+                          "children": [
+                            {
+                              "type": "icon_font",
+                              "id": "oDThL",
+                              "x": 24,
+                              "y": 24,
+                              "name": "imgPlaceholder",
+                              "width": 32,
+                              "height": 32,
+                              "iconFontName": "image",
+                              "iconFontFamily": "Material Symbols Rounded",
+                              "fill": "#9CA3AF"
+                            },
+                            {
+                              "type": "frame",
+                              "id": "ClaCQ",
+                              "x": 65,
+                              "y": -4,
+                              "name": "deleteBtn",
+                              "width": 20,
+                              "height": 20,
+                              "fill": "#1A1A2E",
+                              "cornerRadius": 10,
+                              "justifyContent": "center",
+                              "alignItems": "center",
+                              "children": [
+                                {
+                                  "type": "icon_font",
+                                  "id": "RFyyp",
+                                  "name": "delIcon",
+                                  "width": 14,
+                                  "height": 14,
+                                  "iconFontName": "close",
+                                  "iconFontFamily": "Material Symbols Rounded",
+                                  "fill": "#FFFFFF"
+                                }
+                              ]
+                            }
+                          ]
                         }
                       ]
                     }
@@ -9992,7 +10036,8 @@
                   "id": "KLREp",
                   "name": "Image Row",
                   "width": "fill_container",
-                  "gap": 12,
+                  "layout": "vertical",
+                  "gap": 8,
                   "alignItems": "center",
                   "children": [
                     {
@@ -10007,48 +10052,84 @@
                     },
                     {
                       "type": "frame",
-                      "id": "W9iJv",
-                      "name": "Thumbnail",
-                      "width": 64,
-                      "height": 64,
-                      "fill": "$--surface-variant",
-                      "cornerRadius": 14,
-                      "layout": "none",
+                      "id": "3n7s1",
+                      "name": "imgThumbRow",
+                      "width": "fill_container",
+                      "gap": 8,
                       "children": [
                         {
-                          "type": "icon_font",
-                          "id": "TSzzH",
-                          "x": 16,
-                          "y": 16,
-                          "name": "eiIcon",
-                          "width": 32,
-                          "height": 32,
-                          "iconFontName": "sports_tennis",
-                          "iconFontFamily": "Material Symbols Rounded",
-                          "fill": "#9CA3AF"
-                        },
-                        {
                           "type": "frame",
-                          "id": "7dzL5",
-                          "x": 48,
-                          "y": -4,
-                          "name": "deleteBtn",
-                          "width": 20,
-                          "height": 20,
-                          "fill": "#1A1A2E",
-                          "cornerRadius": 10,
+                          "id": "L39pB",
+                          "name": "addPhotoBtn",
+                          "width": 80,
+                          "height": 80,
+                          "cornerRadius": 8,
+                          "stroke": {
+                            "align": "inside",
+                            "thickness": 2,
+                            "fill": "#E8E0D8"
+                          },
                           "justifyContent": "center",
                           "alignItems": "center",
                           "children": [
                             {
                               "type": "icon_font",
-                              "id": "u9Dzq",
-                              "name": "delIco",
-                              "width": 14,
-                              "height": 14,
-                              "iconFontName": "close",
+                              "id": "HMMQt",
+                              "name": "addIcon",
+                              "width": 28,
+                              "height": 28,
+                              "iconFontName": "add_photo_alternate",
                               "iconFontFamily": "Material Symbols Rounded",
-                              "fill": "#FFFFFF"
+                              "fill": "#9CA3AF"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "frame",
+                          "id": "W9iJv",
+                          "name": "Thumbnail",
+                          "width": 80,
+                          "height": 80,
+                          "fill": "$--surface-variant",
+                          "cornerRadius": 8,
+                          "layout": "none",
+                          "children": [
+                            {
+                              "type": "icon_font",
+                              "id": "TSzzH",
+                              "x": 16,
+                              "y": 16,
+                              "name": "eiIcon",
+                              "width": 32,
+                              "height": 32,
+                              "iconFontName": "sports_tennis",
+                              "iconFontFamily": "Material Symbols Rounded",
+                              "fill": "#9CA3AF"
+                            },
+                            {
+                              "type": "frame",
+                              "id": "7dzL5",
+                              "x": 48,
+                              "y": -4,
+                              "name": "deleteBtn",
+                              "width": 20,
+                              "height": 20,
+                              "fill": "#1A1A2E",
+                              "cornerRadius": 10,
+                              "justifyContent": "center",
+                              "alignItems": "center",
+                              "children": [
+                                {
+                                  "type": "icon_font",
+                                  "id": "u9Dzq",
+                                  "name": "delIco",
+                                  "width": 14,
+                                  "height": 14,
+                                  "iconFontName": "close",
+                                  "iconFontFamily": "Material Symbols Rounded",
+                                  "fill": "#FFFFFF"
+                                }
+                              ]
                             }
                           ]
                         }
