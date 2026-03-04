@@ -1,16 +1,21 @@
 enum UserRole {
   customer,
-  shopOwner;
+  shopOwner,
+  admin;
 
   String toJson() => switch (this) {
         customer => 'customer',
         shopOwner => 'shop_owner',
+        admin => 'admin',
       };
 
   static UserRole fromJson(String value) => switch (value) {
         'customer' => customer,
         'shop_owner' => shopOwner,
-        _ => throw ArgumentError('Unknown UserRole: $value'),
+        'admin' => admin,
+        _ => throw ArgumentError(
+              'Unknown UserRole: $value',
+            ),
       };
 }
 
@@ -99,6 +104,32 @@ enum InventoryCategory {
         shoes => '신발',
         accessories => '악세서리',
         other => '기타',
+      };
+}
+
+enum ShopStatus {
+  pending,
+  approved,
+  rejected;
+
+  String toJson() => switch (this) {
+        pending => 'pending',
+        approved => 'approved',
+        rejected => 'rejected',
+      };
+
+  static ShopStatus fromJson(String value) =>
+      switch (value) {
+        'pending' => pending,
+        'approved' => approved,
+        'rejected' => rejected,
+        _ => pending,
+      };
+
+  String get label => switch (this) {
+        pending => '승인 대기',
+        approved => '승인됨',
+        rejected => '거절됨',
       };
 }
 
