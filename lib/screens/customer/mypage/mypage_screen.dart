@@ -494,7 +494,7 @@ class _ShopModeCard extends StatelessWidget {
         ),
         ShopStatus.pending => (
           icon: Icons.hourglass_top,
-          label: '승인 대기 중',
+          label: '매장 등록 승인 대기 중',
         ),
         ShopStatus.approved => (
           icon: Icons.swap_horiz,
