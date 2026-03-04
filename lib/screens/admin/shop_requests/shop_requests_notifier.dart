@@ -3,8 +3,9 @@ import 'package:badminton_app/repositories/shop_repository.dart';
 import 'package:badminton_app/screens/admin/shop_requests/shop_requests_state.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-final shopRequestsNotifierProvider = StateNotifierProvider<
-    ShopRequestsNotifier, ShopRequestsState>(
+final shopRequestsNotifierProvider =
+    StateNotifierProvider.autoDispose<
+        ShopRequestsNotifier, ShopRequestsState>(
   (ref) => ShopRequestsNotifier(
     shopRepository: ref.watch(shopRepositoryProvider),
   ),
