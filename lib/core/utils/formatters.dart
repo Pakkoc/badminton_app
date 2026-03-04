@@ -64,5 +64,22 @@ class Formatters {
   }
 
   /// 전화번호에서 하이픈을 제거한다.
-  static String phoneRaw(String value) => value.replaceAll('-', '');
+  static String phoneRaw(String value) =>
+      value.replaceAll('-', '');
+
+  /// 사업자등록번호에 하이픈을 삽입하여
+  /// `XXX-XX-XXXXX` 형식으로 반환한다.
+  static String businessNumber(String value) {
+    final raw = value.replaceAll('-', '');
+    if (raw.length == 10) {
+      return '${raw.substring(0, 3)}-'
+          '${raw.substring(3, 5)}-'
+          '${raw.substring(5)}';
+    }
+    return value;
+  }
+
+  /// 사업자등록번호에서 하이픈을 제거한다.
+  static String businessNumberRaw(String value) =>
+      value.replaceAll('-', '');
 }

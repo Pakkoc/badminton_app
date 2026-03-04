@@ -1,10 +1,12 @@
 import 'package:badminton_app/app/theme.dart';
+import 'package:badminton_app/core/utils/formatters.dart';
 import 'package:badminton_app/core/utils/validators.dart';
 import 'package:badminton_app/screens/auth/shop_signup/shop_signup_notifier.dart';
 import 'package:badminton_app/widgets/map_preview.dart';
 import 'package:badminton_app/widgets/phone_input_field.dart';
 import 'package:badminton_app/widgets/toast.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
@@ -22,6 +24,9 @@ class _ShopSignupScreenState
   final _addressController = TextEditingController();
   final _phoneController = TextEditingController();
   final _descriptionController = TextEditingController();
+  final _businessNumberController = TextEditingController();
+
+  bool _initialized = false;
 
   @override
   void dispose() {
@@ -29,7 +34,28 @@ class _ShopSignupScreenState
     _addressController.dispose();
     _phoneController.dispose();
     _descriptionController.dispose();
+    _businessNumberController.dispose();
     super.dispose();
+  }
+
+  /// 재신청 시 기존 rejected 샵 정보를 폼에 채운다.
+  Future<void> _loadExistingShop() async {
+    if (_initialized) return;
+    _initialized = true;
+
+    final notifier =
+        ref.read(shopSignupNotifierProvider.notifier);
+    await notifier.loadExistingShop();
+
+    final state = ref.read(shopSignupNotifierProvider);
+    if (state.isReapply) {
+      _shopNameController.text = state.shopName;
+      _addressController.text = state.address;
+      _phoneController.text = state.phone;
+      _descriptionController.text = state.description;
+      _businessNumberController.text =
+          state.businessNumber;
+    }
   }
 
   @override
@@ -38,13 +64,18 @@ class _ShopSignupScreenState
     final notifier =
         ref.read(shopSignupNotifierProvider.notifier);
 
+    // 재신청 시 기존 정보 로드
+    _loadExistingShop();
+
     // 주소가 변경되면 컨트롤러를 동기화
     if (_addressController.text != state.address) {
       _addressController.text = state.address;
     }
 
     ref.listen(
-      shopSignupNotifierProvider.select((s) => s.errorMessage),
+      shopSignupNotifierProvider.select(
+        (s) => s.errorMessage,
+      ),
       (_, errorMessage) {
         if (errorMessage != null) {
           AppToast.error(context, errorMessage);
@@ -54,8 +85,13 @@ class _ShopSignupScreenState
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('샵 등록'),
-        automaticallyImplyLeading: false,
+        title: Text(
+          state.isReapply ? '샵 재등록' : '샵 등록',
+        ),
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back),
+          onPressed: () => context.pop(),
+        ),
       ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(24),
@@ -63,8 +99,11 @@ class _ShopSignupScreenState
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              '샵 정보를 등록해주세요',
-              style: Theme.of(context).textTheme.bodyLarge,
+              state.isReapply
+                  ? '샵 정보를 수정하여 다시 신청해주세요'
+                  : '샵 정보를 등록해주세요',
+              style:
+                  Theme.of(context).textTheme.bodyLarge,
             ),
             const SizedBox(height: 24),
             TextFormField(
@@ -81,9 +120,11 @@ class _ShopSignupScreenState
             const SizedBox(height: 16),
             _AddressField(
               controller: _addressController,
-              onSearch: () => notifier.searchAddress(context),
+              onSearch: () =>
+                  notifier.searchAddress(context),
             ),
-            if (state.latitude != 0.0 && state.longitude != 0.0)
+            if (state.latitude != 0.0 &&
+                state.longitude != 0.0)
               Padding(
                 padding: const EdgeInsets.only(top: 12),
                 child: MapPreview(
@@ -96,6 +137,11 @@ class _ShopSignupScreenState
             PhoneInputField(
               controller: _phoneController,
               onChanged: notifier.updatePhone,
+            ),
+            const SizedBox(height: 16),
+            _BusinessNumberField(
+              controller: _businessNumberController,
+              onChanged: notifier.updateBusinessNumber,
             ),
             const SizedBox(height: 16),
             TextFormField(
@@ -119,10 +165,15 @@ class _ShopSignupScreenState
                 onPressed:
                     notifier.isValid && !state.isSubmitting
                         ? () async {
-                            final route =
+                            final result =
                                 await notifier.submit();
-                            if (route != null && mounted) {
-                              context.go(route);
+                            if (result != null &&
+                                mounted) {
+                              AppToast.success(
+                                context,
+                                '샵 등록 신청이 완료되었습니다',
+                              );
+                              context.go('/mypage');
                             }
                           }
                         : null,
@@ -138,7 +189,8 @@ class _ShopSignupScreenState
                     alpha: 0.5,
                   ),
                   shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(14),
+                    borderRadius:
+                        BorderRadius.circular(14),
                   ),
                 ),
                 child: state.isSubmitting
@@ -150,7 +202,11 @@ class _ShopSignupScreenState
                           color: Colors.white,
                         ),
                       )
-                    : const Text('등록 완료'),
+                    : Text(
+                        state.isReapply
+                            ? '재신청'
+                            : '등록 신청',
+                      ),
               ),
             ),
           ],
@@ -189,3 +245,56 @@ class _AddressField extends StatelessWidget {
   }
 }
 
+/// 사업자등록번호 입력 필드 (하이픈 자동 포맷).
+class _BusinessNumberField extends StatelessWidget {
+  const _BusinessNumberField({
+    required this.controller,
+    required this.onChanged,
+  });
+
+  final TextEditingController controller;
+  final ValueChanged<String> onChanged;
+
+  @override
+  Widget build(BuildContext context) {
+    return TextFormField(
+      controller: controller,
+      decoration: const InputDecoration(
+        labelText: '사업자등록번호',
+        hintText: '000-00-00000',
+        border: OutlineInputBorder(),
+      ),
+      keyboardType: TextInputType.number,
+      inputFormatters: [
+        FilteringTextInputFormatter.digitsOnly,
+        _BusinessNumberFormatter(),
+        LengthLimitingTextInputFormatter(12),
+      ],
+      validator: Validators.businessNumber,
+      autovalidateMode:
+          AutovalidateMode.onUserInteraction,
+      onChanged: onChanged,
+    );
+  }
+}
+
+/// 사업자등록번호 XXX-XX-XXXXX 자동 하이픈 포맷터.
+class _BusinessNumberFormatter
+    extends TextInputFormatter {
+  @override
+  TextEditingValue formatEditUpdate(
+    TextEditingValue oldValue,
+    TextEditingValue newValue,
+  ) {
+    final raw = newValue.text.replaceAll('-', '');
+    if (raw.isEmpty) return newValue;
+
+    final formatted = Formatters.businessNumber(raw);
+    return TextEditingValue(
+      text: formatted,
+      selection: TextSelection.collapsed(
+        offset: formatted.length,
+      ),
+    );
+  }
+}

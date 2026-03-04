@@ -99,6 +99,21 @@ class Validators {
     return null;
   }
 
+  static final RegExp _businessNumberRegExp = RegExp(
+    r'^\d{3}-?\d{2}-?\d{5}$',
+  );
+
+  /// 사업자등록번호 검증: 10자리 숫자 (하이픈 허용).
+  static String? businessNumber(String? value) {
+    if (value == null || value.isEmpty) {
+      return '사업자등록번호를 입력해주세요';
+    }
+    if (!_businessNumberRegExp.hasMatch(value)) {
+      return '올바른 사업자등록번호 형식이 아닙니다';
+    }
+    return null;
+  }
+
   /// 수량 검증: 0~9999 정수 필수.
   static String? quantity(String? value) {
     if (value == null || value.isEmpty) {

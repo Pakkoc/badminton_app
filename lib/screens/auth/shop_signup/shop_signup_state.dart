@@ -11,7 +11,10 @@ class ShopSignupState with _$ShopSignupState {
     @Default(0.0) double longitude,
     @Default('') String phone,
     @Default('') String description,
+    @Default('') String businessNumber,
     @Default(false) bool isSubmitting,
+    @Default(false) bool isReapply,
+    String? existingShopId,
     String? errorMessage,
   }) = _ShopSignupState;
 }
