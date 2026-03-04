@@ -1,6 +1,9 @@
+import 'dart:convert';
+
 import 'package:badminton_app/core/error/error_handler.dart';
 import 'package:flutter_naver_login/flutter_naver_login.dart';
 import 'package:flutter_naver_login/interface/types/naver_login_status.dart';
+import 'package:http/http.dart' as http;
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 /// 인증을 관리하는 리포지토리.
@@ -29,8 +32,9 @@ class AuthRepository {
 
   /// 네이버 소셜 로그인을 수행한다.
   ///
-  /// flutter_naver_login으로 네이버 토큰을 받은 뒤,
-  /// Supabase signInWithIdToken으로 세션을 생성한다.
+  /// flutter_naver_login으로 네이버 Access Token을 받은 뒤,
+  /// Edge Function(naver-auth)으로 Supabase 사용자를 생성/조회하고
+  /// OTP verifyOTP로 세션을 생성한다.
   Future<void> signInWithNaver() async {
     try {
       final result = await FlutterNaverLogin.logIn();
@@ -40,10 +44,29 @@ class AuthRepository {
         );
       }
       final token = await FlutterNaverLogin.getCurrentAccessToken();
-      await _client.auth.signInWithIdToken(
-        provider: OAuthProvider.apple,
-        idToken: token.accessToken,
+
+      // Edge Function 호출
+      final supabaseUrl = _client.rest.url.replaceAll('/rest/v1', '');
+      final res = await http.post(
+        Uri.parse('$supabaseUrl/functions/v1/naver-auth'),
+        headers: {'Content-Type': 'application/json'},
+        body: jsonEncode({'access_token': token.accessToken}),
       );
+
+      if (res.statusCode != 200) {
+        throw Exception('네이버 EF 실패(${res.statusCode}): ${res.body}');
+      }
+
+      final data = jsonDecode(res.body) as Map<String, dynamic>;
+      final accessToken = data['access_token'] as String?;
+      final refreshToken = data['refresh_token'] as String?;
+
+      if (accessToken == null || refreshToken == null) {
+        throw Exception('네이버 세션 토큰 없음: ${res.body}');
+      }
+
+      // refresh_token으로 세션 설정
+      await _client.auth.setSession(refreshToken);
     } catch (e) {
       throw ErrorHandler.handle(e);
     }

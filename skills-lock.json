@@ -1,6 +1,11 @@
 {
   "version": 1,
   "skills": {
+    "pencil-skill": {
+      "source": "de-novo/pencil-skill",
+      "sourceType": "github",
+      "computedHash": "79a582b5a51f8c16acaeb5473872c76f7351b4da39a6389abf3cf38ebefdce36"
+    },
     "supabase-postgres-best-practices": {
       "source": "supabase/agent-skills",
       "sourceType": "github",
