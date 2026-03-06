@@ -183,21 +183,21 @@ screens:
     name: "커뮤니티 목록"
     description: "자유게시판 게시글 목록 및 검색"
     role: common
-    pencil_id: ""
+    pencil_id: gDZ5C
     spec_file: docs/ui-specs/community-list.md
 
   community-detail:
     name: "게시글 상세"
     description: "게시글 본문, 댓글/대댓글, 좋아요"
     role: common
-    pencil_id: ""
+    pencil_id: t1yQo
     spec_file: docs/ui-specs/community-detail.md
 
   community-create:
     name: "게시글 작성/수정"
     description: "커뮤니티 게시글 작성 및 수정"
     role: common
-    pencil_id: ""
+    pencil_id: YwMLh
     spec_file: docs/ui-specs/community-create.md
 
   # ─── 관리자 흐름 ───
@@ -205,7 +205,7 @@ screens:
     name: "커뮤니티 신고 관리"
     description: "신고된 게시글/댓글 검토 및 삭제/제재 처리"
     role: admin
-    pencil_id: ""
+    pencil_id: olUid
     spec_file: docs/ui-specs/admin-community-reports.md
 
   admin-shop-requests:
