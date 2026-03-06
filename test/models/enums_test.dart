@@ -106,5 +106,45 @@ void main() {
         NotificationType.shopRejection,
       );
     });
+
+    test('communityReport를 JSON 변환할 수 있다', () {
+      expect(
+        NotificationType.communityReport.toJson(),
+        'community_report',
+      );
+    });
+
+    test('community_report를 fromJson할 수 있다', () {
+      expect(
+        NotificationType.fromJson('community_report'),
+        NotificationType.communityReport,
+      );
+    });
+  });
+
+  group('ReportStatus', () {
+    test('toJson이 올바른 값을 반환한다', () {
+      expect(ReportStatus.pending.toJson(), 'pending');
+      expect(ReportStatus.resolved.toJson(), 'resolved');
+      expect(ReportStatus.dismissed.toJson(), 'dismissed');
+    });
+
+    test('fromJson이 올바른 값을 반환한다', () {
+      expect(ReportStatus.fromJson('pending'), ReportStatus.pending);
+      expect(
+        ReportStatus.fromJson('resolved'),
+        ReportStatus.resolved,
+      );
+      expect(
+        ReportStatus.fromJson('dismissed'),
+        ReportStatus.dismissed,
+      );
+    });
+
+    test('label이 올바른 한국어를 반환한다', () {
+      expect(ReportStatus.pending.label, '대기');
+      expect(ReportStatus.resolved.label, '처리됨');
+      expect(ReportStatus.dismissed.label, '기각');
+    });
   });
 }

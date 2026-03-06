@@ -139,7 +139,8 @@ enum NotificationType {
   notice,
   receipt,
   shopApproval,
-  shopRejection;
+  shopRejection,
+  communityReport;
 
   String toJson() => switch (this) {
         statusChange => 'status_change',
@@ -148,6 +149,7 @@ enum NotificationType {
         receipt => 'receipt',
         shopApproval => 'shop_approval',
         shopRejection => 'shop_rejection',
+        communityReport => 'community_report',
       };
 
   static NotificationType fromJson(String value) => switch (value) {
@@ -157,8 +159,34 @@ enum NotificationType {
         'receipt' => receipt,
         'shop_approval' => shopApproval,
         'shop_rejection' => shopRejection,
+        'community_report' => communityReport,
         _ => throw ArgumentError(
               'Unknown NotificationType: $value',
             ),
+      };
+}
+
+enum ReportStatus {
+  pending,
+  resolved,
+  dismissed;
+
+  String toJson() => switch (this) {
+        pending => 'pending',
+        resolved => 'resolved',
+        dismissed => 'dismissed',
+      };
+
+  static ReportStatus fromJson(String value) => switch (value) {
+        'pending' => pending,
+        'resolved' => resolved,
+        'dismissed' => dismissed,
+        _ => pending,
+      };
+
+  String get label => switch (this) {
+        pending => '대기',
+        resolved => '처리됨',
+        dismissed => '기각',
       };
 }
