@@ -981,6 +981,36 @@
             },
             {
               "type": "frame",
+              "id": "T4rDo",
+              "name": "Tab Community",
+              "layout": "vertical",
+              "gap": 4,
+              "alignItems": "center",
+              "children": [
+                {
+                  "type": "icon_font",
+                  "id": "Zv2vl",
+                  "name": "commIcon1",
+                  "width": 24,
+                  "height": 24,
+                  "iconFontName": "forum",
+                  "iconFontFamily": "Material Symbols Rounded",
+                  "fill": "$--text-tertiary"
+                },
+                {
+                  "type": "text",
+                  "id": "nDtKM",
+                  "name": "commText1",
+                  "fill": "$--text-tertiary",
+                  "content": "커뮤니티",
+                  "fontFamily": "SUIT",
+                  "fontSize": 10,
+                  "fontWeight": "normal"
+                }
+              ]
+            },
+            {
+              "type": "frame",
               "id": "LCK4I",
               "name": "Tab History",
               "layout": "vertical",
@@ -4271,6 +4301,37 @@
             },
             {
               "type": "frame",
+              "id": "kyLsq",
+              "name": "Tab Community",
+              "width": 56,
+              "layout": "vertical",
+              "gap": 4,
+              "alignItems": "center",
+              "children": [
+                {
+                  "type": "icon_font",
+                  "id": "36Qpj",
+                  "name": "commIcon3",
+                  "width": 24,
+                  "height": 24,
+                  "iconFontName": "forum",
+                  "iconFontFamily": "Material Symbols Rounded",
+                  "fill": "$--text-tertiary"
+                },
+                {
+                  "type": "text",
+                  "id": "uuJFR",
+                  "name": "commText3",
+                  "fill": "$--text-tertiary",
+                  "content": "커뮤니티",
+                  "fontFamily": "SUIT",
+                  "fontSize": 10,
+                  "fontWeight": "normal"
+                }
+              ]
+            },
+            {
+              "type": "frame",
               "id": "bYIJv",
               "name": "Tab History",
               "width": 56,
@@ -5381,6 +5442,36 @@
             },
             {
               "type": "frame",
+              "id": "OASJh",
+              "name": "Tab Community",
+              "layout": "vertical",
+              "gap": 4,
+              "alignItems": "center",
+              "children": [
+                {
+                  "type": "icon_font",
+                  "id": "gWA5J",
+                  "name": "commIcon4",
+                  "width": 24,
+                  "height": 24,
+                  "iconFontName": "forum",
+                  "iconFontFamily": "Material Symbols Rounded",
+                  "fill": "$--text-tertiary"
+                },
+                {
+                  "type": "text",
+                  "id": "osSex",
+                  "name": "commText4",
+                  "fill": "$--text-tertiary",
+                  "content": "커뮤니티",
+                  "fontFamily": "SUIT",
+                  "fontSize": 10,
+                  "fontWeight": "normal"
+                }
+              ]
+            },
+            {
+              "type": "frame",
               "id": "3PIOa",
               "name": "Tab History",
               "layout": "vertical",
@@ -5962,6 +6053,36 @@
                   "name": "t2l",
                   "fill": "$--text-tertiary",
                   "content": "샵검색",
+                  "fontFamily": "SUIT",
+                  "fontSize": 10,
+                  "fontWeight": "normal"
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "5Iltt",
+              "name": "Tab Community",
+              "layout": "vertical",
+              "gap": 4,
+              "alignItems": "center",
+              "children": [
+                {
+                  "type": "icon_font",
+                  "id": "C0rb8",
+                  "name": "commIcon5",
+                  "width": 24,
+                  "height": 24,
+                  "iconFontName": "forum",
+                  "iconFontFamily": "Material Symbols Rounded",
+                  "fill": "$--text-tertiary"
+                },
+                {
+                  "type": "text",
+                  "id": "Wbv65",
+                  "name": "commText5",
+                  "fill": "$--text-tertiary",
+                  "content": "커뮤니티",
                   "fontFamily": "SUIT",
                   "fontSize": 10,
                   "fontWeight": "normal"
@@ -11124,6 +11245,36 @@
             },
             {
               "type": "frame",
+              "id": "ogokb",
+              "name": "Tab Community",
+              "layout": "vertical",
+              "gap": 4,
+              "alignItems": "center",
+              "children": [
+                {
+                  "type": "icon_font",
+                  "id": "dFuiG",
+                  "name": "commIcon2",
+                  "width": 24,
+                  "height": 24,
+                  "iconFontName": "forum",
+                  "iconFontFamily": "Material Symbols Rounded",
+                  "fill": "$--text-tertiary"
+                },
+                {
+                  "type": "text",
+                  "id": "LMFk4",
+                  "name": "commText2",
+                  "fill": "$--text-tertiary",
+                  "content": "커뮤니티",
+                  "fontFamily": "SUIT",
+                  "fontSize": 10,
+                  "fontWeight": "normal"
+                }
+              ]
+            },
+            {
+              "type": "frame",
               "id": "pVPcL",
               "name": "Tab History",
               "layout": "vertical",
@@ -11346,6 +11497,36 @@
                   "id": "NdYtn",
                   "fill": "$--text-tertiary",
                   "content": "샵검색",
+                  "fontFamily": "SUIT",
+                  "fontSize": 10,
+                  "fontWeight": "normal"
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "oW6AZ",
+              "name": "Tab Community",
+              "layout": "vertical",
+              "gap": 4,
+              "alignItems": "center",
+              "children": [
+                {
+                  "type": "icon_font",
+                  "id": "l8lbt",
+                  "name": "commIcon6",
+                  "width": 24,
+                  "height": 24,
+                  "iconFontName": "forum",
+                  "iconFontFamily": "Material Symbols Rounded",
+                  "fill": "$--text-tertiary"
+                },
+                {
+                  "type": "text",
+                  "id": "ql362",
+                  "name": "commText6",
+                  "fill": "$--text-tertiary",
+                  "content": "커뮤니티",
                   "fontFamily": "SUIT",
                   "fontSize": 10,
                   "fontWeight": "normal"
@@ -15672,6 +15853,39 @@
             },
             {
               "type": "frame",
+              "id": "g1UWf",
+              "name": "Tab Community",
+              "width": "fill_container",
+              "height": "fill_container",
+              "layout": "vertical",
+              "gap": 4,
+              "justifyContent": "center",
+              "alignItems": "center",
+              "children": [
+                {
+                  "type": "icon_font",
+                  "id": "hKFl3",
+                  "name": "commIcon7",
+                  "width": 24,
+                  "height": 24,
+                  "iconFontName": "forum",
+                  "iconFontFamily": "Material Symbols Rounded",
+                  "fill": "$--text-tertiary"
+                },
+                {
+                  "type": "text",
+                  "id": "5o9no",
+                  "name": "commText7",
+                  "fill": "$--text-tertiary",
+                  "content": "커뮤니티",
+                  "fontFamily": "SUIT",
+                  "fontSize": 10,
+                  "fontWeight": "normal"
+                }
+              ]
+            },
+            {
+              "type": "frame",
               "id": "q5lXY",
               "name": "Tab History",
               "width": "fill_container",
@@ -19929,6 +20143,318 @@
       "name": "Admin Reports Label",
       "fill": "$--text-secondary",
       "content": "커뮤니티 신고 관리",
+      "fontFamily": "SUIT",
+      "fontSize": 14,
+      "fontWeight": "600"
+    },
+    {
+      "type": "frame",
+      "id": "Gzbfz",
+      "x": 1410,
+      "y": 6520,
+      "name": "Report Action Modal",
+      "clip": true,
+      "width": 390,
+      "height": 844,
+      "fill": "#00000080",
+      "layout": "vertical",
+      "justifyContent": "end",
+      "children": [
+        {
+          "type": "frame",
+          "id": "PU6TO",
+          "name": "Bottom Sheet",
+          "width": "fill_container",
+          "fill": "$--surface",
+          "cornerRadius": [
+            20,
+            20,
+            0,
+            0
+          ],
+          "layout": "vertical",
+          "gap": 16,
+          "padding": [
+            20,
+            20,
+            32,
+            20
+          ],
+          "children": [
+            {
+              "type": "frame",
+              "id": "RGGK6",
+              "name": "Handle Row",
+              "width": "fill_container",
+              "justifyContent": "center",
+              "children": [
+                {
+                  "type": "rectangle",
+                  "cornerRadius": 2,
+                  "id": "o8kaV",
+                  "name": "handleBar",
+                  "fill": "$--text-tertiary",
+                  "width": 40,
+                  "height": 4
+                }
+              ]
+            },
+            {
+              "type": "text",
+              "id": "IDk3M",
+              "name": "sheetTitle",
+              "fill": "$--text-primary",
+              "content": "신고 처리",
+              "fontFamily": "SUIT",
+              "fontSize": 18,
+              "fontWeight": "700"
+            },
+            {
+              "type": "frame",
+              "id": "J72Xa",
+              "name": "Report Info",
+              "width": "fill_container",
+              "fill": "$--surface-variant",
+              "cornerRadius": 12,
+              "layout": "vertical",
+              "gap": 10,
+              "padding": 14,
+              "children": [
+                {
+                  "type": "frame",
+                  "id": "VBG87",
+                  "name": "typeRow",
+                  "width": "fill_container",
+                  "gap": 8,
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "oVoqp",
+                      "name": "typeLabel",
+                      "fill": "$--text-secondary",
+                      "content": "유형",
+                      "fontFamily": "SUIT",
+                      "fontSize": 13,
+                      "fontWeight": "600"
+                    },
+                    {
+                      "type": "text",
+                      "id": "SgBFE",
+                      "name": "typeValue",
+                      "fill": "$--text-primary",
+                      "content": "게시글 신고",
+                      "fontFamily": "SUIT",
+                      "fontSize": 13,
+                      "fontWeight": "normal"
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "4QqUP",
+                  "name": "reasonRow",
+                  "width": "fill_container",
+                  "gap": 8,
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "3RQ7B",
+                      "name": "reasonLabel",
+                      "fill": "$--text-secondary",
+                      "content": "사유",
+                      "fontFamily": "SUIT",
+                      "fontSize": 13,
+                      "fontWeight": "600"
+                    },
+                    {
+                      "type": "text",
+                      "id": "fiQG8",
+                      "name": "reasonValue",
+                      "fill": "$--text-primary",
+                      "content": "부적절한 내용이 포함되어 있습니다.",
+                      "fontFamily": "SUIT",
+                      "fontSize": 13,
+                      "fontWeight": "normal"
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "rQqgy",
+                  "name": "reporterRow",
+                  "width": "fill_container",
+                  "gap": 8,
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "OFXu0",
+                      "name": "reporterLabel",
+                      "fill": "$--text-secondary",
+                      "content": "신고자",
+                      "fontFamily": "SUIT",
+                      "fontSize": 13,
+                      "fontWeight": "600"
+                    },
+                    {
+                      "type": "text",
+                      "id": "mMkoZ",
+                      "name": "reporterValue",
+                      "fill": "$--text-primary",
+                      "content": "사용자A",
+                      "fontFamily": "SUIT",
+                      "fontSize": 13,
+                      "fontWeight": "normal"
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "qITfk",
+                  "name": "dateRow",
+                  "width": "fill_container",
+                  "gap": 8,
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "Kbgbq",
+                      "name": "dateLabel",
+                      "fill": "$--text-secondary",
+                      "content": "신고일",
+                      "fontFamily": "SUIT",
+                      "fontSize": 13,
+                      "fontWeight": "600"
+                    },
+                    {
+                      "type": "text",
+                      "id": "cMxuR",
+                      "name": "dateValue",
+                      "fill": "$--text-primary",
+                      "content": "2026.03.06 14:30",
+                      "fontFamily": "SUIT",
+                      "fontSize": 13,
+                      "fontWeight": "normal"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "vlArb",
+              "name": "Content Preview",
+              "width": "fill_container",
+              "cornerRadius": 12,
+              "stroke": {
+                "align": "inside",
+                "thickness": 1,
+                "fill": "$--border"
+              },
+              "layout": "vertical",
+              "gap": 6,
+              "padding": 14,
+              "children": [
+                {
+                  "type": "text",
+                  "id": "Qer3D",
+                  "name": "previewLabel",
+                  "fill": "$--text-secondary",
+                  "content": "신고된 콘텐츠",
+                  "fontFamily": "SUIT",
+                  "fontSize": 13,
+                  "fontWeight": "600"
+                },
+                {
+                  "type": "text",
+                  "id": "jqnCS",
+                  "name": "previewText",
+                  "fill": "$--text-primary",
+                  "content": "이 게시글의 내용이 여기에 표시됩니다. 관리자가 직접 확인하고 판단할 수 있습니다...",
+                  "fontFamily": "SUIT",
+                  "fontSize": 14,
+                  "fontWeight": "normal"
+                },
+                {
+                  "type": "text",
+                  "id": "XYYVc",
+                  "name": "viewOriginal",
+                  "fill": "$--primary",
+                  "content": "원문 보기 →",
+                  "fontFamily": "SUIT",
+                  "fontSize": 13,
+                  "fontWeight": "500"
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "1xOPi",
+              "name": "Action Buttons",
+              "width": "fill_container",
+              "gap": 10,
+              "children": [
+                {
+                  "type": "frame",
+                  "id": "yy1Sg",
+                  "name": "dismissBtn",
+                  "width": "fill_container",
+                  "height": 48,
+                  "fill": "$--surface-variant",
+                  "cornerRadius": 12,
+                  "justifyContent": "center",
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "yswtI",
+                      "name": "dismissText",
+                      "fill": "$--text-secondary",
+                      "content": "기각",
+                      "fontFamily": "SUIT",
+                      "fontSize": 15,
+                      "fontWeight": "600"
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "gN1nK",
+                  "name": "deleteBtn",
+                  "width": "fill_container",
+                  "height": 48,
+                  "fill": "#EF4444",
+                  "cornerRadius": 12,
+                  "justifyContent": "center",
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "NV5cz",
+                      "name": "deleteText",
+                      "fill": "#FFFFFF",
+                      "content": "삭제 및 제재",
+                      "fontFamily": "SUIT",
+                      "fontSize": 15,
+                      "fontWeight": "600"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "text",
+      "id": "BRlwn",
+      "x": 1410,
+      "y": 6500,
+      "name": "Report Modal Label",
+      "fill": "$--text-secondary",
+      "content": "신고 처리 모달",
       "fontFamily": "SUIT",
       "fontSize": 14,
       "fontWeight": "600"
