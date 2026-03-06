@@ -158,6 +158,56 @@
 | is_read | BOOLEAN | NOT NULL, DEFAULT false | 읽음 여부 |
 | created_at | TIMESTAMPTZ | NOT NULL, DEFAULT now() | 생성일 |
 
+### 테이블: community_posts — 커뮤니티 게시글
+
+| 컬럼 | 타입 | 제약조건 | 설명 |
+|------|------|---------|------|
+| id | UUID | PK, DEFAULT uuid_generate_v7() | 게시글 고유 ID |
+| author_id | UUID | NOT NULL, FK → users(id) ON DELETE CASCADE | 작성자 |
+| title | TEXT | NOT NULL | 게시글 제목 |
+| content | TEXT | NOT NULL | 게시글 내용 |
+| images | JSONB | NOT NULL, DEFAULT '[]' | 첨부 이미지 URL 배열 |
+| like_count | INTEGER | NOT NULL, DEFAULT 0, CHECK (>= 0) | 좋아요 수 (비정규화) |
+| comment_count | INTEGER | NOT NULL, DEFAULT 0, CHECK (>= 0) | 댓글 수 (비정규화) |
+| created_at | TIMESTAMPTZ | NOT NULL, DEFAULT now() | 생성일 |
+| updated_at | TIMESTAMPTZ | NOT NULL, DEFAULT now() | 수정일 (트리거 자동 갱신) |
+
+### 테이블: community_comments — 커뮤니티 댓글
+
+| 컬럼 | 타입 | 제약조건 | 설명 |
+|------|------|---------|------|
+| id | UUID | PK, DEFAULT uuid_generate_v7() | 댓글 고유 ID |
+| post_id | UUID | NOT NULL, FK → community_posts(id) ON DELETE CASCADE | 소속 게시글 |
+| author_id | UUID | NOT NULL, FK → users(id) ON DELETE CASCADE | 작성자 |
+| parent_id | UUID | NULLABLE, FK → community_comments(id) ON DELETE CASCADE | 부모 댓글 (NULL이면 1단 댓글) |
+| content | TEXT | NOT NULL | 댓글 내용 |
+| like_count | INTEGER | NOT NULL, DEFAULT 0, CHECK (>= 0) | 좋아요 수 (비정규화) |
+| created_at | TIMESTAMPTZ | NOT NULL, DEFAULT now() | 생성일 |
+
+### 테이블: community_likes — 커뮤니티 좋아요
+
+| 컬럼 | 타입 | 제약조건 | 설명 |
+|------|------|---------|------|
+| id | UUID | PK, DEFAULT uuid_generate_v7() | 고유 ID |
+| user_id | UUID | NOT NULL, FK → users(id) ON DELETE CASCADE | 좋아요 누른 사용자 |
+| post_id | UUID | NULLABLE, FK → community_posts(id) ON DELETE CASCADE | 좋아요 대상 게시글 |
+| comment_id | UUID | NULLABLE, FK → community_comments(id) ON DELETE CASCADE | 좋아요 대상 댓글 |
+| created_at | TIMESTAMPTZ | NOT NULL, DEFAULT now() | 생성일 |
+
+> CHECK (post_id IS NOT NULL AND comment_id IS NULL) OR (post_id IS NULL AND comment_id IS NOT NULL) — 게시글/댓글 중 하나만 대상
+
+### 테이블: community_reports — 커뮤니티 신고
+
+| 컬럼 | 타입 | 제약조건 | 설명 |
+|------|------|---------|------|
+| id | UUID | PK, DEFAULT uuid_generate_v7() | 고유 ID |
+| reporter_id | UUID | NOT NULL, FK → users(id) ON DELETE CASCADE | 신고자 |
+| post_id | UUID | NULLABLE, FK → community_posts(id) ON DELETE CASCADE | 신고 대상 게시글 |
+| comment_id | UUID | NULLABLE, FK → community_comments(id) ON DELETE CASCADE | 신고 대상 댓글 |
+| reason | TEXT | NOT NULL | 신고 사유 |
+| status | TEXT | NOT NULL, DEFAULT 'pending', CHECK (IN 'pending', 'resolved', 'dismissed') | 처리 상태 |
+| created_at | TIMESTAMPTZ | NOT NULL, DEFAULT now() | 생성일 |
+
 ---
 
 ## 관계 다이어그램
