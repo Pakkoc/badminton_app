@@ -107,18 +107,13 @@ class _NotificationTile extends StatelessWidget {
 
   IconData _iconForType(NotificationType type) =>
       switch (type) {
-        NotificationType.statusChange =>
-          Icons.sync,
-        NotificationType.completion =>
-          Icons.check_circle_outline,
-        NotificationType.notice =>
-          Icons.campaign_outlined,
-        NotificationType.receipt =>
-          Icons.receipt_long_outlined,
-        NotificationType.shopApproval =>
-          Icons.check_circle,
-        NotificationType.shopRejection =>
-          Icons.cancel_outlined,
+        NotificationType.statusChange => Icons.sync,
+        NotificationType.completion => Icons.check_circle_outline,
+        NotificationType.notice => Icons.campaign_outlined,
+        NotificationType.receipt => Icons.receipt_long_outlined,
+        NotificationType.shopApproval => Icons.check_circle,
+        NotificationType.shopRejection => Icons.cancel_outlined,
+        NotificationType.communityReport => Icons.flag_outlined,
       };
 
   @override
