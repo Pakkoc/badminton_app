@@ -3,7 +3,7 @@ import 'package:go_router/go_router.dart';
 
 /// 고객 플로우 공통 하단 네비게이션 바.
 ///
-/// 4개 탭: 홈, 샵검색, 이력, MY.
+/// 5개 탭: 홈, 샵검색, 커뮤니티, 이력, MY.
 /// [currentIndex]로 현재 활성 탭을 지정한다.
 class CustomerBottomNav extends StatelessWidget {
   const CustomerBottomNav({
@@ -16,6 +16,7 @@ class CustomerBottomNav extends StatelessWidget {
   static const _routes = [
     '/customer/home',
     '/customer/shop-search',
+    '/community',
     '/customer/order-history',
     '/customer/mypage',
   ];
@@ -40,6 +41,11 @@ class CustomerBottomNav extends StatelessWidget {
           icon: Icon(Icons.search),
           activeIcon: Icon(Icons.search),
           label: '샵검색',
+        ),
+        BottomNavigationBarItem(
+          icon: Icon(Icons.forum_outlined),
+          activeIcon: Icon(Icons.forum),
+          label: '커뮤니티',
         ),
         BottomNavigationBarItem(
           icon: Icon(Icons.history),

@@ -1,6 +1,7 @@
 import 'package:badminton_app/core/utils/formatters.dart';
 import 'package:badminton_app/models/community_post.dart';
 import 'package:badminton_app/providers/community_provider.dart';
+import 'package:badminton_app/widgets/customer_bottom_nav.dart';
 import 'package:badminton_app/widgets/empty_state.dart';
 import 'package:badminton_app/widgets/error_view.dart';
 import 'package:badminton_app/widgets/loading_indicator.dart';
@@ -33,6 +34,7 @@ class _CommunityListScreenState extends ConsumerState<CommunityListScreen> {
         : ref.watch(communityPostListProvider);
 
     return Scaffold(
+      bottomNavigationBar: const CustomerBottomNav(currentIndex: 2),
       appBar: AppBar(
         title: _isSearching
             ? TextField(
@@ -77,7 +79,8 @@ class _CommunityListScreenState extends ConsumerState<CommunityListScreen> {
             child: ListView.separated(
               padding: const EdgeInsets.all(16),
               itemCount: posts.length,
-              separatorBuilder: (_, __) => const Divider(height: 1),
+              separatorBuilder: (context, index) =>
+                  const Divider(height: 1),
               itemBuilder: (_, index) =>
                   _PostListTile(post: posts[index]),
             ),

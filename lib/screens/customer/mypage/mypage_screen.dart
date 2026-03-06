@@ -30,7 +30,7 @@ class _MypageScreenState extends ConsumerState<MypageScreen> {
     return Scaffold(
       appBar: AppBar(title: const Text('마이페이지')),
       bottomNavigationBar: const CustomerBottomNav(
-        currentIndex: 3,
+        currentIndex: 4,
       ),
       body: userAsync.when(
         data: (user) {

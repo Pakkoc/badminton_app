@@ -4,10 +4,16 @@ import 'package:badminton_app/models/enums.dart';
 import 'package:badminton_app/models/shop.dart';
 import 'package:badminton_app/providers/app_mode_provider.dart';
 import 'package:badminton_app/providers/supabase_provider.dart';
+import 'package:badminton_app/screens/admin/community_reports/community_reports_screen.dart';
+import 'package:badminton_app/screens/admin/shop_request_detail/shop_request_detail_screen.dart';
+import 'package:badminton_app/screens/admin/shop_requests/shop_requests_screen.dart';
 import 'package:badminton_app/screens/auth/login/login_screen.dart';
 import 'package:badminton_app/screens/auth/profile_setup/profile_setup_screen.dart';
 import 'package:badminton_app/screens/auth/shop_signup/shop_signup_screen.dart';
 import 'package:badminton_app/screens/auth/splash/splash_screen.dart';
+import 'package:badminton_app/screens/community/community_create/community_create_screen.dart';
+import 'package:badminton_app/screens/community/community_detail/community_detail_screen.dart';
+import 'package:badminton_app/screens/community/community_list/community_list_screen.dart';
 import 'package:badminton_app/screens/customer/home/customer_home_screen.dart';
 import 'package:badminton_app/screens/customer/mypage/mypage_screen.dart';
 import 'package:badminton_app/screens/customer/notifications/notifications_screen.dart';
@@ -19,8 +25,6 @@ import 'package:badminton_app/screens/customer/profile_edit/profile_edit_screen.
 import 'package:badminton_app/screens/customer/qr_order/qr_order_screen.dart';
 import 'package:badminton_app/screens/customer/shop_detail/shop_detail_screen.dart';
 import 'package:badminton_app/screens/customer/shop_search/shop_search_screen.dart';
-import 'package:badminton_app/screens/admin/shop_request_detail/shop_request_detail_screen.dart';
-import 'package:badminton_app/screens/admin/shop_requests/shop_requests_screen.dart';
 import 'package:badminton_app/screens/owner/dashboard/owner_dashboard_screen.dart';
 import 'package:badminton_app/screens/owner/inventory/inventory_screen.dart';
 import 'package:badminton_app/screens/owner/order_create/order_create_screen.dart';
@@ -175,6 +179,28 @@ final routerProvider = Provider<GoRouter>((ref) {
             ),
           ),
           GoRoute(
+            path: '/community',
+            builder: (context, state) =>
+                const CommunityListScreen(),
+          ),
+          GoRoute(
+            path: '/community/create',
+            builder: (context, state) =>
+                const CommunityCreateScreen(),
+          ),
+          GoRoute(
+            path: '/community/:postId',
+            builder: (context, state) => CommunityDetailScreen(
+              postId: state.pathParameters['postId']!,
+            ),
+          ),
+          GoRoute(
+            path: '/community/:postId/edit',
+            builder: (context, state) => CommunityCreateScreen(
+              postId: state.pathParameters['postId']!,
+            ),
+          ),
+          GoRoute(
             path: '/customer/notifications',
             builder: (context, state) =>
                 const NotificationsScreen(),
@@ -193,6 +219,11 @@ final routerProvider = Provider<GoRouter>((ref) {
       ),
 
       // 관리자 라우트
+      GoRoute(
+        path: '/admin/community-reports',
+        builder: (context, state) =>
+            const CommunityReportsScreen(),
+      ),
       GoRoute(
         path: '/admin/shop-requests',
         builder: (context, state) =>

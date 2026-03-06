@@ -19,7 +19,8 @@ void main() {
         ),
       );
       await tester.pumpAndSettle();
-      expect(find.text('커뮤니티'), findsOneWidget);
+      // AppBar 타이틀 + 하단 탭 레이블 둘 다 '커뮤니티'를 표시한다
+      expect(find.text('커뮤니티'), findsAtLeastNWidgets(1));
     });
 
     testWidgets('게시글이 없으면 빈 상태를 표시한다', (tester) async {

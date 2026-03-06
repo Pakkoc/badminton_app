@@ -36,7 +36,7 @@ class OrderHistoryScreen extends ConsumerWidget {
       ),
       body: _buildBody(context, ref, state),
       bottomNavigationBar: const CustomerBottomNav(
-        currentIndex: 2,
+        currentIndex: 3,
       ),
     );
   }
