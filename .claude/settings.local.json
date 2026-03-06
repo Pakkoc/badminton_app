@@ -4,5 +4,34 @@
     "supabase",
     "context7",
     "dart"
-  ]
+  ],
+  "hooks": {
+    "PostToolUse": [
+      {
+        "matcher": "mcp__pencil__batch_design",
+        "hooks": [
+          {
+            "type": "command",
+            "command": ".claude/hooks/sot-design-sync.sh",
+            "timeout": 10
+          }
+        ]
+      },
+      {
+        "matcher": "Edit|Write",
+        "hooks": [
+          {
+            "type": "command",
+            "command": ".claude/hooks/sot-doc-sync.sh",
+            "timeout": 10
+          },
+          {
+            "type": "command",
+            "command": ".claude/hooks/sot-code-check.sh",
+            "timeout": 10
+          }
+        ]
+      }
+    ]
+  }
 }

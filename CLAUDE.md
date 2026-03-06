@@ -47,27 +47,34 @@
 
 ### 구조
 ```
-techstack → database → usecases → common-modules → state-plan → plan
+techstack → database → common-modules → state-plan
 ```
+※ usecases는 `docs/archive/usecases/`에 아카이브됨 (구현 완료)
 
-### 규칙
-- 상위 문서가 변경되면 하위 문서를 모두 검토하고 필요 시 갱신한다
-- 설계 변경 시 `/doc-sync` 스킬을 사용하여 영향 문서를 동기화한다
-- 문서 간 정합성(SOT)을 항상 유지한다
+### SOT 자동 동기화 (Hook 기반)
+
+PostToolUse Hook이 파일 수정을 감지하여 **자동으로** 동기화를 지시한다.
+수동으로 `/design-sync`, `/doc-sync`를 호출할 필요 없이 Hook이 알아서 알려준다.
+
+| Hook | 트리거 | 동작 |
+|------|--------|------|
+| sot-design-sync | Pencil batch_design 후 | UI 스펙 동기화 지시 |
+| sot-doc-sync | docs/*.md 수정 후 | 의존 체인 불일치 감지 |
+| sot-code-check | lib/*.dart 수정 후 | 스펙 준수 확인 지시 |
 
 ### SOT (Single Source of Truth)
-| 영역 | SOT | 동기화 스킬 |
-|------|-----|-----------|
-| 화면 메타정보 (ID, 이름, 역할) | screen-registry.yaml | /sync |
-| 시각 디자인 (레이아웃, 스타일, 네비게이션) | Pencil .pen 파일 | /design-sync |
-| 설계 문서 (DB, 유스케이스, 상태 등) | 각 문서 자체 | /doc-sync |
+| 영역 | SOT |
+|------|-----|
+| 화면 메타정보 (ID, 이름, 역할) | screen-registry.yaml |
+| 시각 디자인 (레이아웃, 스타일, 네비게이션) | Pencil .pen 파일 |
+| 설계 문서 (DB, 상태 등) | 각 문서 자체 |
 
 ## 화면 구현 규칙
 
 ### Pencil → Spec → Code 정합성
 - 화면 구현 시 해당 UI 스펙(`docs/ui-specs/*.md`)의 컴포넌트 목록을 **1:1 대조**한다
 - 색상, 크기, 텍스트는 Spec에 명시된 값을 **정확히** 사용한다 (임의 변경 금지)
-- 화면 구현 완료 후 반드시 `/design-sync [screen-name]`을 실행하여 Pencil↔Spec↔Code 정합성을 검증한다
+- Hook이 자동으로 정합성 확인을 지시하므로, 지시에 따라 동기화한다
 
 ## Flutter / Dart 코딩 규칙
 
