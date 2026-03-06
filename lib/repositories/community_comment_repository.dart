@@ -50,7 +50,7 @@ class CommunityCommentRepository {
         'post_id': postId,
         'author_id': authorId,
         'content': content,
-        if (parentId != null) 'parent_id': parentId,
+        'parent_id': parentId,
       }).select(_selectWithAuthor).single();
       return CommunityComment.fromJson(data);
     } catch (e) {

@@ -42,8 +42,8 @@ class CommunityReportsScreen extends ConsumerWidget {
           return ListView.separated(
             padding: const EdgeInsets.all(16),
             itemCount: reports.length,
-            separatorBuilder: (_, __) => const Divider(),
-            itemBuilder: (_, index) {
+            separatorBuilder: (context, index) => const Divider(),
+            itemBuilder: (context, index) {
               final report = reports[index];
               final isPostReport = report.postId != null;
               return ListTile(
