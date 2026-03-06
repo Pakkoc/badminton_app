@@ -51,16 +51,25 @@ techstack → database → common-modules → state-plan
 ```
 ※ usecases는 `docs/archive/usecases/`에 아카이브됨 (구현 완료)
 
-### SOT 자동 동기화 (Hook 기반)
+### SOT 연쇄 자동 수정 (Hook 기반)
 
-PostToolUse Hook이 파일 수정을 감지하여 **자동으로** 동기화를 지시한다.
-수동으로 `/design-sync`, `/doc-sync`를 호출할 필요 없이 Hook이 알아서 알려준다.
+하나의 파일을 수정하면 PostToolUse Hook이 감지하여 **연관된 모든 파일을 자동으로 연쇄 수정**한다.
+사용자에게 "수정할까요?" 묻지 않고, Hook 지시에 따라 즉시 실행한다.
 
-| Hook | 트리거 | 동작 |
-|------|--------|------|
-| sot-design-sync | Pencil batch_design 후 | UI 스펙 동기화 지시 |
-| sot-doc-sync | docs/*.md 수정 후 | 의존 체인 불일치 감지 |
-| sot-code-check | lib/*.dart 수정 후 | 스펙 준수 확인 지시 |
+#### 연쇄 수정 맵
+```
+Pencil .pen 수정 → UI 스펙 → state.md → 코드
+design-system.md 수정 → UI 스펙 전체 → Pencil → 테마 코드
+database.md 수정 → 모델 코드 → 리포지토리 코드 → state.md
+screen-registry.yaml 수정 → UI 스펙 → 라우터 → Pencil
+ui-specs/*.md 수정 → 코드 → (역방향) Pencil
+state.md 수정 → Provider 코드 → 화면 코드 → 테스트
+```
+
+#### 규칙
+- **묻지 마라**: Hook의 `<sot-cascade-trigger>`가 발동하면 사용자 확인 없이 즉시 연쇄 수정을 실행한다
+- **끝까지 완료**: 연쇄 수정이 모두 끝난 후에만 사용자에게 결과를 보고한다
+- **루프 방지**: `<sot-verify>` 태그는 확인만 수행한다. 이미 cascade 중이면 건너뛴다
 
 ### SOT (Single Source of Truth)
 | 영역 | SOT |
@@ -74,7 +83,7 @@ PostToolUse Hook이 파일 수정을 감지하여 **자동으로** 동기화를 
 ### Pencil → Spec → Code 정합성
 - 화면 구현 시 해당 UI 스펙(`docs/ui-specs/*.md`)의 컴포넌트 목록을 **1:1 대조**한다
 - 색상, 크기, 텍스트는 Spec에 명시된 값을 **정확히** 사용한다 (임의 변경 금지)
-- Hook이 자동으로 정합성 확인을 지시하므로, 지시에 따라 동기화한다
+- Hook이 연쇄 수정을 자동 트리거하므로, 한 곳만 수정하면 나머지는 자동으로 따라간다
 
 ## Flutter / Dart 코딩 규칙
 
