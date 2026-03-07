@@ -222,7 +222,7 @@ class _CommunityDetailScreenState
                           PopupMenuButton<String>(
                             onSelected: (value) {
                               if (value == 'edit') {
-                                context.go(
+                                context.push(
                                     '/community/${post.id}/edit');
                               } else if (value == 'delete') {
                                 _deletePost();

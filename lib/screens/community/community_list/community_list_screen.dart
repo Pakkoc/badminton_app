@@ -88,7 +88,7 @@ class _CommunityListScreenState extends ConsumerState<CommunityListScreen> {
         },
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () => context.go('/community/create'),
+        onPressed: () => context.push('/community/create'),
         child: const Icon(Icons.edit),
       ),
     );
@@ -149,7 +149,7 @@ class _PostListTile extends StatelessWidget {
       trailing: post.images.isNotEmpty
           ? const Icon(Icons.image, size: 16, color: Colors.grey)
           : null,
-      onTap: () => context.go('/community/${post.id}'),
+      onTap: () => context.push('/community/${post.id}'),
     );
   }
 }

@@ -132,7 +132,7 @@ class _EmptyBody extends StatelessWidget {
                     width: 200,
                     child: OutlinedButton(
                       onPressed: () =>
-                          context.go('/customer/shop-search'),
+                          context.push('/customer/shop-search'),
                       child: const Text('주변 샵 검색하기'),
                     ),
                   ),

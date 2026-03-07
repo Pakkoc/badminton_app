@@ -76,7 +76,7 @@ class _ShopRequestsScreenState
             name: shop.name,
             businessNumber: shop.businessNumber,
             createdAt: shop.createdAt,
-            onTap: () => context.go(
+            onTap: () => context.push(
               '/admin/shop-requests/${shop.id}',
             ),
           );
