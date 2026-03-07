@@ -1,6 +1,6 @@
 # 로그인 — 상태 설계
 
-> 최종 수정일: 2026-02-24
+> 최종 수정일: 2026-03-07
 
 ---
 
@@ -15,7 +15,7 @@
 | 변형 | 필드 | 설명 |
 |------|------|------|
 | `idle` | - | 기본 상태. 모든 소셜 로그인 버튼 활성 |
-| `authenticating` | `OAuthProvider provider` | 특정 소셜 로그인 진행 중. 해당 버튼에 스피너 표시, 전체 버튼 비활성 |
+| `authenticating` | `String providerName` | 특정 소셜 로그인 진행 중. 해당 버튼에 스피너 표시, 전체 버튼 비활성 |
 | `error` | `String message` | 로그인 실패. 에러 스낵바 표시 후 idle로 자동 복귀 |
 
 ---
@@ -88,7 +88,7 @@ flowchart TD
 | 메서드 | 파라미터 | 설명 |
 |--------|---------|------|
 | `signInWithKakao()` | - | 카카오 소셜 로그인 시작. `AuthRepository.signInWithOAuth(OAuthProvider.kakao)` 호출 |
-| `signInWithNaver()` | - | 네이버 소셜 로그인 시작. `AuthRepository.signInWithOAuth(OAuthProvider.naver)` 호출 |
+| `signInWithNaver()` | - | 네이버 소셜 로그인 시작. `AuthRepository.signInWithNaver()` 호출 (Edge Function 브라우저 OAuth + AppLinks 딥링크 수신 + setSession) |
 | `signInWithGoogle()` | - | Google 소셜 로그인 시작. `AuthRepository.signInWithOAuth(OAuthProvider.google)` 호출 |
 
 > 로그인 성공 후 라우팅은 `authStateProvider` 변경을 감지하는 go_router 리다이렉트에서 처리한다. LoginNotifier는 인증 API 호출과 에러 처리만 담당한다.

@@ -1,6 +1,6 @@
 # 로그인 — UI 화면 스펙
 
-> 최종 수정일: 2026-03-03
+> 최종 수정일: 2026-03-07
 
 ---
 
@@ -227,7 +227,7 @@ Supabase Auth signInWithOAuth 호출
 |-----|--------|------|----------|-----------|
 | 카카오 로그인 | Supabase Auth | `signInWithOAuth` | `OAuthProvider.kakao` | 카카오 버튼 탭 시 |
 | Google 로그인 | Supabase Auth | `signInWithOAuth` | `OAuthProvider.google` | Gmail 버튼 탭 시 |
-| 네이버 로그인 | Supabase Auth | 커스텀 프로바이더 | Naver OAuth 설정 | 네이버 버튼 탭 시 |
+| 네이버 로그인 | Edge Function | 브라우저 OAuth → `naver-auth` EF | 네이버 버튼 탭 시 (url_launcher → EF → 네이버 OAuth → 딥링크 콜백) |
 | 사용자 조회 | `users` | SELECT | `id = auth.uid` | 소셜 로그인 성공 후 |
 
 **Supabase 쿼리 예시:**
@@ -236,20 +236,19 @@ Supabase Auth signInWithOAuth 호출
 // 1. 카카오 로그인
 await supabase.auth.signInWithOAuth(
   OAuthProvider.kakao,
-  redirectTo: 'io.supabase.app://login-callback',
+  redirectTo: 'com.gurtalim.app://login-callback',
 );
 
 // 2. Google 로그인
 await supabase.auth.signInWithOAuth(
   OAuthProvider.google,
-  redirectTo: 'io.supabase.app://login-callback',
+  redirectTo: 'com.gurtalim.app://login-callback',
 );
 
-// 3. 네이버 로그인 (커스텀 프로바이더)
-await supabase.auth.signInWithOAuth(
-  OAuthProvider.naver,
-  redirectTo: 'io.supabase.app://login-callback',
-);
+// 3. 네이버 로그인 (Edge Function 브라우저 OAuth)
+// url_launcher로 EF URL 오픈 → 네이버 OAuth → 딥링크로 토큰 수신
+// AppLinks로 딥링크 수신 후 setSession(refreshToken)으로 세션 설정
+await authRepository.signInWithNaver();
 
 // 4. 인증 성공 후 사용자 존재 여부 확인
 final userId = supabase.auth.currentUser!.id;
@@ -317,7 +316,7 @@ if (result == null) {
 - 로그인 화면에서 **뒤로가기 (시스템 백 버튼)** 를 누르면 앱을 종료한다 (스플래시로 돌아가지 않음).
 - 소셜 로그인 중 하나의 버튼을 탭하면 나머지 버튼도 함께 비활성화하여 중복 요청을 방지한다.
 - OAuth 콜백 처리를 위해 딥링크 스킴(`redirectTo`)을 반드시 설정한다.
-- 네이버 로그인은 Supabase 커스텀 OAuth 프로바이더로 설정하며, 별도 네이버 개발자 센터 앱 등록이 필요하다.
+- 네이버 로그인은 Edge Function(`naver-auth`) 기반 브라우저 OAuth로 구현하며, 네이버 개발자 센터에 PC 웹 서비스 환경 + Callback URL 등록이 필요하다.
 - 카카오 로그인은 카카오 개발자 센터에서 플랫폼 등록(Android 패키지명 + iOS 번들 ID) 및 동의 항목 설정이 필요하다.
 - Gmail(Google) 로그인은 Google Cloud Console에서 OAuth 2.0 클라이언트 ID 발급이 필요하다.
 
