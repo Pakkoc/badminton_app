@@ -147,7 +147,20 @@ class _PostListTile extends StatelessWidget {
         ),
       ),
       trailing: post.images.isNotEmpty
-          ? const Icon(Icons.image, size: 16, color: Colors.grey)
+          ? ClipRRect(
+              borderRadius: BorderRadius.circular(8),
+              child: Image.network(
+                post.images.first,
+                width: 60,
+                height: 60,
+                fit: BoxFit.cover,
+                errorBuilder: (_, __, ___) => const SizedBox(
+                  width: 60,
+                  height: 60,
+                  child: Icon(Icons.image, color: Colors.grey),
+                ),
+              ),
+            )
           : null,
       onTap: () => context.push('/community/${post.id}'),
     );

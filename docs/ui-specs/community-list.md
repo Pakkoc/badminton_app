@@ -74,7 +74,7 @@
 | 시간 | textTheme.bodySmall, color grey |
 | 댓글 수 | chat_bubble_outline 14px + count (0이면 미표시) |
 | 좋아요 수 | favorite_border 14px + count (0이면 미표시) |
-| 이미지 표시 | 이미지 있으면 trailing에 image 아이콘 16px |
+| 이미지 썸네일 | 이미지 있으면 trailing에 첫번째 이미지 썸네일 60x60, cornerRadius 8 |
 | 탭 동작 | `/community/{postId}`로 이동 |
 
 ### 3.4 FloatingActionButton
