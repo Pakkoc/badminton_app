@@ -18589,128 +18589,148 @@
                 },
                 "blur": 12
               },
-              "layout": "vertical",
-              "gap": 8,
+              "gap": 12,
               "padding": 16,
+              "alignItems": "center",
               "children": [
                 {
-                  "type": "text",
-                  "id": "UoyCr",
-                  "name": "postTitle",
-                  "fill": "$--text-primary",
-                  "content": "강남역 근처 거트샵 후기",
-                  "fontFamily": "SUIT",
-                  "fontSize": 16,
-                  "fontWeight": "SemiBold"
-                },
-                {
-                  "type": "text",
-                  "id": "PZKEs",
-                  "name": "postPreview",
-                  "fill": "$--text-secondary",
-                  "textGrowth": "fixed-width",
-                  "width": "fill_container",
-                  "content": "지난주에 다녀온 거트샵 후기 남깁니다. 매우 만족스러웠어요!",
-                  "fontFamily": "SUIT",
-                  "fontSize": 13,
-                  "fontWeight": "normal"
-                },
-                {
                   "type": "frame",
-                  "id": "0N7S7",
-                  "name": "metaRow",
+                  "id": "LEJyi",
+                  "name": "Text Content",
                   "width": "fill_container",
+                  "layout": "vertical",
                   "gap": 8,
-                  "alignItems": "center",
                   "children": [
                     {
                       "type": "text",
-                      "id": "ViKBG",
-                      "name": "author",
-                      "fill": "$--text-tertiary",
-                      "content": "셔틀콕마스터",
+                      "id": "UoyCr",
+                      "name": "postTitle",
+                      "fill": "$--text-primary",
+                      "content": "강남역 근처 거트샵 후기",
                       "fontFamily": "SUIT",
-                      "fontSize": 12,
-                      "fontWeight": "normal"
+                      "fontSize": 16,
+                      "fontWeight": "SemiBold"
                     },
                     {
                       "type": "text",
-                      "id": "EnMOw",
-                      "name": "dot",
-                      "fill": "$--text-tertiary",
-                      "content": "·",
+                      "id": "PZKEs",
+                      "name": "postPreview",
+                      "fill": "$--text-secondary",
+                      "textGrowth": "fixed-width",
+                      "width": "fill_container",
+                      "content": "지난주에 다녀온 거트샵 후기 남깁니다. 매우 만족스러웠어요!",
                       "fontFamily": "SUIT",
-                      "fontSize": 12,
-                      "fontWeight": "normal"
-                    },
-                    {
-                      "type": "text",
-                      "id": "kvFPM",
-                      "name": "time",
-                      "fill": "$--text-tertiary",
-                      "content": "1일 전",
-                      "fontFamily": "SUIT",
-                      "fontSize": 12,
+                      "fontSize": 13,
                       "fontWeight": "normal"
                     },
                     {
                       "type": "frame",
-                      "id": "e4RWd",
-                      "name": "spacer",
+                      "id": "0N7S7",
+                      "name": "metaRow",
                       "width": "fill_container",
-                      "height": 1
-                    },
-                    {
-                      "type": "icon_font",
-                      "id": "9sDZf",
-                      "name": "likeIcon",
-                      "width": 14,
-                      "height": 14,
-                      "iconFontName": "favorite",
-                      "iconFontFamily": "Material Symbols Rounded",
-                      "fill": "$--text-tertiary"
-                    },
-                    {
-                      "type": "text",
-                      "id": "Hiv31",
-                      "name": "likeCount",
-                      "fill": "$--text-tertiary",
-                      "content": "15",
-                      "fontFamily": "SUIT",
-                      "fontSize": 12,
-                      "fontWeight": "normal"
-                    },
-                    {
-                      "type": "icon_font",
-                      "id": "lgbri",
-                      "name": "imgIcon",
-                      "width": 14,
-                      "height": 14,
-                      "iconFontName": "image",
-                      "iconFontFamily": "Material Symbols Rounded",
-                      "fill": "$--text-tertiary"
-                    },
-                    {
-                      "type": "icon_font",
-                      "id": "gkhFU",
-                      "name": "commentIcon",
-                      "width": 14,
-                      "height": 14,
-                      "iconFontName": "chat_bubble",
-                      "iconFontFamily": "Material Symbols Rounded",
-                      "fill": "$--text-tertiary"
-                    },
-                    {
-                      "type": "text",
-                      "id": "SWY34",
-                      "name": "commentCount",
-                      "fill": "$--text-tertiary",
-                      "content": "8",
-                      "fontFamily": "SUIT",
-                      "fontSize": 12,
-                      "fontWeight": "normal"
+                      "gap": 8,
+                      "alignItems": "center",
+                      "children": [
+                        {
+                          "type": "text",
+                          "id": "ViKBG",
+                          "name": "author",
+                          "fill": "$--text-tertiary",
+                          "content": "셔틀콕마스터",
+                          "fontFamily": "SUIT",
+                          "fontSize": 12,
+                          "fontWeight": "normal"
+                        },
+                        {
+                          "type": "text",
+                          "id": "EnMOw",
+                          "name": "dot",
+                          "fill": "$--text-tertiary",
+                          "content": "·",
+                          "fontFamily": "SUIT",
+                          "fontSize": 12,
+                          "fontWeight": "normal"
+                        },
+                        {
+                          "type": "text",
+                          "id": "kvFPM",
+                          "name": "time",
+                          "fill": "$--text-tertiary",
+                          "content": "1일 전",
+                          "fontFamily": "SUIT",
+                          "fontSize": 12,
+                          "fontWeight": "normal"
+                        },
+                        {
+                          "type": "frame",
+                          "id": "e4RWd",
+                          "name": "spacer",
+                          "width": "fill_container",
+                          "height": 1
+                        },
+                        {
+                          "type": "icon_font",
+                          "id": "9sDZf",
+                          "name": "likeIcon",
+                          "width": 14,
+                          "height": 14,
+                          "iconFontName": "favorite",
+                          "iconFontFamily": "Material Symbols Rounded",
+                          "fill": "$--text-tertiary"
+                        },
+                        {
+                          "type": "text",
+                          "id": "Hiv31",
+                          "name": "likeCount",
+                          "fill": "$--text-tertiary",
+                          "content": "15",
+                          "fontFamily": "SUIT",
+                          "fontSize": 12,
+                          "fontWeight": "normal"
+                        },
+                        {
+                          "type": "icon_font",
+                          "id": "gkhFU",
+                          "name": "commentIcon",
+                          "width": 14,
+                          "height": 14,
+                          "iconFontName": "chat_bubble",
+                          "iconFontFamily": "Material Symbols Rounded",
+                          "fill": "$--text-tertiary"
+                        },
+                        {
+                          "type": "text",
+                          "id": "SWY34",
+                          "name": "commentCount",
+                          "fill": "$--text-tertiary",
+                          "content": "8",
+                          "fontFamily": "SUIT",
+                          "fontSize": 12,
+                          "fontWeight": "normal"
+                        }
+                      ]
                     }
                   ]
+                },
+                {
+                  "type": "frame",
+                  "id": "wJ2gL",
+                  "name": "Thumbnail",
+                  "metadata": {
+                    "type": "unsplash",
+                    "username": "muktasimazlan",
+                    "link": "https://unsplash.com/@muktasimazlan",
+                    "author": "Muktasim Azlan"
+                  },
+                  "width": 60,
+                  "height": 60,
+                  "fill": {
+                    "type": "image",
+                    "enabled": true,
+                    "url": "https://images.unsplash.com/photo-1599474924187-334a4ae5bd3c?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w4NDM0ODN8MHwxfHJhbmRvbXx8fHx8fHx8fDE3NzI4OTg0ODZ8&ixlib=rb-4.1.0&q=80&w=1080",
+                    "mode": "fill"
+                  },
+                  "cornerRadius": 8
                 }
               ]
             },

@@ -4,6 +4,10 @@
 # 임시 스크린샷/이미지
 /image.png
 /screenshot*.png
+/*.png
+
+# 사용하지 않는 로컬 플러그인
+plugins/
 
 # OS 생성 파일
 .DS_Store
