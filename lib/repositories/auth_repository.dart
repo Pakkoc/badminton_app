@@ -1,10 +1,11 @@
-import 'dart:convert';
+import 'dart:async';
+import 'dart:developer' as developer;
 
+import 'package:app_links/app_links.dart';
+import 'package:badminton_app/core/error/app_exception.dart';
 import 'package:badminton_app/core/error/error_handler.dart';
-import 'package:flutter_naver_login/flutter_naver_login.dart';
-import 'package:flutter_naver_login/interface/types/naver_login_status.dart';
-import 'package:http/http.dart' as http;
 import 'package:supabase_flutter/supabase_flutter.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 /// 인증을 관리하는 리포지토리.
 class AuthRepository {
@@ -32,48 +33,108 @@ class AuthRepository {
 
   /// 네이버 소셜 로그인을 수행한다.
   ///
-  /// flutter_naver_login으로 네이버 Access Token을 받은 뒤,
-  /// Edge Function(naver-auth)으로 Supabase 사용자를 생성/조회하고
-  /// OTP verifyOTP로 세션을 생성한다.
+  /// 브라우저에서 네이버 OAuth를 수행하고,
+  /// Edge Function이 code→token 교환 후 딥링크로 세션 토큰을 전달한다.
+  /// 앱이 딥링크를 수신하여 setSession으로 로그인을 완료한다.
   Future<void> signInWithNaver() async {
-    try {
-      final result = await FlutterNaverLogin.logIn();
-      if (result.status == NaverLoginStatus.error) {
-        throw ErrorHandler.handle(
-          Exception(result.errorMessage ?? '네이버 로그인 실패'),
+    final supabaseUrl =
+        _client.rest.url.replaceAll('/rest/v1', '');
+    final efUrl = '$supabaseUrl/functions/v1/naver-auth';
+    final uri = Uri.parse(efUrl);
+    developer.log(
+      'Opening Naver OAuth: $uri',
+      name: 'AuthRepository',
+    );
+
+    final completer = Completer<void>();
+    final appLinks = AppLinks();
+
+    // 딥링크 수신 리스너 (query param에서 토큰 추출)
+    late StreamSubscription<Uri> linkSub;
+    linkSub = appLinks.uriLinkStream.listen(
+      (linkUri) async {
+        developer.log(
+          'Deep link received: $linkUri',
+          name: 'AuthRepository',
+        );
+
+        if (linkUri.host != 'login-callback') return;
+
+        final error =
+            linkUri.queryParameters['error'];
+        final refreshToken =
+            linkUri.queryParameters['refresh_token'];
+
+        linkSub.cancel();
+
+        if (error != null) {
+          if (!completer.isCompleted) {
+            completer.completeError(
+              AppException(
+                code: 'naver_error',
+                message: error,
+                userMessage: '네이버 로그인에 실패했습니다',
+              ),
+            );
+          }
+          return;
+        }
+
+        if (refreshToken != null) {
+          try {
+            await _client.auth.setSession(refreshToken);
+            if (!completer.isCompleted) {
+              completer.complete();
+            }
+          } catch (e) {
+            developer.log(
+              'setSession failed: $e',
+              name: 'AuthRepository',
+            );
+            if (!completer.isCompleted) {
+              completer.completeError(
+                AppException(
+                  code: 'naver_session',
+                  message: 'Failed to set session: $e',
+                  userMessage: '세션 설정에 실패했습니다',
+                ),
+              );
+            }
+          }
+        }
+      },
+    );
+
+    // 브라우저 열기
+    final launched = await launchUrl(
+      uri,
+      mode: LaunchMode.externalApplication,
+    );
+
+    if (!launched) {
+      linkSub.cancel();
+      throw AppException(
+        code: 'naver_browser',
+        message: 'Failed to launch browser',
+        userMessage: '브라우저를 열 수 없습니다',
+      );
+    }
+
+    // 60초 타임아웃
+    Timer(const Duration(seconds: 60), () {
+      linkSub.cancel();
+      if (!completer.isCompleted) {
+        completer.completeError(
+          AppException(
+            code: 'naver_timeout',
+            message: 'Naver login timed out',
+            userMessage: '네이버 로그인 시간이 초과되었습니다',
+          ),
         );
       }
-      final token = await FlutterNaverLogin.getCurrentAccessToken();
+    });
 
-      // Edge Function 호출
-      final supabaseUrl = _client.rest.url.replaceAll('/rest/v1', '');
-      final anonKey = _client.rest.headers['apikey'] ?? '';
-      final res = await http.post(
-        Uri.parse('$supabaseUrl/functions/v1/naver-auth'),
-        headers: {
-          'Content-Type': 'application/json',
-          'apikey': anonKey,
-        },
-        body: jsonEncode({'access_token': token.accessToken}),
-      );
-
-      if (res.statusCode != 200) {
-        throw Exception('네이버 EF 실패(${res.statusCode}): ${res.body}');
-      }
-
-      final data = jsonDecode(res.body) as Map<String, dynamic>;
-      final accessToken = data['access_token'] as String?;
-      final refreshToken = data['refresh_token'] as String?;
-
-      if (accessToken == null || refreshToken == null) {
-        throw Exception('네이버 세션 토큰 없음: ${res.body}');
-      }
-
-      // refresh_token으로 세션 설정
-      await _client.auth.setSession(refreshToken);
-    } catch (e) {
-      throw ErrorHandler.handle(e);
-    }
+    return completer.future;
   }
 
   /// 로그아웃을 수행한다.
