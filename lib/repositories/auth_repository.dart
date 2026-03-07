@@ -47,9 +47,13 @@ class AuthRepository {
 
       // Edge Function 호출
       final supabaseUrl = _client.rest.url.replaceAll('/rest/v1', '');
+      final anonKey = _client.rest.headers['apikey'] ?? '';
       final res = await http.post(
         Uri.parse('$supabaseUrl/functions/v1/naver-auth'),
-        headers: {'Content-Type': 'application/json'},
+        headers: {
+          'Content-Type': 'application/json',
+          'apikey': anonKey,
+        },
         body: jsonEncode({'access_token': token.accessToken}),
       );
 
