@@ -64,8 +64,14 @@ CREATE INDEX idx_community_reports_status ON community_reports(status);
 -- Step 5: 비정규화 카운트 트리거
 
 -- 댓글 수 트리거
+-- SECURITY DEFINER: 댓글 작성자의 RLS 권한이 아닌 함수 소유자 권한으로 실행하여
+-- 다른 사람의 게시글에 댓글 달 때 comment_count UPDATE가 RLS에 막히지 않도록 한다.
 CREATE OR REPLACE FUNCTION update_community_post_comment_count()
-RETURNS TRIGGER AS $$
+RETURNS TRIGGER
+LANGUAGE plpgsql
+SECURITY DEFINER
+SET search_path = public
+AS $$
 BEGIN
   IF TG_OP = 'INSERT' THEN
     UPDATE community_posts SET comment_count = comment_count + 1 WHERE id = NEW.post_id;
@@ -75,7 +81,7 @@ BEGIN
     RETURN OLD;
   END IF;
 END;
-$$ LANGUAGE plpgsql;
+$$;
 
 CREATE TRIGGER trg_community_comment_count
 AFTER INSERT OR DELETE ON community_comments
