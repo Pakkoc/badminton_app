@@ -62,6 +62,8 @@ class NotificationRepository {
     required NotificationType type,
     required String title,
     required String body,
+    String? orderId,
+    String? postId,
   }) async {
     try {
       await client.from('notifications').insert({
@@ -69,6 +71,8 @@ class NotificationRepository {
         'type': type.toJson(),
         'title': title,
         'body': body,
+        if (orderId != null) 'order_id': orderId,
+        if (postId != null) 'post_id': postId,
       });
     } catch (e) {
       throw ErrorHandler.handle(e);
