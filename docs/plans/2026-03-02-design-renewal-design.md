@@ -33,8 +33,8 @@
 
 | 항목 | 변경 전 | 변경 후 |
 |------|---------|---------|
-| Pencil | Gmarket Sans | SUIT |
-| Flutter (theme.dart) | Pretendard | SUIT |
+| Pencil | Gmarket Sans | Pretendard |
+| Flutter (theme.dart) | Pretendard | Pretendard |
 
 타이포그래피 스케일은 유지한다 (32/24/20/18/16/14/12sp).
 

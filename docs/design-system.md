@@ -168,7 +168,7 @@ class AppTheme {
   static const completedText = Color(0xFF065F46);
 
   // Font
-  static const fontFamily = 'SUIT';
+  static const fontFamily = 'Pretendard';
 
   static ThemeData get lightTheme => ThemeData(
     useMaterial3: true,
@@ -258,7 +258,7 @@ class AppTheme {
 
 | 용도 | 폰트 | 비고 |
 |------|------|------|
-| 한국어 전체 | **SUIT** | 기본 폰트. 깔끔하고 가독성 높은 Variable 폰트 |
+| 한국어 전체 | **Pretendard** | Inter 기반 한글 확장 폰트. 한영 혼용 최적화, 9 Weight (100~900) |
 
 ### 3.2 크기 스케일 (Type Scale)
 
@@ -630,7 +630,7 @@ class AppRadius {
 | Completed Status | `#22C55E` (Primary와 혼동) | `#10B981` (에메랄드, 구분됨) |
 | CTA 버튼 역할 | Secondary(오렌지) 사용 | Primary(블루) 통일 |
 | 카드 스타일 | 테두리만 | 테두리 + 그림자 + 좌측 컬러바 |
-| Font | Gmarket Sans | SUIT |
+| Font | Gmarket Sans | Pretendard |
 | 카드 모서리 | 16px | 20px |
 | 버튼/입력 모서리 | 12px / 8px | 14px |
 | 대시보드 숫자 | 32sp | 36sp |

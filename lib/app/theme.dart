@@ -55,7 +55,7 @@ class AppTheme {
   static const completedText = Color(0xFF065F46);
 
   // ── Font ────────────────────────────────────
-  static const fontFamily = 'SUIT';
+  static const fontFamily = 'Pretendard';
 
   /// @deprecated `courtGreen` → `primary`로 마이그레이션하세요.
   static const courtGreen = primary;

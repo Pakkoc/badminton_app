@@ -72,7 +72,7 @@
 
 | 속성 | 값 |
 |------|-----|
-| 폰트 | SUIT |
+| 폰트 | Pretendard |
 | 크기 | `bodyLarge` |
 | 색상 | `#1A1A2E` (Text Primary) |
 | 스피너와의 간격 | 24px |

@@ -70,7 +70,7 @@
 | 속성 | 값 |
 |------|-----|
 | 텍스트 | "거트알림" |
-| 폰트 | SUIT |
+| 폰트 | Pretendard |
 | 크기 | 32sp (`displayLarge`) |
 | 굵기 | Bold (700) |
 | 색상 | `#1A1A2E` (Text Primary) |
@@ -102,7 +102,7 @@
 | 속성 | 값 |
 |------|-----|
 | 텍스트 | "배드민턴 거트 추적 서비스" |
-| 폰트 | SUIT |
+| 폰트 | Pretendard |
 | 크기 | 14sp (`bodyMedium`) |
 | 굵기 | Regular (400) |
 | 색상 | `#9CA3AF` (Text Tertiary) |
