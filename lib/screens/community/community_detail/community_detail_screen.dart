@@ -1,3 +1,4 @@
+import 'package:badminton_app/app/theme.dart';
 import 'package:badminton_app/core/utils/formatters.dart';
 import 'package:badminton_app/models/community_comment.dart';
 import 'package:badminton_app/providers/community_provider.dart';
@@ -29,6 +30,7 @@ class _CommunityDetailScreenState
   final _commentController = TextEditingController();
   String? _replyToId;
   String? _replyToName;
+  String? _mentionName;
 
   @override
   void dispose() {
@@ -49,8 +51,12 @@ class _CommunityDetailScreenState
   }
 
   Future<void> _submitComment() async {
-    final content = _commentController.text.trim();
+    var content = _commentController.text.trim();
     if (content.isEmpty) return;
+
+    if (_mentionName != null) {
+      content = '@$_mentionName $content';
+    }
 
     final commentRepo = ref.read(communityCommentRepositoryProvider);
     await commentRepo.create(
@@ -63,6 +69,7 @@ class _CommunityDetailScreenState
     setState(() {
       _replyToId = null;
       _replyToName = null;
+      _mentionName = null;
     });
     ref.invalidate(communityCommentsProvider(widget.postId));
     ref.invalidate(communityPostDetailProvider(widget.postId));
@@ -216,7 +223,9 @@ class _CommunityDetailScreenState
                             style: Theme.of(context)
                                 .textTheme
                                 .bodySmall
-                                ?.copyWith(color: Colors.grey),
+                                ?.copyWith(
+                                  color: AppTheme.textTertiary,
+                                ),
                           ),
                           const Spacer(),
                           PopupMenuButton<String>(
@@ -309,10 +318,12 @@ class _CommunityDetailScreenState
                         data: (comments) => _CommentSection(
                           comments: comments,
                           currentUserId: _currentUserId,
-                          onReply: (id, name) {
+                          postAuthorId: post.authorId,
+                          onReply: (parentId, replyToName, mentionName) {
                             setState(() {
-                              _replyToId = id;
-                              _replyToName = name;
+                              _replyToId = parentId;
+                              _replyToName = replyToName;
+                              _mentionName = mentionName;
                             });
                           },
                           onDelete: _deleteComment,
@@ -348,15 +359,17 @@ class _CommunityDetailScreenState
                         Row(
                           children: [
                             Text(
-                              '@$_replyToName 에게 답글',
-                              style:
-                                  Theme.of(context).textTheme.bodySmall,
+                              '@$_replyToName 에게 답글 중',
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .bodySmall,
                             ),
                             const Spacer(),
                             GestureDetector(
                               onTap: () => setState(() {
                                 _replyToId = null;
                                 _replyToName = null;
+                                _mentionName = null;
                               }),
                               child: const Icon(Icons.close, size: 16),
                             ),
@@ -396,10 +409,13 @@ class _CommunityDetailScreenState
   }
 }
 
-class _CommentSection extends StatelessWidget {
+// ── _CommentSection ────────────────────────────────────────────────
+
+class _CommentSection extends StatefulWidget {
   const _CommentSection({
     required this.comments,
     required this.currentUserId,
+    required this.postAuthorId,
     required this.onReply,
     required this.onDelete,
     required this.onReport,
@@ -408,45 +424,126 @@ class _CommentSection extends StatelessWidget {
 
   final List<CommunityComment> comments;
   final String currentUserId;
-  final void Function(String id, String name) onReply;
+  final String postAuthorId;
+
+  /// (parentId, replyToName, mentionName)
+  ///
+  /// - parentId: 대댓글의 parent_id로 사용할 1단 댓글 ID
+  /// - replyToName: 답글 입력 바에 표시할 닉네임
+  /// - mentionName: 전송 시 내용 앞에 @멘션으로 삽입할 닉네임
+  ///   (대댓글에 답글을 달 때만 non-null)
+  final void Function(
+    String parentId,
+    String replyToName,
+    String? mentionName,
+  ) onReply;
+
   final void Function(String id) onDelete;
   final void Function(String id) onReport;
   final void Function(String id) onToggleLike;
 
   @override
+  State<_CommentSection> createState() => _CommentSectionState();
+}
+
+class _CommentSectionState extends State<_CommentSection> {
+  /// 댓글 ID별 대댓글 펼침 상태. 기본 접힘(false).
+  final Map<String, bool> _expanded = {};
+
+  bool _isExpanded(String commentId) => _expanded[commentId] ?? false;
+
+  void _toggle(String commentId) {
+    setState(() {
+      _expanded[commentId] = !_isExpanded(commentId);
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
-    final topLevel =
-        comments.where((c) => c.parentId == null).toList();
+    final topLevel = widget.comments
+        .where((c) => c.parentId == null)
+        .toList();
 
     return Column(
       children: topLevel.map((comment) {
-        final replies =
-            comments.where((c) => c.parentId == comment.id).toList();
+        final replies = widget.comments
+            .where((c) => c.parentId == comment.id)
+            .toList();
+        final hasReplies = replies.isNotEmpty;
+        final expanded = _isExpanded(comment.id);
+
         return Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             _CommentTile(
               comment: comment,
-              isAuthor: comment.authorId == currentUserId,
-              onReply: () =>
-                  onReply(comment.id, comment.authorName ?? '알 수 없음'),
-              onDelete: () => onDelete(comment.id),
-              onReport: () => onReport(comment.id),
-              onToggleLike: () => onToggleLike(comment.id),
+              isAuthor: comment.authorId == widget.currentUserId,
+              isPostAuthor:
+                  comment.authorId == widget.postAuthorId,
+              isReply: false,
+              onReply: () => widget.onReply(
+                comment.id,
+                comment.authorName ?? '알 수 없음',
+                null,
+              ),
+              onDelete: () => widget.onDelete(comment.id),
+              onReport: () => widget.onReport(comment.id),
+              onToggleLike: () => widget.onToggleLike(comment.id),
             ),
-            ...replies.map(
-              (reply) => Padding(
-                padding: const EdgeInsets.only(left: 40),
-                child: _CommentTile(
-                  comment: reply,
-                  isAuthor: reply.authorId == currentUserId,
-                  onReply: () => onReply(
-                      comment.id, reply.authorName ?? '알 수 없음'),
-                  onDelete: () => onDelete(reply.id),
-                  onReport: () => onReport(reply.id),
-                  onToggleLike: () => onToggleLike(reply.id),
+            if (hasReplies) ...[
+              // 답글 접기/펼치기 버튼
+              Padding(
+                padding: const EdgeInsets.only(left: 52),
+                child: TextButton.icon(
+                  onPressed: () => _toggle(comment.id),
+                  style: TextButton.styleFrom(
+                    padding: EdgeInsets.zero,
+                    minimumSize: Size.zero,
+                    tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                    foregroundColor: AppTheme.primary,
+                  ),
+                  icon: Icon(
+                    expanded
+                        ? Icons.expand_less
+                        : Icons.expand_more,
+                    size: 16,
+                  ),
+                  label: Text(
+                    expanded
+                        ? '답글 숨기기'
+                        : '답글 ${replies.length}개 더보기',
+                    style: Theme.of(context)
+                        .textTheme
+                        .labelMedium
+                        ?.copyWith(color: AppTheme.primary),
+                  ),
                 ),
               ),
-            ),
+              // 펼쳤을 때 대댓글 목록
+              if (expanded)
+                ...replies.map(
+                  (reply) => Padding(
+                    padding: const EdgeInsets.only(left: 52),
+                    child: _CommentTile(
+                      comment: reply,
+                      isAuthor:
+                          reply.authorId == widget.currentUserId,
+                      isPostAuthor:
+                          reply.authorId == widget.postAuthorId,
+                      isReply: true,
+                      onReply: () => widget.onReply(
+                        comment.id,
+                        reply.authorName ?? '알 수 없음',
+                        reply.authorName,
+                      ),
+                      onDelete: () => widget.onDelete(reply.id),
+                      onReport: () => widget.onReport(reply.id),
+                      onToggleLike: () =>
+                          widget.onToggleLike(reply.id),
+                    ),
+                  ),
+                ),
+            ],
           ],
         );
       }).toList(),
@@ -454,10 +551,14 @@ class _CommentSection extends StatelessWidget {
   }
 }
 
+// ── _CommentTile ───────────────────────────────────────────────────
+
 class _CommentTile extends StatelessWidget {
   const _CommentTile({
     required this.comment,
     required this.isAuthor,
+    required this.isPostAuthor,
+    required this.isReply,
     required this.onReply,
     required this.onDelete,
     required this.onReport,
@@ -465,7 +566,16 @@ class _CommentTile extends StatelessWidget {
   });
 
   final CommunityComment comment;
+
+  /// 현재 로그인 사용자가 댓글 작성자인지 (삭제/신고 분기)
   final bool isAuthor;
+
+  /// 댓글 작성자가 게시글 작성자인지 (작성자 배지 표시)
+  final bool isPostAuthor;
+
+  /// 대댓글 여부 (아바타 크기 분기)
+  final bool isReply;
+
   final VoidCallback onReply;
   final VoidCallback onDelete;
   final VoidCallback onReport;
@@ -473,73 +583,178 @@ class _CommentTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    // radius: 1단=20(→40px 직경), 대댓글=16(→32px 직경)
+    final avatarRadius = isReply ? 16.0 : 20.0;
+    final name = comment.authorName ?? '알 수 없음';
+    final initial = name.isNotEmpty ? name[0].toUpperCase() : '?';
+
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 8),
-      child: Column(
+      child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Row(
-            children: [
-              Text(
-                comment.authorName ?? '알 수 없음',
-                style: Theme.of(context).textTheme.titleSmall,
-              ),
-              const SizedBox(width: 8),
-              Text(
-                Formatters.relativeTime(comment.createdAt),
-                style: Theme.of(context)
-                    .textTheme
-                    .bodySmall
-                    ?.copyWith(color: Colors.grey),
-              ),
-              const Spacer(),
-              PopupMenuButton<String>(
-                onSelected: (value) {
-                  if (value == 'delete') onDelete();
-                  if (value == 'report') onReport();
-                },
-                itemBuilder: (_) => [
-                  if (isAuthor)
-                    const PopupMenuItem(
-                        value: 'delete', child: Text('삭제')),
-                  if (!isAuthor)
-                    const PopupMenuItem(
-                        value: 'report', child: Text('신고')),
-                ],
-              ),
-            ],
+          // 아바타
+          CircleAvatar(
+            radius: avatarRadius,
+            backgroundImage: comment.authorProfileImageUrl != null
+                ? NetworkImage(comment.authorProfileImageUrl!)
+                : null,
+            child: comment.authorProfileImageUrl == null
+                ? Text(
+                    initial,
+                    style: TextStyle(
+                      fontSize: avatarRadius * 0.8,
+                    ),
+                  )
+                : null,
           ),
-          const SizedBox(height: 4),
-          Text(comment.content),
-          const SizedBox(height: 4),
-          Row(
-            children: [
-              GestureDetector(
-                onTap: onToggleLike,
-                child: Row(
+          const SizedBox(width: 12),
+          // 내용 영역
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                // 닉네임 + 배지 + 시간 + 더보기
+                Row(
                   children: [
-                    const Icon(Icons.favorite_border, size: 14),
-                    const SizedBox(width: 2),
                     Text(
-                      '${comment.likeCount}',
-                      style: Theme.of(context).textTheme.bodySmall,
+                      name,
+                      style: theme.textTheme.titleSmall,
+                    ),
+                    if (isPostAuthor) ...[
+                      const SizedBox(width: 4),
+                      Text(
+                        '· 작성자',
+                        style: theme.textTheme.labelSmall?.copyWith(
+                          color: AppTheme.primary,
+                        ),
+                      ),
+                    ],
+                    const SizedBox(width: 4),
+                    Text(
+                      '· ${Formatters.relativeTime(comment.createdAt)}',
+                      style: theme.textTheme.bodySmall?.copyWith(
+                        color: AppTheme.textTertiary,
+                      ),
+                    ),
+                    const Spacer(),
+                    PopupMenuButton<String>(
+                      padding: EdgeInsets.zero,
+                      onSelected: (value) {
+                        if (value == 'delete') onDelete();
+                        if (value == 'report') onReport();
+                      },
+                      itemBuilder: (_) => [
+                        if (isAuthor)
+                          const PopupMenuItem(
+                            value: 'delete',
+                            child: Text('삭제'),
+                          ),
+                        if (!isAuthor)
+                          const PopupMenuItem(
+                            value: 'report',
+                            child: Text('신고'),
+                          ),
+                      ],
+                      icon: const Icon(Icons.more_vert, size: 18),
                     ),
                   ],
                 ),
-              ),
-              const SizedBox(width: 16),
-              GestureDetector(
-                onTap: onReply,
-                child: Text(
-                  '답글',
-                  style: Theme.of(context)
-                      .textTheme
-                      .bodySmall
-                      ?.copyWith(color: Colors.blue),
+                const SizedBox(height: 4),
+                // 내용 (@멘션 파란색 처리)
+                _CommentContent(content: comment.content),
+                const SizedBox(height: 4),
+                // 좋아요 + 답글
+                Row(
+                  children: [
+                    GestureDetector(
+                      onTap: onToggleLike,
+                      child: Row(
+                        children: [
+                          const Icon(
+                            Icons.thumb_up_outlined,
+                            size: 16,
+                          ),
+                          const SizedBox(width: 4),
+                          Text(
+                            '${comment.likeCount}',
+                            style: theme.textTheme.bodySmall?.copyWith(
+                              color: AppTheme.textTertiary,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    const SizedBox(width: 16),
+                    GestureDetector(
+                      onTap: onReply,
+                      child: Text(
+                        '답글',
+                        style: theme.textTheme.labelMedium?.copyWith(
+                          color: AppTheme.textSecondary,
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
+        ],
+      ),
+    );
+  }
+}
+
+// ── _CommentContent ────────────────────────────────────────────────
+
+/// 댓글 내용을 렌더링한다.
+///
+/// 내용이 @로 시작하면 첫 공백까지를 Primary 색상 Bold로 표시하고,
+/// 나머지는 일반 스타일로 표시한다.
+class _CommentContent extends StatelessWidget {
+  const _CommentContent({required this.content});
+
+  final String content;
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final base = theme.textTheme.bodyMedium;
+
+    if (!content.startsWith('@')) {
+      return Text(content, style: base);
+    }
+
+    final spaceIdx = content.indexOf(' ');
+    if (spaceIdx == -1) {
+      // 전체가 멘션
+      return Text.rich(
+        TextSpan(
+          text: content,
+          style: base?.copyWith(
+            color: AppTheme.primary,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+      );
+    }
+
+    final mention = content.substring(0, spaceIdx);
+    final rest = content.substring(spaceIdx);
+
+    return Text.rich(
+      TextSpan(
+        children: [
+          TextSpan(
+            text: mention,
+            style: base?.copyWith(
+              color: AppTheme.primary,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          TextSpan(text: rest, style: base),
         ],
       ),
     );
