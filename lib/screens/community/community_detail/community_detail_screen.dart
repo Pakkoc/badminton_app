@@ -29,6 +29,7 @@ class _CommunityDetailScreenState
     extends ConsumerState<CommunityDetailScreen> {
   final _commentController = TextEditingController();
   String? _replyToId;
+  String? _replyToParentId;
   String? _replyToName;
   String? _mentionName;
 
@@ -59,20 +60,32 @@ class _CommunityDetailScreenState
     }
 
     final commentRepo = ref.read(communityCommentRepositoryProvider);
-    await commentRepo.create(
-      postId: widget.postId,
-      authorId: _currentUserId,
-      content: content,
-      parentId: _replyToId,
-    );
-    _commentController.clear();
-    setState(() {
-      _replyToId = null;
-      _replyToName = null;
-      _mentionName = null;
-    });
-    ref.invalidate(communityCommentsProvider(widget.postId));
-    ref.invalidate(communityPostDetailProvider(widget.postId));
+    final parentId = _replyToId != null
+        ? commentRepo.resolveParentId(
+            targetCommentId: _replyToId!,
+            targetCommentParentId: _replyToParentId,
+          )
+        : null;
+
+    try {
+      await commentRepo.create(
+        postId: widget.postId,
+        authorId: _currentUserId,
+        content: content,
+        parentId: parentId,
+      );
+      _commentController.clear();
+      setState(() {
+        _replyToId = null;
+        _replyToParentId = null;
+        _replyToName = null;
+        _mentionName = null;
+      });
+      ref.invalidate(communityCommentsProvider(widget.postId));
+      ref.invalidate(communityPostDetailProvider(widget.postId));
+    } catch (e) {
+      if (mounted) AppToast.error(context, '댓글 등록에 실패했습니다');
+    }
   }
 
   Future<void> _deletePost() async {
@@ -84,9 +97,13 @@ class _CommunityDetailScreenState
     );
     if (confirmed != true) return;
 
-    final repo = ref.read(communityPostRepositoryProvider);
-    await repo.delete(widget.postId);
-    if (mounted) context.pop();
+    try {
+      final repo = ref.read(communityPostRepositoryProvider);
+      await repo.delete(widget.postId);
+      if (mounted) context.pop();
+    } catch (e) {
+      if (mounted) AppToast.error(context, '게시글 삭제에 실패했습니다');
+    }
   }
 
   Future<void> _deleteComment(String commentId) async {
@@ -98,36 +115,48 @@ class _CommunityDetailScreenState
     );
     if (confirmed != true) return;
 
-    final commentRepo = ref.read(communityCommentRepositoryProvider);
-    await commentRepo.delete(commentId);
-    ref.invalidate(communityCommentsProvider(widget.postId));
-    ref.invalidate(communityPostDetailProvider(widget.postId));
+    try {
+      final commentRepo = ref.read(communityCommentRepositoryProvider);
+      await commentRepo.delete(commentId);
+      ref.invalidate(communityCommentsProvider(widget.postId));
+      ref.invalidate(communityPostDetailProvider(widget.postId));
+    } catch (e) {
+      if (mounted) AppToast.error(context, '댓글 삭제에 실패했습니다');
+    }
   }
 
   Future<void> _reportPost() async {
     final reason = await _showReportDialog();
     if (reason == null) return;
 
-    final reportRepo = ref.read(communityReportRepositoryProvider);
-    await reportRepo.reportPost(
-      reporterId: _currentUserId,
-      postId: widget.postId,
-      reason: reason,
-    );
-    if (mounted) AppToast.success(context, '신고가 접수되었습니다');
+    try {
+      final reportRepo = ref.read(communityReportRepositoryProvider);
+      await reportRepo.reportPost(
+        reporterId: _currentUserId,
+        postId: widget.postId,
+        reason: reason,
+      );
+      if (mounted) AppToast.success(context, '신고가 접수되었습니다');
+    } catch (e) {
+      if (mounted) AppToast.error(context, '신고 접수에 실패했습니다');
+    }
   }
 
   Future<void> _reportComment(String commentId) async {
     final reason = await _showReportDialog();
     if (reason == null) return;
 
-    final reportRepo = ref.read(communityReportRepositoryProvider);
-    await reportRepo.reportComment(
-      reporterId: _currentUserId,
-      commentId: commentId,
-      reason: reason,
-    );
-    if (mounted) AppToast.success(context, '신고가 접수되었습니다');
+    try {
+      final reportRepo = ref.read(communityReportRepositoryProvider);
+      await reportRepo.reportComment(
+        reporterId: _currentUserId,
+        commentId: commentId,
+        reason: reason,
+      );
+      if (mounted) AppToast.success(context, '신고가 접수되었습니다');
+    } catch (e) {
+      if (mounted) AppToast.error(context, '신고 접수에 실패했습니다');
+    }
   }
 
   Future<String?> _showReportDialog() async {
@@ -319,9 +348,15 @@ class _CommunityDetailScreenState
                           comments: comments,
                           currentUserId: _currentUserId,
                           postAuthorId: post.authorId,
-                          onReply: (parentId, replyToName, mentionName) {
+                          onReply: (
+                            commentId,
+                            parentCommentId,
+                            replyToName,
+                            mentionName,
+                          ) {
                             setState(() {
-                              _replyToId = parentId;
+                              _replyToId = commentId;
+                              _replyToParentId = parentCommentId;
                               _replyToName = replyToName;
                               _mentionName = mentionName;
                             });
@@ -368,6 +403,7 @@ class _CommunityDetailScreenState
                             GestureDetector(
                               onTap: () => setState(() {
                                 _replyToId = null;
+                                _replyToParentId = null;
                                 _replyToName = null;
                                 _mentionName = null;
                               }),
@@ -380,10 +416,13 @@ class _CommunityDetailScreenState
                           Expanded(
                             child: TextField(
                               controller: _commentController,
-                              decoration: const InputDecoration(
-                                hintText: '댓글을 입력하세요',
-                                border: OutlineInputBorder(),
-                                contentPadding: EdgeInsets.symmetric(
+                              decoration: InputDecoration(
+                                hintText: _replyToName != null
+                                    ? '답글을 입력하세요'
+                                    : '댓글을 입력하세요',
+                                border: const OutlineInputBorder(),
+                                contentPadding:
+                                    const EdgeInsets.symmetric(
                                   horizontal: 12,
                                   vertical: 8,
                                 ),
@@ -426,14 +465,16 @@ class _CommentSection extends StatefulWidget {
   final String currentUserId;
   final String postAuthorId;
 
-  /// (parentId, replyToName, mentionName)
+  /// (commentId, parentCommentId, replyToName, mentionName)
   ///
-  /// - parentId: 대댓글의 parent_id로 사용할 1단 댓글 ID
+  /// - commentId: 답글 대상 댓글 ID
+  /// - parentCommentId: 댓글의 parent_id (대댓글이면 루트 ID, 1단이면 null)
   /// - replyToName: 답글 입력 바에 표시할 닉네임
   /// - mentionName: 전송 시 내용 앞에 @멘션으로 삽입할 닉네임
   ///   (대댓글에 답글을 달 때만 non-null)
   final void Function(
-    String parentId,
+    String commentId,
+    String? parentCommentId,
     String replyToName,
     String? mentionName,
   ) onReply;
@@ -483,6 +524,7 @@ class _CommentSectionState extends State<_CommentSection> {
               isReply: false,
               onReply: () => widget.onReply(
                 comment.id,
+                null,
                 comment.authorName ?? '알 수 없음',
                 null,
               ),
@@ -493,7 +535,7 @@ class _CommentSectionState extends State<_CommentSection> {
             if (hasReplies) ...[
               // 답글 접기/펼치기 버튼
               Padding(
-                padding: const EdgeInsets.only(left: 52),
+                padding: const EdgeInsets.only(left: 36),
                 child: TextButton.icon(
                   onPressed: () => _toggle(comment.id),
                   style: TextButton.styleFrom(
@@ -523,7 +565,7 @@ class _CommentSectionState extends State<_CommentSection> {
               if (expanded)
                 ...replies.map(
                   (reply) => Padding(
-                    padding: const EdgeInsets.only(left: 52),
+                    padding: const EdgeInsets.only(left: 36),
                     child: _CommentTile(
                       comment: reply,
                       isAuthor:
@@ -532,7 +574,8 @@ class _CommentSectionState extends State<_CommentSection> {
                           reply.authorId == widget.postAuthorId,
                       isReply: true,
                       onReply: () => widget.onReply(
-                        comment.id,
+                        reply.id,
+                        reply.parentId,
                         reply.authorName ?? '알 수 없음',
                         reply.authorName,
                       ),
