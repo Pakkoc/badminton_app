@@ -1,11 +1,16 @@
+import 'dart:typed_data';
+
 import 'package:badminton_app/models/enums.dart';
 import 'package:badminton_app/models/post.dart';
+import 'package:badminton_app/providers/supabase_provider.dart';
 import 'package:badminton_app/repositories/post_repository.dart';
+import 'package:badminton_app/repositories/storage_repository.dart';
 import 'package:badminton_app/screens/owner/post_create/post_create_notifier.dart';
 import 'package:badminton_app/screens/owner/post_create/post_create_state.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
 import '../../../helpers/fixtures.dart';
 
@@ -13,20 +18,48 @@ class MockPostRepository extends Mock implements PostRepository {}
 
 class FakePost extends Fake implements Post {}
 
+class _MockStorageRepository extends Mock
+    implements StorageRepository {}
+
+class _MockSupabaseClient extends Mock implements SupabaseClient {}
+
+class _MockGoTrueClient extends Mock implements GoTrueClient {}
+
+class _MockUser extends Mock implements User {}
+
 void main() {
   late MockPostRepository mockPostRepository;
+  late _MockStorageRepository mockStorageRepository;
+  late _MockSupabaseClient mockSupabaseClient;
+  late _MockGoTrueClient mockGoTrueClient;
+  late _MockUser mockUser;
   late ProviderContainer container;
 
   setUpAll(() {
     registerFallbackValue(FakePost());
+    registerFallbackValue(Uint8List(0));
   });
 
   setUp(() {
     mockPostRepository = MockPostRepository();
+    mockStorageRepository = _MockStorageRepository();
+    mockSupabaseClient = _MockSupabaseClient();
+    mockGoTrueClient = _MockGoTrueClient();
+    mockUser = _MockUser();
+
+    when(() => mockUser.id).thenReturn('user-123');
+    when(() => mockGoTrueClient.currentUser)
+        .thenReturn(mockUser);
+    when(() => mockSupabaseClient.auth)
+        .thenReturn(mockGoTrueClient);
+
     container = ProviderContainer(
       overrides: [
         postRepositoryProvider
             .overrideWithValue(mockPostRepository),
+        storageRepositoryProvider
+            .overrideWithValue(mockStorageRepository),
+        supabaseProvider.overrideWithValue(mockSupabaseClient),
       ],
     );
   });
@@ -118,32 +151,65 @@ void main() {
       },
     );
 
-    test('addImage는 이미지를 추가한다', () {
+    test('addImage는 이미지를 업로드하고 URL을 추가한다', () async {
       // Arrange
+      when(
+        () => mockStorageRepository.uploadImage(
+          any(),
+          any(),
+          any(),
+        ),
+      ).thenAnswer(
+        (_) async => 'https://example.com/img.jpg',
+      );
+
       final notifier = container.read(
         postCreateNotifierProvider.notifier,
       );
 
       // Act
-      notifier.addImage('https://example.com/img.jpg');
+      await notifier.addImage(
+        Uint8List.fromList([1, 2, 3]),
+        'jpg',
+      );
 
       // Assert
       final state =
           container.read(postCreateNotifierProvider);
       expect(state.images.length, 1);
+      expect(state.images.first, 'https://example.com/img.jpg');
     });
 
-    test('addImage는 5장 초과 시 에러를 설정한다', () {
+    test('addImage는 5장 초과 시 에러를 설정한다', () async {
       // Arrange
+      when(
+        () => mockStorageRepository.uploadImage(
+          any(),
+          any(),
+          any(),
+        ),
+      ).thenAnswer(
+        (invocation) async {
+          final path = invocation.positionalArguments[2] as String;
+          return 'https://example.com/$path';
+        },
+      );
+
       final notifier = container.read(
         postCreateNotifierProvider.notifier,
       );
       for (var i = 0; i < 5; i++) {
-        notifier.addImage('https://example.com/$i.jpg');
+        await notifier.addImage(
+          Uint8List.fromList([i]),
+          'jpg',
+        );
       }
 
       // Act
-      notifier.addImage('https://example.com/6.jpg');
+      await notifier.addImage(
+        Uint8List.fromList([99]),
+        'jpg',
+      );
 
       // Assert
       final state =
@@ -155,12 +221,25 @@ void main() {
       );
     });
 
-    test('removeImage는 이미지를 제거한다', () {
+    test('removeImage는 이미지를 제거한다', () async {
       // Arrange
+      when(
+        () => mockStorageRepository.uploadImage(
+          any(),
+          any(),
+          any(),
+        ),
+      ).thenAnswer(
+        (_) async => 'https://example.com/img.jpg',
+      );
+
       final notifier = container.read(
         postCreateNotifierProvider.notifier,
       );
-      notifier.addImage('https://example.com/img.jpg');
+      await notifier.addImage(
+        Uint8List.fromList([1, 2, 3]),
+        'jpg',
+      );
 
       // Act
       notifier.removeImage(0);

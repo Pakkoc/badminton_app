@@ -2,6 +2,7 @@ import 'package:badminton_app/screens/customer/shop_search/shop_search_notifier.
 import 'package:badminton_app/screens/customer/shop_search/shop_search_screen.dart';
 import 'package:badminton_app/screens/customer/shop_search/shop_search_state.dart';
 import 'package:badminton_app/widgets/customer_bottom_nav.dart';
+import 'package:badminton_app/widgets/map_preview.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -41,6 +42,16 @@ void main() {
     );
   }
 
+  setUp(() {
+    MapPreview.usePlaceholder = true;
+    shopSearchUsePlaceholder = true;
+  });
+
+  tearDown(() {
+    MapPreview.usePlaceholder = false;
+    shopSearchUsePlaceholder = false;
+  });
+
   group('ShopSearchScreen', () {
     testWidgets(
       'AppBar에 "주변 샵" 타이틀이 표시된다',
@@ -78,6 +89,7 @@ void main() {
           createApp(
             state: const ShopSearchState(
               isLoading: true,
+              viewMode: ShopSearchViewMode.list,
             ),
           ),
         );
@@ -95,6 +107,7 @@ void main() {
           createApp(
             state: const ShopSearchState(
               error: '주변 샵을 불러올 수 없습니다',
+              viewMode: ShopSearchViewMode.list,
             ),
           ),
         );
@@ -110,7 +123,9 @@ void main() {
       (tester) async {
         await tester.pumpWidget(
           createApp(
-            state: const ShopSearchState(),
+            state: const ShopSearchState(
+              viewMode: ShopSearchViewMode.list,
+            ),
           ),
         );
         expect(

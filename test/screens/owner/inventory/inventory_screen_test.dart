@@ -1,3 +1,6 @@
+import 'dart:typed_data';
+
+import 'package:badminton_app/models/enums.dart';
 import 'package:badminton_app/providers/supabase_provider.dart';
 import 'package:badminton_app/repositories/shop_repository.dart';
 import 'package:badminton_app/screens/owner/inventory/inventory_notifier.dart';
@@ -94,7 +97,7 @@ void main() {
 
       // Assert
       expect(find.text('BG65'), findsOneWidget);
-      expect(find.text('거트'), findsOneWidget);
+      expect(find.text('기타'), findsOneWidget);
       expect(find.text('50개'), findsOneWidget);
     });
 
@@ -208,16 +211,20 @@ class _FakeInventoryNotifier extends InventoryNotifier {
   Future<bool> addItem({
     required String shopId,
     required String name,
-    String? category,
+    required InventoryCategory category,
     required int quantity,
+    Uint8List? imageBytes,
+    String? imageExtension,
   }) async =>
       true;
 
   @override
   Future<bool> updateItem(
     String id,
-    Map<String, dynamic> data,
-  ) async =>
+    Map<String, dynamic> data, {
+    Uint8List? imageBytes,
+    String? imageExtension,
+  }) async =>
       true;
 
   @override

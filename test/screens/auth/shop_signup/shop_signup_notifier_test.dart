@@ -158,6 +158,7 @@ void main() {
         notifier.updateShopName('배드민턴 프로샵');
         notifier.updateAddress('서울시 강남구');
         notifier.updatePhone('010-1234-5678');
+        notifier.updateBusinessNumber('123-45-67890');
         notifier.setLocation(37.5665, 126.978);
 
         // Assert
@@ -203,6 +204,7 @@ void main() {
         notifier.updateShopName('배드민턴 프로샵');
         notifier.updateAddress('서울시 강남구');
         notifier.updatePhone('010-1234-5678');
+        notifier.updateBusinessNumber('123-45-67890');
         notifier.setLocation(37.5665, 126.978);
 
         when(() => mockShopRepo.create(any()))
@@ -221,7 +223,7 @@ void main() {
         final route = await notifier.submit();
 
         // Assert
-        expect(route, '/owner/dashboard');
+        expect(route, 'submitted');
       });
 
       test('유효하지 않으면 null을 반환한다', () async {

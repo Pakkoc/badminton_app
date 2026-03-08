@@ -35,6 +35,7 @@ final testShop = Shop(
   longitude: 127.0276,
   phone: '0212345678',
   description: '최고의 거트 서비스',
+  status: ShopStatus.approved,
   createdAt: DateTime(2026, 1, 1),
 );
 

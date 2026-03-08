@@ -234,7 +234,7 @@ void main() {
         );
 
         // Assert
-        expect(find.text('접수 10:00'), findsOneWidget);
+        expect(find.text('접수 1/15 10:00'), findsOneWidget);
       },
     );
 

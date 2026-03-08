@@ -11,6 +11,11 @@ import 'package:flutter_naver_map/flutter_naver_map.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
+/// 테스트 환경에서 NaverMap 렌더링을 건너뛰기 위한 플래그.
+@visibleForTesting
+// ignore: library_private_types_in_public_api
+bool shopSearchUsePlaceholder = false;
+
 class ShopSearchScreen extends ConsumerWidget {
   const ShopSearchScreen({super.key});
 
@@ -51,15 +56,17 @@ class ShopSearchScreen extends ConsumerWidget {
           ),
         ),
       ),
-      // 지도 뷰는 항상 유지하고 위에 리스트를 겹친다.
-      body: Stack(
-        children: [
-          // NaverMap은 항상 렌더링하여 리빌드를 방지.
-          const _MapView(),
-          // 리스트 모드일 때 지도 위에 오버레이.
-          if (!isMap) _buildListBody(context, ref, state),
-        ],
-      ),
+      // 위치 권한 미허용 시 안내 화면, 그 외에는 지도+리스트.
+      body: !state.hasLocationPermission
+          ? const _LocationPermissionView()
+          : Stack(
+              children: [
+                // NaverMap은 항상 렌더링하여 리빌드를 방지.
+                const _MapView(),
+                // 리스트 모드일 때 지도 위에 오버레이.
+                if (!isMap) _buildListBody(context, ref, state),
+              ],
+            ),
       bottomNavigationBar: const CustomerBottomNav(
         currentIndex: 1,
       ),
@@ -71,6 +78,10 @@ class ShopSearchScreen extends ConsumerWidget {
     WidgetRef ref,
     ShopSearchState state,
   ) {
+    if (state.isLoading) {
+      return const LoadingIndicator();
+    }
+
     if (state.error != null) {
       return ErrorView(
         message: state.error!,
@@ -461,6 +472,7 @@ class _MapViewState extends ConsumerState<_MapView> {
   NaverMapController? _mapController;
   List<Shop> _prevShops = const [];
 
+
   /// 한국 기본 위치 (서울).
   static const _defaultPosition = NLatLng(37.5665, 126.9780);
 
@@ -479,7 +491,7 @@ class _MapViewState extends ConsumerState<_MapView> {
 
     return Stack(
       children: [
-        if (kIsWeb)
+        if (kIsWeb || shopSearchUsePlaceholder)
           Container(
             color: AppTheme.surfaceVariant,
             child: const Center(child: Text('지도 영역')),

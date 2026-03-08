@@ -1,4 +1,5 @@
 import 'package:badminton_app/core/error/app_exception.dart';
+import 'package:badminton_app/models/enums.dart';
 import 'package:badminton_app/models/inventory_item.dart';
 import 'package:badminton_app/repositories/inventory_repository.dart';
 import 'package:badminton_app/screens/owner/inventory/inventory_notifier.dart';
@@ -106,7 +107,7 @@ void main() {
         final result = await notifier.addItem(
           shopId: testShop.id,
           name: 'BG65',
-          category: '거트',
+          category: InventoryCategory.other,
           quantity: 50,
         );
 
@@ -130,7 +131,7 @@ void main() {
         final result = await notifier.addItem(
           shopId: testShop.id,
           name: 'BG65',
-          category: '거트',
+          category: InventoryCategory.other,
           quantity: 50,
         );
 

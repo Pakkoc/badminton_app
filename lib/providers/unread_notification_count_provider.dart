@@ -29,12 +29,17 @@ class UnreadNotificationCountNotifier
     await refresh();
 
     // 실시간 구독
-    final client = _ref.read(supabaseProvider);
-    _subscription = client
-        .from('notifications')
-        .stream(primaryKey: ['id'])
-        .eq('user_id', userId)
-        .listen((_) => refresh());
+    try {
+      final client = _ref.read(supabaseProvider);
+      _subscription = client
+          .from('notifications')
+          .stream(primaryKey: ['id'])
+          .eq('user_id', userId)
+          .listen((_) => refresh());
+    } catch (_) {
+      // 스트림 구독 실패 시 무시 — 뱃지 업데이트는
+      // refresh()를 직접 호출하여 갱신 가능
+    }
   }
 
   Future<void> refresh() async {

@@ -1,11 +1,14 @@
 import 'package:badminton_app/core/error/app_exception.dart';
 import 'package:badminton_app/providers/auth_provider.dart';
+import 'package:badminton_app/providers/supabase_provider.dart';
+import 'package:badminton_app/providers/unread_notification_count_provider.dart';
 import 'package:badminton_app/repositories/notification_repository.dart';
 import 'package:badminton_app/repositories/user_repository.dart';
 import 'package:badminton_app/screens/customer/notifications/notifications_notifier.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
 import '../../../helpers/fixtures.dart';
 
@@ -15,19 +18,34 @@ class _MockNotificationRepository extends Mock
 class _MockUserRepository extends Mock
     implements UserRepository {}
 
+class _MockSupabaseClient extends Mock implements SupabaseClient {}
+
+class _MockGoTrueClient extends Mock implements GoTrueClient {}
+
+
+
 void main() {
   late _MockNotificationRepository mockRepo;
   late _MockUserRepository mockUserRepo;
+  late _MockSupabaseClient mockSupabase;
+  late _MockGoTrueClient mockAuth;
   late ProviderContainer container;
 
   setUp(() {
     mockRepo = _MockNotificationRepository();
     mockUserRepo = _MockUserRepository();
+    mockSupabase = _MockSupabaseClient();
+    mockAuth = _MockGoTrueClient();
+    when(() => mockSupabase.auth).thenReturn(mockAuth);
+    when(() => mockAuth.currentUser).thenReturn(null);
+    when(() => mockRepo.getUnreadCount(any()))
+        .thenAnswer((_) async => 0);
     when(
       () => mockUserRepo.getById(testUser.id),
     ).thenAnswer((_) async => testUser);
     container = ProviderContainer(
       overrides: [
+        supabaseProvider.overrideWithValue(mockSupabase),
         notificationRepositoryProvider
             .overrideWithValue(mockRepo),
         userRepositoryProvider
@@ -86,6 +104,7 @@ void main() {
         // Arrange
         final noUserContainer = ProviderContainer(
           overrides: [
+            supabaseProvider.overrideWithValue(mockSupabase),
             notificationRepositoryProvider
                 .overrideWithValue(mockRepo),
             userRepositoryProvider

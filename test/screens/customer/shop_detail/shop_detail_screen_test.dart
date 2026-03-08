@@ -1,6 +1,7 @@
 import 'package:badminton_app/screens/customer/shop_detail/shop_detail_notifier.dart';
 import 'package:badminton_app/screens/customer/shop_detail/shop_detail_screen.dart';
 import 'package:badminton_app/screens/customer/shop_detail/shop_detail_state.dart';
+import 'package:badminton_app/widgets/map_preview.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -37,6 +38,14 @@ void main() {
       ),
     );
   }
+
+  setUp(() {
+    MapPreview.usePlaceholder = true;
+  });
+
+  tearDown(() {
+    MapPreview.usePlaceholder = false;
+  });
 
   group('ShopDetailScreen', () {
     testWidgets(

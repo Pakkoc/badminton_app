@@ -1,3 +1,5 @@
+import 'package:badminton_app/providers/supabase_provider.dart';
+import 'package:badminton_app/repositories/shop_repository.dart';
 import 'package:badminton_app/screens/auth/shop_signup/shop_signup_notifier.dart';
 import 'package:badminton_app/screens/auth/shop_signup/shop_signup_screen.dart';
 import 'package:badminton_app/screens/auth/shop_signup/shop_signup_state.dart';
@@ -7,15 +9,33 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:go_router/go_router.dart';
 import 'package:mocktail/mocktail.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
 class _MockGeocodingService extends Mock
     implements GeocodingService {}
 
+class _MockSupabaseClient extends Mock implements SupabaseClient {}
+
+class _MockGoTrueClient extends Mock implements GoTrueClient {}
+
+class _MockShopRepository extends Mock implements ShopRepository {}
+
 void main() {
   late _MockGeocodingService mockGeocoding;
+  late _MockSupabaseClient mockSupabase;
+  late _MockGoTrueClient mockAuth;
+  late _MockShopRepository mockShopRepo;
 
   setUp(() {
     mockGeocoding = _MockGeocodingService();
+    mockSupabase = _MockSupabaseClient();
+    mockAuth = _MockGoTrueClient();
+    mockShopRepo = _MockShopRepository();
+
+    when(() => mockSupabase.auth).thenReturn(mockAuth);
+    when(() => mockAuth.currentUser).thenReturn(null);
+    when(() => mockShopRepo.getByOwner(any()))
+        .thenAnswer((_) async => null);
   });
 
   Widget buildSubject({
@@ -39,6 +59,8 @@ void main() {
 
     return ProviderScope(
       overrides: [
+        supabaseProvider.overrideWithValue(mockSupabase),
+        shopRepositoryProvider.overrideWithValue(mockShopRepo),
         if (initialState != null)
           shopSignupNotifierProvider.overrideWith(
             () => _FakeShopSignupNotifier(initialState),
@@ -105,18 +127,18 @@ void main() {
       expect(find.text('소개글'), findsOneWidget);
     });
 
-    testWidgets('"등록 완료" 버튼을 표시한다', (tester) async {
+    testWidgets('"등록 신청" 버튼을 표시한다', (tester) async {
       await tester.pumpWidget(buildSubject());
       await tester.pumpAndSettle();
 
-      expect(find.text('등록 완료'), findsOneWidget);
+      expect(find.text('등록 신청'), findsOneWidget);
     });
 
-    testWidgets('뒤로가기 버튼이 없다', (tester) async {
+    testWidgets('뒤로가기 버튼이 있다', (tester) async {
       await tester.pumpWidget(buildSubject());
       await tester.pumpAndSettle();
 
-      expect(find.byIcon(Icons.arrow_back), findsNothing);
+      expect(find.byIcon(Icons.arrow_back), findsOneWidget);
     });
 
     testWidgets(

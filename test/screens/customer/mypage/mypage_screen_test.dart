@@ -1,3 +1,4 @@
+import 'package:badminton_app/models/enums.dart';
 import 'package:badminton_app/providers/app_mode_provider.dart';
 import 'package:badminton_app/providers/auth_provider.dart';
 import 'package:badminton_app/providers/supabase_provider.dart';
@@ -49,6 +50,13 @@ void main() {
         supabaseProvider.overrideWithValue(mockSupabase),
         hasShopProvider.overrideWith(
           (ref) async => hasShop,
+        ),
+        shopStatusProvider.overrideWith(
+          (ref) async =>
+              hasShop ? ShopStatus.approved : null,
+        ),
+        myShopProvider.overrideWith(
+          (ref) async => null,
         ),
       ];
 
@@ -125,7 +133,7 @@ void main() {
         );
         await tester.pumpAndSettle();
 
-        expect(find.text('샵 사장님 등록'), findsOneWidget);
+        expect(find.text('샵 등록 신청'), findsOneWidget);
         expect(
           find.byIcon(Icons.storefront),
           findsOneWidget,

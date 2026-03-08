@@ -70,6 +70,8 @@ void main() {
             testOrderCompleted,
           ],
         );
+        when(() => mockOrderRepo.streamByShop(testShop.id))
+            .thenAnswer((_) => const Stream.empty());
         when(() => mockMemberRepo.getByShop(testShop.id))
             .thenAnswer((_) async => [testMember]);
 
@@ -97,6 +99,8 @@ void main() {
             .thenAnswer((_) async => testShop);
         when(() => mockOrderRepo.getByShop(testShop.id))
             .thenAnswer((_) async => orders);
+        when(() => mockOrderRepo.streamByShop(testShop.id))
+            .thenAnswer((_) => const Stream.empty());
         when(() => mockMemberRepo.getByShop(testShop.id))
             .thenAnswer((_) async => [testMember]);
 
@@ -130,6 +134,8 @@ void main() {
             .thenAnswer(
           (_) async => [testOrderReceived],
         );
+        when(() => mockOrderRepo.streamByShop(testShop.id))
+            .thenAnswer((_) => const Stream.empty());
         when(() => mockMemberRepo.getByShop(testShop.id))
             .thenAnswer((_) async => [testMember]);
         await notifier.loadDashboard(testOwner.id);
