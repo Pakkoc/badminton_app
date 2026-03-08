@@ -87,6 +87,14 @@ class NotificationsScreen extends ConsumerWidget {
                 context.push(
                   '/customer/order/${notification.orderId}',
                 );
+              } else if (notification.postId != null &&
+                  (notification.type ==
+                          NotificationType.commentOnPost ||
+                      notification.type ==
+                          NotificationType.replyOnComment)) {
+                context.push(
+                  '/community/${notification.postId}',
+                );
               }
             },
           );
@@ -114,6 +122,10 @@ class _NotificationTile extends StatelessWidget {
         NotificationType.shopApproval => Icons.check_circle,
         NotificationType.shopRejection => Icons.cancel_outlined,
         NotificationType.communityReport => Icons.flag_outlined,
+        NotificationType.commentOnPost =>
+          Icons.chat_bubble_outline,
+        NotificationType.replyOnComment =>
+          Icons.reply_outlined,
       };
 
   @override
