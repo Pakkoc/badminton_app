@@ -15,7 +15,9 @@
 |------|------|--------|------|
 | `_commentController` | `TextEditingController` | - | 댓글 입력 컨트롤러 |
 | `_replyToId` | `String?` | `null` | 대댓글 대상 댓글 ID |
-| `_replyToName` | `String?` | `null` | 대댓글 대상 닉네임 (UI 표시용) |
+| `_replyToName` | `String?` | `null` | 대댓글 대상 닉네임 (입력 바 답글 칩 표시용) |
+| `_mentionName` | `String?` | `null` | 대댓글 전송 시 content 앞에 삽입할 @멘션 대상 이름 |
+| `_expanded` | `Map<String, bool>` | `{}` | 댓글 ID별 대댓글 펼치기 상태 (_CommentSection 내부) |
 
 ### 파라미터
 
@@ -64,3 +66,6 @@ postId (라우트 파라미터)
 | 댓글 작성 | `communityCommentsProvider`, `communityPostDetailProvider` |
 | 댓글 삭제 | `communityCommentsProvider`, `communityPostDetailProvider` |
 | 게시글 삭제 | pop (목록으로 돌아감) |
+| 답글 탭 | `_replyToId`, `_replyToName`, `_mentionName` 로컬 상태 갱신 |
+| 답글 취소 (✕) | `_replyToId`, `_replyToName`, `_mentionName` → null 초기화 |
+| 답글 펼치기/숨기기 탭 | `_expanded[commentId]` 토글 (로컬 상태) |

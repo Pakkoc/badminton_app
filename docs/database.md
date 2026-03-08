@@ -151,10 +151,11 @@
 |------|------|---------|------|
 | id | UUID | PK, DEFAULT uuid_generate_v7() | 알림 고유 ID |
 | user_id | UUID | NOT NULL, FK → users(id) ON DELETE CASCADE | 수신 사용자 |
-| type | TEXT | NOT NULL, CHECK (type IN ('status_change', 'completion', 'notice', 'receipt')) | 알림 유형 |
+| type | TEXT | NOT NULL, CHECK (type IN ('status_change', 'completion', 'notice', 'receipt', 'comment_on_post', 'reply_on_comment')) | 알림 유형 |
 | title | TEXT | NOT NULL | 알림 제목 |
 | body | TEXT | NOT NULL | 알림 내용 |
 | order_id | UUID | NULLABLE, FK → orders(id) ON DELETE SET NULL | 연결된 작업 (주문 관련 알림) |
+| post_id | UUID | NULLABLE, FK → community_posts(id) ON DELETE SET NULL | 연결된 커뮤니티 게시글 (댓글 알림) |
 | is_read | BOOLEAN | NOT NULL, DEFAULT false | 읽음 여부 |
 | created_at | TIMESTAMPTZ | NOT NULL, DEFAULT now() | 생성일 |
 
@@ -302,6 +303,7 @@ erDiagram
         TEXT title
         TEXT body
         UUID order_id FK
+        UUID post_id FK
         BOOLEAN is_read
         TIMESTAMPTZ created_at
     }
@@ -405,6 +407,7 @@ $$;
 | inventory | shop_id | 단일 인덱스 생성 |
 | notifications | user_id | 복합 인덱스에 포함 |
 | notifications | order_id | 단일 인덱스 생성 |
+| notifications | post_id | 단일 인덱스 생성 |
 
 ### 비즈니스 인덱스
 
@@ -561,10 +564,11 @@ create table notifications (
   id uuid primary key default uuid_generate_v7(),
   user_id uuid not null references users(id) on delete cascade,
   type text not null
-    check (type in ('status_change', 'completion', 'notice', 'receipt')),
+    check (type in ('status_change', 'completion', 'notice', 'receipt', 'comment_on_post', 'reply_on_comment')),
   title text not null,
   body text not null,
   order_id uuid references orders(id) on delete set null,
+  post_id uuid references community_posts(id) on delete set null,
   is_read boolean not null default false,
   created_at timestamptz not null default now()
 );
@@ -595,6 +599,7 @@ create index idx_inventory_shop on inventory (shop_id);
 -- notifications: 비즈니스 인덱스 (FK 커버 포함)
 create index idx_notifications_user_created on notifications (user_id, created_at desc);
 create index idx_notifications_order on notifications (order_id);  -- FK 인덱스
+create index idx_notifications_post_id on notifications (post_id); -- FK 인덱스
 
 -- notifications: 읽지 않은 알림 부분 인덱스 (뱃지 카운트)
 create index idx_notifications_unread on notifications (user_id)
@@ -622,6 +627,63 @@ create trigger trigger_orders_updated_at
   before update on orders
   for each row
   execute function update_updated_at();
+
+-- ============================================
+-- 트리거: 댓글/대댓글 작성 시 알림 생성 (community_comments)
+-- notify_on_comment(): INSERT 후 실행
+--   1단 댓글(parent_id IS NULL) → type='comment_on_post', 수신자=게시글 작성자
+--   대댓글(parent_id IS NOT NULL) → type='reply_on_comment', 수신자=부모 댓글 작성자
+--   자기 자신에게는 알림을 보내지 않음 (댓글 작성자 = 수신자이면 skip)
+--   알림 body: "{닉네임}님이 회원님의 게시글에 댓글을 남겼습니다" (1단 댓글)
+--             "{닉네임}님이 회원님의 댓글에 답글을 남겼습니다" (대댓글)
+-- trg_notify_on_comment: AFTER INSERT ON community_comments FOR EACH ROW
+-- ============================================
+
+create or replace function notify_on_comment()
+returns trigger as $$
+declare
+  v_post_author_id uuid;
+  v_parent_author_id uuid;
+  v_commenter_name text;
+  v_recipient_id uuid;
+  v_notif_type text;
+  v_notif_body text;
+begin
+  -- 댓글 작성자 이름 조회
+  select name into v_commenter_name from public.users where id = new.author_id;
+
+  if new.parent_id is null then
+    -- 1단 댓글: 게시글 작성자에게 알림
+    select author_id into v_post_author_id
+      from public.community_posts where id = new.post_id;
+    v_recipient_id := v_post_author_id;
+    v_notif_type   := 'comment_on_post';
+    v_notif_body   := v_commenter_name || '님이 회원님의 게시글에 댓글을 남겼습니다';
+  else
+    -- 대댓글: 부모 댓글 작성자에게 알림
+    select author_id into v_parent_author_id
+      from public.community_comments where id = new.parent_id;
+    v_recipient_id := v_parent_author_id;
+    v_notif_type   := 'reply_on_comment';
+    v_notif_body   := v_commenter_name || '님이 회원님의 댓글에 답글을 남겼습니다';
+  end if;
+
+  -- 자기 자신에게는 알림 미발송
+  if v_recipient_id is null or v_recipient_id = new.author_id then
+    return new;
+  end if;
+
+  insert into public.notifications (user_id, type, title, body, post_id)
+  values (v_recipient_id, v_notif_type, '새 댓글', v_notif_body, new.post_id);
+
+  return new;
+end;
+$$ language plpgsql security definer set search_path = '';
+
+create trigger trg_notify_on_comment
+  after insert on community_comments
+  for each row
+  execute function notify_on_comment();
 
 -- ============================================
 -- 트리거: 상태 변경 시 타임스탬프 자동 기록 (orders)

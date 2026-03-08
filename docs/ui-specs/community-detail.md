@@ -81,26 +81,77 @@
 | 좋아요 | favorite/favorite_border + count (탭 시 토글) |
 | 댓글 수 | chat_bubble_outline 20px + count |
 
-### 3.5 댓글 (_CommentTile)
+### 3.5 댓글 (_CommentSection)
+
+댓글 목록은 1단 댓글을 기준으로 렌더링하며, 대댓글은 각 1단 댓글 하단에 접기/펼치기 방식으로 표시한다.
+
+#### 3.5.1 1단 댓글 타일 (_CommentTile)
+
+| 요소 | 스펙 |
+|------|------|
+| 아바타 | 40px CircleAvatar, 프로필 이미지 또는 이니셜 |
+| 닉네임 | titleSmall (14sp, SemiBold, textPrimary) |
+| 작성자 배지 | `· 작성자` (12sp, Medium, Primary #2563EB) — `comment.authorId == post.authorId`인 경우만 표시 |
+| 시간 | bodySmall (12sp, textTertiary), 예: `· 3시간 전` |
+| 내용 | bodyMedium (14sp, textPrimary) |
+| 좋아요 | thumb_up_outlined 16px + count (bodySmall, textTertiary) |
+| 답글 버튼 | "답글" (12sp, Medium, textSecondary), 탭 시 답글 모드 진입 |
+| 더보기 | more_vert PopupMenu — 본인: 삭제 / 타인: 신고 |
+| 패딩 | 좌 16px, 우 16px |
+| 아바타-콘텐츠 간격 | 12px |
+
+#### 3.5.2 대댓글 타일 (_ReplyTile)
+
+| 요소 | 스펙 |
+|------|------|
+| 아바타 | 32px CircleAvatar, 프로필 이미지 또는 이니셜 |
+| 들여쓰기 | 좌측 52px (40px 아바타 + 12px gap) |
+| @멘션 | bodyMedium Bold, Primary (#2563EB), 내용 앞에 자동 삽입 |
+| 나머지 요소 | 1단 댓글 타일과 동일 (닉네임, 작성자 배지, 시간, 내용, 좋아요, 더보기) |
+
+#### 3.5.3 답글 펼치기/숨기기 버튼 (_ReplyToggleButton)
+
+| 요소 | 스펙 |
+|------|------|
+| 위치 | 1단 댓글 아래, 들여쓰기 52px |
+| 텍스트 (접힌 상태) | "답글 N개 더보기" + expand_more 아이콘 16px |
+| 텍스트 (펼친 상태) | "답글 숨기기" + expand_less 아이콘 16px |
+| 스타일 | labelMedium (12sp, Medium), Primary (#2563EB) |
+| 표시 조건 | 해당 댓글의 대댓글 수 > 0인 경우에만 표시 |
+
+#### 3.5.4 작성자 배지
 
 | 속성 | 값 |
 |------|-----|
-| 닉네임 | textTheme.titleSmall |
-| 시간 | textTheme.bodySmall, color grey |
-| 내용 | bodyMedium |
-| 좋아요 | favorite_border 14px + count |
-| 답글 | "답글" 텍스트, color blue |
-| 더보기 | PopupMenu (본인: 삭제, 타인: 신고) |
-| 대댓글 들여쓰기 | left 40px |
+| 조건 | `comment.authorId == post.authorId` |
+| 텍스트 | "작성자" |
+| 구분자 | " · " |
+| 색상 | Primary (#2563EB) |
+| 크기 | labelSmall (12sp, Medium) |
 
-### 3.6 댓글 입력 바
+### 3.6 댓글 입력 바 (_CommentInputBar)
+
+| 상태 | UI |
+|------|-----|
+| 기본 | `[댓글을 입력하세요...]  [전송]` |
+| 답글 모드 | `[@닉네임에게 답글 중 ✕]` 칩 + `[답글을 입력하세요...]  [전송]` |
 
 | 속성 | 값 |
 |------|-----|
-| 상단 선 | grey.shade300 |
-| 답글 대상 | "@닉네임 에게 답글" + 취소(X) 버튼 |
-| TextField | hintText "댓글을 입력하세요", OutlineInputBorder |
-| 전송 | send 아이콘 버튼 |
+| 상단 선 | grey.shade300, 1px |
+| 답글 칩 | 닉네임 텍스트 + close 아이콘(✕), 탭 시 답글 모드 해제 |
+| TextField | hintText "댓글을 입력하세요" / 답글 모드 시 "답글을 입력하세요", OutlineInputBorder |
+| 전송 버튼 | send 아이콘 버튼, 내용이 비어 있으면 비활성화 |
+| 답글 전송 | 전송 시 content 앞에 `@닉네임 ` 자동 삽입 (replyToName 기반) |
+
+### 3.7 알림 타입 (댓글 관련)
+
+| 타입 | 트리거 | 수신자 | 메시지 |
+|------|--------|--------|--------|
+| `comment_on_post` | 게시글에 1단 댓글 작성 | 게시글 작성자 | "{닉네임}님이 회원님의 게시글에 댓글을 남겼습니다" |
+| `reply_on_comment` | 댓글에 대댓글 작성 | 부모 댓글 작성자 | "{닉네임}님이 회원님의 댓글에 답글을 남겼습니다" |
+
+> 알림은 DB 트리거(`trg_notify_on_comment`)가 자동 생성한다. 자기 자신에게는 발송하지 않는다.
 
 ---
 
@@ -110,8 +161,10 @@
 |--------|------|
 | 좋아요 탭 | togglePostLike, provider 갱신 |
 | 댓글 좋아요 탭 | toggleCommentLike, provider 갱신 |
-| 답글 탭 | replyToId/replyToName 설정, 입력창 포커스 |
-| 댓글 전송 | create comment (parentId 있으면 대댓글) |
+| 답글 탭 | replyToId/replyToName/mentionName 설정, 입력창 포커스 |
+| 답글 모드 취소 (✕) | replyToId, replyToName, mentionName 초기화 |
+| 댓글 전송 | create comment (parentId 있으면 대댓글, content 앞에 @멘션 자동 삽입) |
+| 답글 펼치기/숨기기 탭 | _expanded[commentId] 토글 |
 | 수정 | `/community/{postId}/edit`로 이동 |
 | 삭제 | ConfirmDialog → delete → pop |
 | 신고 | AlertDialog (사유 입력) → reportPost/reportComment |
