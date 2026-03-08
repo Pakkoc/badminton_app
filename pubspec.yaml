@@ -68,6 +68,9 @@ dev_dependencies:
 
   flutter_lints: ^6.0.0
 
+  # 앱 아이콘
+  flutter_launcher_icons: ^0.14.3
+
   # 코드 생성
   build_runner: ^2.4.13
   freezed: ^2.5.7
@@ -80,6 +83,15 @@ dev_dependencies:
   # 통합 테스트
   integration_test:
     sdk: flutter
+
+flutter_launcher_icons:
+  android: true
+  ios: true
+  image_path: "docs/app_icon/logo.png"
+  min_sdk_android: 21
+  adaptive_icon_background: "#2563EB"
+  adaptive_icon_foreground: "docs/app_icon/logo.png"
+  remove_alpha_ios: true
 
 flutter:
   uses-material-design: true
