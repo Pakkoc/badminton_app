@@ -17,6 +17,8 @@ class User with _$User {
     required String phone,
     @JsonKey(name: 'profile_image_url') String? profileImageUrl,
     @JsonKey(name: 'fcm_token') String? fcmToken,
+    @JsonKey(name: 'notify_shop') @Default(true) bool notifyShop,
+    @JsonKey(name: 'notify_community') @Default(true) bool notifyCommunity,
     @JsonKey(name: 'created_at') required DateTime createdAt,
   }) = _User;
 

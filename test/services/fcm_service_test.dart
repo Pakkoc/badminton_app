@@ -28,6 +28,32 @@ void main() {
       expect(service, isA<FcmService>());
     });
 
+    group('isCommunityType', () {
+      test('comment_on_post는 커뮤니티 유형이다', () {
+        expect(FcmService.isCommunityType('comment_on_post'), true);
+      });
+
+      test('reply_on_comment는 커뮤니티 유형이다', () {
+        expect(FcmService.isCommunityType('reply_on_comment'), true);
+      });
+
+      test('community_report는 커뮤니티 유형이다', () {
+        expect(FcmService.isCommunityType('community_report'), true);
+      });
+
+      test('status_change는 샵 유형이다', () {
+        expect(FcmService.isCommunityType('status_change'), false);
+      });
+
+      test('completion은 샵 유형이다', () {
+        expect(FcmService.isCommunityType('completion'), false);
+      });
+
+      test('알 수 없는 유형은 샵 채널로 분류된다', () {
+        expect(FcmService.isCommunityType('unknown'), false);
+      });
+    });
+
     group('navigateFromData', () {
       late MockGoRouter mockRouter;
       late FcmService service;

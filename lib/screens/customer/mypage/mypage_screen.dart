@@ -4,7 +4,7 @@ import 'package:badminton_app/models/enums.dart';
 import 'package:badminton_app/providers/app_mode_provider.dart';
 import 'package:badminton_app/providers/auth_provider.dart';
 import 'package:badminton_app/providers/supabase_provider.dart';
-import 'package:badminton_app/services/fcm_service.dart';
+import 'package:badminton_app/repositories/user_repository.dart';
 import 'package:badminton_app/widgets/confirm_dialog.dart';
 import 'package:badminton_app/widgets/customer_bottom_nav.dart';
 import 'package:badminton_app/widgets/loading_indicator.dart';
@@ -21,7 +21,8 @@ class MypageScreen extends ConsumerStatefulWidget {
 }
 
 class _MypageScreenState extends ConsumerState<MypageScreen> {
-  bool _pushEnabled = true;
+  bool? _notifyShop;
+  bool? _notifyCommunity;
 
   @override
   Widget build(BuildContext context) {
@@ -39,6 +40,10 @@ class _MypageScreenState extends ConsumerState<MypageScreen> {
               child: Text('로그인이 필요합니다'),
             );
           }
+          // 최초 로딩 시 User 모델의 값을 초기값으로 설정한다
+          _notifyShop ??= user.notifyShop;
+          _notifyCommunity ??= user.notifyCommunity;
+
           return ListView(
             padding: const EdgeInsets.all(16),
             children: [
@@ -56,8 +61,12 @@ class _MypageScreenState extends ConsumerState<MypageScreen> {
               ),
               const SizedBox(height: 16),
               _SettingsCard(
-                pushEnabled: _pushEnabled,
-                onPushChanged: _onPushChanged,
+                notifyShop: _notifyShop!,
+                notifyCommunity: _notifyCommunity!,
+                onNotifyShopChanged: (v) =>
+                    _onNotifyShopChanged(user.id, v),
+                onNotifyCommunityChanged: (v) =>
+                    _onNotifyCommunityChanged(user.id, v),
                 phone: Formatters.phone(user.phone),
               ),
               const SizedBox(height: 16),
@@ -92,10 +101,33 @@ class _MypageScreenState extends ConsumerState<MypageScreen> {
     return email;
   }
 
-  void _onPushChanged(bool value) {
-    setState(() => _pushEnabled = value);
-    if (value) {
-      FcmService().initialize();
+  Future<void> _onNotifyShopChanged(
+    String userId,
+    bool value,
+  ) async {
+    setState(() => _notifyShop = value);
+    try {
+      await ref
+          .read(userRepositoryProvider)
+          .updateNotifyShop(userId, value: value);
+    } catch (_) {
+      // 저장 실패 시 롤백
+      if (mounted) setState(() => _notifyShop = !value);
+    }
+  }
+
+  Future<void> _onNotifyCommunityChanged(
+    String userId,
+    bool value,
+  ) async {
+    setState(() => _notifyCommunity = value);
+    try {
+      await ref
+          .read(userRepositoryProvider)
+          .updateNotifyCommunity(userId, value: value);
+    } catch (_) {
+      // 저장 실패 시 롤백
+      if (mounted) setState(() => _notifyCommunity = !value);
     }
   }
 
@@ -200,13 +232,17 @@ class _ProfileCard extends StatelessWidget {
 
 class _SettingsCard extends StatelessWidget {
   const _SettingsCard({
-    required this.pushEnabled,
-    required this.onPushChanged,
+    required this.notifyShop,
+    required this.notifyCommunity,
+    required this.onNotifyShopChanged,
+    required this.onNotifyCommunityChanged,
     required this.phone,
   });
 
-  final bool pushEnabled;
-  final ValueChanged<bool> onPushChanged;
+  final bool notifyShop;
+  final bool notifyCommunity;
+  final ValueChanged<bool> onNotifyShopChanged;
+  final ValueChanged<bool> onNotifyCommunityChanged;
   final String phone;
 
   @override
@@ -228,37 +264,27 @@ class _SettingsCard extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           const Text(
-            '설정',
+            '알림 설정',
             style: TextStyle(
               fontSize: 16,
               fontWeight: FontWeight.w700,
               color: AppTheme.textPrimary,
             ),
           ),
-          SizedBox(
-            height: 48,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                const Text(
-                  '푸시 알림',
-                  style: TextStyle(
-                    fontSize: 15,
-                    color: AppTheme.textPrimary,
-                  ),
-                ),
-                Switch(
-                  value: pushEnabled,
-                  onChanged: onPushChanged,
-                  activeTrackColor: AppTheme.primary,
-                ),
-              ],
-            ),
+          _NotifyToggleRow(
+            label: '샵 알림',
+            description: '주문 상태, 작업 완료, 접수 등',
+            value: notifyShop,
+            onChanged: onNotifyShopChanged,
           ),
-          const Divider(
-            height: 1,
-            color: AppTheme.border,
+          const Divider(height: 1, color: AppTheme.border),
+          _NotifyToggleRow(
+            label: '커뮤니티 알림',
+            description: '댓글, 답글, 신고 등',
+            value: notifyCommunity,
+            onChanged: onNotifyCommunityChanged,
           ),
+          const Divider(height: 1, color: AppTheme.border),
           SizedBox(
             height: 48,
             child: Row(
@@ -280,6 +306,57 @@ class _SettingsCard extends StatelessWidget {
                 ),
               ],
             ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class _NotifyToggleRow extends StatelessWidget {
+  const _NotifyToggleRow({
+    required this.label,
+    required this.description,
+    required this.value,
+    required this.onChanged,
+  });
+
+  final String label;
+  final String description;
+  final bool value;
+  final ValueChanged<bool> onChanged;
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      height: 56,
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                label,
+                style: const TextStyle(
+                  fontSize: 15,
+                  color: AppTheme.textPrimary,
+                ),
+              ),
+              Text(
+                description,
+                style: const TextStyle(
+                  fontSize: 12,
+                  color: AppTheme.textSecondary,
+                ),
+              ),
+            ],
+          ),
+          Switch(
+            value: value,
+            onChanged: onChanged,
+            activeTrackColor: AppTheme.primary,
           ),
         ],
       ),

@@ -60,6 +60,19 @@ class UserRepository {
     }
   }
 
+  /// 샵 알림 설정을 업데이트한다.
+  Future<User> updateNotifyShop(String id, {required bool value}) async {
+    return update(id, {'notify_shop': value});
+  }
+
+  /// 커뮤니티 알림 설정을 업데이트한다.
+  Future<User> updateNotifyCommunity(
+    String id, {
+    required bool value,
+  }) async {
+    return update(id, {'notify_community': value});
+  }
+
   /// 전화번호로 매칭되는 회원에 user_id를 업데이트한다.
   Future<void> matchMembersByPhone(
     String phone,

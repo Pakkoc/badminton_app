@@ -18,16 +18,16 @@ class FcmService {
   /// GoRouter 참조 — 알림 탭 시 딥링크 네비게이션에 사용.
   static GoRouter? _router;
 
-  static const _orderChannel = AndroidNotificationChannel(
-    'order_status',
-    '주문 상태 알림',
-    description: '거트 작업 상태 변경 알림',
+  static const _shopChannel = AndroidNotificationChannel(
+    'shop_notification',
+    '샵 알림',
+    description: '주문 상태, 작업 완료, 샵 공지 알림',
     importance: Importance.high,
   );
 
-  static const _commentChannel = AndroidNotificationChannel(
-    'comment_notification',
-    '댓글 알림',
+  static const _communityChannel = AndroidNotificationChannel(
+    'community_notification',
+    '커뮤니티 알림',
     description: '커뮤니티 게시글 댓글 및 답글 알림',
     importance: Importance.high,
   );
@@ -63,8 +63,8 @@ class FcmService {
     final androidImpl = _localNotifications
         .resolvePlatformSpecificImplementation<
             AndroidFlutterLocalNotificationsPlugin>();
-    await androidImpl?.createNotificationChannel(_orderChannel);
-    await androidImpl?.createNotificationChannel(_commentChannel);
+    await androidImpl?.createNotificationChannel(_shopChannel);
+    await androidImpl?.createNotificationChannel(_communityChannel);
   }
 
   /// 현재 FCM 토큰을 반환한다.
@@ -106,24 +106,34 @@ class FcmService {
     return _messaging.requestPermission();
   }
 
+  /// 커뮤니티 알림 유형인지 판별한다.
+  @visibleForTesting
+  static bool isCommunityType(String type) =>
+      type == 'comment_on_post' ||
+      type == 'reply_on_comment' ||
+      type == 'community_report';
+
   void _handleForegroundMessage(RemoteMessage message) {
-    final notification = message.notification;
-    if (notification == null) return;
+    // data-only 메시지와 notification 메시지 모두 지원한다.
+    final type = message.data['type'] as String? ?? '';
+    final title =
+        message.data['title'] as String? ?? message.notification?.title ?? '';
+    final body =
+        message.data['body'] as String? ?? message.notification?.body ?? '';
+
+    if (title.isEmpty && body.isEmpty) return;
 
     // 알림 유형에 따라 채널 선택
-    final type = message.data['type'] as String? ?? '';
-    final isCommentNotification =
-        type == 'comment_on_post' || type == 'reply_on_comment';
     final channel =
-        isCommentNotification ? _commentChannel : _orderChannel;
+        isCommunityType(type) ? _communityChannel : _shopChannel;
 
     // data를 payload로 전달 — 탭 시 딥링크에 사용
     final payload = jsonEncode(message.data);
 
     _localNotifications.show(
-      notification.hashCode,
-      notification.title,
-      notification.body,
+      message.hashCode,
+      title,
+      body,
       NotificationDetails(
         android: AndroidNotificationDetails(
           channel.id,

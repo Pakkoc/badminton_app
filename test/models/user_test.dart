@@ -39,6 +39,25 @@ void main() {
       );
     });
 
+    test('notify_shop와 notify_community 필드를 파싱한다', () {
+      final jsonWithNotify = {
+        ...json,
+        'notify_shop': false,
+        'notify_community': false,
+      };
+      final user = User.fromJson(jsonWithNotify);
+
+      expect(user.notifyShop, false);
+      expect(user.notifyCommunity, false);
+    });
+
+    test('notify 필드가 없을 때 기본값 true를 사용한다', () {
+      final user = User.fromJson(json);
+
+      expect(user.notifyShop, true);
+      expect(user.notifyCommunity, true);
+    });
+
     test('nullable 필드가 null일 때 정상 동작한다', () {
       final minimalJson = {
         'id': '550e8400-e29b-41d4-a716-446655440000',

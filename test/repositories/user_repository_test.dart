@@ -37,4 +37,16 @@ void main() {
       expect(userRepositoryProvider, isA<Provider<UserRepository>>());
     });
   });
+
+  group('updateNotifyShop / updateNotifyCommunity', () {
+    test('UserRepository에 updateNotifyShop 메서드가 정의되어 있다', () {
+      // update()는 실제 Supabase 연결이 필요하므로
+      // 메서드 시그니처가 컴파일되는지만 검증한다.
+      final repo = UserRepository(MockSupabaseClient());
+      // ignore: unnecessary_type_check
+      expect(repo.updateNotifyShop, isA<Function>());
+      // ignore: unnecessary_type_check
+      expect(repo.updateNotifyCommunity, isA<Function>());
+    });
+  });
 }
