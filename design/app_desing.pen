@@ -19176,77 +19176,189 @@
             },
             {
               "type": "frame",
-              "id": "37A0r",
+              "id": "5iaSX",
               "name": "Comment 1",
               "width": "fill_container",
               "layout": "vertical",
-              "gap": 6,
+              "gap": 8,
               "children": [
                 {
                   "type": "frame",
-                  "id": "f72LR",
-                  "name": "commentHeader",
+                  "id": "W2jX6",
+                  "name": "c1_row",
                   "width": "fill_container",
-                  "gap": 8,
-                  "alignItems": "center",
+                  "gap": 12,
                   "children": [
                     {
-                      "type": "text",
-                      "id": "32FN2",
-                      "name": "name",
-                      "fill": "$--text-primary",
-                      "content": "김사장",
-                      "fontFamily": "Pretendard",
-                      "fontSize": 13,
-                      "fontWeight": "SemiBold"
-                    },
-                    {
-                      "type": "text",
-                      "id": "FIr4c",
-                      "name": "time",
-                      "fill": "$--text-tertiary",
-                      "content": "1시간 전",
-                      "fontFamily": "Pretendard",
-                      "fontSize": 11,
-                      "fontWeight": "normal"
+                      "type": "ellipse",
+                      "id": "e9GuC",
+                      "name": "c1_avatar",
+                      "fill": "$--surface-variant",
+                      "width": 40,
+                      "height": 40
                     },
                     {
                       "type": "frame",
-                      "id": "6iSmC",
-                      "name": "spacer",
+                      "id": "1ghwl",
+                      "name": "c1_body",
                       "width": "fill_container",
-                      "height": 1
-                    },
-                    {
-                      "type": "icon_font",
-                      "id": "rM0x7",
-                      "name": "likeIcon",
-                      "width": 14,
-                      "height": 14,
-                      "iconFontName": "favorite_border",
-                      "iconFontFamily": "Material Symbols Rounded",
-                      "fill": "$--text-tertiary"
+                      "layout": "vertical",
+                      "gap": 6,
+                      "children": [
+                        {
+                          "type": "frame",
+                          "id": "2wQwY",
+                          "name": "c1_metaRow",
+                          "width": "fill_container",
+                          "alignItems": "center",
+                          "children": [
+                            {
+                              "type": "text",
+                              "id": "9hk2N",
+                              "name": "c1_name",
+                              "fill": "$--text-primary",
+                              "content": "김사장",
+                              "fontFamily": "Pretendard",
+                              "fontSize": 14,
+                              "fontWeight": "SemiBold"
+                            },
+                            {
+                              "type": "text",
+                              "id": "Aeu8y",
+                              "name": "c1_authorBadge",
+                              "fill": "$--primary",
+                              "content": " · 작성자",
+                              "fontFamily": "Pretendard",
+                              "fontSize": 12,
+                              "fontWeight": "normal"
+                            },
+                            {
+                              "type": "text",
+                              "id": "FdO6O",
+                              "name": "c1_dot",
+                              "fill": "$--text-tertiary",
+                              "content": " · ",
+                              "fontFamily": "Pretendard",
+                              "fontSize": 12,
+                              "fontWeight": "normal"
+                            },
+                            {
+                              "type": "text",
+                              "id": "dq1ho",
+                              "name": "c1_time",
+                              "fill": "$--text-tertiary",
+                              "content": "3시간 전",
+                              "fontFamily": "Pretendard",
+                              "fontSize": 12,
+                              "fontWeight": "normal"
+                            },
+                            {
+                              "type": "frame",
+                              "id": "SAFMi",
+                              "name": "c1_spacer",
+                              "width": "fill_container",
+                              "height": 1
+                            },
+                            {
+                              "type": "icon_font",
+                              "id": "np4IS",
+                              "name": "c1_more",
+                              "width": 20,
+                              "height": 20,
+                              "iconFontName": "more_vert",
+                              "iconFontFamily": "Material Symbols Rounded",
+                              "fill": "$--text-tertiary"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "id": "VV8gA",
+                          "name": "c1_content",
+                          "fill": "$--text-primary",
+                          "textGrowth": "fixed-width",
+                          "width": "fill_container",
+                          "content": "아스트록스 88D 추천합니다! 컨트롤이 정말 좋아요.",
+                          "fontFamily": "Pretendard",
+                          "fontSize": 14,
+                          "fontWeight": "normal"
+                        },
+                        {
+                          "type": "frame",
+                          "id": "80uz4",
+                          "name": "c1_actionRow",
+                          "width": "fill_container",
+                          "gap": 16,
+                          "alignItems": "center",
+                          "children": [
+                            {
+                              "type": "icon_font",
+                              "id": "nlzkF",
+                              "name": "c1_likeIcon",
+                              "width": 16,
+                              "height": 16,
+                              "iconFontName": "thumb_up",
+                              "iconFontFamily": "Material Symbols Rounded",
+                              "fill": "$--text-secondary"
+                            },
+                            {
+                              "type": "text",
+                              "id": "cA7gA",
+                              "name": "c1_likeCount",
+                              "fill": "$--text-secondary",
+                              "content": "27",
+                              "fontFamily": "Pretendard",
+                              "fontSize": 12,
+                              "fontWeight": "normal"
+                            },
+                            {
+                              "type": "text",
+                              "id": "jcPG9",
+                              "name": "c1_replyBtn",
+                              "fill": "$--text-secondary",
+                              "content": "답글",
+                              "fontFamily": "Pretendard",
+                              "fontSize": 12,
+                              "fontWeight": "normal"
+                            }
+                          ]
+                        }
+                      ]
                     }
                   ]
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "thaCl",
+              "name": "Expand Replies Btn",
+              "width": "fill_container",
+              "gap": 4,
+              "padding": [
+                0,
+                0,
+                0,
+                52
+              ],
+              "alignItems": "center",
+              "children": [
+                {
+                  "type": "icon_font",
+                  "id": "DH3FU",
+                  "name": "expandIcon",
+                  "width": 16,
+                  "height": 16,
+                  "iconFontName": "expand_more",
+                  "iconFontFamily": "Material Symbols Rounded",
+                  "fill": "$--primary"
                 },
                 {
                   "type": "text",
-                  "id": "LQajT",
-                  "name": "content",
-                  "fill": "$--text-primary",
-                  "textGrowth": "fixed-width",
-                  "width": "fill_container",
-                  "content": "아스트록스 88D 추천합니다! 컨트롤 좋아요.",
-                  "fontFamily": "Pretendard",
-                  "fontSize": 13,
-                  "fontWeight": "normal"
-                },
-                {
-                  "type": "text",
-                  "id": "WZl7l",
-                  "name": "replyBtn",
+                  "id": "fvgkX",
+                  "name": "expandLabel",
                   "fill": "$--primary",
-                  "content": "답글",
+                  "content": "답글 2개 더보기",
                   "fontFamily": "Pretendard",
                   "fontSize": 12,
                   "fontWeight": "normal"
@@ -19255,59 +19367,169 @@
             },
             {
               "type": "frame",
-              "id": "wnhHu",
+              "id": "zQJ63",
               "name": "Reply 1",
               "width": "fill_container",
               "layout": "vertical",
-              "gap": 6,
+              "gap": 8,
               "padding": [
                 0,
                 0,
                 0,
-                40
+                52
               ],
               "children": [
                 {
                   "type": "frame",
-                  "id": "2Kwpm",
-                  "name": "replyHeader",
+                  "id": "Oomht",
+                  "name": "r1_row",
                   "width": "fill_container",
-                  "gap": 8,
-                  "alignItems": "center",
+                  "gap": 12,
                   "children": [
                     {
-                      "type": "text",
-                      "id": "Ct1rt",
-                      "name": "name",
-                      "fill": "$--text-primary",
-                      "content": "홍길동",
-                      "fontFamily": "Pretendard",
-                      "fontSize": 13,
-                      "fontWeight": "SemiBold"
+                      "type": "ellipse",
+                      "id": "ECyjy",
+                      "name": "r1_avatar",
+                      "fill": "$--surface-variant",
+                      "width": 32,
+                      "height": 32
                     },
                     {
-                      "type": "text",
-                      "id": "VZeE5",
-                      "name": "time",
-                      "fill": "$--text-tertiary",
-                      "content": "30분 전",
-                      "fontFamily": "Pretendard",
-                      "fontSize": 11,
-                      "fontWeight": "normal"
+                      "type": "frame",
+                      "id": "sF25B",
+                      "name": "r1_body",
+                      "width": "fill_container",
+                      "layout": "vertical",
+                      "gap": 6,
+                      "children": [
+                        {
+                          "type": "frame",
+                          "id": "QrjiB",
+                          "name": "r1_metaRow",
+                          "width": "fill_container",
+                          "alignItems": "center",
+                          "children": [
+                            {
+                              "type": "text",
+                              "id": "JlgzO",
+                              "name": "r1_name",
+                              "fill": "$--text-primary",
+                              "content": "홍길동",
+                              "fontFamily": "Pretendard",
+                              "fontSize": 14,
+                              "fontWeight": "SemiBold"
+                            },
+                            {
+                              "type": "text",
+                              "id": "y9XDg",
+                              "name": "r1_dot",
+                              "fill": "$--text-tertiary",
+                              "content": " · ",
+                              "fontFamily": "Pretendard",
+                              "fontSize": 12,
+                              "fontWeight": "normal"
+                            },
+                            {
+                              "type": "text",
+                              "id": "KghAH",
+                              "name": "r1_time",
+                              "fill": "$--text-tertiary",
+                              "content": "8시간 전",
+                              "fontFamily": "Pretendard",
+                              "fontSize": 12,
+                              "fontWeight": "normal"
+                            },
+                            {
+                              "type": "frame",
+                              "id": "JihuN",
+                              "name": "r1_spacer",
+                              "width": "fill_container",
+                              "height": 1
+                            },
+                            {
+                              "type": "icon_font",
+                              "id": "gC9iC",
+                              "name": "r1_more",
+                              "width": 20,
+                              "height": 20,
+                              "iconFontName": "more_vert",
+                              "iconFontFamily": "Material Symbols Rounded",
+                              "fill": "$--text-tertiary"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "frame",
+                          "id": "QvzB8",
+                          "name": "r1_contentRow",
+                          "width": "fill_container",
+                          "gap": 4,
+                          "children": [
+                            {
+                              "type": "text",
+                              "id": "KDzwe",
+                              "name": "r1_mention",
+                              "fill": "$--primary",
+                              "content": "@김사장",
+                              "fontFamily": "Pretendard",
+                              "fontSize": 14,
+                              "fontWeight": "Bold"
+                            },
+                            {
+                              "type": "text",
+                              "id": "Yyf2I",
+                              "name": "r1_text",
+                              "fill": "$--text-primary",
+                              "content": "감사합니다! 참고할게요.",
+                              "fontFamily": "Pretendard",
+                              "fontSize": 14,
+                              "fontWeight": "normal"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "frame",
+                          "id": "LrOIu",
+                          "name": "r1_actionRow",
+                          "width": "fill_container",
+                          "gap": 16,
+                          "alignItems": "center",
+                          "children": [
+                            {
+                              "type": "icon_font",
+                              "id": "9AvL4",
+                              "name": "r1_likeIcon",
+                              "width": 16,
+                              "height": 16,
+                              "iconFontName": "thumb_up",
+                              "iconFontFamily": "Material Symbols Rounded",
+                              "fill": "$--text-secondary"
+                            },
+                            {
+                              "type": "text",
+                              "id": "ktDhv",
+                              "name": "r1_likeCount",
+                              "fill": "$--text-secondary",
+                              "content": "3",
+                              "fontFamily": "Pretendard",
+                              "fontSize": 12,
+                              "fontWeight": "normal"
+                            },
+                            {
+                              "type": "text",
+                              "id": "WPvzn",
+                              "name": "r1_replyBtn",
+                              "fill": "$--text-secondary",
+                              "content": "답글",
+                              "fontFamily": "Pretendard",
+                              "fontSize": 12,
+                              "fontWeight": "normal"
+                            }
+                          ]
+                        }
+                      ]
                     }
                   ]
-                },
-                {
-                  "type": "text",
-                  "id": "fKlmW",
-                  "name": "content",
-                  "fill": "$--text-primary",
-                  "textGrowth": "fixed-width",
-                  "width": "fill_container",
-                  "content": "@김사장 감사합니다! 참고할게요.",
-                  "fontFamily": "Pretendard",
-                  "fontSize": 13,
-                  "fontWeight": "normal"
                 }
               ]
             }

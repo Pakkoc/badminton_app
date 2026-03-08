@@ -1,6 +1,6 @@
 # 게시글 상세 — UI 화면 스펙
 
-> 최종 수정일: 2026-03-07
+> 최종 수정일: 2026-03-08
 
 ---
 
@@ -36,6 +36,8 @@
 |  ─── Divider ───                 |
 |                                  |
 |  댓글 1                          |  ← 스크롤 영역
+|  [아바타] ─┐                     |
+|            │  (스레드 선)        |
 |    └ 대댓글 1-1 (left 40px)      |
 |  댓글 2                          |
 |                                  |
@@ -128,6 +130,38 @@
 | 구분자 | " · " |
 | 색상 | Primary (#2563EB) |
 | 크기 | labelSmall (12sp, Medium) |
+
+#### 3.5.5 스레드 연결선 (_ThreadLine)
+
+1단 댓글 아바타 아래에서 마지막 대댓글까지 수직으로 이어지는 시각적 연결선이다.
+
+| 요소 | 스펙 |
+|------|------|
+| 색상 | `AppTheme.border` (`#E8E0D8`) |
+| 두께 | 2px (렌더링 최소 단위; 디자인 의도 1.5px) |
+| X 위치 | 1단 댓글 아바타 컬럼 중앙 (아바타 너비 36px의 중심 = 18px) |
+| 범위 | 아바타 하단 ~ 마지막 대댓글 하단 |
+| 표시 조건 | 대댓글이 1개 이상 존재할 때 (접힘/펼침 상태 무관) |
+| 구현 방법 | `IntrinsicHeight` + `Row` + `Container(width: 2, color: AppTheme.border)` |
+| Pencil 노드 | `MvXQ5` (Rectangle, ThreadLine), `nZEJi` (commentAvatarCol) |
+
+**구현 레이아웃 구조:**
+```
+Row (37A0r, Comment 1, horizontal, alignItems: stretch)
+├── Column (nZEJi, commentAvatarCol, width: 36, alignItems: center)
+│   ├── Ellipse (1MbTz, Avatar, 36×36)
+│   └── Rectangle (MvXQ5, ThreadLine, width: 2, height: 56, fill: #E8E0D8)
+└── Column (tzw5a, commentBody, width: fill)
+    ├── commentHeader (이름 · 시간 · 좋아요)
+    ├── content (댓글 내용)
+    ├── replyBtn ("답글")
+    └── Row (wnhHu, Reply 1, horizontal)
+        ├── Column (kMK5c, replyAvatarCol, width: 28)
+        │   └── Ellipse (ZBJG5, Avatar, 28×28)
+        └── Column (Q9wHH, replyBody, width: fill)
+            ├── replyHeader (이름 · 시간)
+            └── content (대댓글 내용)
+```
 
 ### 3.6 댓글 입력 바 (_CommentInputBar)
 
