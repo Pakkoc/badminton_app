@@ -26,6 +26,8 @@ class CustomerBottomNav extends StatelessWidget {
     return BottomNavigationBar(
       currentIndex: currentIndex,
       type: BottomNavigationBarType.fixed,
+      selectedFontSize: 10,
+      unselectedFontSize: 10,
       onTap: (index) {
         if (index != currentIndex) {
           context.go(_routes[index]);
