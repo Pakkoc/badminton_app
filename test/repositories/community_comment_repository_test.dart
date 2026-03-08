@@ -33,6 +33,45 @@ void main() {
     });
   });
 
+  group('resolveParentId', () {
+    late MockSupabaseClient mockClient;
+    late CommunityCommentRepository repository;
+
+    setUp(() {
+      mockClient = MockSupabaseClient();
+      repository = CommunityCommentRepository(mockClient);
+    });
+
+    test('1단 댓글에 답글 시 parent_id를 그대로 유지한다', () {
+      // Arrange
+      const rootId = 'root-comment-id';
+
+      // Act
+      final resolved = repository.resolveParentId(
+        targetCommentId: rootId,
+        targetCommentParentId: null,
+      );
+
+      // Assert
+      expect(resolved, rootId);
+    });
+
+    test('대댓글에 답글 시 parent_id를 루트 댓글로 보정한다', () {
+      // Arrange
+      const rootId = 'root-comment-id';
+      const replyId = 'reply-comment-id';
+
+      // Act
+      final resolved = repository.resolveParentId(
+        targetCommentId: replyId,
+        targetCommentParentId: rootId,
+      );
+
+      // Assert
+      expect(resolved, rootId);
+    });
+  });
+
   group('communityCommentRepositoryProvider', () {
     test('Provider가 정의되어 있다', () {
       expect(

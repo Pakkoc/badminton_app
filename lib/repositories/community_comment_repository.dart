@@ -58,6 +58,16 @@ class CommunityCommentRepository {
     }
   }
 
+  /// 대댓글 2단 제한을 강제한다.
+  ///
+  /// [targetCommentParentId]가 null이면 1단 댓글 → [targetCommentId] 반환.
+  /// [targetCommentParentId]가 있으면 이미 대댓글 → 루트([targetCommentParentId]) 반환.
+  String resolveParentId({
+    required String targetCommentId,
+    required String? targetCommentParentId,
+  }) =>
+      targetCommentParentId ?? targetCommentId;
+
   /// 댓글을 삭제한다.
   Future<void> delete(String commentId) async {
     try {
