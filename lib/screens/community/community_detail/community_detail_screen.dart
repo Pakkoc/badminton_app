@@ -532,16 +532,93 @@ class _CommentSectionState extends State<_CommentSection> {
               onReport: () => widget.onReport(comment.id),
               onToggleLike: () => widget.onToggleLike(comment.id),
             ),
-            if (hasReplies) ...[
-              // 답글 접기/펼치기 버튼
-              Padding(
-                padding: const EdgeInsets.only(left: 36),
-                child: TextButton.icon(
-                  onPressed: () => _toggle(comment.id),
+            if (hasReplies)
+              _ThreadSection(
+                replies: replies,
+                expanded: expanded,
+                onToggle: () => _toggle(comment.id),
+                currentUserId: widget.currentUserId,
+                postAuthorId: widget.postAuthorId,
+                onReply: widget.onReply,
+                onDelete: widget.onDelete,
+                onReport: widget.onReport,
+                onToggleLike: widget.onToggleLike,
+              ),
+          ],
+        );
+      }).toList(),
+    );
+  }
+}
+
+// ── _ThreadSection ─────────────────────────────────────────────────
+
+/// 1단 댓글에 달린 대댓글 영역.
+///
+/// 답글 더보기/숨기기 버튼과 펼침 시 대댓글 목록을 [IntrinsicHeight] +
+/// [Row]로 감싸고, 왼쪽에 세로 연결선(thread line)을 표시한다.
+/// 연결선은 부모 댓글 아바타(radius 20 → 직경 40px) 중심 X에 맞춰
+/// SizedBox(width: 40) 내부 중앙에 그린다.
+class _ThreadSection extends StatelessWidget {
+  const _ThreadSection({
+    required this.replies,
+    required this.expanded,
+    required this.onToggle,
+    required this.currentUserId,
+    required this.postAuthorId,
+    required this.onReply,
+    required this.onDelete,
+    required this.onReport,
+    required this.onToggleLike,
+  });
+
+  final List<CommunityComment> replies;
+  final bool expanded;
+  final VoidCallback onToggle;
+  final String currentUserId;
+  final String postAuthorId;
+  final void Function(
+    String commentId,
+    String? parentCommentId,
+    String replyToName,
+    String? mentionName,
+  ) onReply;
+  final void Function(String id) onDelete;
+  final void Function(String id) onReport;
+  final void Function(String id) onToggleLike;
+
+  /// 부모 아바타 직경. 연결선 컨테이너 너비로 사용한다.
+  static const _avatarDiameter = 40.0;
+
+  @override
+  Widget build(BuildContext context) {
+    return IntrinsicHeight(
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          // 세로 연결선: 아바타 중심(20px)에 1.5px 너비 선
+          SizedBox(
+            width: _avatarDiameter,
+            child: Center(
+              child: Container(
+                width: 1.5,
+                color: AppTheme.border,
+              ),
+            ),
+          ),
+          // 버튼 + 대댓글 목록
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                // 답글 접기/펼치기 버튼
+                TextButton.icon(
+                  onPressed: onToggle,
                   style: TextButton.styleFrom(
                     padding: EdgeInsets.zero,
                     minimumSize: Size.zero,
-                    tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                    tapTargetSize:
+                        MaterialTapTargetSize.shrinkWrap,
                     foregroundColor: AppTheme.primary,
                   ),
                   icon: Icon(
@@ -560,36 +637,33 @@ class _CommentSectionState extends State<_CommentSection> {
                         ?.copyWith(color: AppTheme.primary),
                   ),
                 ),
-              ),
-              // 펼쳤을 때 대댓글 목록
-              if (expanded)
-                ...replies.map(
-                  (reply) => Padding(
-                    padding: const EdgeInsets.only(left: 36),
-                    child: _CommentTile(
+                // 펼쳤을 때 대댓글 목록
+                if (expanded)
+                  ...replies.map(
+                    (reply) => _CommentTile(
                       comment: reply,
                       isAuthor:
-                          reply.authorId == widget.currentUserId,
+                          reply.authorId == currentUserId,
                       isPostAuthor:
-                          reply.authorId == widget.postAuthorId,
+                          reply.authorId == postAuthorId,
                       isReply: true,
-                      onReply: () => widget.onReply(
+                      onReply: () => onReply(
                         reply.id,
                         reply.parentId,
                         reply.authorName ?? '알 수 없음',
                         reply.authorName,
                       ),
-                      onDelete: () => widget.onDelete(reply.id),
-                      onReport: () => widget.onReport(reply.id),
+                      onDelete: () => onDelete(reply.id),
+                      onReport: () => onReport(reply.id),
                       onToggleLike: () =>
-                          widget.onToggleLike(reply.id),
+                          onToggleLike(reply.id),
                     ),
                   ),
-                ),
-            ],
-          ],
-        );
-      }).toList(),
+              ],
+            ),
+          ),
+        ],
+      ),
     );
   }
 }

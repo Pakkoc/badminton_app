@@ -227,5 +227,145 @@ void main() {
       expect(find.textContaining('답글'), findsWidgets);
       expect(find.textContaining('더보기'), findsOneWidget);
     });
+
+    testWidgets('대댓글이 있을 때 세로 연결선(IntrinsicHeight)이 렌더링된다',
+        (tester) async {
+      final post = CommunityPost(
+        id: 'p1',
+        authorId: 'u1',
+        title: '제목',
+        content: '내용',
+        createdAt: DateTime(2026, 3, 1),
+        updatedAt: DateTime(2026, 3, 1),
+      );
+      final parent = CommunityComment(
+        id: 'c1',
+        postId: 'p1',
+        authorId: 'u2',
+        content: '부모 댓글',
+        createdAt: DateTime(2026, 3, 1),
+      );
+      final reply = CommunityComment(
+        id: 'c2',
+        postId: 'p1',
+        authorId: 'u3',
+        parentId: 'c1',
+        content: '대댓글',
+        createdAt: DateTime(2026, 3, 1),
+      );
+
+      await tester.pumpWidget(
+        _wrap(
+          [
+            communityPostDetailProvider('p1').overrideWith(
+              (_) async => post,
+            ),
+            communityCommentsProvider('p1').overrideWith(
+              (_) async => [parent, reply],
+            ),
+            communityPostLikeStatusProvider(
+              (userId: '', postId: 'p1'),
+            ).overrideWith((_) async => false),
+          ],
+          const CommunityDetailScreen(postId: 'p1'),
+        ),
+      );
+      await tester.pumpAndSettle();
+      // _ThreadSection이 IntrinsicHeight로 감싸진 구조 확인
+      expect(find.byType(IntrinsicHeight), findsWidgets);
+    });
+
+    testWidgets('대댓글 없는 댓글에는 연결선이 표시되지 않는다',
+        (tester) async {
+      final post = CommunityPost(
+        id: 'p1',
+        authorId: 'u1',
+        title: '제목',
+        content: '내용',
+        createdAt: DateTime(2026, 3, 1),
+        updatedAt: DateTime(2026, 3, 1),
+      );
+      final comment = CommunityComment(
+        id: 'c1',
+        postId: 'p1',
+        authorId: 'u2',
+        content: '단독 댓글',
+        createdAt: DateTime(2026, 3, 1),
+      );
+
+      await tester.pumpWidget(
+        _wrap(
+          [
+            communityPostDetailProvider('p1').overrideWith(
+              (_) async => post,
+            ),
+            communityCommentsProvider('p1').overrideWith(
+              (_) async => [comment],
+            ),
+            communityPostLikeStatusProvider(
+              (userId: '', postId: 'p1'),
+            ).overrideWith((_) async => false),
+          ],
+          const CommunityDetailScreen(postId: 'p1'),
+        ),
+      );
+      await tester.pumpAndSettle();
+      // 대댓글 없으면 _ThreadSection(IntrinsicHeight) 없음
+      expect(find.byType(IntrinsicHeight), findsNothing);
+    });
+
+    testWidgets('답글 더보기를 누르면 대댓글이 표시된다', (tester) async {
+      final post = CommunityPost(
+        id: 'p1',
+        authorId: 'u1',
+        title: '제목',
+        content: '내용',
+        createdAt: DateTime(2026, 3, 1),
+        updatedAt: DateTime(2026, 3, 1),
+      );
+      final parent = CommunityComment(
+        id: 'c1',
+        postId: 'p1',
+        authorId: 'u2',
+        content: '부모 댓글',
+        createdAt: DateTime(2026, 3, 1),
+      );
+      final reply = CommunityComment(
+        id: 'c2',
+        postId: 'p1',
+        authorId: 'u3',
+        parentId: 'c1',
+        content: '대댓글 내용',
+        createdAt: DateTime(2026, 3, 1),
+      );
+
+      await tester.pumpWidget(
+        _wrap(
+          [
+            communityPostDetailProvider('p1').overrideWith(
+              (_) async => post,
+            ),
+            communityCommentsProvider('p1').overrideWith(
+              (_) async => [parent, reply],
+            ),
+            communityPostLikeStatusProvider(
+              (userId: '', postId: 'p1'),
+            ).overrideWith((_) async => false),
+          ],
+          const CommunityDetailScreen(postId: 'p1'),
+        ),
+      );
+      await tester.pumpAndSettle();
+
+      // 접힌 상태: 대댓글 내용 미표시
+      expect(find.text('대댓글 내용'), findsNothing);
+
+      // 더보기 버튼 탭
+      await tester.tap(find.textContaining('더보기'));
+      await tester.pumpAndSettle();
+
+      // 펼침 상태: 대댓글 표시
+      expect(find.text('대댓글 내용'), findsOneWidget);
+    });
   });
 }
