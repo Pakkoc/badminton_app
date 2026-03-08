@@ -1,4 +1,5 @@
 import 'dart:typed_data';
+import 'dart:ui' as ui;
 
 import 'package:badminton_app/app/theme.dart';
 import 'package:badminton_app/models/shop.dart';
@@ -40,8 +41,29 @@ class _ShopQrScreenState extends State<ShopQrScreen> {
         color: Color(0xFF1A1A2E),
       ),
     );
-    final image = await painter.toImageData(size);
-    return image!.buffer.asUint8List();
+    final image = await painter.toImageData(
+      size,
+      format: ui.ImageByteFormat.png,
+    );
+    // QrPainter는 투명 배경으로 렌더링하므로
+    // 흰색 배경 위에 QR을 합성한다.
+    final recorder = ui.PictureRecorder();
+    final canvas = Canvas(recorder);
+    final s = size;
+    canvas.drawRect(
+      Rect.fromLTWH(0, 0, s, s),
+      Paint()..color = Colors.white,
+    );
+    final qrImage = await decodeImageFromList(
+      image!.buffer.asUint8List(),
+    );
+    canvas.drawImage(qrImage, Offset.zero, Paint());
+    final picture = recorder.endRecording();
+    final img = await picture.toImage(s.toInt(), s.toInt());
+    final byteData = await img.toByteData(
+      format: ui.ImageByteFormat.png,
+    );
+    return byteData!.buffer.asUint8List();
   }
 
   /// 고해상도 QR 이미지를 갤러리에 저장한다.
