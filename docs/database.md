@@ -38,6 +38,12 @@
 3. DB Trigger → Edge Function → FCM으로 고객에게 푸시 알림 전송
 4. `notifications` 테이블에 INSERT (알림 기록 저장)
 
+### 댓글/대댓글 작성 시 FCM 푸시 알림
+1. 댓글 또는 대댓글 INSERT → `trg_notify_on_comment` 트리거 → `notifications` 테이블에 인앱 알림 INSERT
+2. `trg_comment_notification_webhook` 트리거 → `notify_comment_via_fcm()` 함수 → pg_net으로 `send-comment-notification` Edge Function 비동기 호출
+3. Edge Function이 수신자의 `fcm_token` 조회 → Firebase Admin SDK로 FCM 푸시 전송
+4. 자기 자신에게 작성하거나 수신자 fcm_token이 NULL이면 스킵
+
 ### 게시글 작성
 1. 사장님이 공지사항 또는 이벤트 작성 → 이미지 업로드(Storage) → `posts` 테이블에 INSERT
 2. 이벤트인 경우 시작일/종료일 추가 저장
@@ -686,6 +692,71 @@ create trigger trg_notify_on_comment
   execute function notify_on_comment();
 
 -- ============================================
+-- 트리거: 댓글/대댓글 작성 시 FCM 푸시 알림 전송 (community_comments)
+-- trg_comment_notification_webhook: AFTER INSERT ON community_comments FOR EACH ROW
+-- send-comment-notification Edge Function 호출 (net.http_post via pg_net)
+-- 수신자의 fcm_token이 NULL이면 스킵, 자기 자신에게는 미발송
+--
+-- Edge Function: send-comment-notification
+--   - 입력: { recipient_id, commenter_name, type, post_id }
+--   - type='comment_on_post' → 제목 "새 댓글", 딥링크 /community/:postId
+--   - type='reply_on_comment' → 제목 "새 답글", 딥링크 /community/:postId
+--   - Firebase Admin SDK로 FCM 전송
+-- ============================================
+
+create or replace function notify_comment_via_fcm()
+returns trigger as $$
+declare
+  v_post_author_id uuid;
+  v_parent_author_id uuid;
+  v_recipient_id uuid;
+  v_notif_type text;
+  v_commenter_name text;
+begin
+  select name into v_commenter_name from public.users where id = new.author_id;
+
+  if new.parent_id is null then
+    select author_id into v_post_author_id
+      from public.community_posts where id = new.post_id;
+    v_recipient_id := v_post_author_id;
+    v_notif_type   := 'comment_on_post';
+  else
+    select author_id into v_parent_author_id
+      from public.community_comments where id = new.parent_id;
+    v_recipient_id := v_parent_author_id;
+    v_notif_type   := 'reply_on_comment';
+  end if;
+
+  -- 자기 자신 또는 수신자 없으면 스킵
+  if v_recipient_id is null or v_recipient_id = new.author_id then
+    return new;
+  end if;
+
+  -- send-comment-notification Edge Function 비동기 호출 (pg_net)
+  perform net.http_post(
+    url     := current_setting('app.supabase_url') || '/functions/v1/send-comment-notification',
+    headers := jsonb_build_object(
+      'Content-Type',  'application/json',
+      'Authorization', 'Bearer ' || current_setting('app.service_role_key')
+    ),
+    body    := jsonb_build_object(
+      'recipient_id',    v_recipient_id,
+      'commenter_name',  v_commenter_name,
+      'type',            v_notif_type,
+      'post_id',         new.post_id
+    )
+  );
+
+  return new;
+end;
+$$ language plpgsql security definer set search_path = '';
+
+create trigger trg_comment_notification_webhook
+  after insert on community_comments
+  for each row
+  execute function notify_comment_via_fcm();
+
+-- ============================================
 -- 트리거: 상태 변경 시 타임스탬프 자동 기록 (orders)
 -- ============================================
 
@@ -998,5 +1069,7 @@ create policy "notifications_update_own" on notifications
 - **orders.memo만 저장** — UI 스펙에서 작업 접수 시 메모만 입력. 거트/텐션/라켓 정보는 현재 UI에서 수집하지 않음
 - **shops.owner_id에 UNIQUE** — 1인 1샵 정책. 한 사장님은 하나의 샵만 등록 가능
 - **notifications는 Edge Function에서만 INSERT** — 클라이언트에서 직접 알림을 생성하지 않고, DB 트리거 → Edge Function 경로로만 생성
+- **댓글 알림은 두 트리거 병렬 실행** — `trg_notify_on_comment`(인앱 알림 INSERT)와 `trg_comment_notification_webhook`(FCM 푸시)이 동일한 AFTER INSERT 이벤트에서 독립적으로 실행된다. 인앱 알림 저장과 FCM 전송이 서로의 실패에 영향을 주지 않는다
+- **send-comment-notification Edge Function** — pg_net 비동기 HTTP POST로 호출. 수신자 fcm_token 조회 후 Firebase Admin SDK로 FCM 전송. 딥링크: `/community/:postId`
 - **Supabase Realtime 대상** — orders 테이블의 status 변경을 고객 앱에서 실시간 구독
 - **커서 기반 페이지네이션 권장** — notifications, orders 목록은 UUIDv7 + created_at 기반 커서 페이지네이션 사용 권장 (OFFSET 방식 대비 일정한 O(1) 성능)

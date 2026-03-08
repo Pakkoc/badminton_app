@@ -19190,12 +19190,32 @@
                   "gap": 12,
                   "children": [
                     {
-                      "type": "ellipse",
-                      "id": "e9GuC",
-                      "name": "c1_avatar",
-                      "fill": "$--surface-variant",
+                      "type": "frame",
+                      "id": "eYLcd",
+                      "name": "c1_avatarCol",
                       "width": 40,
-                      "height": 40
+                      "height": "fill_container",
+                      "layout": "vertical",
+                      "alignItems": "center",
+                      "children": [
+                        {
+                          "type": "ellipse",
+                          "id": "e9GuC",
+                          "name": "c1_avatar",
+                          "fill": "$--surface-variant",
+                          "width": 40,
+                          "height": 40
+                        },
+                        {
+                          "type": "rectangle",
+                          "cornerRadius": 1,
+                          "id": "ztjMe",
+                          "name": "c1_threadLineDown",
+                          "fill": "#E8E0D8",
+                          "width": 1.5,
+                          "height": "fill_container"
+                        }
+                      ]
                     },
                     {
                       "type": "frame",
@@ -19370,15 +19390,35 @@
               "id": "zQJ63",
               "name": "Reply 1",
               "width": "fill_container",
-              "layout": "vertical",
-              "gap": 8,
-              "padding": [
-                0,
-                0,
-                0,
-                52
-              ],
               "children": [
+                {
+                  "type": "frame",
+                  "id": "9zRV3",
+                  "name": "r1_threadConnector",
+                  "width": 52,
+                  "layout": "vertical",
+                  "alignItems": "end",
+                  "children": [
+                    {
+                      "type": "rectangle",
+                      "cornerRadius": 1,
+                      "id": "DeK0o",
+                      "name": "r1_threadVert",
+                      "fill": "#E8E0D8",
+                      "width": 1.5,
+                      "height": 20
+                    },
+                    {
+                      "type": "rectangle",
+                      "cornerRadius": 1,
+                      "id": "7PiMy",
+                      "name": "r1_threadHorz",
+                      "fill": "#E8E0D8",
+                      "width": 12,
+                      "height": 1.5
+                    }
+                  ]
+                },
                 {
                   "type": "frame",
                   "id": "Oomht",

@@ -131,31 +131,51 @@
 | 색상 | Primary (#2563EB) |
 | 크기 | labelSmall (12sp, Medium) |
 
-#### 3.5.5 스레드 연결선 (_ThreadLine)
+#### 3.5.5 스레드 연결선 (둥근 스타일)
 
-1단 댓글 아바타 아래에서 마지막 대댓글까지 수직으로 이어지는 시각적 연결선이다.
+댓글 간 스레드 연결을 시각적으로 표현하는 커스텀 페인터 기반 연결선이다. 각진 모서리 없이 둥글게 처리한다.
+
+##### 종류 1: 1단 댓글 간 메인 스레드 (_ThreadLine)
+
+1단 댓글 아바타 위아래로 세로선을 연결한다.
 
 | 요소 | 스펙 |
 |------|------|
 | 색상 | `AppTheme.border` (`#E8E0D8`) |
-| 두께 | 2px (렌더링 최소 단위; 디자인 의도 1.5px) |
-| X 위치 | 1단 댓글 아바타 컬럼 중앙 (아바타 너비 36px의 중심 = 18px) |
-| 범위 | 아바타 하단 ~ 마지막 대댓글 하단 |
-| 표시 조건 | 대댓글이 1개 이상 존재할 때 (접힘/펼침 상태 무관) |
-| 구현 방법 | `IntrinsicHeight` + `Row` + `Container(width: 2, color: AppTheme.border)` |
+| 두께 | 1.5px |
+| X 위치 | 1단 댓글 아바타 중심 X좌표 |
+| 위쪽 선 | `isFirst`이면 없음, 아니면 아바타 상단까지 8px 세로선 |
+| 아래쪽 선 | `isLast && !hasReplies`이면 없음, 아니면 60px 세로선 |
+| StrokeCap | `StrokeCap.round` |
 | Pencil 노드 | `MvXQ5` (Rectangle, ThreadLine), `nZEJi` (commentAvatarCol) |
+
+##### 종류 2: 대댓글 꺾임 스레드 (_ReplyThreadPainter)
+
+세로선이 가로로 꺾이며 대댓글 아바타를 연결한다 (└ / ├ 모양).
+
+| 요소 | 스펙 |
+|------|------|
+| 색상 | `AppTheme.border` (`#E8E0D8`) |
+| 두께 | 1.5px |
+| 꺾임 반지름 | 10px (둥근 arc, `Path.arcToPoint` 사용) |
+| 중간 대댓글 | ├ 모양 — 세로선이 끊기지 않고 계속 이어짐 |
+| 마지막 대댓글 | └ 모양 — 꺾인 후 세로선 끊김 |
+| StrokeCap | `StrokeCap.round` |
+| 구현 | `CustomPaint` + `_ReplyThreadPainter` |
 
 **구현 레이아웃 구조:**
 ```
 Row (37A0r, Comment 1, horizontal, alignItems: stretch)
 ├── Column (nZEJi, commentAvatarCol, width: 36, alignItems: center)
+│   ├── CustomPaint (_ThreadLine, 위쪽 세로선)
 │   ├── Ellipse (1MbTz, Avatar, 36×36)
-│   └── Rectangle (MvXQ5, ThreadLine, width: 2, height: 56, fill: #E8E0D8)
+│   └── CustomPaint (_ThreadLine, 아래쪽 세로선)
 └── Column (tzw5a, commentBody, width: fill)
     ├── commentHeader (이름 · 시간 · 좋아요)
     ├── content (댓글 내용)
     ├── replyBtn ("답글")
     └── Row (wnhHu, Reply 1, horizontal)
+        ├── CustomPaint (_ReplyThreadPainter, └/├ 꺾임선)
         ├── Column (kMK5c, replyAvatarCol, width: 28)
         │   └── Ellipse (ZBJG5, Avatar, 28×28)
         └── Column (Q9wHH, replyBody, width: fill)
@@ -180,12 +200,24 @@ Row (37A0r, Comment 1, horizontal, alignItems: stretch)
 
 ### 3.7 알림 타입 (댓글 관련)
 
+#### 인앱 알림 (notifications 테이블)
+
 | 타입 | 트리거 | 수신자 | 메시지 |
 |------|--------|--------|--------|
 | `comment_on_post` | 게시글에 1단 댓글 작성 | 게시글 작성자 | "{닉네임}님이 회원님의 게시글에 댓글을 남겼습니다" |
 | `reply_on_comment` | 댓글에 대댓글 작성 | 부모 댓글 작성자 | "{닉네임}님이 회원님의 댓글에 답글을 남겼습니다" |
 
-> 알림은 DB 트리거(`trg_notify_on_comment`)가 자동 생성한다. 자기 자신에게는 발송하지 않는다.
+> 인앱 알림은 DB 트리거(`trg_notify_on_comment`)가 자동 생성한다. 자기 자신에게는 발송하지 않는다.
+
+#### FCM 푸시 알림 (send-comment-notification Edge Function)
+
+| 트리거 | 알림 제목 | 알림 내용 | 딥링크 |
+|--------|----------|----------|--------|
+| 게시글에 1단 댓글 작성 | "새 댓글" | "{닉네임}님이 회원님의 게시글에 댓글을 남겼습니다" | `/community/:postId` |
+| 댓글에 대댓글 작성 | "새 답글" | "{닉네임}님이 회원님의 댓글에 답글을 남겼습니다" | `/community/:postId` |
+
+> FCM 푸시 알림은 `trg_comment_notification_webhook` 트리거가 `send-comment-notification` Edge Function을 호출하여 전송한다.
+> 수신자의 `users.fcm_token`이 NULL이거나 자기 자신에게는 발송하지 않는다.
 
 ---
 
