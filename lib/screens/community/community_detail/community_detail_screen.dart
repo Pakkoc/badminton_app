@@ -513,7 +513,6 @@ class _CommentSectionState extends State<_CommentSection> {
             .toList();
         final hasReplies = replies.isNotEmpty;
         final expanded = _isExpanded(comment.id);
-        final isFirst = index == 0;
         final isLast = index == topLevel.length - 1;
 
         return Column(
@@ -524,8 +523,6 @@ class _CommentSectionState extends State<_CommentSection> {
               isAuthor: comment.authorId == widget.currentUserId,
               isPostAuthor:
                   comment.authorId == widget.postAuthorId,
-              isFirst: isFirst,
-              isLast: isLast && !hasReplies,
               hasRepliesBelow: hasReplies,
               onReply: () => widget.onReply(
                 comment.id,
@@ -559,19 +556,15 @@ class _CommentSectionState extends State<_CommentSection> {
 
 // ── _CommentRow ────────────────────────────────────────────────────
 
-/// 1단 댓글 행. 아바타 좌측에 메인 스레드 연결선(종류 1)을 표시한다.
+/// 1단 댓글 행. 댓글들은 서로 독립적이며 연결선 없이 표시된다.
 ///
-/// 아바타를 Column 안에 넣어 위아래로 세로선 Container를 배치한다.
-/// - 첫 번째 댓글 위에는 선이 없다.
-/// - 마지막 댓글(대댓글도 없을 때) 아래에는 선이 없다.
-/// - 대댓글이 있으면 아바타 아래 선을 [_ThreadSection]으로 연결한다.
+/// 대댓글이 있을 때는 [_ThreadSection]이 아래에 이어지며,
+/// 대댓글 내부 연결선(종류 2)은 [_ThreadSection] / [_ReplyRow]에서 처리한다.
 class _CommentRow extends StatelessWidget {
   const _CommentRow({
     required this.comment,
     required this.isAuthor,
     required this.isPostAuthor,
-    required this.isFirst,
-    required this.isLast,
     required this.hasRepliesBelow,
     required this.onReply,
     required this.onDelete,
@@ -583,12 +576,6 @@ class _CommentRow extends StatelessWidget {
   final bool isAuthor;
   final bool isPostAuthor;
 
-  /// 목록에서 첫 번째 1단 댓글인지
-  final bool isFirst;
-
-  /// 목록에서 마지막이고 대댓글도 없는지
-  final bool isLast;
-
   /// 이 댓글 아래 대댓글 섹션이 이어지는지
   final bool hasRepliesBelow;
 
@@ -598,8 +585,6 @@ class _CommentRow extends StatelessWidget {
   final VoidCallback onToggleLike;
 
   static const _avatarRadius = 20.0;
-  static const _lineColor = AppTheme.border;
-  static const _lineWidth = 1.5;
 
   @override
   Widget build(BuildContext context) {
@@ -612,44 +597,22 @@ class _CommentRow extends StatelessWidget {
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          // 아바타 열: 위 연결선 + 아바타 + 아래 연결선
-          SizedBox(
-            width: _avatarRadius * 2,
-            child: Column(
-              children: [
-                // 아바타 위 선 (첫 번째 댓글이면 투명)
-                Container(
-                  width: _lineWidth,
-                  height: 8,
-                  color: isFirst ? null : _lineColor,
-                ),
-                // 아바타
-                CircleAvatar(
-                  radius: _avatarRadius,
-                  backgroundImage:
-                      comment.authorProfileImageUrl != null
-                          ? NetworkImage(
-                              comment.authorProfileImageUrl!)
-                          : null,
-                  child: comment.authorProfileImageUrl == null
-                      ? Text(
-                          initial,
-                          style: const TextStyle(
-                            fontSize: _avatarRadius * 0.8,
-                          ),
-                        )
-                      : null,
-                ),
-                // 아바타 아래 선 (마지막이면 숨김)
-                if (!isLast)
-                  Container(
-                    width: _lineWidth,
-                    // 내용 영역 최소 높이에 맞추는 고정 높이
-                    height: _belowAvatarLineHeight,
-                    color: _lineColor,
-                  ),
-              ],
-            ),
+          // 아바타
+          CircleAvatar(
+            radius: _avatarRadius,
+            backgroundImage:
+                comment.authorProfileImageUrl != null
+                    ? NetworkImage(
+                        comment.authorProfileImageUrl!)
+                    : null,
+            child: comment.authorProfileImageUrl == null
+                ? Text(
+                    initial,
+                    style: const TextStyle(
+                      fontSize: _avatarRadius * 0.8,
+                    ),
+                  )
+                : null,
           ),
           const SizedBox(width: 12),
           // 내용 영역
@@ -750,10 +713,6 @@ class _CommentRow extends StatelessWidget {
       ),
     );
   }
-
-  /// 아바타 아래 세로선의 고정 높이.
-  /// 내용 영역 최소 높이(닉네임+내용+좋아요 행)에 맞춘 근사값.
-  static const _belowAvatarLineHeight = 60.0;
 }
 
 // ── _ThreadSection ─────────────────────────────────────────────────
