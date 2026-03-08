@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:go_router/go_router.dart';
@@ -17,10 +18,17 @@ class FcmService {
   /// GoRouter 참조 — 알림 탭 시 딥링크 네비게이션에 사용.
   static GoRouter? _router;
 
-  static const _androidChannel = AndroidNotificationChannel(
+  static const _orderChannel = AndroidNotificationChannel(
     'order_status',
     '주문 상태 알림',
     description: '거트 작업 상태 변경 알림',
+    importance: Importance.high,
+  );
+
+  static const _commentChannel = AndroidNotificationChannel(
+    'comment_notification',
+    '댓글 알림',
+    description: '커뮤니티 게시글 댓글 및 답글 알림',
     importance: Importance.high,
   );
 
@@ -52,10 +60,11 @@ class FcmService {
     );
 
     // Android 알림 채널 생성
-    await _localNotifications
+    final androidImpl = _localNotifications
         .resolvePlatformSpecificImplementation<
-            AndroidFlutterLocalNotificationsPlugin>()
-        ?.createNotificationChannel(_androidChannel);
+            AndroidFlutterLocalNotificationsPlugin>();
+    await androidImpl?.createNotificationChannel(_orderChannel);
+    await androidImpl?.createNotificationChannel(_commentChannel);
   }
 
   /// 현재 FCM 토큰을 반환한다.
@@ -101,6 +110,13 @@ class FcmService {
     final notification = message.notification;
     if (notification == null) return;
 
+    // 알림 유형에 따라 채널 선택
+    final type = message.data['type'] as String? ?? '';
+    final isCommentNotification =
+        type == 'comment_on_post' || type == 'reply_on_comment';
+    final channel =
+        isCommentNotification ? _commentChannel : _orderChannel;
+
     // data를 payload로 전달 — 탭 시 딥링크에 사용
     final payload = jsonEncode(message.data);
 
@@ -110,9 +126,9 @@ class FcmService {
       notification.body,
       NotificationDetails(
         android: AndroidNotificationDetails(
-          _androidChannel.id,
-          _androidChannel.name,
-          channelDescription: _androidChannel.description,
+          channel.id,
+          channel.name,
+          channelDescription: channel.description,
           importance: Importance.high,
           priority: Priority.high,
           icon: '@mipmap/ic_launcher',
@@ -129,7 +145,7 @@ class FcmService {
 
     try {
       final data = jsonDecode(payload) as Map<String, dynamic>;
-      _navigateToOrder(data);
+      _navigateFromData(data);
     } on FormatException {
       debugPrint('FCM: invalid notification payload');
     }
@@ -137,7 +153,7 @@ class FcmService {
 
   /// 백그라운드에서 알림 탭 → 앱 열기.
   void _handleMessageOpenedApp(RemoteMessage message) {
-    _navigateToOrder(message.data);
+    _navigateFromData(message.data);
   }
 
   /// 앱이 종료된 상태에서 알림 탭 → 앱 열기.
@@ -147,15 +163,30 @@ class FcmService {
     if (message != null) {
       // 라우터 준비를 위해 잠시 대기
       await Future<void>.delayed(const Duration(seconds: 1));
-      _navigateToOrder(message.data);
+      _navigateFromData(message.data);
     }
   }
 
-  /// FCM data에서 order_id를 추출하여 주문 상세로 이동.
-  void _navigateToOrder(Map<String, dynamic> data) {
-    final orderId = data['order_id'] as String?;
-    if (orderId == null || _router == null) return;
+  /// FCM data 페이로드를 분석하여 적절한 화면으로 이동한다.
+  ///
+  /// - `post_id`가 있으면 커뮤니티 게시글 상세로 이동.
+  /// - `order_id`가 있으면 주문 상세로 이동.
+  @visibleForTesting
+  void navigateFromData(Map<String, dynamic> data) =>
+      _navigateFromData(data);
 
-    _router!.push('/customer/order/$orderId');
+  void _navigateFromData(Map<String, dynamic> data) {
+    if (_router == null) return;
+
+    final postId = data['post_id'] as String?;
+    if (postId != null) {
+      _router!.push('/community/$postId');
+      return;
+    }
+
+    final orderId = data['order_id'] as String?;
+    if (orderId != null) {
+      _router!.push('/customer/order/$orderId');
+    }
   }
 }
