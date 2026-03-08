@@ -774,6 +774,7 @@ class _ThreadSection extends StatelessWidget {
             child: Center(
               child: Container(
                 width: _lineWidth,
+                height: double.infinity,
                 color: _lineColor,
               ),
             ),
@@ -1053,6 +1054,7 @@ class _ReplyThreadLine extends StatelessWidget {
   Widget build(BuildContext context) {
     return CustomPaint(
       painter: _ReplyThreadPainter(isLastReply: isLastReply),
+      child: const SizedBox.expand(),
     );
   }
 }
