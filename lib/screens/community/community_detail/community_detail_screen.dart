@@ -506,22 +506,27 @@ class _CommentSectionState extends State<_CommentSection> {
         .toList();
 
     return Column(
-      children: topLevel.map((comment) {
+      children: List.generate(topLevel.length, (index) {
+        final comment = topLevel[index];
         final replies = widget.comments
             .where((c) => c.parentId == comment.id)
             .toList();
         final hasReplies = replies.isNotEmpty;
         final expanded = _isExpanded(comment.id);
+        final isFirst = index == 0;
+        final isLast = index == topLevel.length - 1;
 
         return Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            _CommentTile(
+            _CommentRow(
               comment: comment,
               isAuthor: comment.authorId == widget.currentUserId,
               isPostAuthor:
                   comment.authorId == widget.postAuthorId,
-              isReply: false,
+              isFirst: isFirst,
+              isLast: isLast && !hasReplies,
+              hasRepliesBelow: hasReplies,
               onReply: () => widget.onReply(
                 comment.id,
                 null,
@@ -537,6 +542,7 @@ class _CommentSectionState extends State<_CommentSection> {
                 replies: replies,
                 expanded: expanded,
                 onToggle: () => _toggle(comment.id),
+                isLastTopLevel: isLast,
                 currentUserId: widget.currentUserId,
                 postAuthorId: widget.postAuthorId,
                 onReply: widget.onReply,
@@ -546,136 +552,27 @@ class _CommentSectionState extends State<_CommentSection> {
               ),
           ],
         );
-      }).toList(),
+      }),
     );
   }
 }
 
-// ── _ThreadSection ─────────────────────────────────────────────────
+// ── _CommentRow ────────────────────────────────────────────────────
 
-/// 1단 댓글에 달린 대댓글 영역.
+/// 1단 댓글 행. 아바타 좌측에 메인 스레드 연결선(종류 1)을 표시한다.
 ///
-/// 답글 더보기/숨기기 버튼과 펼침 시 대댓글 목록을 [IntrinsicHeight] +
-/// [Row]로 감싸고, 왼쪽에 세로 연결선(thread line)을 표시한다.
-/// 연결선은 부모 댓글 아바타(radius 20 → 직경 40px) 중심 X에 맞춰
-/// SizedBox(width: 40) 내부 중앙에 그린다.
-class _ThreadSection extends StatelessWidget {
-  const _ThreadSection({
-    required this.replies,
-    required this.expanded,
-    required this.onToggle,
-    required this.currentUserId,
-    required this.postAuthorId,
-    required this.onReply,
-    required this.onDelete,
-    required this.onReport,
-    required this.onToggleLike,
-  });
-
-  final List<CommunityComment> replies;
-  final bool expanded;
-  final VoidCallback onToggle;
-  final String currentUserId;
-  final String postAuthorId;
-  final void Function(
-    String commentId,
-    String? parentCommentId,
-    String replyToName,
-    String? mentionName,
-  ) onReply;
-  final void Function(String id) onDelete;
-  final void Function(String id) onReport;
-  final void Function(String id) onToggleLike;
-
-  /// 부모 아바타 직경. 연결선 컨테이너 너비로 사용한다.
-  static const _avatarDiameter = 40.0;
-
-  @override
-  Widget build(BuildContext context) {
-    return IntrinsicHeight(
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          // 세로 연결선: 아바타 중심(20px)에 1.5px 너비 선
-          SizedBox(
-            width: _avatarDiameter,
-            child: Center(
-              child: Container(
-                width: 1.5,
-                color: AppTheme.border,
-              ),
-            ),
-          ),
-          // 버튼 + 대댓글 목록
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                // 답글 접기/펼치기 버튼
-                TextButton.icon(
-                  onPressed: onToggle,
-                  style: TextButton.styleFrom(
-                    padding: EdgeInsets.zero,
-                    minimumSize: Size.zero,
-                    tapTargetSize:
-                        MaterialTapTargetSize.shrinkWrap,
-                    foregroundColor: AppTheme.primary,
-                  ),
-                  icon: Icon(
-                    expanded
-                        ? Icons.expand_less
-                        : Icons.expand_more,
-                    size: 16,
-                  ),
-                  label: Text(
-                    expanded
-                        ? '답글 숨기기'
-                        : '답글 ${replies.length}개 더보기',
-                    style: Theme.of(context)
-                        .textTheme
-                        .labelMedium
-                        ?.copyWith(color: AppTheme.primary),
-                  ),
-                ),
-                // 펼쳤을 때 대댓글 목록
-                if (expanded)
-                  ...replies.map(
-                    (reply) => _CommentTile(
-                      comment: reply,
-                      isAuthor:
-                          reply.authorId == currentUserId,
-                      isPostAuthor:
-                          reply.authorId == postAuthorId,
-                      isReply: true,
-                      onReply: () => onReply(
-                        reply.id,
-                        reply.parentId,
-                        reply.authorName ?? '알 수 없음',
-                        reply.authorName,
-                      ),
-                      onDelete: () => onDelete(reply.id),
-                      onReport: () => onReport(reply.id),
-                      onToggleLike: () =>
-                          onToggleLike(reply.id),
-                    ),
-                  ),
-              ],
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-}
-
-// ── _CommentTile ───────────────────────────────────────────────────
-
-class _CommentTile extends StatelessWidget {
-  const _CommentTile({
+/// 아바타를 Column 안에 넣어 위아래로 세로선 Container를 배치한다.
+/// - 첫 번째 댓글 위에는 선이 없다.
+/// - 마지막 댓글(대댓글도 없을 때) 아래에는 선이 없다.
+/// - 대댓글이 있으면 아바타 아래 선을 [_ThreadSection]으로 연결한다.
+class _CommentRow extends StatelessWidget {
+  const _CommentRow({
     required this.comment,
     required this.isAuthor,
     required this.isPostAuthor,
-    required this.isReply,
+    required this.isFirst,
+    required this.isLast,
+    required this.hasRepliesBelow,
     required this.onReply,
     required this.onDelete,
     required this.onReport,
@@ -683,48 +580,76 @@ class _CommentTile extends StatelessWidget {
   });
 
   final CommunityComment comment;
-
-  /// 현재 로그인 사용자가 댓글 작성자인지 (삭제/신고 분기)
   final bool isAuthor;
-
-  /// 댓글 작성자가 게시글 작성자인지 (작성자 배지 표시)
   final bool isPostAuthor;
 
-  /// 대댓글 여부 (아바타 크기 분기)
-  final bool isReply;
+  /// 목록에서 첫 번째 1단 댓글인지
+  final bool isFirst;
+
+  /// 목록에서 마지막이고 대댓글도 없는지
+  final bool isLast;
+
+  /// 이 댓글 아래 대댓글 섹션이 이어지는지
+  final bool hasRepliesBelow;
 
   final VoidCallback onReply;
   final VoidCallback onDelete;
   final VoidCallback onReport;
   final VoidCallback onToggleLike;
 
+  static const _avatarRadius = 20.0;
+  static const _lineColor = AppTheme.border;
+  static const _lineWidth = 1.5;
+
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    // radius: 1단=20(→40px 직경), 대댓글=16(→32px 직경)
-    final avatarRadius = isReply ? 16.0 : 20.0;
     final name = comment.authorName ?? '알 수 없음';
     final initial = name.isNotEmpty ? name[0].toUpperCase() : '?';
 
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 8),
+      padding: const EdgeInsets.only(top: 8),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          // 아바타
-          CircleAvatar(
-            radius: avatarRadius,
-            backgroundImage: comment.authorProfileImageUrl != null
-                ? NetworkImage(comment.authorProfileImageUrl!)
-                : null,
-            child: comment.authorProfileImageUrl == null
-                ? Text(
-                    initial,
-                    style: TextStyle(
-                      fontSize: avatarRadius * 0.8,
-                    ),
-                  )
-                : null,
+          // 아바타 열: 위 연결선 + 아바타 + 아래 연결선
+          SizedBox(
+            width: _avatarRadius * 2,
+            child: Column(
+              children: [
+                // 아바타 위 선 (첫 번째 댓글이면 투명)
+                Container(
+                  width: _lineWidth,
+                  height: 8,
+                  color: isFirst ? null : _lineColor,
+                ),
+                // 아바타
+                CircleAvatar(
+                  radius: _avatarRadius,
+                  backgroundImage:
+                      comment.authorProfileImageUrl != null
+                          ? NetworkImage(
+                              comment.authorProfileImageUrl!)
+                          : null,
+                  child: comment.authorProfileImageUrl == null
+                      ? Text(
+                          initial,
+                          style: const TextStyle(
+                            fontSize: _avatarRadius * 0.8,
+                          ),
+                        )
+                      : null,
+                ),
+                // 아바타 아래 선 (마지막이면 숨김)
+                if (!isLast)
+                  Container(
+                    width: _lineWidth,
+                    // 내용 영역 최소 높이에 맞추는 고정 높이
+                    height: _belowAvatarLineHeight,
+                    color: _lineColor,
+                  ),
+              ],
+            ),
           ),
           const SizedBox(width: 12),
           // 내용 영역
@@ -743,7 +668,8 @@ class _CommentTile extends StatelessWidget {
                       const SizedBox(width: 4),
                       Text(
                         '· 작성자',
-                        style: theme.textTheme.labelSmall?.copyWith(
+                        style:
+                            theme.textTheme.labelSmall?.copyWith(
                           color: AppTheme.primary,
                         ),
                       ),
@@ -796,7 +722,8 @@ class _CommentTile extends StatelessWidget {
                           const SizedBox(width: 4),
                           Text(
                             '${comment.likeCount}',
-                            style: theme.textTheme.bodySmall?.copyWith(
+                            style:
+                                theme.textTheme.bodySmall?.copyWith(
                               color: AppTheme.textTertiary,
                             ),
                           ),
@@ -815,6 +742,134 @@ class _CommentTile extends StatelessWidget {
                     ),
                   ],
                 ),
+                const SizedBox(height: 8),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  /// 아바타 아래 세로선의 고정 높이.
+  /// 내용 영역 최소 높이(닉네임+내용+좋아요 행)에 맞춘 근사값.
+  static const _belowAvatarLineHeight = 60.0;
+}
+
+// ── _ThreadSection ─────────────────────────────────────────────────
+
+/// 1단 댓글에 달린 대댓글 영역 (종류 2 연결선).
+///
+/// 부모 아바타 열에 세로선을 이어 내리고, 각 대댓글 아바타까지
+/// 둥근 꺾임(└ 모양)으로 연결한다.
+/// - 세로선: 부모 아바타 아래에서 마지막 대댓글까지
+/// - 꺾임: 각 대댓글 아바타 높이에서 세로→가로로 연결
+/// - 마지막 대댓글에서 세로선이 끊김
+class _ThreadSection extends StatelessWidget {
+  const _ThreadSection({
+    required this.replies,
+    required this.expanded,
+    required this.onToggle,
+    required this.isLastTopLevel,
+    required this.currentUserId,
+    required this.postAuthorId,
+    required this.onReply,
+    required this.onDelete,
+    required this.onReport,
+    required this.onToggleLike,
+  });
+
+  final List<CommunityComment> replies;
+  final bool expanded;
+  final VoidCallback onToggle;
+
+  /// 이 스레드가 마지막 1단 댓글 아래에 있는지
+  final bool isLastTopLevel;
+
+  final String currentUserId;
+  final String postAuthorId;
+  final void Function(
+    String commentId,
+    String? parentCommentId,
+    String replyToName,
+    String? mentionName,
+  ) onReply;
+  final void Function(String id) onDelete;
+  final void Function(String id) onReport;
+  final void Function(String id) onToggleLike;
+
+  /// 부모 아바타 직경 (=1단 댓글 아바타 diameter)
+  static const _parentAvatarDiameter = 40.0;
+  static const _lineColor = AppTheme.border;
+  static const _lineWidth = 1.5;
+
+  @override
+  Widget build(BuildContext context) {
+    return IntrinsicHeight(
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          // 부모 아바타 열: 세로 연결선 계속
+          SizedBox(
+            width: _parentAvatarDiameter,
+            child: Center(
+              child: Container(
+                width: _lineWidth,
+                color: _lineColor,
+              ),
+            ),
+          ),
+          // 버튼 + 대댓글 목록
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                // 답글 접기/펼치기 버튼
+                TextButton.icon(
+                  onPressed: onToggle,
+                  style: TextButton.styleFrom(
+                    padding: EdgeInsets.zero,
+                    minimumSize: Size.zero,
+                    tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                    foregroundColor: AppTheme.primary,
+                  ),
+                  icon: Icon(
+                    expanded
+                        ? Icons.expand_less
+                        : Icons.expand_more,
+                    size: 16,
+                  ),
+                  label: Text(
+                    expanded
+                        ? '답글 숨기기'
+                        : '답글 ${replies.length}개 더보기',
+                    style: Theme.of(context)
+                        .textTheme
+                        .labelMedium
+                        ?.copyWith(color: AppTheme.primary),
+                  ),
+                ),
+                // 펼쳤을 때 대댓글 목록
+                if (expanded)
+                  ...List.generate(replies.length, (index) {
+                    final reply = replies[index];
+                    final isLastReply = index == replies.length - 1;
+                    return _ReplyRow(
+                      comment: reply,
+                      isAuthor: reply.authorId == currentUserId,
+                      isPostAuthor: reply.authorId == postAuthorId,
+                      isLastReply: isLastReply,
+                      onReply: () => onReply(
+                        reply.id,
+                        reply.parentId,
+                        reply.authorName ?? '알 수 없음',
+                        reply.authorName,
+                      ),
+                      onDelete: () => onDelete(reply.id),
+                      onReport: () => onReport(reply.id),
+                      onToggleLike: () => onToggleLike(reply.id),
+                    );
+                  }),
               ],
             ),
           ),
@@ -823,6 +878,294 @@ class _CommentTile extends StatelessWidget {
     );
   }
 }
+
+// ── _ReplyRow ──────────────────────────────────────────────────────
+
+/// 대댓글 행. 좌측에 종류 2 연결선(둥근 꺾임)을 표시한다.
+///
+/// 마지막 대댓글 왼쪽에는 └ 모양 연결선을 그리고,
+/// 중간 대댓글은 ├ 모양(세로선 + 가로선)으로 연결한다.
+///
+/// 꺾임은 [BoxDecoration.border] + [BorderRadius]로 구현한다:
+/// - 중간: 왼쪽 + 아래쪽 border → 꺾임
+/// - 마지막: 왼쪽 + 아래쪽 border + bottomLeft radius → └ 모양
+class _ReplyRow extends StatelessWidget {
+  const _ReplyRow({
+    required this.comment,
+    required this.isAuthor,
+    required this.isPostAuthor,
+    required this.isLastReply,
+    required this.onReply,
+    required this.onDelete,
+    required this.onReport,
+    required this.onToggleLike,
+  });
+
+  final CommunityComment comment;
+  final bool isAuthor;
+  final bool isPostAuthor;
+
+  /// 마지막 대댓글이면 └ 모양, 아니면 ├ 모양
+  final bool isLastReply;
+
+  final VoidCallback onReply;
+  final VoidCallback onDelete;
+  final VoidCallback onReport;
+  final VoidCallback onToggleLike;
+
+  static const _avatarRadius = 16.0;
+  static const _lineColor = AppTheme.border;
+  static const _lineWidth = 1.5;
+
+  /// 세로선 + 꺾임 영역 너비 (아바타 중심까지)
+  static const _threadWidth = 20.0;
+
+  /// 꺾임 후 가로선 길이
+  static const _horizontalLineWidth = 12.0;
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final name = comment.authorName ?? '알 수 없음';
+    final initial = name.isNotEmpty ? name[0].toUpperCase() : '?';
+
+    return Padding(
+      padding: const EdgeInsets.only(top: 8),
+      child: IntrinsicHeight(
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            // 종류 2 연결선: 세로 + 둥근 꺾임
+            SizedBox(
+              width: _threadWidth,
+              child: _ReplyThreadLine(isLastReply: isLastReply),
+            ),
+            // 가로선 (아바타까지 연결)
+            Align(
+              alignment: Alignment.topCenter,
+              child: Padding(
+                padding: const EdgeInsets.only(
+                  top: _avatarRadius + 8, // 아바타 중심 높이
+                ),
+                child: Container(
+                  width: _horizontalLineWidth,
+                  height: _lineWidth,
+                  color: _lineColor,
+                ),
+              ),
+            ),
+            // 대댓글 아바타
+            Align(
+              alignment: Alignment.topCenter,
+              child: Padding(
+                padding: const EdgeInsets.only(top: 8),
+                child: CircleAvatar(
+                  radius: _avatarRadius,
+                  backgroundImage:
+                      comment.authorProfileImageUrl != null
+                          ? NetworkImage(comment.authorProfileImageUrl!)
+                          : null,
+                  child: comment.authorProfileImageUrl == null
+                      ? Text(
+                          initial,
+                          style: const TextStyle(
+                            fontSize: _avatarRadius * 0.8,
+                          ),
+                        )
+                      : null,
+                ),
+              ),
+            ),
+            const SizedBox(width: 8),
+            // 내용 영역
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  // 닉네임 + 배지 + 시간 + 더보기
+                  Row(
+                    children: [
+                      Text(
+                        name,
+                        style: theme.textTheme.titleSmall,
+                      ),
+                      if (isPostAuthor) ...[
+                        const SizedBox(width: 4),
+                        Text(
+                          '· 작성자',
+                          style:
+                              theme.textTheme.labelSmall?.copyWith(
+                            color: AppTheme.primary,
+                          ),
+                        ),
+                      ],
+                      const SizedBox(width: 4),
+                      Text(
+                        '· ${Formatters.relativeTime(comment.createdAt)}',
+                        style: theme.textTheme.bodySmall?.copyWith(
+                          color: AppTheme.textTertiary,
+                        ),
+                      ),
+                      const Spacer(),
+                      PopupMenuButton<String>(
+                        padding: EdgeInsets.zero,
+                        onSelected: (value) {
+                          if (value == 'delete') onDelete();
+                          if (value == 'report') onReport();
+                        },
+                        itemBuilder: (_) => [
+                          if (isAuthor)
+                            const PopupMenuItem(
+                              value: 'delete',
+                              child: Text('삭제'),
+                            ),
+                          if (!isAuthor)
+                            const PopupMenuItem(
+                              value: 'report',
+                              child: Text('신고'),
+                            ),
+                        ],
+                        icon: const Icon(Icons.more_vert, size: 18),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 4),
+                  // 내용
+                  _CommentContent(content: comment.content),
+                  const SizedBox(height: 4),
+                  // 좋아요 + 답글
+                  Row(
+                    children: [
+                      GestureDetector(
+                        onTap: onToggleLike,
+                        child: Row(
+                          children: [
+                            const Icon(
+                              Icons.thumb_up_outlined,
+                              size: 16,
+                            ),
+                            const SizedBox(width: 4),
+                            Text(
+                              '${comment.likeCount}',
+                              style:
+                                  theme.textTheme.bodySmall?.copyWith(
+                                color: AppTheme.textTertiary,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      const SizedBox(width: 16),
+                      GestureDetector(
+                        onTap: onReply,
+                        child: Text(
+                          '답글',
+                          style: theme.textTheme.labelMedium?.copyWith(
+                            color: AppTheme.textSecondary,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 8),
+                ],
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+// ── _ReplyThreadLine ───────────────────────────────────────────────
+
+/// 대댓글 좌측 연결선 위젯.
+///
+/// [CustomPaint]로 세로선 + 둥근 꺾임 호(arc)를 그린다.
+/// - 중간 대댓글: 세로선 전체 + 꺾임 호 + 가로선 시작 (─┤ 형태)
+/// - 마지막 대댓글: 세로선 절반까지 + 꺾임 호 (└ 형태)
+class _ReplyThreadLine extends StatelessWidget {
+  const _ReplyThreadLine({required this.isLastReply});
+
+  final bool isLastReply;
+
+  @override
+  Widget build(BuildContext context) {
+    return CustomPaint(
+      painter: _ReplyThreadPainter(isLastReply: isLastReply),
+    );
+  }
+}
+
+class _ReplyThreadPainter extends CustomPainter {
+  const _ReplyThreadPainter({required this.isLastReply});
+
+  final bool isLastReply;
+
+  static const _lineColor = AppTheme.border;
+  static const _lineWidth = 1.5;
+  static const _cornerRadius = 10.0;
+
+  /// 아바타 중심 Y 위치 (padding 8 + radius 16)
+  static const _avatarCenterY = 24.0;
+
+  @override
+  void paint(Canvas canvas, Size size) {
+    final paint = Paint()
+      ..color = _lineColor
+      ..strokeWidth = _lineWidth
+      ..style = PaintingStyle.stroke
+      ..strokeCap = StrokeCap.round;
+
+    final lineX = size.width / 2;
+    const cornerY = _avatarCenterY - _cornerRadius;
+
+    if (isLastReply) {
+      // 세로선: 위에서 꺾임 시작점까지
+      canvas.drawLine(
+        Offset(lineX, 0),
+        Offset(lineX, cornerY),
+        paint,
+      );
+      // 둥근 꺾임 호: 세로→가로 (좌하→우)
+      // 호는 (lineX, cornerY)에서 시작해서 (lineX + radius, avatarCenterY)로 끝남
+      final arcRect = Rect.fromLTWH(
+        lineX,
+        cornerY,
+        _cornerRadius * 2,
+        _cornerRadius * 2,
+      );
+      // 180도(pi)에서 시작해서 90도(pi/2) 만큼 — 좌→아래 호
+      canvas.drawArc(arcRect, _pi, _halfPi, false, paint);
+    } else {
+      // 세로선: 위에서 아래 끝까지 (다음 대댓글로 이어짐)
+      canvas.drawLine(
+        Offset(lineX, 0),
+        Offset(lineX, size.height),
+        paint,
+      );
+      // 꺾임 호
+      final arcRect = Rect.fromLTWH(
+        lineX,
+        cornerY,
+        _cornerRadius * 2,
+        _cornerRadius * 2,
+      );
+      canvas.drawArc(arcRect, _pi, _halfPi, false, paint);
+    }
+  }
+
+  static const _pi = 3.141592653589793;
+  static const _halfPi = 1.5707963267948966;
+
+  @override
+  bool shouldRepaint(_ReplyThreadPainter oldDelegate) =>
+      oldDelegate.isLastReply != isLastReply;
+}
+
+// ── _CommentTile (레거시 — 내부 호환용) ───────────────────────────
+// _CommentRow / _ReplyRow로 교체됨. 삭제.
 
 // ── _CommentContent ────────────────────────────────────────────────
 
