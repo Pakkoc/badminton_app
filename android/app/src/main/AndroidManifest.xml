@@ -67,6 +67,9 @@
 
          In particular, this is used by the Flutter engine in io.flutter.plugin.text.ProcessTextPlugin. -->
     <uses-permission android:name="android.permission.INTERNET"/>
+    <!-- gal: API 29 이하에서 갤러리 저장 권한 필요 -->
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"
+                     android:maxSdkVersion="29"/>
     <queries>
         <intent>
             <action android:name="android.intent.action.PROCESS_TEXT"/>

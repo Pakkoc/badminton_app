@@ -1,15 +1,123 @@
+import 'dart:typed_data';
+
 import 'package:badminton_app/app/theme.dart';
 import 'package:badminton_app/models/shop.dart';
 import 'package:flutter/material.dart';
+import 'package:gal/gal.dart';
 import 'package:qr_flutter/qr_flutter.dart';
+import 'package:share_plus/share_plus.dart';
 
-class ShopQrScreen extends StatelessWidget {
+class ShopQrScreen extends StatefulWidget {
   const ShopQrScreen({
     super.key,
     required this.shop,
   });
 
   final Shop shop;
+
+  @override
+  State<ShopQrScreen> createState() => _ShopQrScreenState();
+}
+
+class _ShopQrScreenState extends State<ShopQrScreen> {
+  bool _isSaving = false;
+  bool _isSharing = false;
+
+  /// QR코드를 PNG Uint8List로 렌더링한다.
+  /// [size]는 렌더링할 픽셀 크기 (인쇄용은 1024px, 공유용은 512px).
+  Future<Uint8List> _renderQrPng(double size) async {
+    final qrData = 'https://gutalarm.app/shop/${widget.shop.id}';
+    final painter = QrPainter(
+      data: qrData,
+      version: QrVersions.auto,
+      errorCorrectionLevel: QrErrorCorrectLevel.M,
+      eyeStyle: const QrEyeStyle(
+        eyeShape: QrEyeShape.square,
+        color: Color(0xFF1A1A2E),
+      ),
+      dataModuleStyle: const QrDataModuleStyle(
+        dataModuleShape: QrDataModuleShape.square,
+        color: Color(0xFF1A1A2E),
+      ),
+    );
+    final image = await painter.toImageData(size);
+    return image!.buffer.asUint8List();
+  }
+
+  /// 고해상도 QR 이미지를 갤러리에 저장한다.
+  Future<void> _saveImage() async {
+    if (_isSaving) return;
+    setState(() => _isSaving = true);
+
+    try {
+      final hasAccess = await Gal.hasAccess(toAlbum: false);
+      if (!hasAccess) {
+        final granted = await Gal.requestAccess(toAlbum: false);
+        if (!granted) {
+          if (mounted) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(
+                content: Text('갤러리 접근 권한이 필요합니다.'),
+              ),
+            );
+          }
+          return;
+        }
+      }
+
+      final bytes = await _renderQrPng(1024);
+      await Gal.putImageBytes(bytes);
+
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('QR코드가 저장되었습니다')),
+        );
+      }
+    } on GalException catch (e) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('저장 실패: ${e.type.message}')),
+        );
+      }
+    } catch (_) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('이미지 저장 중 오류가 발생했습니다.')),
+        );
+      }
+    } finally {
+      if (mounted) setState(() => _isSaving = false);
+    }
+  }
+
+  /// QR 이미지를 시스템 공유 시트로 공유한다.
+  Future<void> _shareImage() async {
+    if (_isSharing) return;
+    setState(() => _isSharing = true);
+
+    try {
+      final bytes = await _renderQrPng(512);
+      final xFile = XFile.fromData(
+        bytes,
+        mimeType: 'image/png',
+        name: 'qr_${widget.shop.id}.png',
+      );
+      await Share.shareXFiles(
+        [xFile],
+        text:
+            '거트알림 앱으로 QR을 스캔하면 ${widget.shop.name}의 회원 등록이 됩니다.',
+        fileNameOverrides: ['qr_${widget.shop.id}.png'],
+      );
+    } catch (_) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('공유 중 오류가 발생했습니다.')),
+        );
+      }
+    } finally {
+      if (mounted) setState(() => _isSharing = false);
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -29,9 +137,14 @@ class ShopQrScreen extends StatelessWidget {
         padding: const EdgeInsets.all(16),
         child: Column(
           children: [
-            _QrCard(shop: shop),
+            _QrCard(shop: widget.shop),
             const SizedBox(height: 20),
-            _ButtonRow(),
+            _ButtonRow(
+              isSaving: _isSaving,
+              isSharing: _isSharing,
+              onSave: _saveImage,
+              onShare: _shareImage,
+            ),
             const SizedBox(height: 20),
             const _InfoCard(),
           ],
@@ -73,22 +186,25 @@ class _QrCard extends StatelessWidget {
             ),
           ),
           const SizedBox(height: 16),
-          Container(
-            width: 220,
-            height: 220,
-            decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(8),
-              border: Border.all(
-                color: AppTheme.border,
-                width: 2,
+          Semantics(
+            label: 'QR코드, 고객이 스캔하여 회원 등록',
+            child: Container(
+              width: 220,
+              height: 220,
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(8),
+                border: Border.all(
+                  color: AppTheme.border,
+                  width: 2,
+                ),
               ),
-            ),
-            child: QrImageView(
-              data: 'https://gutalarm.app/shop/${shop.id}',
-              version: QrVersions.auto,
-              size: 200,
-              padding: const EdgeInsets.all(8),
+              child: QrImageView(
+                data: 'https://gutalarm.app/shop/${shop.id}',
+                version: QrVersions.auto,
+                size: 200,
+                padding: const EdgeInsets.all(8),
+              ),
             ),
           ),
           const SizedBox(height: 16),
@@ -110,26 +226,46 @@ class _QrCard extends StatelessWidget {
 }
 
 class _ButtonRow extends StatelessWidget {
+  const _ButtonRow({
+    required this.isSaving,
+    required this.isSharing,
+    required this.onSave,
+    required this.onShare,
+  });
+
+  final bool isSaving;
+  final bool isSharing;
+  final VoidCallback onSave;
+  final VoidCallback onShare;
+
   @override
   Widget build(BuildContext context) {
     return Row(
       children: [
         Expanded(
-          child: SizedBox(
-            height: 44,
-            child: OutlinedButton.icon(
-              // TODO: share 패키지로 이미지 저장 구현
-              onPressed: () {},
-              icon: const Icon(Icons.download, size: 18),
-              label: const Text('이미지 저장'),
-              style: OutlinedButton.styleFrom(
-                foregroundColor: AppTheme.primary,
-                side: const BorderSide(
-                  color: AppTheme.primary,
-                  width: 1.5,
-                ),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(10),
+          child: Semantics(
+            label: '인쇄용 QR코드 다운로드',
+            child: SizedBox(
+              height: 44,
+              child: OutlinedButton.icon(
+                onPressed: isSaving ? null : onSave,
+                icon: isSaving
+                    ? const SizedBox(
+                        width: 16,
+                        height: 16,
+                        child: CircularProgressIndicator(strokeWidth: 2),
+                      )
+                    : const Icon(Icons.download, size: 18),
+                label: const Text('이미지 저장'),
+                style: OutlinedButton.styleFrom(
+                  foregroundColor: AppTheme.primary,
+                  side: const BorderSide(
+                    color: AppTheme.primary,
+                    width: 1.5,
+                  ),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10),
+                  ),
                 ),
               ),
             ),
@@ -137,18 +273,29 @@ class _ButtonRow extends StatelessWidget {
         ),
         const SizedBox(width: 16),
         Expanded(
-          child: SizedBox(
-            height: 44,
-            child: FilledButton.icon(
-              // TODO: share 패키지로 공유하기 구현
-              onPressed: () {},
-              icon: const Icon(Icons.share, size: 18),
-              label: const Text('공유하기'),
-              style: FilledButton.styleFrom(
-                backgroundColor: AppTheme.primary,
-                foregroundColor: Colors.white,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(10),
+          child: Semantics(
+            label: 'QR코드 공유',
+            child: SizedBox(
+              height: 44,
+              child: FilledButton.icon(
+                onPressed: isSharing ? null : onShare,
+                icon: isSharing
+                    ? const SizedBox(
+                        width: 16,
+                        height: 16,
+                        child: CircularProgressIndicator(
+                          strokeWidth: 2,
+                          color: Colors.white,
+                        ),
+                      )
+                    : const Icon(Icons.share, size: 18),
+                label: const Text('공유하기'),
+                style: FilledButton.styleFrom(
+                  backgroundColor: AppTheme.primary,
+                  foregroundColor: Colors.white,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10),
+                  ),
                 ),
               ),
             ),

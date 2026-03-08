@@ -7,15 +7,14 @@ import '../../../helpers/fixtures.dart';
 
 void main() {
   group('ShopQrScreen', () {
-    // 콘텐츠가 충분히 표시되도록 큰 화면 크기를 설정한다
-    setUp(() {});
-
     Widget buildApp() => MaterialApp(
           home: ShopQrScreen(shop: testShop),
         );
 
+    setUp(() {});
+
     testWidgets('AppBar에 내 샵 QR코드를 표시한다', (tester) async {
-      // Arrange: 화면 높이를 충분히 크게 설정한다
+      // Arrange
       tester.view.physicalSize = const Size(800, 1200);
       tester.view.devicePixelRatio = 1.0;
       addTearDown(tester.view.resetPhysicalSize);
@@ -73,6 +72,48 @@ void main() {
         ),
         findsOneWidget,
       );
+    });
+
+    testWidgets('이미지 저장 버튼이 렌더링된다', (tester) async {
+      // Arrange
+      tester.view.physicalSize = const Size(800, 1200);
+      tester.view.devicePixelRatio = 1.0;
+      addTearDown(tester.view.resetPhysicalSize);
+      addTearDown(tester.view.resetDevicePixelRatio);
+
+      // Act
+      await tester.pumpWidget(buildApp());
+
+      // Assert: '이미지 저장' 텍스트가 화면에 존재한다
+      expect(find.text('이미지 저장'), findsOneWidget);
+    });
+
+    testWidgets('공유하기 버튼이 렌더링된다', (tester) async {
+      // Arrange
+      tester.view.physicalSize = const Size(800, 1200);
+      tester.view.devicePixelRatio = 1.0;
+      addTearDown(tester.view.resetPhysicalSize);
+      addTearDown(tester.view.resetDevicePixelRatio);
+
+      // Act
+      await tester.pumpWidget(buildApp());
+
+      // Assert: '공유하기' 텍스트가 화면에 존재한다
+      expect(find.text('공유하기'), findsOneWidget);
+    });
+
+    testWidgets('InfoCard에 가게에 QR을 비치하세요 메시지를 표시한다', (tester) async {
+      // Arrange
+      tester.view.physicalSize = const Size(800, 1200);
+      tester.view.devicePixelRatio = 1.0;
+      addTearDown(tester.view.resetPhysicalSize);
+      addTearDown(tester.view.resetDevicePixelRatio);
+
+      // Act
+      await tester.pumpWidget(buildApp());
+
+      // Assert
+      expect(find.textContaining('가게에 QR을 비치하세요'), findsOneWidget);
     });
   });
 }

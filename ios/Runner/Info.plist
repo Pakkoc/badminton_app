@@ -45,5 +45,10 @@
 	<true/>
 	<key>UIApplicationSupportsIndirectInputEvents</key>
 	<true/>
+	<!-- gal: 사진 라이브러리 저장 권한 -->
+	<key>NSPhotoLibraryAddUsageDescription</key>
+	<string>QR코드 이미지를 갤러리에 저장합니다.</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>QR코드 이미지를 갤러리에 저장합니다.</string>
 </dict>
 </plist>
