@@ -17,6 +17,7 @@ class NotificationItem with _$NotificationItem {
     required String title,
     required String body,
     @JsonKey(name: 'order_id') String? orderId,
+    @JsonKey(name: 'post_id') String? postId,
     @JsonKey(name: 'is_read') @Default(false) bool isRead,
     @JsonKey(name: 'created_at') required DateTime createdAt,
   }) = _NotificationItem;
