@@ -78,7 +78,7 @@ void main() {
     );
 
     testWidgets(
-      '셔틀콕 아이콘이 표시된다',
+      '로고 이미지가 표시된다',
       (tester) async {
         // Arrange & Act
         await tester.pumpWidget(
@@ -92,10 +92,7 @@ void main() {
         );
 
         // Assert
-        expect(
-          find.byIcon(Icons.sports_tennis),
-          findsOneWidget,
-        );
+        expect(find.byType(Image), findsOneWidget);
       },
     );
   });
