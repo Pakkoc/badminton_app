@@ -28,6 +28,6 @@ class ShopSearchState with _$ShopSearchState {
     Shop? selectedShop,
     @Default({})
     Map<String, ShopOrderCounts> orderCounts,
-    @Default(true) bool hasLocationPermission,
+    @Default(false) bool hasLocationPermission,
   }) = _ShopSearchState;
 }

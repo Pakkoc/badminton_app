@@ -1,6 +1,7 @@
 import 'package:badminton_app/core/error/app_exception.dart';
 import 'package:badminton_app/models/enums.dart';
 import 'package:badminton_app/models/shop.dart';
+import 'package:badminton_app/providers/location_provider.dart';
 import 'package:badminton_app/repositories/order_repository.dart';
 import 'package:badminton_app/repositories/shop_repository.dart';
 import 'package:badminton_app/screens/customer/shop_search/shop_search_state.dart';
@@ -14,9 +15,33 @@ final shopSearchNotifierProvider =
 class ShopSearchNotifier extends Notifier<ShopSearchState> {
   @override
   ShopSearchState build() {
-    // 화면 진입 시 전체 범위로 샵을 자동 로드한다.
-    Future.microtask(() => loadNearbyShops());
+    Future.microtask(() => checkAndRequestPermission());
     return const ShopSearchState();
+  }
+
+  /// 위치 권한을 확인하고 필요시 요청한다.
+  Future<void> checkAndRequestPermission() async {
+    final locationService =
+        ref.read(locationServiceProvider);
+
+    final hasPermission =
+        await locationService.checkPermission();
+    if (hasPermission) {
+      state = state.copyWith(
+        hasLocationPermission: true,
+      );
+      await loadNearbyShops();
+      return;
+    }
+
+    final granted =
+        await locationService.requestPermission();
+    state = state.copyWith(
+      hasLocationPermission: granted,
+    );
+    if (granted) {
+      await loadNearbyShops();
+    }
   }
 
   /// 뷰 모드를 전환한다.

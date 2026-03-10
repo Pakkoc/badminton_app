@@ -67,6 +67,9 @@
 
          In particular, this is used by the Flutter engine in io.flutter.plugin.text.ProcessTextPlugin. -->
     <uses-permission android:name="android.permission.INTERNET"/>
+    <!-- 위치: 주변 샵 검색 및 내 위치 표시 -->
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
     <!-- gal: API 29 이하에서 갤러리 저장 권한 필요 -->
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"
                      android:maxSdkVersion="29"/>

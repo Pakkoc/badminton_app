@@ -1,13 +1,19 @@
+import 'package:badminton_app/providers/location_provider.dart';
 import 'package:badminton_app/screens/customer/shop_search/shop_search_notifier.dart';
 import 'package:badminton_app/screens/customer/shop_search/shop_search_screen.dart';
 import 'package:badminton_app/screens/customer/shop_search/shop_search_state.dart';
+import 'package:badminton_app/services/location_service.dart';
 import 'package:badminton_app/widgets/customer_bottom_nav.dart';
 import 'package:badminton_app/widgets/map_preview.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:mocktail/mocktail.dart';
 
 import '../../../helpers/fixtures.dart';
+
+class MockLocationService extends Mock
+    implements LocationService {}
 
 class FakeShopSearchNotifier extends ShopSearchNotifier {
   final ShopSearchState _initialState;
@@ -24,9 +30,14 @@ class FakeShopSearchNotifier extends ShopSearchNotifier {
     double neLat = 39.0,
     double neLng = 132.0,
   }) async {}
+
+  @override
+  Future<void> checkAndRequestPermission() async {}
 }
 
 void main() {
+  late MockLocationService mockLocationService;
+
   Widget createApp({
     required ShopSearchState state,
   }) {
@@ -35,6 +46,8 @@ void main() {
         shopSearchNotifierProvider.overrideWith(
           () => FakeShopSearchNotifier(state),
         ),
+        locationServiceProvider
+            .overrideWithValue(mockLocationService),
       ],
       child: const MaterialApp(
         home: ShopSearchScreen(),
@@ -43,6 +56,13 @@ void main() {
   }
 
   setUp(() {
+    mockLocationService = MockLocationService();
+    when(() => mockLocationService.checkPermission())
+        .thenAnswer((_) async => false);
+    when(() => mockLocationService.requestPermission())
+        .thenAnswer((_) async => false);
+    when(() => mockLocationService.openSettings())
+        .thenAnswer((_) async => true);
     MapPreview.usePlaceholder = true;
     shopSearchUsePlaceholder = true;
   });
@@ -60,6 +80,7 @@ void main() {
           createApp(
             state: const ShopSearchState(
               isLoading: true,
+              hasLocationPermission: true,
             ),
           ),
         );
@@ -74,6 +95,7 @@ void main() {
           createApp(
             state: const ShopSearchState(
               isLoading: true,
+              hasLocationPermission: true,
             ),
           ),
         );
@@ -89,6 +111,7 @@ void main() {
           createApp(
             state: const ShopSearchState(
               isLoading: true,
+              hasLocationPermission: true,
               viewMode: ShopSearchViewMode.list,
             ),
           ),
@@ -107,6 +130,7 @@ void main() {
           createApp(
             state: const ShopSearchState(
               error: '주변 샵을 불러올 수 없습니다',
+              hasLocationPermission: true,
               viewMode: ShopSearchViewMode.list,
             ),
           ),
@@ -124,6 +148,7 @@ void main() {
         await tester.pumpWidget(
           createApp(
             state: const ShopSearchState(
+              hasLocationPermission: true,
               viewMode: ShopSearchViewMode.list,
             ),
           ),
@@ -145,6 +170,7 @@ void main() {
         await tester.pumpWidget(
           createApp(
             state: ShopSearchState(
+              hasLocationPermission: true,
               viewMode: ShopSearchViewMode.list,
               shops: [testShop],
               orderCounts: {
@@ -180,7 +206,9 @@ void main() {
       (tester) async {
         await tester.pumpWidget(
           createApp(
-            state: const ShopSearchState(),
+            state: const ShopSearchState(
+              hasLocationPermission: true,
+            ),
           ),
         );
         expect(
@@ -203,6 +231,10 @@ void main() {
         );
         expect(
           find.text('위치 권한이 필요합니다'),
+          findsOneWidget,
+        );
+        expect(
+          find.text('권한 허용하기'),
           findsOneWidget,
         );
         expect(

@@ -1,5 +1,6 @@
 import 'package:badminton_app/app/theme.dart';
 import 'package:badminton_app/models/shop.dart';
+import 'package:badminton_app/providers/location_provider.dart';
 import 'package:badminton_app/screens/customer/shop_search/shop_search_notifier.dart';
 import 'package:badminton_app/screens/customer/shop_search/shop_search_state.dart';
 import 'package:badminton_app/widgets/customer_bottom_nav.dart';
@@ -16,11 +17,40 @@ import 'package:go_router/go_router.dart';
 // ignore: library_private_types_in_public_api
 bool shopSearchUsePlaceholder = false;
 
-class ShopSearchScreen extends ConsumerWidget {
+class ShopSearchScreen extends ConsumerStatefulWidget {
   const ShopSearchScreen({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<ShopSearchScreen> createState() =>
+      _ShopSearchScreenState();
+}
+
+class _ShopSearchScreenState
+    extends ConsumerState<ShopSearchScreen>
+    with WidgetsBindingObserver {
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addObserver(this);
+  }
+
+  @override
+  void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
+    super.dispose();
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    if (state == AppLifecycleState.resumed) {
+      ref
+          .read(shopSearchNotifierProvider.notifier)
+          .checkAndRequestPermission();
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
     final state = ref.watch(shopSearchNotifierProvider);
     final isMap =
         state.viewMode == ShopSearchViewMode.map;
@@ -64,7 +94,8 @@ class ShopSearchScreen extends ConsumerWidget {
                 // NaverMap은 항상 렌더링하여 리빌드를 방지.
                 const _MapView(),
                 // 리스트 모드일 때 지도 위에 오버레이.
-                if (!isMap) _buildListBody(context, ref, state),
+                if (!isMap)
+                  _buildListBody(context, state),
               ],
             ),
       bottomNavigationBar: const CustomerBottomNav(
@@ -75,7 +106,6 @@ class ShopSearchScreen extends ConsumerWidget {
 
   Widget _buildListBody(
     BuildContext context,
-    WidgetRef ref,
     ShopSearchState state,
   ) {
     if (state.isLoading) {
@@ -191,11 +221,11 @@ class _ToggleSegment extends StatelessWidget {
 }
 
 /// 위치 권한 미허용 상태 — 스펙 3.8.
-class _LocationPermissionView extends StatelessWidget {
+class _LocationPermissionView extends ConsumerWidget {
   const _LocationPermissionView();
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return Center(
       child: Column(
         mainAxisSize: MainAxisSize.min,
@@ -225,11 +255,20 @@ class _LocationPermissionView extends StatelessWidget {
           SizedBox(
             width: 160,
             child: ElevatedButton(
-              onPressed: () {
-                // 시스템 설정으로 이동
-              },
-              child: const Text('설정으로 이동'),
+              onPressed: () => ref
+                  .read(shopSearchNotifierProvider.notifier)
+                  .checkAndRequestPermission(),
+              child: const Text('권한 허용하기'),
             ),
+          ),
+          const SizedBox(height: 8),
+          TextButton(
+            onPressed: () async {
+              final locationService =
+                  ref.read(locationServiceProvider);
+              await locationService.openSettings();
+            },
+            child: const Text('설정으로 이동'),
           ),
         ],
       ),

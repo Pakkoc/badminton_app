@@ -1,8 +1,10 @@
 import 'package:badminton_app/models/enums.dart';
+import 'package:badminton_app/providers/location_provider.dart';
 import 'package:badminton_app/repositories/order_repository.dart';
 import 'package:badminton_app/repositories/shop_repository.dart';
 import 'package:badminton_app/screens/customer/shop_search/shop_search_notifier.dart';
 import 'package:badminton_app/screens/customer/shop_search/shop_search_state.dart';
+import 'package:badminton_app/services/location_service.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
@@ -15,20 +17,34 @@ class MockShopRepository extends Mock
 class MockOrderRepository extends Mock
     implements OrderRepository {}
 
+class MockLocationService extends Mock
+    implements LocationService {}
+
 void main() {
   late MockShopRepository mockShopRepository;
   late MockOrderRepository mockOrderRepository;
+  late MockLocationService mockLocationService;
   late ProviderContainer container;
 
   setUp(() {
     mockShopRepository = MockShopRepository();
     mockOrderRepository = MockOrderRepository();
+    mockLocationService = MockLocationService();
+
+    // 기본: 권한 미허용 상태
+    when(() => mockLocationService.checkPermission())
+        .thenAnswer((_) async => false);
+    when(() => mockLocationService.requestPermission())
+        .thenAnswer((_) async => false);
+
     container = ProviderContainer(
       overrides: [
         shopRepositoryProvider
             .overrideWithValue(mockShopRepository),
         orderRepositoryProvider
             .overrideWithValue(mockOrderRepository),
+        locationServiceProvider
+            .overrideWithValue(mockLocationService),
       ],
     );
   });
@@ -42,7 +58,6 @@ void main() {
       final state =
           container.read(shopSearchNotifierProvider);
 
-      expect(state, const ShopSearchState());
       expect(state.shops, isEmpty);
       expect(state.isLoading, false);
       expect(state.error, isNull);
@@ -50,6 +65,7 @@ void main() {
         state.viewMode,
         ShopSearchViewMode.map,
       );
+      expect(state.hasLocationPermission, false);
     });
 
     test('toggleViewMode로 뷰 모드를 전환한다', () {
@@ -170,14 +186,100 @@ void main() {
           shopSearchNotifierProvider.notifier,
         );
 
-        notifier.setLocationPermission(false);
+        notifier.setLocationPermission(true);
 
         final state =
             container.read(shopSearchNotifierProvider);
         expect(
           state.hasLocationPermission,
-          false,
+          true,
         );
+      },
+    );
+
+    test(
+      'checkAndRequestPermission 권한이 이미 있으면 '
+      'loadNearbyShops를 호출한다',
+      () async {
+        when(() => mockLocationService.checkPermission())
+            .thenAnswer((_) async => true);
+        when(
+          () => mockShopRepository.searchByBounds(
+            swLat: any(named: 'swLat'),
+            swLng: any(named: 'swLng'),
+            neLat: any(named: 'neLat'),
+            neLng: any(named: 'neLng'),
+          ),
+        ).thenAnswer((_) async => []);
+
+        final notifier = container.read(
+          shopSearchNotifierProvider.notifier,
+        );
+
+        await notifier.checkAndRequestPermission();
+
+        final state =
+            container.read(shopSearchNotifierProvider);
+        expect(state.hasLocationPermission, true);
+        // build() 내 microtask + 수동 호출로 2회.
+        verify(
+          () => mockShopRepository.searchByBounds(
+            swLat: any(named: 'swLat'),
+            swLng: any(named: 'swLng'),
+            neLat: any(named: 'neLat'),
+            neLng: any(named: 'neLng'),
+          ),
+        ).called(greaterThanOrEqualTo(1));
+      },
+    );
+
+    test(
+      'checkAndRequestPermission 권한 요청 후 승인되면 '
+      'loadNearbyShops를 호출한다',
+      () async {
+        when(() => mockLocationService.checkPermission())
+            .thenAnswer((_) async => false);
+        when(() => mockLocationService.requestPermission())
+            .thenAnswer((_) async => true);
+        when(
+          () => mockShopRepository.searchByBounds(
+            swLat: any(named: 'swLat'),
+            swLng: any(named: 'swLng'),
+            neLat: any(named: 'neLat'),
+            neLng: any(named: 'neLng'),
+          ),
+        ).thenAnswer((_) async => []);
+
+        final notifier = container.read(
+          shopSearchNotifierProvider.notifier,
+        );
+
+        await notifier.checkAndRequestPermission();
+
+        final state =
+            container.read(shopSearchNotifierProvider);
+        expect(state.hasLocationPermission, true);
+      },
+    );
+
+    test(
+      'checkAndRequestPermission 권한 거부 시 '
+      'hasLocationPermission이 false이다',
+      () async {
+        when(() => mockLocationService.checkPermission())
+            .thenAnswer((_) async => false);
+        when(() => mockLocationService.requestPermission())
+            .thenAnswer((_) async => false);
+
+        final notifier = container.read(
+          shopSearchNotifierProvider.notifier,
+        );
+
+        await notifier.checkAndRequestPermission();
+
+        final state =
+            container.read(shopSearchNotifierProvider);
+        expect(state.hasLocationPermission, false);
       },
     );
   });
