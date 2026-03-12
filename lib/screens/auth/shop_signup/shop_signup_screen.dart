@@ -1,4 +1,3 @@
-import 'package:badminton_app/app/theme.dart';
 import 'package:badminton_app/core/utils/formatters.dart';
 import 'package:badminton_app/core/utils/validators.dart';
 import 'package:badminton_app/screens/auth/shop_signup/shop_signup_notifier.dart';
@@ -96,123 +95,111 @@ class _ShopSignupScreenState
       ),
       body: CourtBackground(
         child: SingleChildScrollView(
-        padding: const EdgeInsets.all(24),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              state.isReapply
-                  ? '샵 정보를 수정하여 다시 신청해주세요'
-                  : '샵 정보를 등록해주세요',
-              style:
-                  Theme.of(context).textTheme.bodyLarge,
-            ),
-            const SizedBox(height: 24),
-            TextFormField(
-              controller: _shopNameController,
-              decoration: const InputDecoration(
-                labelText: '샵 이름',
-                border: OutlineInputBorder(),
+          padding: const EdgeInsets.fromLTRB(28, 16, 28, 16),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              // 섹션 제목
+              Text(
+                '샵 정보',
+                style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                      fontSize: 16,
+                      fontWeight: FontWeight.w700,
+                    ),
               ),
-              validator: Validators.shopName,
-              autovalidateMode:
-                  AutovalidateMode.onUserInteraction,
-              onChanged: notifier.updateShopName,
-            ),
-            const SizedBox(height: 16),
-            _AddressField(
-              controller: _addressController,
-              onSearch: () =>
-                  notifier.searchAddress(context),
-            ),
-            if (state.latitude != 0.0 &&
-                state.longitude != 0.0)
-              Padding(
-                padding: const EdgeInsets.only(top: 12),
-                child: MapPreview(
-                  latitude: state.latitude,
-                  longitude: state.longitude,
-                  height: 180,
+              const SizedBox(height: 16),
+              TextFormField(
+                controller: _shopNameController,
+                decoration: const InputDecoration(
+                  labelText: '샵 이름',
                 ),
+                validator: Validators.shopName,
+                autovalidateMode: AutovalidateMode.onUserInteraction,
+                onChanged: notifier.updateShopName,
               ),
-            const SizedBox(height: 16),
-            PhoneInputField(
-              controller: _phoneController,
-              onChanged: notifier.updatePhone,
-            ),
-            const SizedBox(height: 16),
-            _BusinessNumberField(
-              controller: _businessNumberController,
-              onChanged: notifier.updateBusinessNumber,
-            ),
-            const SizedBox(height: 16),
-            TextFormField(
-              controller: _descriptionController,
-              decoration: const InputDecoration(
-                labelText: '소개글',
-                border: OutlineInputBorder(),
-                alignLabelWithHint: true,
+              const SizedBox(height: 16),
+              _AddressField(
+                controller: _addressController,
+                onSearch: () => notifier.searchAddress(context),
               ),
-              maxLines: 4,
-              validator: Validators.description,
-              autovalidateMode:
-                  AutovalidateMode.onUserInteraction,
-              onChanged: notifier.updateDescription,
-            ),
-            const SizedBox(height: 32),
-            SizedBox(
-              width: double.infinity,
-              height: 48,
-              child: ElevatedButton(
-                onPressed:
-                    notifier.isValid && !state.isSubmitting
-                        ? () async {
-                            final result =
-                                await notifier.submit();
-                            if (result != null &&
-                                mounted) {
-                              AppToast.success(
-                                context,
-                                '샵 등록 신청이 완료되었습니다',
-                              );
-                              context.go('/customer/mypage');
-                            }
+              if (state.latitude != 0.0 && state.longitude != 0.0)
+                Padding(
+                  padding: const EdgeInsets.only(top: 12),
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(14),
+                    child: MapPreview(
+                      latitude: state.latitude,
+                      longitude: state.longitude,
+                      height: 150,
+                    ),
+                  ),
+                ),
+              const SizedBox(height: 16),
+              PhoneInputField(
+                controller: _phoneController,
+                onChanged: notifier.updatePhone,
+              ),
+              const SizedBox(height: 16),
+              _BusinessNumberField(
+                controller: _businessNumberController,
+                onChanged: notifier.updateBusinessNumber,
+              ),
+              const SizedBox(height: 16),
+              TextFormField(
+                controller: _descriptionController,
+                decoration: const InputDecoration(
+                  labelText: '소개글',
+                  alignLabelWithHint: true,
+                ),
+                maxLines: 4,
+                validator: Validators.description,
+                autovalidateMode: AutovalidateMode.onUserInteraction,
+                onChanged: notifier.updateDescription,
+              ),
+              const SizedBox(height: 32),
+              SizedBox(
+                width: double.infinity,
+                height: 48,
+                child: ElevatedButton(
+                  onPressed: notifier.isValid && !state.isSubmitting
+                      ? () async {
+                          final result = await notifier.submit();
+                          if (result != null && mounted) {
+                            AppToast.success(
+                              context,
+                              '샵 등록 신청이 완료되었습니다',
+                            );
+                            context.go('/customer/mypage');
                           }
-                        : null,
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: AppTheme.accent,
-                  foregroundColor: Colors.white,
-                  disabledBackgroundColor:
-                      AppTheme.accent.withValues(
-                    alpha: 0.5,
+                        }
+                      : null,
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: const Color(0xFF4A8FE2),
+                    foregroundColor: Colors.white,
+                    disabledBackgroundColor:
+                        const Color(0xFF4A8FE2).withValues(alpha: 0.5),
+                    disabledForegroundColor:
+                        Colors.white.withValues(alpha: 0.5),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(20),
+                    ),
                   ),
-                  disabledForegroundColor:
-                      Colors.white.withValues(
-                    alpha: 0.5,
-                  ),
-                  shape: RoundedRectangleBorder(
-                    borderRadius:
-                        BorderRadius.circular(14),
-                  ),
-                ),
-                child: state.isSubmitting
-                    ? const SizedBox(
-                        width: 24,
-                        height: 24,
-                        child: CircularProgressIndicator(
-                          strokeWidth: 2,
-                          color: Colors.white,
+                  child: state.isSubmitting
+                      ? const SizedBox(
+                          width: 24,
+                          height: 24,
+                          child: CircularProgressIndicator(
+                            strokeWidth: 2,
+                            color: Colors.white,
+                          ),
+                        )
+                      : Text(
+                          state.isReapply ? '재신청' : '등록 신청',
                         ),
-                      )
-                    : Text(
-                        state.isReapply
-                            ? '재신청'
-                            : '등록 신청',
-                      ),
+                ),
               ),
-            ),
-          ],
-        ),
+            ],
+          ),
         ),
       ),
     );

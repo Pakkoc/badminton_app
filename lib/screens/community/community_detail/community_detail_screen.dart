@@ -224,7 +224,7 @@ class _CommunityDetailScreenState
             children: [
               Expanded(
                 child: SingleChildScrollView(
-                  padding: const EdgeInsets.all(16),
+                  padding: const EdgeInsets.fromLTRB(28, 20, 28, 32),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -242,13 +242,13 @@ class _CommunityDetailScreenState
                                 ? const Icon(Icons.person, size: 16)
                                 : null,
                           ),
-                          const SizedBox(width: 8),
+                          const SizedBox(width: 10),
                           Text(
                             post.authorName ?? '알 수 없음',
                             style:
                                 Theme.of(context).textTheme.titleSmall,
                           ),
-                          const SizedBox(width: 8),
+                          const SizedBox(width: 10),
                           Text(
                             Formatters.relativeTime(post.createdAt),
                             style: Theme.of(context)
@@ -294,13 +294,25 @@ class _CommunityDetailScreenState
                       // 제목
                       Text(
                         post.title,
-                        style: Theme.of(context).textTheme.titleLarge,
+                        style: Theme.of(context)
+                            .textTheme
+                            .titleLarge
+                            ?.copyWith(
+                              fontSize: 20,
+                              fontWeight: FontWeight.bold,
+                            ),
                       ),
                       const SizedBox(height: 12),
                       // 내용
                       Text(
                         post.content,
-                        style: Theme.of(context).textTheme.bodyMedium,
+                        style: Theme.of(context)
+                            .textTheme
+                            .bodyMedium
+                            ?.copyWith(
+                              fontSize: 14,
+                              height: 1.6,
+                            ),
                       ),
                       // 이미지
                       if (post.images.isNotEmpty) ...[
@@ -324,6 +336,8 @@ class _CommunityDetailScreenState
                         children: [
                           IconButton(
                             onPressed: _togglePostLike,
+                            padding: EdgeInsets.zero,
+                            constraints: const BoxConstraints(),
                             icon: Icon(
                               isLiked
                                   ? Icons.favorite
@@ -331,6 +345,7 @@ class _CommunityDetailScreenState
                               color: isLiked ? Colors.red : null,
                             ),
                           ),
+                          const SizedBox(width: 4),
                           Text('${post.likeCount}'),
                           const SizedBox(width: 16),
                           const Icon(
@@ -341,7 +356,13 @@ class _CommunityDetailScreenState
                           Text('${post.commentCount}'),
                         ],
                       ),
-                      const Divider(),
+                      const SizedBox(height: 8),
+                      const Divider(
+                        color: Color(0x20FFFFFF),
+                        height: 1,
+                        thickness: 1,
+                      ),
+                      const SizedBox(height: 8),
                       // 댓글 섹션
                       commentsAsync.when(
                         loading: () => const LoadingIndicator(),
@@ -381,11 +402,13 @@ class _CommunityDetailScreenState
               ),
               // 댓글 입력창
               Container(
-                padding: const EdgeInsets.all(8),
-                decoration: BoxDecoration(
-                  color: Theme.of(context).scaffoldBackgroundColor,
-                  border: const Border(
-                    top: BorderSide(color: AppTheme.border),
+                padding: const EdgeInsets.fromLTRB(28, 8, 28, 8),
+                decoration: const BoxDecoration(
+                  border: Border(
+                    top: BorderSide(
+                      color: Color(0x20FFFFFF),
+                      width: 0.5,
+                    ),
                   ),
                 ),
                 child: SafeArea(
@@ -422,11 +445,26 @@ class _CommunityDetailScreenState
                                 hintText: _replyToName != null
                                     ? '답글을 입력하세요'
                                     : '댓글을 입력하세요',
-                                border: const OutlineInputBorder(),
+                                filled: true,
+                                fillColor: AppTheme.surfaceHigh,
+                                border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(20),
+                                  borderSide: BorderSide.none,
+                                ),
+                                enabledBorder: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(20),
+                                  borderSide: BorderSide.none,
+                                ),
+                                focusedBorder: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(20),
+                                  borderSide: BorderSide.none,
+                                ),
                                 contentPadding:
                                     const EdgeInsets.symmetric(
-                                  horizontal: 12,
-                                  vertical: 8,
+                                  horizontal: 14,
+                                ),
+                                constraints: const BoxConstraints(
+                                  minHeight: 44,
                                 ),
                               ),
                             ),
@@ -434,7 +472,10 @@ class _CommunityDetailScreenState
                           const SizedBox(width: 8),
                           IconButton(
                             onPressed: _submitComment,
-                            icon: const Icon(Icons.send),
+                            icon: const Icon(
+                              Icons.send,
+                              color: Color(0xFF22C55E),
+                            ),
                           ),
                         ],
                       ),

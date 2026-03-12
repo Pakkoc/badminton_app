@@ -80,90 +80,120 @@ class _ProfileSetupScreenState
         }
       },
       child: Scaffold(
-        appBar: AppBar(
-          title: const Text('프로필 설정'),
-          leading: IconButton(
-            icon: const Icon(Icons.arrow_back),
-            onPressed: _showSignOutDialog,
-          ),
-          actions: [
-            IconButton(
-              icon: const Icon(Icons.logout),
-              tooltip: '로그아웃',
-              onPressed: _showSignOutDialog,
-            ),
-          ],
-        ),
         body: CourtBackground(
-          child: SingleChildScrollView(
-          padding: const EdgeInsets.all(24),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                '서비스 이용을 위해 정보를 입력해주세요',
-                style: Theme.of(context).textTheme.bodyLarge,
-              ),
-              const SizedBox(height: 24),
-              TextFormField(
-                controller: _nameController,
-                decoration: const InputDecoration(
-                  labelText: '이름',
-                  border: OutlineInputBorder(),
-                ),
-                validator: Validators.name,
-                autovalidateMode:
-                    AutovalidateMode.onUserInteraction,
-                onChanged: notifier.updateName,
-              ),
-              const SizedBox(height: 16),
-              PhoneInputField(
-                controller: _phoneController,
-                onChanged: notifier.updatePhone,
-              ),
-              const SizedBox(height: 32),
-              SizedBox(
-                width: double.infinity,
-                height: 48,
-                child: ElevatedButton(
-                  onPressed: notifier.isValid && !state.isSubmitting
-                      ? () async {
-                          final route = await notifier.submit();
-                          if (route != null && mounted) {
-                            context.go(route);
-                          }
-                        }
-                      : null,
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: AppTheme.accent,
-                    foregroundColor: Colors.white,
-                    disabledBackgroundColor:
-                        AppTheme.accent.withValues(
-                      alpha: 0.5,
-                    ),
-                    disabledForegroundColor:
-                        Colors.white.withValues(
-                      alpha: 0.5,
-                    ),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(14),
+          child: SafeArea(
+            child: SingleChildScrollView(
+              padding: const EdgeInsets.fromLTRB(28, 60, 28, 24),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  // Custom Header: back icon + title
+                  Row(
+                    children: [
+                      GestureDetector(
+                        onTap: _showSignOutDialog,
+                        child: const Icon(
+                          Icons.arrow_back,
+                          color: AppTheme.textSecondary,
+                        ),
+                      ),
+                      const SizedBox(width: 12),
+                      const Text(
+                        '프로필 설정',
+                        style: TextStyle(
+                          fontSize: 24,
+                          fontWeight: FontWeight.w700,
+                          color: AppTheme.textPrimary,
+                        ),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 8),
+                  const Text(
+                    '서비스 이용을 위해 정보를 입력해주세요',
+                    style: TextStyle(
+                      fontSize: 14,
+                      color: AppTheme.textSecondary,
                     ),
                   ),
-                  child: state.isSubmitting
-                      ? const SizedBox(
-                          width: 24,
-                          height: 24,
-                          child: CircularProgressIndicator(
-                            strokeWidth: 2,
-                            color: Colors.white,
-                          ),
-                        )
-                      : const Text('시작하기'),
-                ),
+                  const SizedBox(height: 20),
+                  // 이름 입력 필드
+                  TextFormField(
+                    controller: _nameController,
+                    decoration: InputDecoration(
+                      labelText: '이름',
+                      filled: true,
+                      fillColor: const Color(0x12FFFFFF),
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(14),
+                        borderSide: const BorderSide(
+                          color: Color(0x20FFFFFF),
+                        ),
+                      ),
+                      enabledBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(14),
+                        borderSide: const BorderSide(
+                          color: Color(0x20FFFFFF),
+                        ),
+                      ),
+                      contentPadding: const EdgeInsets.symmetric(
+                        horizontal: 16,
+                      ),
+                    ),
+                    validator: Validators.name,
+                    autovalidateMode: AutovalidateMode.onUserInteraction,
+                    onChanged: notifier.updateName,
+                  ),
+                  const SizedBox(height: 12),
+                  PhoneInputField(
+                    controller: _phoneController,
+                    onChanged: notifier.updatePhone,
+                  ),
+                  const SizedBox(height: 20),
+                  // 시작하기 버튼
+                  SizedBox(
+                    width: double.infinity,
+                    height: 48,
+                    child: ElevatedButton(
+                      onPressed: notifier.isValid && !state.isSubmitting
+                          ? () async {
+                              final route = await notifier.submit();
+                              if (route != null && mounted) {
+                                context.go(route);
+                              }
+                            }
+                          : null,
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: const Color(0xFF2563EB),
+                        foregroundColor: Colors.white,
+                        disabledBackgroundColor:
+                            const Color(0xFF2563EB).withValues(alpha: 0.5),
+                        disabledForegroundColor:
+                            Colors.white.withValues(alpha: 0.5),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                        textStyle: const TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                      child: state.isSubmitting
+                          ? const SizedBox(
+                              width: 24,
+                              height: 24,
+                              child: CircularProgressIndicator(
+                                strokeWidth: 2,
+                                color: Colors.white,
+                              ),
+                            )
+                          : const Text('시작하기'),
+                    ),
+                  ),
+                ],
               ),
-            ],
+            ),
           ),
-        ),
         ),
       ),
     );

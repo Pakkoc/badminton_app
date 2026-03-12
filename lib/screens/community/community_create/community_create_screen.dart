@@ -1,3 +1,4 @@
+import 'package:badminton_app/app/theme.dart';
 import 'package:badminton_app/widgets/court_background.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -72,66 +73,174 @@ class _CommunityCreateScreenState
 
     return Scaffold(
       appBar: AppBar(
-        title: Text(isEditing ? '게시글 수정' : '게시글 작성'),
-        actions: [
-          TextButton(
-            onPressed: state.isSubmitting ? null : _submit,
-            child: state.isSubmitting
-                ? const SizedBox(
-                    width: 16,
-                    height: 16,
-                    child: CircularProgressIndicator(strokeWidth: 2),
-                  )
-                : const Text('완료'),
-          ),
-        ],
+        title: Text(
+          isEditing ? '게시글 수정' : '게시글 작성',
+          style: const TextStyle(fontSize: 18),
+        ),
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back),
+          onPressed: () => context.pop(),
+        ),
       ),
       body: CourtBackground(
         child: state.isLoadingPost
-          ? const Center(child: CircularProgressIndicator())
-          : SingleChildScrollView(
-              padding: const EdgeInsets.all(16),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+            ? const Center(child: CircularProgressIndicator())
+            : Column(
                 children: [
-                  TextField(
-                    controller: _titleController,
-                    decoration: const InputDecoration(
-                      hintText: '제목을 입력하세요',
-                      border: OutlineInputBorder(),
+                  Expanded(
+                    child: SingleChildScrollView(
+                      padding: const EdgeInsets.fromLTRB(28, 16, 28, 16),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          // 제목 라벨
+                          const Text(
+                            '제목',
+                            style: TextStyle(
+                              fontSize: 14,
+                              fontWeight: FontWeight.w500,
+                              color: AppTheme.textSecondary,
+                            ),
+                          ),
+                          const SizedBox(height: 8),
+                          // 제목 입력 필드
+                          TextField(
+                            controller: _titleController,
+                            decoration: InputDecoration(
+                              hintText: '제목을 입력하세요',
+                              filled: true,
+                              fillColor: AppTheme.surfaceHigh,
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(14),
+                                borderSide: BorderSide.none,
+                              ),
+                              enabledBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(14),
+                                borderSide: BorderSide.none,
+                              ),
+                              focusedBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(14),
+                                borderSide: BorderSide.none,
+                              ),
+                              contentPadding: const EdgeInsets.symmetric(
+                                horizontal: 14,
+                              ),
+                              constraints: const BoxConstraints(
+                                minHeight: 48,
+                              ),
+                            ),
+                            onChanged: notifier.updateTitle,
+                          ),
+                          const SizedBox(height: 20),
+                          // 내용 라벨
+                          const Text(
+                            '내용',
+                            style: TextStyle(
+                              fontSize: 14,
+                              fontWeight: FontWeight.w500,
+                              color: AppTheme.textSecondary,
+                            ),
+                          ),
+                          const SizedBox(height: 8),
+                          // 내용 입력 필드
+                          TextField(
+                            controller: _contentController,
+                            decoration: InputDecoration(
+                              hintText: '내용을 입력하세요',
+                              filled: true,
+                              fillColor: AppTheme.surfaceHigh,
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(14),
+                                borderSide: BorderSide.none,
+                              ),
+                              enabledBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(14),
+                                borderSide: BorderSide.none,
+                              ),
+                              focusedBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(14),
+                                borderSide: BorderSide.none,
+                              ),
+                              contentPadding: const EdgeInsets.all(14),
+                              constraints: const BoxConstraints(
+                                minHeight: 160,
+                              ),
+                              alignLabelWithHint: true,
+                            ),
+                            maxLines: null,
+                            minLines: 8,
+                            onChanged: notifier.updateContent,
+                          ),
+                          const SizedBox(height: 20),
+                          _ImageSection(
+                            images: state.images,
+                            isUploading: state.isUploadingImage,
+                            onAdd: _pickImage,
+                            onRemove: notifier.removeImage,
+                          ),
+                          if (state.errorMessage != null)
+                            Padding(
+                              padding: const EdgeInsets.only(top: 16),
+                              child: Text(
+                                state.errorMessage!,
+                                style: TextStyle(
+                                  color:
+                                      Theme.of(context).colorScheme.error,
+                                ),
+                              ),
+                            ),
+                        ],
+                      ),
                     ),
-                    onChanged: notifier.updateTitle,
                   ),
-                  const SizedBox(height: 16),
-                  TextField(
-                    controller: _contentController,
-                    decoration: const InputDecoration(
-                      hintText: '내용을 입력하세요',
-                      border: OutlineInputBorder(),
-                    ),
-                    maxLines: 10,
-                    onChanged: notifier.updateContent,
-                  ),
-                  const SizedBox(height: 16),
-                  _ImageSection(
-                    images: state.images,
-                    isUploading: state.isUploadingImage,
-                    onAdd: _pickImage,
-                    onRemove: notifier.removeImage,
-                  ),
-                  if (state.errorMessage != null)
-                    Padding(
-                      padding: const EdgeInsets.only(top: 16),
-                      child: Text(
-                        state.errorMessage!,
-                        style: TextStyle(
-                          color: Theme.of(context).colorScheme.error,
+                  // Bottom bar: 제출 버튼
+                  Container(
+                    padding: const EdgeInsets.fromLTRB(28, 16, 28, 16),
+                    decoration: const BoxDecoration(
+                      border: Border(
+                        top: BorderSide(
+                          color: Color(0x20FFFFFF),
+                          width: 0.5,
                         ),
                       ),
                     ),
+                    child: SafeArea(
+                      child: SizedBox(
+                        width: double.infinity,
+                        height: 48,
+                        child: ElevatedButton(
+                          onPressed: state.isSubmitting ? null : _submit,
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: const Color(0xFF16A34A),
+                            foregroundColor: Colors.white,
+                            disabledBackgroundColor:
+                                const Color(0xFF16A34A).withValues(alpha: 0.5),
+                            disabledForegroundColor:
+                                Colors.white.withValues(alpha: 0.5),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(12),
+                            ),
+                            textStyle: const TextStyle(
+                              fontSize: 16,
+                              fontWeight: FontWeight.w600,
+                            ),
+                          ),
+                          child: state.isSubmitting
+                              ? const SizedBox(
+                                  width: 24,
+                                  height: 24,
+                                  child: CircularProgressIndicator(
+                                    strokeWidth: 2,
+                                    color: Colors.white,
+                                  ),
+                                )
+                              : Text(isEditing ? '수정 완료' : '작성 완료'),
+                        ),
+                      ),
+                    ),
+                  ),
                 ],
               ),
-            ),
       ),
     );
   }

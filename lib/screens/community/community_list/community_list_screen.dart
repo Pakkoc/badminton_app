@@ -80,12 +80,12 @@ class _CommunityListScreenState extends ConsumerState<CommunityListScreen> {
               ref.invalidate(communityPostListProvider);
             },
             child: ListView.separated(
-              padding: const EdgeInsets.all(16),
+              padding: const EdgeInsets.fromLTRB(28, 12, 28, 12),
               itemCount: posts.length,
               separatorBuilder: (context, index) =>
-                  const Divider(height: 1),
+                  const SizedBox(height: 12),
               itemBuilder: (_, index) =>
-                  _PostListTile(post: posts[index]),
+                  _PostCard(post: posts[index]),
             ),
           );
         },
@@ -99,74 +99,104 @@ class _CommunityListScreenState extends ConsumerState<CommunityListScreen> {
   }
 }
 
-class _PostListTile extends StatelessWidget {
-  const _PostListTile({required this.post});
+class _PostCard extends StatelessWidget {
+  const _PostCard({required this.post});
 
   final CommunityPost post;
 
   @override
   Widget build(BuildContext context) {
-    return ListTile(
-      contentPadding: const EdgeInsets.symmetric(vertical: 8),
-      title: Text(
-        post.title,
-        maxLines: 1,
-        overflow: TextOverflow.ellipsis,
-        style: Theme.of(context).textTheme.titleSmall,
-      ),
-      subtitle: Padding(
-        padding: const EdgeInsets.only(top: 4),
+    return GestureDetector(
+      onTap: () => context.push('/community/${post.id}'),
+      child: Container(
+        padding: const EdgeInsets.all(16),
+        decoration: BoxDecoration(
+          color: AppTheme.surfaceHigh,
+          borderRadius: BorderRadius.circular(20),
+          border: Border.all(
+            color: AppTheme.border,
+            width: 0.5,
+          ),
+        ),
         child: Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(
-              post.authorName ?? '알 수 없음',
-              style: Theme.of(context).textTheme.bodySmall,
-            ),
-            const SizedBox(width: 8),
-            Text(
-              Formatters.relativeTime(post.createdAt),
-              style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                    color: AppTheme.textTertiary,
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    post.title,
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    style: Theme.of(context).textTheme.titleSmall,
                   ),
-            ),
-            const Spacer(),
-            if (post.commentCount > 0) ...[
-              const Icon(Icons.chat_bubble_outline, size: 14),
-              const SizedBox(width: 2),
-              Text(
-                '${post.commentCount}',
-                style: Theme.of(context).textTheme.bodySmall,
+                  const SizedBox(height: 6),
+                  Row(
+                    children: [
+                      Text(
+                        post.authorName ?? '알 수 없음',
+                        style: Theme.of(context).textTheme.bodySmall,
+                      ),
+                      const SizedBox(width: 8),
+                      Text(
+                        Formatters.relativeTime(post.createdAt),
+                        style:
+                            Theme.of(context).textTheme.bodySmall?.copyWith(
+                                  color: AppTheme.textTertiary,
+                                ),
+                      ),
+                      const Spacer(),
+                      if (post.commentCount > 0) ...[
+                        const Icon(
+                          Icons.chat_bubble_outline,
+                          size: 14,
+                          color: AppTheme.textTertiary,
+                        ),
+                        const SizedBox(width: 2),
+                        Text(
+                          '${post.commentCount}',
+                          style: Theme.of(context).textTheme.bodySmall,
+                        ),
+                        const SizedBox(width: 8),
+                      ],
+                      if (post.likeCount > 0) ...[
+                        const Icon(
+                          Icons.favorite_border,
+                          size: 14,
+                          color: AppTheme.textTertiary,
+                        ),
+                        const SizedBox(width: 2),
+                        Text(
+                          '${post.likeCount}',
+                          style: Theme.of(context).textTheme.bodySmall,
+                        ),
+                      ],
+                    ],
+                  ),
+                ],
               ),
-              const SizedBox(width: 8),
-            ],
-            if (post.likeCount > 0) ...[
-              const Icon(Icons.favorite_border, size: 14),
-              const SizedBox(width: 2),
-              Text(
-                '${post.likeCount}',
-                style: Theme.of(context).textTheme.bodySmall,
+            ),
+            if (post.images.isNotEmpty) ...[
+              const SizedBox(width: 12),
+              ClipRRect(
+                borderRadius: BorderRadius.circular(8),
+                child: Image.network(
+                  post.images.first,
+                  width: 60,
+                  height: 60,
+                  fit: BoxFit.cover,
+                  errorBuilder: (context, err, stack) => const SizedBox(
+                    width: 60,
+                    height: 60,
+                    child: Icon(Icons.image, color: AppTheme.textTertiary),
+                  ),
+                ),
               ),
             ],
           ],
         ),
       ),
-      trailing: post.images.isNotEmpty
-          ? ClipRRect(
-              borderRadius: BorderRadius.circular(8),
-              child: Image.network(
-                post.images.first,
-                width: 60,
-                height: 60,
-                fit: BoxFit.cover,
-                errorBuilder: (_, __, ___) => const SizedBox(
-                  width: 60,
-                  height: 60,
-                  child: Icon(Icons.image, color: AppTheme.textTertiary),
-                ),
-              ),
-            )
-          : null,
-      onTap: () => context.push('/community/${post.id}'),
     );
   }
 }
