@@ -45,7 +45,7 @@ class GutAlimApp extends ConsumerWidget {
     FcmService.setRouter(router);
     return MaterialApp.router(
       title: '거트알림',
-      theme: AppTheme.lightTheme,
+      theme: AppTheme.darkTheme,
       routerConfig: router,
     );
   }
