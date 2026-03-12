@@ -1,6 +1,6 @@
 # 샵 상세 — UI 화면 스펙
 
-> 최종 수정일: 2026-03-03
+> 최종 수정일: 2026-03-12
 
 ---
 
@@ -89,7 +89,7 @@
 
 | 섹션 | 설명 | 비고 |
 |------|------|------|
-| 상단 앱바 | 뒤로가기 버튼 + "샵 정보" 타이틀 | 앱바 배경 `#FFFFFF`, 하단 테두리 `#E8E0D8` 0.5px |
+| 상단 앱바 | 뒤로가기 버튼 + "샵 정보" 타이틀 | 앱바 배경 `transparent`, 하단 테두리 `#FFFFFF20` 0.5px |
 | 지도 미리보기 | 샵 위치를 네이버 지도 미리보기로 표시 | 인터랙션 비활성 (Static Map). 샵 위치에 마커 표시 |
 | 샵 이름/소개 | 샵 이름과 소개글 표시 | 소개글이 없으면 소개글 영역만 숨김 |
 | 작업 현황 | 현재 접수됨/작업중 건수 표시 | 카드 형태, 접수/작업중 색상 구분 |
@@ -108,17 +108,17 @@
 
 | 컴포넌트 | 타입 | 설명 | 스타일 |
 |----------|------|------|--------|
-| 뒤로가기 | IconButton | 이전 화면으로 복귀 | Material Icon `arrow_back_ios`, 크기 24px, 색상 `#1A1A2E` |
-| 타이틀 | Text | "샵 정보" | `titleLarge` (18sp, SemiBold), 색상 `#1A1A2E` |
+| 뒤로가기 | IconButton | 이전 화면으로 복귀 | Material Icon `arrow_back_ios`, 크기 24px, 색상 `#FFFFFFEE` |
+| 타이틀 | Text | "샵 정보" | `titleLarge` (18sp, SemiBold), 색상 `#FFFFFFEE` |
 
 **앱바 스타일:**
 
 | 속성 | 값 |
 |------|-----|
-| 배경색 | `#FFFFFF` |
+| 배경색 | `#FFFFFF18` (surfaceHigh) |
 | 높이 | 56px |
 | 좌측 패딩 | 8px (뒤로가기 아이콘) |
-| 하단 테두리 | `#E8E0D8` 0.5px |
+| 하단 테두리 | `#FFFFFF20` 0.5px |
 | elevation | 0 |
 
 ### 3.2 지도 미리보기
@@ -126,7 +126,7 @@
 | 컴포넌트 | 타입 | 설명 | 스타일 |
 |----------|------|------|--------|
 | 지도 컨테이너 | NaverMap (Static) | 샵 위치를 지도에 표시 | 가로 100%, 높이 180px |
-| 샵 마커 | Marker | 샵 위치 마커 | 커스텀 아이콘: `storefront` 14px, 원형 배경 `#2563EB`, 크기 28x28px |
+| 샵 마커 | Marker | 샵 위치 마커 | 커스텀 아이콘: `storefront` 14px, 원형 배경 `#F59E0B`, 크기 28x28px |
 
 **지도 미리보기 설정:**
 
@@ -141,8 +141,8 @@
 
 | 컴포넌트 | 타입 | 설명 | 스타일 |
 |----------|------|------|--------|
-| 샵 이름 | Row (Icon + Text) | 샵 이름 표시 | 아이콘: `storefront` 24px `#2563EB`, 텍스트: `headlineLarge` (22sp, Bold 700) `#1A1A2E` |
-| 소개글 | Text | 샵 소개글 | `bodyMedium` (14sp, Regular), 색상 `#4A4A5A`, 줄 높이 1.5 |
+| 샵 이름 | Row (Icon + Text) | 샵 이름 표시 | 아이콘: `storefront` 24px `#F59E0B`, 텍스트: `headlineLarge` (22sp, Bold 700) `#FFFFFFEE` |
+| 소개글 | Text | 샵 소개글 | `bodyMedium` (14sp, Regular), 색상 `#FFFFFFCC`, 줄 높이 1.5 |
 
 **표시 조건:**
 - `shops.description`이 null 또는 빈 문자열이면 소개글 영역만 숨김 (샵 이름은 항상 표시)
@@ -157,12 +157,12 @@
 
 | 컴포넌트 | 타입 | 설명 | 스타일 |
 |----------|------|------|--------|
-| 섹션 타이틀 | Text | "작업 현황" | `titleMedium` (16sp, SemiBold), 색상 `#1A1A2E` |
-| 카드 컨테이너 | Container | 작업 현황 카드 | 배경 `#FFFFFF` (`$--surface`), 모서리 20px, 패딩 20px, shadow (blur 12, y:2, `#0000000A`) |
+| 섹션 타이틀 | Text | "작업 현황" | `titleMedium` (16sp, SemiBold), 색상 `#FFFFFFEE` |
+| 카드 컨테이너 | Container | 작업 현황 카드 | 배경 `#FFFFFF15` (`$--surface`), 모서리 20px, 패딩 20px, shadow (blur 12, y:2, `#0000000A`) |
 | 현황 행 | Row | 접수 건수 + 구분점 + 작업중 건수 | 균등 분할 (Expanded 50:50), 구분선 사이 |
-| 접수 건수 | Column | 건수 + 라벨 | 건수: `headlineLarge` (24sp, Bold) `#F59E0B`. 라벨: `bodySmall` (12sp) `#9CA3AF` "접수" |
-| 구분선 | Container | 세로 구분선 | 너비 1px, 높이 40px, 색상 `#E8E0D8` |
-| 작업중 건수 | Column | 건수 + 라벨 | 건수: `headlineLarge` (24sp, Bold) `#2563EB`. 라벨: `bodySmall` (12sp) `#9CA3AF` "작업중" |
+| 접수 건수 | Column | 건수 + 라벨 | 건수: `headlineLarge` (24sp, Bold) `#F59E0B`. 라벨: `bodySmall` (12sp) `#FFFFFFAA` "접수" |
+| 구분선 | Container | 세로 구분선 | 너비 1px, 높이 40px, 색상 `#FFFFFF20` |
+| 작업중 건수 | Column | 건수 + 라벨 | 건수: `headlineLarge` (24sp, Bold) `#3B82F6`. 라벨: `bodySmall` (12sp) `#FFFFFFAA` "작업중" |
 
 **레이아웃:**
 - 섹션 타이틀 ~ 카드: 12px
@@ -172,10 +172,10 @@
 
 | 컴포넌트 | 타입 | 설명 | 스타일 |
 |----------|------|------|--------|
-| 섹션 타이틀 | Text | "위치 및 연락처" | `titleMedium` (16sp, SemiBold), 색상 `#1A1A2E` |
-| 카드 컨테이너 | Card | 위치/연락처 카드 | 배경 `#FFFFFF`, 모서리 20px, 테두리 `#E8E0D8` 1px, 패딩 16px |
-| 주소 | Row (Icon + Text) | 샵 주소 | 아이콘: `location_on` 20px `#9CA3AF`, 텍스트: `bodyMedium` (14sp) `#4A4A5A` |
-| 연락처 | Row (Icon + Text) | 샵 전화번호 (탭 가능) | 아이콘: `call` 20px `#9CA3AF`, 텍스트: `bodyMedium` (14sp) `#2563EB` (밑줄), 탭 시 전화 앱 실행 |
+| 섹션 타이틀 | Text | "위치 및 연락처" | `titleMedium` (16sp, SemiBold), 색상 `#FFFFFFEE` |
+| 카드 컨테이너 | Card | 위치/연락처 카드 | 배경 `#FFFFFF15`, 모서리 20px, 테두리 `#FFFFFF20` 1px, 패딩 16px |
+| 주소 | Row (Icon + Text) | 샵 주소 | 아이콘: `location_on` 20px `#FFFFFFAA`, 텍스트: `bodyMedium` (14sp) `#FFFFFFCC` |
+| 연락처 | Row (Icon + Text) | 샵 전화번호 (탭 가능) | 아이콘: `call` 20px `#FFFFFFAA`, 텍스트: `bodyMedium` (14sp) `#F59E0B` (밑줄), 탭 시 전화 앱 실행 |
 
 **레이아웃:**
 - 섹션 타이틀 ~ 카드: 12px
@@ -186,7 +186,7 @@
 
 | 컴포넌트 | 타입 | 설명 | 스타일 |
 |----------|------|------|--------|
-| 길찾기 버튼 | FilledButton | 네이버 지도 길찾기 실행 | 배경 `#2563EB`, 텍스트 `#FFFFFF` "길찾기", 아이콘: `directions` 20px, 높이 48px, 모서리 14px, 가로 100% |
+| 길찾기 버튼 | FilledButton | 네이버 지도 길찾기 실행 | 배경 `#F59E0B`, 텍스트 `#FFFFFF` "길찾기", 아이콘: `directions` 20px, 높이 48px, 모서리 14px, 가로 100% |
 
 **레이아웃:**
 - 이전 섹션과의 간격: 24px
@@ -196,20 +196,20 @@
 
 | 컴포넌트 | 타입 | 설명 | 스타일 |
 |----------|------|------|--------|
-| 탭 바 | TabBar | 공지사항 / 이벤트 / 가게 재고 | 배경 `#FFFFFF`, 하단 인디케이터 `#2563EB` 2px |
-| 공지사항 탭 | Tab | "공지사항" | 활성: `#2563EB` SemiBold, 비활성: `#9CA3AF` Medium (500) |
-| 이벤트 탭 | Tab | "이벤트" | 활성: `#2563EB` SemiBold, 비활성: `#9CA3AF` Medium (500) |
-| 가게 재고 탭 | Tab | "가게 재고" | 활성: `#2563EB` SemiBold, 비활성: `#9CA3AF` Medium (500) |
+| 탭 바 | TabBar | 공지사항 / 이벤트 / 가게 재고 | 배경 `transparent`, 하단 인디케이터 `#22C55E` 2px |
+| 공지사항 탭 | Tab | "공지사항" | 활성: `#22C55E` SemiBold, 비활성: `#FFFFFFAA` Medium (500) |
+| 이벤트 탭 | Tab | "이벤트" | 활성: `#22C55E` SemiBold, 비활성: `#FFFFFFAA` Medium (500) |
+| 가게 재고 탭 | Tab | "가게 재고" | 활성: `#22C55E` SemiBold, 비활성: `#FFFFFFAA` Medium (500) |
 
 **탭 바 스타일:**
 
 | 속성 | 값 |
 |------|-----|
-| 배경색 | `#FFFFFF` |
+| 배경색 | `#FFFFFF18` (surfaceHigh) |
 | 탭 텍스트 크기 | 14sp (`bodyMedium`) |
-| 활성 탭 인디케이터 | `#2563EB`, 높이 2px, 모서리 1px |
-| 활성 탭 텍스트 색상 | `#2563EB` |
-| 비활성 탭 텍스트 색상 | `#9CA3AF` |
+| 활성 탭 인디케이터 | `#22C55E`, 높이 2px, 모서리 1px |
+| 활성 탭 텍스트 색상 | `#22C55E` |
+| 비활성 탭 텍스트 색상 | `#FFFFFFAA` |
 | 길찾기 버튼과의 간격 | 24px |
 | 탭 바 높이 | 44px |
 
@@ -217,10 +217,10 @@
 
 | 컴포넌트 | 타입 | 설명 | 스타일 |
 |----------|------|------|--------|
-| 공지사항 카드 | Card (반복) | 공지사항 게시글 | 배경 `#FFFFFF`, 모서리 20px, 패딩 16px, 테두리 `#E8E0D8` 1px |
-| 제목 | Text | 게시글 제목 | `titleSmall` (14sp, Bold), 색상 `#1A1A2E`, 최대 1줄 (말줄임) |
-| 날짜 | Text | 게시 날짜 | `bodySmall` (12sp), 색상 `#9CA3AF` |
-| 미리보기 | Text | 본문 앞부분 미리보기 | 13sp, 색상 `#4A4A5A`, 줄 높이 1.5, 최대 2줄 (말줄임) |
+| 공지사항 카드 | Card (반복) | 공지사항 게시글 | 배경 `#FFFFFF15`, 모서리 20px, 패딩 16px, 테두리 `#FFFFFF20` 1px |
+| 제목 | Text | 게시글 제목 | `titleSmall` (14sp, Bold), 색상 `#FFFFFFEE`, 최대 1줄 (말줄임) |
+| 날짜 | Text | 게시 날짜 | `bodySmall` (12sp), 색상 `#FFFFFFAA` |
+| 미리보기 | Text | 본문 앞부분 미리보기 | 13sp, 색상 `#FFFFFFCC`, 줄 높이 1.5, 최대 2줄 (말줄임) |
 
 **레이아웃:**
 - 탭 바 아래 간격: 16px
@@ -229,17 +229,17 @@
 - 하단 여백: 32px
 
 **빈 상태:**
-- 공지사항이 없을 때: "등록된 공지사항이 없습니다" (`bodyMedium`, 14sp, `#9CA3AF`, 중앙 정렬)
+- 공지사항이 없을 때: "등록된 공지사항이 없습니다" (`bodyMedium`, 14sp, `#FFFFFFAA`, 중앙 정렬)
 
 ### 3.9 이벤트 리스트 (이벤트 탭 선택 시)
 
 | 컴포넌트 | 타입 | 설명 | 스타일 |
 |----------|------|------|--------|
-| 이벤트 카드 | Card (반복) | 이벤트 게시글 | 배경 `#FFFFFF`, 모서리 20px, 테두리 `#E8E0D8` 1px |
-| 썸네일 이미지 | Image | 이벤트 대표 이미지 | 좌측 배치, 80x80px, 모서리 8px, 이미지 없으면 기본 아이콘 (`event`, 40px, `#9CA3AF`, 배경 `#EFF6FF`) |
-| 제목 | Text | 이벤트 제목 | `titleSmall` (14sp, SemiBold), 색상 `#1A1A2E`, 최대 1줄 (말줄임) |
-| 기간 | Text | 이벤트 기간 | `bodySmall` (12sp), 색상 `#9CA3AF`, "YYYY-MM-DD ~ YYYY-MM-DD" 형식 |
-| 진행 상태 뱃지 | Badge | 진행중 / 종료 | 진행중: 배경 `#EFF6FF` 텍스트 `#065F46`, 종료: 배경 `#EFF6FF` 텍스트 `#9CA3AF` |
+| 이벤트 카드 | Card (반복) | 이벤트 게시글 | 배경 `#FFFFFF15`, 모서리 20px, 테두리 `#FFFFFF20` 1px |
+| 썸네일 이미지 | Image | 이벤트 대표 이미지 | 좌측 배치, 80x80px, 모서리 8px, 이미지 없으면 기본 아이콘 (`event`, 40px, `#FFFFFFAA`, 배경 `#FFFFFF15`) |
+| 제목 | Text | 이벤트 제목 | `titleSmall` (14sp, SemiBold), 색상 `#FFFFFFEE`, 최대 1줄 (말줄임) |
+| 기간 | Text | 이벤트 기간 | `bodySmall` (12sp), 색상 `#FFFFFFAA`, "YYYY-MM-DD ~ YYYY-MM-DD" 형식 |
+| 진행 상태 뱃지 | Badge | 진행중 / 종료 | 진행중: 배경 `#FFFFFF15` 텍스트 `#34D399`, 종료: 배경 `#FFFFFF15` 텍스트 `#FFFFFFAA` |
 
 **카드 내부 레이아웃:**
 - Row: [썸네일 80x80] + [Column: 제목, 기간, 상태 뱃지]
@@ -253,17 +253,17 @@
 - 하단 여백: 32px
 
 **빈 상태:**
-- 이벤트가 없을 때: "등록된 이벤트가 없습니다" (`bodyMedium`, 14sp, `#9CA3AF`, 중앙 정렬)
+- 이벤트가 없을 때: "등록된 이벤트가 없습니다" (`bodyMedium`, 14sp, `#FFFFFFAA`, 중앙 정렬)
 
 ### 3.10 가게 재고 그리드 (가게 재고 탭 선택 시)
 
 | 컴포넌트 | 타입 | 설명 | 스타일 |
 |----------|------|------|--------|
-| 재고 카드 | Card (반복, 그리드) | 상품 카드 | 배경 `#FFFFFF`, 모서리 20px, 테두리 `#E8E0D8` 1px |
+| 재고 카드 | Card (반복, 그리드) | 상품 카드 | 배경 `#FFFFFF15`, 모서리 20px, 테두리 `#FFFFFF20` 1px |
 | 상품 이미지 | Image | 상품 이미지 | 가로 100%, 높이 120px, 모서리 상단 20px, `BoxFit.cover` |
-| 기본 이미지 | Container | 이미지 없을 때 대체 | 배경 `#EFF6FF`, 중앙 아이콘 `inventory_2` 40px `#9CA3AF` |
-| 상품명 | Text | 상품 이름 | `bodyMedium` (14sp, Medium), 색상 `#1A1A2E`, 최대 1줄 (말줄임) |
-| 재고 수량 | Text | 재고 수 표시 | `bodySmall` (12sp), 색상 `#4A4A5A`, "N개" 형식 |
+| 기본 이미지 | Container | 이미지 없을 때 대체 | 배경 `#FFFFFF15`, 중앙 아이콘 `inventory_2` 40px `#FFFFFFAA` |
+| 상품명 | Text | 상품 이름 | `bodyMedium` (14sp, Medium), 색상 `#FFFFFFEE`, 최대 1줄 (말줄임) |
+| 재고 수량 | Text | 재고 수 표시 | `bodySmall` (12sp), 색상 `#FFFFFFCC`, "N개" 형식 |
 
 **그리드 레이아웃:**
 - 열 수: 3개 (화면 너비에 따라 균등 분배)
@@ -274,10 +274,10 @@
 - 카드 내부 패딩: 하단 8px (이미지 아래 텍스트 영역)
 
 **빈 상태:**
-- 재고가 없을 때: "등록된 재고 정보가 없습니다" (`bodyMedium`, 14sp, `#9CA3AF`, 중앙 정렬)
+- 재고가 없을 때: "등록된 재고 정보가 없습니다" (`bodyMedium`, 14sp, `#FFFFFFAA`, 중앙 정렬)
 
 **열람 전용 안내:**
-- 재고 탭 상단에 "재고 정보는 열람만 가능합니다" (`bodySmall`, 12sp, `#9CA3AF`, 중앙 정렬) 안내 표시
+- 재고 탭 상단에 "재고 정보는 열람만 가능합니다" (`bodySmall`, 12sp, `#FFFFFFAA`, 중앙 정렬) 안내 표시
 
 ### 3.11 로딩 상태 (Skeleton)
 
@@ -285,23 +285,23 @@
 
 | 컴포넌트 | 설명 |
 |----------|------|
-| 지도 스켈레톤 | 높이 180px, 너비 100%, 배경 `#E8E0D8` |
+| 지도 스켈레톤 | 높이 180px, 너비 100%, 배경 `#FFFFFF20` |
 | 샵 이름 스켈레톤 | 높이 32px, 너비 60%, 모서리 8px |
 | 소개글 스켈레톤 | 높이 40px, 너비 100%, 모서리 8px |
 | 작업 현황 스켈레톤 | 높이 80px, 너비 100%, 모서리 20px |
 | 위치/연락처 스켈레톤 | 높이 80px, 너비 100%, 모서리 20px |
 
 **스켈레톤 스타일:**
-- 배경색: `#E8E0D8` → `#EFF6FF` (shimmer 효과)
+- 배경색: `#FFFFFF10` → `#FFFFFF20` (shimmer 효과)
 - 애니메이션: 1500ms 반복
 
 ### 3.12 에러 상태
 
 | 컴포넌트 | 타입 | 설명 | 스타일 |
 |----------|------|------|--------|
-| 에러 아이콘 | Icon | 오류 표시 | `error_outline`, 48px, 색상 `#9CA3AF` |
-| 에러 메시지 | Text | "데이터를 불러올 수 없습니다" | `bodyLarge` (16sp), 색상 `#4A4A5A` |
-| 재시도 버튼 | FilledButton | "다시 시도" | 배경 `#2563EB`, 텍스트 `#FFFFFF`, 높이 48px, 모서리 14px |
+| 에러 아이콘 | Icon | 오류 표시 | `error_outline`, 48px, 색상 `#FFFFFFAA` |
+| 에러 메시지 | Text | "데이터를 불러올 수 없습니다" | `bodyLarge` (16sp), 색상 `#FFFFFFCC` |
+| 재시도 버튼 | FilledButton | "다시 시도" | 배경 `#F59E0B`, 텍스트 `#FFFFFF`, 높이 48px, 모서리 14px |
 
 ---
 
@@ -498,7 +498,7 @@ final inventory = await supabase
 > ui-ux-pro-max 기반 검증
 
 ### 접근성 (CRITICAL)
-- [x] 텍스트 명암비 4.5:1 이상 — 본문 색상 `#1A1A2E`/`#4A4A5A` on `#FFFFFF` 배경 충족
+- [x] 텍스트 명암비 4.5:1 이상 — 본문 색상 `#FFFFFFEE`/`#FFFFFFCC` on `#162E14` 배경 충족
 - [x] 아이콘 전용 버튼에 접근성 라벨 명시 — 전화번호 시맨틱 라벨, 지도 미리보기 접근성 라벨 정의됨
 - [x] 색상만으로 정보 구분하지 않음 (아이콘+텍스트 병행) — 작업 현황: 색상 + "접수"/"작업중" 라벨 병행
 

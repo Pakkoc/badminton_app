@@ -1,6 +1,6 @@
 # 마이페이지 — UI 화면 스펙
 
-> 최종 수정일: 2026-03-04
+> 최종 수정일: 2026-03-12
 
 ---
 
@@ -61,13 +61,13 @@
 
 | 섹션 | 설명 | 비고 |
 |------|------|------|
-| 상단 앱바 | "마이페이지" 타이틀 표시 | 배경 `#FFFFFF`, 하단 테두리 `#E8E0D8` 0.5px |
-| 프로필 섹션 | 사용자 이름, 연락처, 이메일 표시 + 프로필 수정 버튼 | 상단 카드 영역, 배경 `#FFFFFF` |
+| 상단 앱바 | "마이페이지" 타이틀 표시 | 배경 `transparent`, 하단 테두리 `#FFFFFF20` 0.5px |
+| 프로필 섹션 | 사용자 이름, 연락처, 이메일 표시 + 프로필 수정 버튼 | 상단 카드 영역, 배경 `#FFFFFF15` |
 | 알림 설정 섹션 | 푸시 알림 on/off 토글 | 리스트 타일 형태 |
 | 샵 등록/전환 섹션 | 고객: 샵 등록 상태에 따라 동적 메뉴 표시, 사장님: "사장님 모드 전환" | 역할 + 샵 상태에 따라 동적 표시 |
 | 앱 정보 섹션 | 앱 버전 정보 표시 | 리스트 타일 형태 |
 | 로그아웃 버튼 | 로그아웃 기능 | 화면 하단 영역 |
-| 하단 네비게이션 | 4개 탭 (마이페이지 활성) | 활성 색상 `#2563EB` |
+| 하단 네비게이션 | 4개 탭 (마이페이지 활성) | 활성 색상 `#22C55E` |
 
 ---
 
@@ -83,19 +83,19 @@
 
 | 컴포넌트 | 타입 | 설명 | 상태 |
 |----------|------|------|------|
-| 프로필 아이콘 | Icon | `person`, 크기 48x48px, 아이콘 28px, 배경 `#EFF6FF`, 아이콘 색상 `#2563EB` | 항상 표시 |
+| 프로필 아이콘 | Icon | `person`, 크기 48x48px, 아이콘 28px, 배경 `#FFFFFF15`, 아이콘 색상 `#F59E0B` | 항상 표시 |
 | 사용자 이름 | Text | `titleLarge` (18sp, Bold 700) | 항상 표시 |
-| 연락처 | Text | `bodyMedium` (14sp, `#4A4A5A`) | 항상 표시 |
-| 이메일 | Text | `bodyMedium` (14sp, `#4A4A5A`) | 이메일 등록 시 표시. 네이버 로그인의 placeholder 이메일(`placeholder` 문자열 포함)은 숨김 처리 |
-| 프로필 수정 버튼 | OutlinedButton | "프로필 수정" (13sp, Medium 500, `#2563EB`), 탭 시 프로필 수정 화면(`customer-profile-edit`)으로 이동 | 항상 표시 |
+| 연락처 | Text | `bodyMedium` (14sp, `#FFFFFFCC`) | 항상 표시 |
+| 이메일 | Text | `bodyMedium` (14sp, `#FFFFFFCC`) | 이메일 등록 시 표시. 네이버 로그인의 placeholder 이메일(`placeholder` 문자열 포함)은 숨김 처리 |
+| 프로필 수정 버튼 | OutlinedButton | "프로필 수정" (13sp, Medium 500, `#F59E0B`), 탭 시 프로필 수정 화면(`customer-profile-edit`)으로 이동 | 항상 표시 |
 
 **프로필 섹션 레이아웃:**
-- 배경: `#FFFFFF`
+- 배경: `#FFFFFF15`
 - 내부 패딩: 16px
 - 모서리 둥글기: 20px
 - 아이콘 → 이름 → 연락처 → 이메일 세로 중앙 정렬
 - 아이콘과 이름 사이 간격: 12px
-- 프로필 수정 버튼: 프로필 정보 아래 16px 간격, 테두리 색상 `#2563EB`, 모서리 8px
+- 프로필 수정 버튼: 프로필 정보 아래 16px 간격, 테두리 색상 `#FFFFFF40`, 모서리 8px
 
 ### 3.3 프로필 수정 바텀시트
 
@@ -105,7 +105,7 @@
 | 이름 입력 | TextField | 라벨 "이름", 현재 이름 표시 | 필수 |
 | 연락처 입력 | TextField | 라벨 "연락처", 현재 연락처 표시 | 필수, 전화번호 키보드 |
 | 이메일 입력 | TextField | 라벨 "이메일", 현재 이메일 표시 | 선택, 이메일 키보드 |
-| 저장 버튼 | ElevatedButton | "저장" (`titleMedium`, `#FFFFFF`) | 활성: 배경 `#2563EB`, 비활성: 배경 `#CBD5E1` |
+| 저장 버튼 | ElevatedButton | "저장" (`titleMedium`, `#FFFFFF`) | 활성: 배경 `#F59E0B`, 비활성: 배경 `#FFFFFF66` |
 | 닫기 버튼 | IconButton | `close` 아이콘 | 바텀시트 우측 상단 |
 
 **프로필 수정 바텀시트 레이아웃:**
@@ -120,8 +120,8 @@
 |----------|------|------|------|
 | 섹션 타이틀 | Text | "설정" (`titleMedium`, 16sp, SemiBold) | 항상 표시 |
 | 푸시 알림 항목 | ListTile | "푸시 알림" 라벨 + 토글 스위치 | 항상 표시 |
-| 푸시 알림 토글 | Switch | on/off 토글 | 활성 색상 `#2563EB`, 비활성 색상 `#CBD5E1` |
-| 알림 설명 | Text | "작업 상태 변경 시 푸시 알림을 받습니다" (`bodySmall`, 12sp, `#9CA3AF`) | 토글 아래 |
+| 푸시 알림 토글 | Switch | on/off 토글 | 활성 색상 `#22C55E`, 비활성 색상 `#FFFFFF66` |
+| 알림 설명 | Text | "작업 상태 변경 시 푸시 알림을 받습니다" (`bodySmall`, 12sp, `#FFFFFFAA`) | 토글 아래 |
 | 연락처 항목 | ListTile | "연락처" 라벨 + 연락처 텍스트 (15sp, normal) | 항상 표시 |
 
 ### 3.5 샵 등록/전환 섹션
@@ -130,18 +130,18 @@
 
 | 컴포넌트 | 타입 | 설명 | 상태 |
 |----------|------|------|------|
-| 아이콘 래퍼 | Container | 36x36px, 배경 `#EFF6FF`, 모서리 10px | 항상 표시 |
-| 아이콘 (고객) | Icon | `storefront`, 20px, `#2563EB` | role이 `customer`이고 샵 미등록 시 |
-| 아이콘 (사장님) | Icon | `swap_horiz`, 20px, `#2563EB` | role이 `shop_owner`일 때 |
+| 아이콘 래퍼 | Container | 36x36px, 배경 `#FFFFFF15`, 모서리 10px | 항상 표시 |
+| 아이콘 (고객) | Icon | `storefront`, 20px, `#F59E0B` | role이 `customer`이고 샵 미등록 시 |
+| 아이콘 (사장님) | Icon | `swap_horiz`, 20px, `#F59E0B` | role이 `shop_owner`일 때 |
 | 메뉴 텍스트 (고객) | Text | "샵 사장님 등록" (`bodyLarge`, 15sp, Medium 500) | role이 `customer`일 때 |
 | 메뉴 텍스트 (사장님) | Text | "사장님 모드 전환" (`bodyLarge`, 15sp, Medium 500) | role이 `shop_owner`이고 현재 고객 모드일 때 |
-| 우측 화살표 | Icon | `chevron_right`, 20px, `#9CA3AF` | 항상 표시 |
+| 우측 화살표 | Icon | `chevron_right`, 20px, `#FFFFFFAA` | 항상 표시 |
 
 #### 샵 등록/전환 카드 스타일
 
 | 속성 | 값 |
 |------|-----|
-| 배경색 | `#FFFFFF` |
+| 배경색 | `#FFFFFF18` (surfaceHigh) |
 | 높이 | 56px |
 | 내부 패딩 | 좌우 16px |
 | 모서리 둥글기 | 20px |
@@ -166,7 +166,7 @@
 |------|-----|
 | 아이콘 래퍼 배경 | `#FFFBEB` |
 | 아이콘 색상 | `#F59E0B` |
-| 텍스트 색상 | `#4A4A5A` |
+| 텍스트 색상 | `#FFFFFFCC` |
 | 서브텍스트 위치 | 메뉴 텍스트 아래 4px |
 
 **거절(rejected) 상태:**
@@ -177,7 +177,7 @@
 | 아이콘 색상 | `#EF4444` |
 | 텍스트 색상 | `#EF4444` |
 | 거절 사유 텍스트 | `bodySmall` (12sp), `#EF4444`, 최대 2줄 ellipsis |
-| 재신청 버튼 | `TextButton`, "재신청", 색상 `#2563EB`, 14sp, Medium 500 |
+| 재신청 버튼 | `TextButton`, "재신청", 색상 `#F59E0B`, 14sp, Medium 500 |
 | 카드 높이 | auto (내용에 따라 확장, 최소 56px) |
 
 ### 3.6 앱 정보 섹션
@@ -186,7 +186,7 @@
 |----------|------|------|------|
 | 섹션 타이틀 | Text | "앱 정보" (`titleMedium`, 16sp, SemiBold) | 항상 표시 |
 | 앱 버전 항목 | ListTile | "앱 버전" 라벨 + 버전 텍스트 | 항상 표시 |
-| 버전 텍스트 | Text | "1.0.0" (`bodyMedium`, 14sp, `#9CA3AF`) | 우측 정렬 |
+| 버전 텍스트 | Text | "1.0.0" (`bodyMedium`, 14sp, `#FFFFFFAA`) | 우측 정렬 |
 
 ### 3.7 로그아웃 버튼
 
@@ -195,7 +195,7 @@
 | 로그아웃 버튼 | OutlinedButton | "로그아웃" (`bodyLarge`, 16sp, `#EF4444`) | 항상 표시 |
 
 - 텍스트 색상: `#EF4444` (빨간색)
-- 배경: `#FFFFFF`
+- 배경: `#FFFFFF15`
 - 테두리: 1px `#EF4444`
 - cornerRadius: 14px
 - 폭: 100%
@@ -207,10 +207,10 @@
 
 | 컴포넌트 | 타입 | 설명 | 상태 |
 |----------|------|------|------|
-| 홈 탭 | BottomNavItem | 아이콘 `home` + "홈" | 비활성 (`#9CA3AF`) |
-| 샵검색 탭 | BottomNavItem | 아이콘 `search` + "샵검색" | 비활성 (`#9CA3AF`) |
-| 이력 탭 | BottomNavItem | 아이콘 `history` + "이력" | 비활성 (`#9CA3AF`) |
-| MY 탭 | BottomNavItem | 아이콘 `person` + "MY" | 활성 (`#2563EB`) |
+| 홈 탭 | BottomNavItem | 아이콘 `home` + "홈" | 비활성 (`#FFFFFF80`) |
+| 샵검색 탭 | BottomNavItem | 아이콘 `search` + "샵검색" | 비활성 (`#FFFFFF80`) |
+| 이력 탭 | BottomNavItem | 아이콘 `history` + "이력" | 비활성 (`#FFFFFF80`) |
+| MY 탭 | BottomNavItem | 아이콘 `person` + "MY" | 활성 (`#22C55E`) |
 
 **아이콘 폰트:** Material Symbols Rounded / **라벨:** 10sp / **아이콘-라벨 간격:** 4px / **높이:** 80px
 
@@ -386,7 +386,7 @@ await supabase
 > ui-ux-pro-max 기반 검증
 
 ### 접근성 (CRITICAL)
-- [x] 텍스트 명암비 4.5:1 이상 — 본문 색상 `#1A1A2E`/`#4A4A5A` on `#FFFFFF` 배경 충족
+- [x] 텍스트 명암비 4.5:1 이상 — 본문 색상 `#FFFFFFEE`/`#FFFFFFCC` on `#162E14` 배경 충족
 - [x] 아이콘 전용 버튼에 접근성 라벨 명시 — 비고에 프로필 아이콘, 토글 접근성 라벨 보완 완료
 - [x] 색상만으로 정보 구분하지 않음 (아이콘+텍스트 병행) — 로그아웃 버튼: 빨간색 + "로그아웃" 텍스트 병행
 

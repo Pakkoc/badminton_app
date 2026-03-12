@@ -1,6 +1,6 @@
 # 게시글 목록 — UI 화면 스펙
 
-> 최종 수정일: 2026-03-03
+> 최종 수정일: 2026-03-12
 
 ---
 
@@ -51,8 +51,8 @@
 
 | 섹션 | 설명 | 비고 |
 |------|------|------|
-| 상단 앱바 | 뒤로가기 + "게시판" 타이틀 | 배경 `#FFFFFF`, 하단 테두리 `#E8E0D8` 0.5px |
-| 카테고리 탭 | 공지사항 / 이벤트 2개 탭 | 활성 탭: `#2563EB`, 비활성: `#9CA3AF` |
+| 상단 앱바 | 뒤로가기 + "게시판" 타이틀 | 배경 `transparent`, 하단 테두리 `#FFFFFF20` 0.5px |
+| 카테고리 탭 | 공지사항 / 이벤트 2개 탭 | 활성 탭: `#F59E0B`, 비활성: `#FFFFFFAA` |
 | 게시글 카드 리스트 | 카테고리별 게시글 카드 목록 | gap 12px, padding 16px |
 | 하단 네비게이션 | 고객용 5탭 | 비활성 상태 (게시판은 별도 탭 없음) |
 
@@ -64,31 +64,31 @@
 
 | 컴포넌트 | 타입 | 설명 | 스타일 |
 |----------|------|------|--------|
-| 뒤로가기 | IconButton | 이전 화면으로 복귀 | Material Icon `arrow_back_ios`, 24px, `#1A1A2E` |
-| 타이틀 | Text | "게시판" | `titleLarge` (20sp, Bold), `#1A1A2E` |
+| 뒤로가기 | IconButton | 이전 화면으로 복귀 | Material Icon `arrow_back_ios`, 24px, `#FFFFFFEE` |
+| 타이틀 | Text | "게시판" | `titleLarge` (20sp, Bold), `#FFFFFFEE` |
 
 ### 3.2 카테고리 탭
 
 | 컴포넌트 | 타입 | 설명 | 스타일 |
 |----------|------|------|--------|
-| 공지사항 탭 | Tab | "공지사항" | 활성: `#2563EB` SemiBold, 비활성: `#9CA3AF` |
-| 이벤트 탭 | Tab | "이벤트" | 활성: `#2563EB` SemiBold, 비활성: `#9CA3AF` |
+| 공지사항 탭 | Tab | "공지사항" | 활성: `#22C55E` SemiBold, 비활성: `#FFFFFFAA` |
+| 이벤트 탭 | Tab | "이벤트" | 활성: `#22C55E` SemiBold, 비활성: `#FFFFFFAA` |
 
 **탭 바 스타일:**
-- 배경: `#FFFFFF`
+- 배경: `#FFFFFF15`
 - 높이: 44px
-- 인디케이터: `#2563EB`, 2px
+- 인디케이터: `#22C55E`, 2px
 - 텍스트: 14sp
 
 ### 3.3 게시글 카드
 
 | 컴포넌트 | 타입 | 설명 | 스타일 |
 |----------|------|------|--------|
-| 카드 컨테이너 | Card | 게시글 카드 | 배경 `#FFFFFF`, cornerRadius 20px, stroke `#E8E0D8` 1px |
-| 카테고리 뱃지 | Chip | "공지사항" 또는 "이벤트" | pill shape, 공지: 배경 `#EFF6FF` 텍스트 `#065F46`, 이벤트: 배경 `#FEF3C7` 텍스트 `#92400E` |
-| 날짜 | Text | 게시 날짜 | `bodySmall` (12sp), `#9CA3AF` |
-| 제목 | Text | 게시글 제목 | `titleSmall` (14sp, Bold), `#1A1A2E`, 최대 1줄 |
-| 미리보기 | Text | 본문 앞부분 | `bodySmall` (13sp), `#4A4A5A`, 최대 2줄 |
+| 카드 컨테이너 | Card | 게시글 카드 | 배경 `#FFFFFF15`, cornerRadius 20px, stroke `#FFFFFF20` 1px |
+| 카테고리 뱃지 | Chip | "공지사항" 또는 "이벤트" | pill shape, 공지: 배경 `#FFFFFF15` 텍스트 `#34D399`, 이벤트: 배경 `#F59E0B26` 텍스트 `#F59E0B` |
+| 날짜 | Text | 게시 날짜 | `bodySmall` (12sp), `#FFFFFFAA` |
+| 제목 | Text | 게시글 제목 | `titleSmall` (14sp, Bold), `#FFFFFFEE`, 최대 1줄 |
+| 미리보기 | Text | 본문 앞부분 | `bodySmall` (13sp), `#FFFFFFCC`, 최대 2줄 |
 
 **카드 레이아웃:**
 - 내부 패딩: 16px
@@ -99,7 +99,7 @@
 
 ### 3.4 빈 상태
 
-- "등록된 게시글이 없습니다" (`bodyMedium`, 14sp, `#9CA3AF`, 중앙 정렬)
+- "등록된 게시글이 없습니다" (`bodyMedium`, 14sp, `#FFFFFFAA`, 중앙 정렬)
 
 ---
 

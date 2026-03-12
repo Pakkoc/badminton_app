@@ -1,6 +1,6 @@
 # 작업 관리 — UI 화면 스펙
 
-> 최종 수정일: 2026-03-04
+> 최종 수정일: 2026-03-12
 
 ---
 
@@ -52,10 +52,10 @@
 
 | 섹션 | 설명 | 비고 |
 |------|------|------|
-| 상단 앱바 | "작업 관리" 타이틀 | 배경 `#FFFFFF` |
+| 상단 앱바 | "작업 관리" 타이틀 | 배경 `#FFFFFF15` |
 | 상태 필터 탭 | 전체/접수됨/작업중/완료 4개 탭으로 필터링 | 수평 스크롤 없이 고정 배치 |
 | 작업 목록 | 필터에 맞는 작업을 시간순으로 표시 | 세로 스크롤, Pull-to-refresh 지원 |
-| 하단 네비게이션 | 3개 탭 (작업관리 활성) | 활성 색상 `#2563EB` |
+| 하단 네비게이션 | 3개 탭 (작업관리 활성) | 활성 색상 `#22C55E` |
 
 ---
 
@@ -77,8 +77,8 @@
 | 완료 탭 | FilterChip | "완료 N" | 완료 상태 dot + 텍스트 |
 
 **필터 탭 스타일:**
-- 선택됨: 배경 `#2563EB`, 텍스트 `#FFFFFF`, 모서리 `radius_full` (999px), dot 숨김
-- 미선택: 배경 `#FFFFFF`, 텍스트 `#6B7280` (`$--text-secondary`), 테두리 `$--border` 1px, 모서리 `radius_full` (999px)
+- 선택됨: 배경 `#F59E0B`, 텍스트 `#FFFFFF`, 모서리 `radius_full` (999px), dot 숨김
+- 미선택: 배경 `#FFFFFF15`, 텍스트 `#FFFFFFCC` (`$--text-secondary`), 테두리 `$--border` 1px, 모서리 `radius_full` (999px)
 - 상태 dot: 6x6 원형, 접수 `$--status-received`, 작업중 `$--status-progress`, 완료 `$--status-completed`, dot과 텍스트 간격 6px
 - 탭 간 간격: 8px
 - 수평 패딩: 16px, 수직 패딩: 8px
@@ -92,7 +92,7 @@
 | 회원 이름 | Text | `titleMedium` (16sp, Medium) | 항상 표시 |
 | 상태 뱃지 | StatusBadge | 접수됨/작업중/완료 (showDot: true) | 카드 우측 상단 |
 | 타임라인 Row | Row | 접수/시작/완료 시간을 가로 한 줄로 표시 (11sp) | 항상 표시 |
-| 메모 아이콘 | Icon | `note` 아이콘 (12px, `#9CA3AF`) | 메모가 있을 때만 표시 |
+| 메모 아이콘 | Icon | `note` 아이콘 (12px, `#FFFFFFAA`) | 메모가 있을 때만 표시 |
 | 상태 변경 버튼 | FilledButton (compact) | 다음 상태로 변경 | 완료 상태이면 숨김 |
 
 **타임라인 Row 규칙:**
@@ -100,27 +100,27 @@
 | 단계 | 포맷 | 활성 조건 | 활성 스타일 | 비활성 스타일 |
 |------|------|-----------|-------------|---------------|
 | 접수 | `접수 M/D HH:MM` | 항상 활성 | 11sp, Medium, `$--text-tertiary` | - |
-| 시작 | `시작 M/D HH:MM` / `시작 ──` | `inProgressAt != null` | 11sp, Medium, `$--text-tertiary` | 11sp, `#CBD5E1` |
-| 완료 | `완료 M/D HH:MM` / `완료 ──` | `completedAt != null` | 11sp, Medium, `$--text-tertiary` | 11sp, `#CBD5E1` |
+| 시작 | `시작 M/D HH:MM` / `시작 ──` | `inProgressAt != null` | 11sp, Medium, `$--text-tertiary` | 11sp, `#FFFFFF66` |
+| 완료 | `완료 M/D HH:MM` / `완료 ──` | `completedAt != null` | 11sp, Medium, `$--text-tertiary` | 11sp, `#FFFFFF66` |
 
 - 각 단계 사이에 `→` 구분자 표시 (활성/비활성 동일 규칙 적용)
 - 공통 위젯: `OrderTimelineRow` (`lib/widgets/order_timeline_row.dart`)
 
 **작업 카드 스타일:**
-- 배경: `#FFFFFF`
+- 배경: `#FFFFFF15`
 - 모서리: 20px
 - 내부 패딩: 16px
 - 카드 간 간격: 8px
-- 테두리: `#E8E0D8` 1px
+- 테두리: `#FFFFFF20` 1px
 - 그림자: elevation 0 (플랫한 느낌)
-- **좌측 accent border**: 4px, 상태별 색상 (접수=`#F59E0B`, 작업중=`#2563EB`, 완료=`#10B981`)
+- **좌측 accent border**: 4px, 상태별 색상 (접수=`#F59E0B`, 작업중=`#3B82F6`, 완료=`#10B981`)
 
 **상태 변경 버튼 (카드 내부):**
 
 | 현재 상태 | 버튼 텍스트 | 버튼 배경 | 버튼 크기 |
 |-----------|------------|----------|----------|
-| 접수됨 | "작업 시작" | `#2563EB` | 높이 32px, 패딩 수평 12px |
-| 작업중 | "작업 완료" | `#2563EB` | 높이 32px, 패딩 수평 12px |
+| 접수됨 | "작업 시작" | `#F59E0B` | 높이 32px, 패딩 수평 12px |
+| 작업중 | "작업 완료" | `#F59E0B` | 높이 32px, 패딩 수평 12px |
 | 완료 | (숨김) | - | - |
 
 - 버튼 텍스트: `#FFFFFF`, `labelMedium` (12sp, Medium)
@@ -131,9 +131,9 @@
 
 | 컴포넌트 | 타입 | 설명 | 상태 |
 |----------|------|------|------|
-| 대시보드 탭 | BottomNavItem | `dashboard` + "대시보드" | 비활성 (`#9CA3AF`) |
-| 작업관리 탭 | BottomNavItem | `assignment` + "작업관리" | 활성 (`#2563EB`) |
-| 설정 탭 | BottomNavItem | `settings` + "설정" | 비활성 (`#9CA3AF`) |
+| 대시보드 탭 | BottomNavItem | `dashboard` + "대시보드" | 비활성 (`#FFFFFF80`) |
+| 작업관리 탭 | BottomNavItem | `assignment` + "작업관리" | 활성 (`#22C55E`) |
+| 설정 탭 | BottomNavItem | `settings` + "설정" | 비활성 (`#FFFFFF80`) |
 
 **아이콘 폰트:** Material Symbols Rounded / **라벨:** 10sp / **아이콘-라벨 간격:** 4px / **높이:** 80px
 
@@ -260,7 +260,7 @@ final orders = await query.limit(50);
 - **대시보드에서 진입 시**: `statusFilter`가 전달되면 해당 필터 탭이 자동으로 선택된 상태로 표시한다.
 - **카카오택시 참고**: 상태 변경 흐름을 카카오택시의 빠른 상태 전환 UX를 참고하여 설계. 최소한의 탭으로 상태 변경이 가능하도록 한다.
 - **삭제 기능**: 스와이프 삭제는 `접수됨` 상태의 작업에만 허용한다. 작업중/완료 상태는 스와이프 비활성.
-- **텍스트 명암비**: 본문 텍스트(`#4A4A5A`)와 배경(`#FFFFFF`)의 명암비는 WCAG AA 기준 4.5:1 이상을 충족해야 한다.
+- **텍스트 명암비**: 본문 텍스트(`#FFFFFFCC`)와 배경(`#162E14`)의 명암비는 WCAG AA 기준 4.5:1 이상을 충족해야 한다.
 - **터치 타겟**: 모든 터치 가능 요소(필터 탭, 작업 카드, 상태 변경 버튼)의 터치 영역은 최소 44x44px을 보장한다. 상태 변경 버튼(높이 32px)은 터치 영역을 패딩으로 확장하여 44px을 보장한다. 인접 터치 타겟 간 최소 8px 간격을 유지한다.
 
 ---
@@ -311,7 +311,7 @@ final orders = await query.limit(50);
 **Lottie 에셋 준비:**
 - 파일: `assets/animations/empty_manage.json`
 - 테마: 빈 작업 목록 — 클립보드 + 셔틀콕
-- 색상: `#9CA3AF` (tertiary) + `#E8E0D8` (border)
+- 색상: `#FFFFFFAA` (tertiary) + `#FFFFFF20` (border)
 - 크기: 100x100px
 - 재생: 무한 루프 (loop: true)
 - 대안: Lottie 에셋 준비 전까지 텍스트 기반 빈 상태 유지

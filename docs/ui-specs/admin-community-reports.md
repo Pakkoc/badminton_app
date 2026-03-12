@@ -1,6 +1,6 @@
 # 커뮤니티 신고 관리 — UI 화면 스펙
 
-> 최종 수정일: 2026-03-07
+> 최종 수정일: 2026-03-12
 
 ---
 
@@ -93,7 +93,7 @@
 | 배경 | colorScheme.surface |
 | 모서리 | cornerRadius 12 |
 | 테두리 | colorScheme.outlineVariant, 1px |
-| 뱃지 (대기중) | #FEF3C7 bg, #D97706 text, labelSmall w600 |
+| 뱃지 (대기중) | #F59E0B26 bg, #F59E0B text, labelSmall w600 |
 | 뱃지 (처리완료) | #DCFCE7 bg, #16A34A text |
 | 날짜 | bodySmall, colorScheme.outline |
 | 유형 | titleSmall, w600 |

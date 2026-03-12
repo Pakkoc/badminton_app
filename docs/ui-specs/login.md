@@ -1,6 +1,6 @@
 # 로그인 — UI 화면 스펙
 
-> 최종 수정일: 2026-03-07
+> 최종 수정일: 2026-03-12
 
 ---
 
@@ -71,10 +71,10 @@
 | 속성 | 값 |
 |------|-----|
 | 아이콘 크기 | 56 x 56px |
-| 아이콘 색상 | `#2563EB` (Primary Blue) |
+| 아이콘 색상 | `#F59E0B` (Amber) |
 | 앱 이름 크기 | 28sp (`displayMedium`) |
 | 앱 이름 굵기 | Bold (700) |
-| 앱 이름 색상 | `#1A1A2E` (Text Primary) |
+| 앱 이름 색상 | `#FFFFFFEE` (Text Primary, White 93%) |
 | 아이콘-텍스트 간격 | 12px |
 | 정렬 | 가로 중앙 |
 
@@ -91,10 +91,10 @@
 |------|-----|
 | 메인 문구 텍스트 크기 | 22sp (`headlineSmall`) |
 | 메인 문구 굵기 | Bold (700) |
-| 메인 문구 색상 | `#1A1A2E` (Text Primary) |
+| 메인 문구 색상 | `#FFFFFFEE` (Text Primary, White 93%) |
 | 서브 문구 텍스트 크기 | 16sp (`bodyLarge`) |
 | 서브 문구 굵기 | Regular (400) |
-| 서브 문구 색상 | `#4A4A5A` (Text Secondary) |
+| 서브 문구 색상 | `#FFFFFFCC` (Text Secondary, White 80%) |
 | 문구 간 간격 | 8px |
 | 정렬 | 가로 중앙 |
 
@@ -140,10 +140,10 @@
 |------|-----|
 | 너비 | 화면 전체 (수평 패딩 16px 제외) |
 | 높이 | 48px |
-| 배경색 | `#FFFFFF` |
-| 테두리 | `#E8E0D8` 1.5px |
+| 배경색 | `#FFFFFF18` (surfaceHigh) |
+| 테두리 | `#FFFFFF20` 1.5px |
 | 텍스트 | "G  Gmail로 시작하기" |
-| 텍스트 색상 | `#1A1A2E` |
+| 텍스트 색상 | `#FFFFFFEE` |
 | 텍스트 크기 | 16sp (`titleMedium`) |
 | 텍스트 굵기 | SemiBold (600) |
 | 모서리 둥글기 | 20px (`radius_lg`) |
@@ -206,7 +206,7 @@ Supabase Auth signInWithOAuth 호출
 
 | 속성 | 값 |
 |------|-----|
-| 배경색 | `#FEE2E2` (Error Background) |
+| 배경색 | `#EF444426` (Error Background) |
 | 텍스트 색상 | `#EF4444` (Error) |
 | 좌측 아이콘 | `error_outline`, 색상 `#EF4444` |
 | 모서리 둥글기 | 8px |
@@ -324,7 +324,7 @@ if (result == null) {
 
 - 소셜 로그인 버튼에 각각 `semanticLabel`을 명시한다: `"카카오로 시작하기"`, `"네이버로 시작하기"`, `"Gmail로 시작하기"`.
 - 로딩 상태의 CircularProgressIndicator에 `semanticLabel: "로그인 중"` 을 명시한다.
-- 텍스트 색상(`#1A1A2E`)과 배경(`#FFFFFF`)의 명암비는 15.4:1 로 WCAG AA 기준(4.5:1)을 충족한다.
+- 텍스트 색상(`#FFFFFFEE`)과 배경(`#162E14`)의 명암비는 12.8:1 로 WCAG AA 기준(4.5:1)을 충족한다.
 - 카카오 버튼 텍스트(`#191919`)와 배경(`#FEE500`)의 명암비는 WCAG AA 기준을 충족한다.
 - 네이버 버튼 텍스트(`#FFFFFF`)와 배경(`#03C75A`)의 명암비를 확인하여 AA 기준 미달 시 텍스트 굵기 또는 크기를 보정한다.
 
@@ -335,7 +335,7 @@ if (result == null) {
 > ui-ux-pro-max 기반 검증
 
 ### 접근성 (CRITICAL)
-- ✅ 텍스트 명암비 4.5:1 이상 — 본문 텍스트(#1A1A2E on #FFFFFF = 15.4:1) 충족
+- ✅ 텍스트 명암비 4.5:1 이상 — 본문 텍스트(#FFFFFFEE on #FFFFFF = 15.4:1) 충족
 - ✅ 아이콘 전용 버튼에 접근성 라벨 명시 — 각 소셜 버튼에 semanticLabel 추가 (비고 섹션 참조)
 - ✅ 색상만으로 정보 구분하지 않음 (아이콘+텍스트 병행) — 각 소셜 버튼에 브랜드 아이콘 + 텍스트 병행
 

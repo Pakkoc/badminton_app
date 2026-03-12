@@ -1,6 +1,6 @@
 # 샵 QR코드 — UI 화면 스펙
 
-> 최종 수정일: 2026-03-03
+> 최종 수정일: 2026-03-12
 
 ---
 
@@ -59,13 +59,13 @@
 
 | 섹션 | 설명 | 비고 |
 |------|------|------|
-| 상단 앱바 | 뒤로가기 + "샵 QR코드" 타이틀 | 배경 `#FFFFFF` |
+| 상단 앱바 | 뒤로가기 + "샵 QR코드" 타이틀 | 배경 `#FFFFFF15` |
 | QR코드 영역 | 샵 고유 QR코드를 중앙에 크게 표시 | 흰색 배경 카드 위에 QR코드 배치 |
 | 샵 이름 | QR코드 아래에 샵 이름 표시 | 본 샵 확인용 |
 | 안내 문구 | "가게에 QR을 비치하세요" 메시지 | 사용 방법 안내 |
 | QR 동작 설명 | 앱 설치/미설치 고객별 동작 안내 | 사장님이 QR의 역할을 이해하도록 |
 | 공유/다운로드 버튼 | 이미지 저장, 카카오톡 공유, 인쇄용 다운로드 | 2개 버튼 가로 배치 |
-| 하단 네비게이션 | 3개 탭 (설정 활성) | 활성 색상 `#2563EB` |
+| 하단 네비게이션 | 3개 탭 (설정 활성) | 활성 색상 `#22C55E` |
 
 ---
 
@@ -75,24 +75,24 @@
 
 | 컴포넌트 | 타입 | 설명 | 스타일 |
 |----------|------|------|--------|
-| 뒤로가기 | IconButton | 이전 화면으로 복귀 | Material Icon `arrow_back_ios`, 크기 24px, 색상 `#1A1A2E` |
-| 타이틀 | Text | "내 샵 QR코드" | `titleLarge` (18sp, SemiBold), 색상 `#1A1A2E` |
+| 뒤로가기 | IconButton | 이전 화면으로 복귀 | Material Icon `arrow_back_ios`, 크기 24px, 색상 `#FFFFFFEE` |
+| 타이틀 | Text | "내 샵 QR코드" | `titleLarge` (18sp, SemiBold), 색상 `#FFFFFFEE` |
 
 **앱바 스타일:**
 
 | 속성 | 값 |
 |------|-----|
-| 배경색 | `#FFFFFF` |
+| 배경색 | `#FFFFFF18` (surfaceHigh) |
 | 높이 | 56px |
-| 하단 테두리 | `#E8E0D8` 0.5px |
+| 하단 테두리 | `#FFFFFF20` 0.5px |
 | elevation | 0 |
 
 ### 3.2 QR코드 카드
 
 | 컴포넌트 | 타입 | 설명 | 스타일 |
 |----------|------|------|--------|
-| QR 카드 컨테이너 | Card | QR코드를 감싸는 카드 | 배경 `#FFFFFF`, 모서리 24px, 그림자 elevation 2, 패딩 32px |
-| QR코드 | QrImageView | 샵 고유 URL을 인코딩한 QR코드 | 크기 240x240px, 전경색 `#1A1A2E`, 배경색 `#FFFFFF` |
+| QR 카드 컨테이너 | Card | QR코드를 감싸는 카드 | 배경 `#FFFFFF15`, 모서리 24px, 그림자 elevation 2, 패딩 32px |
+| QR코드 | QrImageView | 샵 고유 URL을 인코딩한 QR코드 | 크기 240x240px, 전경색 `#FFFFFFEE`, 배경색 `#1A2E1A` |
 
 **QR코드 데이터:**
 - 인코딩 내용: 샵 고유 딥링크 URL (예: `https://gutalarm.app/shop/{shop_id}`)
@@ -110,7 +110,7 @@
 
 | 컴포넌트 | 타입 | 설명 | 스타일 |
 |----------|------|------|--------|
-| 샵 이름 | Text | 사장님의 샵 이름 표시 | `headlineMedium` (20sp, SemiBold), 색상 `#1A1A2E`, 중앙 정렬 |
+| 샵 이름 | Text | 사장님의 샵 이름 표시 | `headlineMedium` (20sp, SemiBold), 색상 `#FFFFFFEE`, 중앙 정렬 |
 
 **레이아웃:**
 - QR 카드 아래 간격: 24px
@@ -119,7 +119,7 @@
 
 | 컴포넌트 | 타입 | 설명 | 스타일 |
 |----------|------|------|--------|
-| 안내 텍스트 | Text | "가게에 QR을 비치하세요" | `bodyLarge` (16sp, Medium), 색상 `#2563EB`, 중앙 정렬 |
+| 안내 텍스트 | Text | "가게에 QR을 비치하세요" | `bodyLarge` (16sp, Medium), 색상 `#F59E0B`, 중앙 정렬 |
 
 **레이아웃:**
 - 샵 이름 아래 간격: 8px
@@ -128,9 +128,9 @@
 
 | 컴포넌트 | 타입 | 설명 | 스타일 |
 |----------|------|------|--------|
-| 설명 카드 | Card | QR 스캔 시 동작 안내 | 배경 `#FBF8F4`, 모서리 20px, 패딩 16px |
-| 앱 설치 고객 | Row (Icon + Text) | "앱 설치 고객 → 회원 자동 등록" | 아이콘: `check_circle` 20px `#10B981`, 텍스트: `bodyMedium` (14sp) `#4A4A5A` |
-| 앱 미설치 | Row (Icon + Text) | "앱 미설치 → 앱 다운로드 안내" | 아이콘: `smartphone` 20px `#2563EB`, 텍스트: `bodyMedium` (14sp) `#4A4A5A` |
+| 설명 카드 | Card | QR 스캔 시 동작 안내 | 배경 `#162E14`, 모서리 20px, 패딩 16px |
+| 앱 설치 고객 | Row (Icon + Text) | "앱 설치 고객 → 회원 자동 등록" | 아이콘: `check_circle` 20px `#10B981`, 텍스트: `bodyMedium` (14sp) `#FFFFFFCC` |
+| 앱 미설치 | Row (Icon + Text) | "앱 미설치 → 앱 다운로드 안내" | 아이콘: `smartphone` 20px `#F59E0B`, 텍스트: `bodyMedium` (14sp) `#FFFFFFCC` |
 
 **레이아웃:**
 - 안내 문구 아래 간격: 24px
@@ -141,8 +141,8 @@
 
 | 컴포넌트 | 타입 | 설명 | 스타일 |
 |----------|------|------|--------|
-| 공유 버튼 | OutlinedButton | QR 이미지 공유 | 테두리 `#2563EB` 1.5px, 텍스트 `#2563EB`, 아이콘 `share` |
-| 인쇄용 다운로드 버튼 | OutlinedButton | 인쇄용 고해상도 QR 다운로드 | 테두리 `#2563EB` 1.5px, 텍스트 `#2563EB`, 아이콘 `print` |
+| 공유 버튼 | OutlinedButton | QR 이미지 공유 | 테두리 `#FFFFFF40` 1.5px, 텍스트 `#F59E0B`, 아이콘 `share` |
+| 인쇄용 다운로드 버튼 | OutlinedButton | 인쇄용 고해상도 QR 다운로드 | 테두리 `#FFFFFF40` 1.5px, 텍스트 `#F59E0B`, 아이콘 `print` |
 
 **공유 버튼 동작:**
 - 탭 시 시스템 공유 시트 표시 (이미지로 저장, 카카오톡 공유 등)
@@ -170,9 +170,9 @@
 
 | 컴포넌트 | 타입 | 설명 | 상태 |
 |----------|------|------|------|
-| 대시보드 탭 | BottomNavItem | 아이콘 `dashboard` + "대시보드" | 비활성 (`#9CA3AF`) |
-| 작업관리 탭 | BottomNavItem | 아이콘 `assignment` + "작업관리" | 비활성 (`#9CA3AF`) |
-| 설정 탭 | BottomNavItem | 아이콘 `settings` + "설정" | 비활성 (`#9CA3AF`) |
+| 대시보드 탭 | BottomNavItem | 아이콘 `dashboard` + "대시보드" | 비활성 (`#FFFFFF80`) |
+| 작업관리 탭 | BottomNavItem | 아이콘 `assignment` + "작업관리" | 비활성 (`#FFFFFF80`) |
+| 설정 탭 | BottomNavItem | 아이콘 `settings` + "설정" | 비활성 (`#FFFFFF80`) |
 
 ---
 

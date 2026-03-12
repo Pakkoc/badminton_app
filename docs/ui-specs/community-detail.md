@@ -1,6 +1,6 @@
 # 게시글 상세 — UI 화면 스펙
 
-> 최종 수정일: 2026-03-08
+> 최종 수정일: 2026-03-12
 
 ---
 
@@ -93,7 +93,7 @@
 |------|------|
 | 아바타 | 40px CircleAvatar, 프로필 이미지 또는 이니셜 |
 | 닉네임 | titleSmall (14sp, SemiBold, textPrimary) |
-| 작성자 배지 | `· 작성자` (12sp, Medium, Primary #2563EB) — `comment.authorId == post.authorId`인 경우만 표시 |
+| 작성자 배지 | `· 작성자` (12sp, Medium, Primary #F59E0B) — `comment.authorId == post.authorId`인 경우만 표시 |
 | 시간 | bodySmall (12sp, textTertiary), 예: `· 3시간 전` |
 | 내용 | bodyMedium (14sp, textPrimary) |
 | 좋아요 | thumb_up_outlined 16px + count (bodySmall, textTertiary) |
@@ -108,7 +108,7 @@
 |------|------|
 | 아바타 | 32px CircleAvatar, 프로필 이미지 또는 이니셜 |
 | 들여쓰기 | 좌측 52px (40px 아바타 + 12px gap) |
-| @멘션 | bodyMedium Bold, Primary (#2563EB), 내용 앞에 자동 삽입 |
+| @멘션 | bodyMedium Bold, Primary (#F59E0B), 내용 앞에 자동 삽입 |
 | 나머지 요소 | 1단 댓글 타일과 동일 (닉네임, 작성자 배지, 시간, 내용, 좋아요, 더보기) |
 
 #### 3.5.3 답글 펼치기/숨기기 버튼 (_ReplyToggleButton)
@@ -118,7 +118,7 @@
 | 위치 | 1단 댓글 아래, 들여쓰기 52px |
 | 텍스트 (접힌 상태) | "답글 N개 더보기" + expand_more 아이콘 16px |
 | 텍스트 (펼친 상태) | "답글 숨기기" + expand_less 아이콘 16px |
-| 스타일 | labelMedium (12sp, Medium), Primary (#2563EB) |
+| 스타일 | labelMedium (12sp, Medium), Primary (#F59E0B) |
 | 표시 조건 | 해당 댓글의 대댓글 수 > 0인 경우에만 표시 |
 
 #### 3.5.4 작성자 배지
@@ -128,7 +128,7 @@
 | 조건 | `comment.authorId == post.authorId` |
 | 텍스트 | "작성자" |
 | 구분자 | " · " |
-| 색상 | Primary (#2563EB) |
+| 색상 | Primary (#F59E0B) |
 | 크기 | labelSmall (12sp, Medium) |
 
 #### 3.5.5 스레드 연결선 (둥근 스타일)
@@ -141,7 +141,7 @@
 
 | 요소 | 스펙 |
 |------|------|
-| 색상 | `AppTheme.border` (`#E8E0D8`) |
+| 색상 | `AppTheme.border` (`#FFFFFF20`) |
 | 두께 | 1.5px |
 | X 위치 | 1단 댓글 아바타 중심 X좌표 |
 | 위쪽 선 | `isFirst`이면 없음, 아니면 아바타 상단까지 8px 세로선 |
@@ -155,7 +155,7 @@
 
 | 요소 | 스펙 |
 |------|------|
-| 색상 | `AppTheme.border` (`#E8E0D8`) |
+| 색상 | `AppTheme.border` (`#FFFFFF20`) |
 | 두께 | 1.5px |
 | 꺾임 반지름 | 10px (둥근 arc, `Path.arcToPoint` 사용) |
 | 중간 대댓글 | ├ 모양 — 세로선이 끊기지 않고 계속 이어짐 |

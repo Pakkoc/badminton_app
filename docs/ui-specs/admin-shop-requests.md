@@ -1,6 +1,6 @@
 # 관리자 샵 등록 요청 목록 — UI 화면 스펙
 
-> 최종 수정일: 2026-03-05
+> 최종 수정일: 2026-03-12
 
 ---
 
@@ -50,8 +50,8 @@
 
 | 섹션 | 설명 | 비고 |
 |------|------|------|
-| 상단 앱바 | "샵 등록 요청" 타이틀 | 배경 `#FFFFFF`, 하단 테두리 `#E8E0D8` 0.5px |
-| 필터 탭 | 상태별 필터링 (전체/대기/승인/거절) | 수평 스크롤, 활성 탭 `#2563EB` |
+| 상단 앱바 | "샵 등록 요청" 타이틀 | 배경 `transparent`, 하단 테두리 `#FFFFFF20` 0.5px |
+| 필터 탭 | 상태별 필터링 (전체/대기/승인/거절) | 수평 스크롤, 활성 탭 `#F59E0B` |
 | 요청 카드 목록 | 샵 등록 요청 카드 리스트 | ListView.builder, 최신순 정렬 |
 
 ---
@@ -68,10 +68,10 @@
 
 | 속성 | 값 |
 |------|-----|
-| 배경색 | `#FFFFFF` |
+| 배경색 | `#FFFFFF18` (surfaceHigh) |
 | 높이 | 56px |
-| 타이틀 색상 | `#1A1A2E` |
-| 하단 테두리 | `#E8E0D8` 0.5px |
+| 타이틀 색상 | `#FFFFFFEE` |
+| 하단 테두리 | `#FFFFFF20` 0.5px |
 | elevation | 0 |
 
 ### 3.2 필터 탭
@@ -87,10 +87,10 @@
 
 | 속성 | 값 |
 |------|-----|
-| 활성 배경 | `#2563EB` |
+| 활성 배경 | `#F59E0B` |
 | 활성 텍스트 | `#FFFFFF`, 14sp, SemiBold |
-| 비활성 배경 | `#EFF6FF` |
-| 비활성 텍스트 | `#4A4A5A`, 14sp, Regular |
+| 비활성 배경 | `#FFFFFF15` |
+| 비활성 텍스트 | `#FFFFFFCC`, 14sp, Regular |
 | 모서리 둥글기 | 20px |
 | 탭 간 간격 | 8px |
 | 수평 패딩 | 16px |
@@ -101,11 +101,11 @@
 
 | 컴포넌트 | 타입 | 설명 | 상태 |
 |----------|------|------|------|
-| 샵 아이콘 | Icon | `storefront`, 20px, `#2563EB`, 배경 `#EFF6FF` 36x36px 원형 | 항상 표시 |
-| 샵 이름 | Text | `titleMedium` (16sp, SemiBold, `#1A1A2E`) | 항상 표시 |
-| 연락처 | Text | `bodySmall` (12sp, `#4A4A5A`) | 항상 표시 |
-| 주소 | Text | `bodySmall` (12sp, `#9CA3AF`), 1줄 ellipsis | 항상 표시 |
-| 신청일 | Text | `bodySmall` (12sp, `#9CA3AF`) | 항상 표시 |
+| 샵 아이콘 | Icon | `storefront`, 20px, `#F59E0B`, 배경 `#FFFFFF15` 36x36px 원형 | 항상 표시 |
+| 샵 이름 | Text | `titleMedium` (16sp, SemiBold, `#FFFFFFEE`) | 항상 표시 |
+| 연락처 | Text | `bodySmall` (12sp, `#FFFFFFCC`) | 항상 표시 |
+| 주소 | Text | `bodySmall` (12sp, `#FFFFFFAA`), 1줄 ellipsis | 항상 표시 |
+| 신청일 | Text | `bodySmall` (12sp, `#FFFFFFAA`) | 항상 표시 |
 | 상태 뱃지 | StatusBadge | 상태별 색상 분기 | 항상 표시 |
 
 **상태 뱃지 스타일:**
@@ -120,7 +120,7 @@
 
 | 속성 | 값 |
 |------|-----|
-| 배경색 | `#FFFFFF` |
+| 배경색 | `#FFFFFF18` (surfaceHigh) |
 | 모서리 둥글기 | 16px |
 | 내부 패딩 | 16px |
 | 카드 간 간격 | 12px |
@@ -248,7 +248,7 @@ final count = await supabase
 
 ### 로딩 상태 (스켈레톤)
 
-- 카드 스켈레톤: shimmer 효과(배경 `#E8E0D8` -> `#EFF6FF`, 1500ms 반복), 3개 표시
+- 카드 스켈레톤: shimmer 효과(배경 `#FFFFFF20` -> `#FFFFFF15`, 1500ms 반복), 3개 표시
 
 ### Flutter 구현 참고
 
@@ -263,7 +263,7 @@ final count = await supabase
 > ui-ux-pro-max 기반 검증
 
 ### 접근성 (CRITICAL)
-- [x] 텍스트 명암비 4.5:1 이상 — 본문 색상 `#1A1A2E`/`#4A4A5A` on `#FFFFFF` 배경 충족
+- [x] 텍스트 명암비 4.5:1 이상 — 본문 색상 `#FFFFFFEE`/`#FFFFFFCC` on `#162E14` 배경 충족
 - [x] 아이콘 전용 버튼에 접근성 라벨 명시 — 카드 semanticLabel 보완 완료
 - [x] 색상만으로 정보 구분하지 않음 (아이콘+텍스트 병행) — 상태 뱃지: 색상 + 텍스트 병행
 

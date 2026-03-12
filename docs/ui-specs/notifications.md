@@ -1,6 +1,6 @@
 # 알림 — UI 화면 스펙
 
-> 최종 수정일: 2026-03-03
+> 최종 수정일: 2026-03-12
 
 ---
 
@@ -50,7 +50,7 @@
 
 | 섹션 | 설명 | 비고 |
 |------|------|------|
-| 상단 앱바 | 뒤로가기 + "알림" 타이틀 | 배경 `#FFFFFF`, 하단 테두리 `#E8E0D8` 0.5px |
+| 상단 앱바 | 뒤로가기 + "알림" 타이틀 | 배경 `transparent`, 하단 테두리 `#FFFFFF20` 0.5px |
 | 알림 리스트 | 알림 아이템을 시간순(최신 먼저)으로 표시 | divider로 구분, 하단 네비게이션 없음 (상세 화면) |
 
 ---
@@ -61,27 +61,27 @@
 
 | 컴포넌트 | 타입 | 설명 | 스타일 |
 |----------|------|------|--------|
-| 뒤로가기 | IconButton | 이전 화면으로 복귀 | Material Icon `arrow_back_ios`, 크기 24px, 색상 `#1A1A2E` |
-| 타이틀 | Text | "알림" | `titleLarge` (20sp, Bold), 색상 `#1A1A2E` |
+| 뒤로가기 | IconButton | 이전 화면으로 복귀 | Material Icon `arrow_back_ios`, 크기 24px, 색상 `#FFFFFFEE` |
+| 타이틀 | Text | "알림" | `titleLarge` (20sp, Bold), 색상 `#FFFFFFEE` |
 
 **앱바 스타일:**
 
 | 속성 | 값 |
 |------|-----|
-| 배경색 | `#FFFFFF` |
+| 배경색 | `#FFFFFF18` (surfaceHigh) |
 | 높이 | 56px |
 | 패딩 | [0, 16] |
-| 하단 테두리 | `#E8E0D8` 0.5px |
+| 하단 테두리 | `#FFFFFF20` 0.5px |
 
 ### 3.2 알림 아이템
 
 | 컴포넌트 | 타입 | 설명 | 스타일 |
 |----------|------|------|--------|
 | 아이콘 원형 배경 | Container | 알림 유형별 아이콘 | 40x40px, 원형 (cornerRadius 20px), 유형별 배경색 |
-| 알림 제목 | Text | 알림 제목 | `bodyMedium` (14sp, Medium 500), 색상 `#1A1A2E` |
-| 알림 내용 | Text | 알림 상세 내용 | `bodySmall` (13sp), 색상 `#4A4A5A`, 최대 2줄 |
-| 시간 | Text | 상대 시간 표시 | `bodySmall` (12sp), 색상 `#9CA3AF` |
-| 하단 구분선 | Divider | 아이템 간 구분 | 색상 `#EFF6FF`, 두께 1px |
+| 알림 제목 | Text | 알림 제목 | `bodyMedium` (14sp, Medium 500), 색상 `#FFFFFFEE` |
+| 알림 내용 | Text | 알림 상세 내용 | `bodySmall` (13sp), 색상 `#FFFFFFCC`, 최대 2줄 |
+| 시간 | Text | 상대 시간 표시 | `bodySmall` (12sp), 색상 `#FFFFFFAA` |
+| 하단 구분선 | Divider | 아이템 간 구분 | 색상 `#FFFFFF15`, 두께 1px |
 
 **알림 아이템 레이아웃:**
 - Row: [아이콘 원형 40x40] + [Column: 제목, 내용, 시간]
@@ -90,23 +90,23 @@
 - 제목 ~ 내용: 4px
 - 내용 ~ 시간: 4px
 - 모서리 둥글기: 20px
-- **안읽음 배경**: `#EFF6FF` (`$--primary-container`), 읽은 알림은 배경 없음
+- **안읽음 배경**: `#FFFFFF15` (`$--primary-container`), 읽은 알림은 배경 없음
 
 ### 3.3 알림 유형별 아이콘
 
 | 알림 유형 | 아이콘 | 배경색 | 아이콘 색상 |
 |-----------|--------|--------|-------------|
-| 작업 상태 변경 | `build` | `#EFF6FF` | `#2563EB` |
-| 작업 완료 | `check_circle` | `#EFF6FF` | `#10B981` |
-| 새 공지사항/이벤트 | `campaign` | `#FEF3C7` | `#F59E0B` |
-| 접수 확인 | `assignment` | `#EFF6FF` | `#2563EB` |
+| 작업 상태 변경 | `build` | `#FFFFFF15` | `#F59E0B` |
+| 작업 완료 | `check_circle` | `#FFFFFF15` | `#10B981` |
+| 새 공지사항/이벤트 | `campaign` | `#F59E0B26` | `#F59E0B` |
+| 접수 확인 | `assignment` | `#FFFFFF15` | `#F59E0B` |
 
 ### 3.4 빈 상태 (Empty State)
 
 | 컴포넌트 | 타입 | 설명 | 스타일 |
 |----------|------|------|--------|
-| 아이콘 | Icon | 빈 알림 | `notifications_none`, 64px, 색상 `#CBD5E1` |
-| 메시지 | Text | "알림이 없습니다" | `bodyLarge` (16sp), 색상 `#9CA3AF`, 중앙 정렬 |
+| 아이콘 | Icon | 빈 알림 | `notifications_none`, 64px, 색상 `#FFFFFF66` |
+| 메시지 | Text | "알림이 없습니다" | `bodyLarge` (16sp), 색상 `#FFFFFFAA`, 중앙 정렬 |
 
 ---
 
@@ -199,12 +199,12 @@
 | 요소 | 현재 (정적) | 구현 목표 (동적) | 구현 방법 |
 |------|------------|-----------------|-----------|
 | 빈 상태 아이콘 | Material Icon `notifications_none` 64px | Lottie 애니메이션 종 일러스트 | `lottie` 패키지. 종이 좌우로 흔들리는 루프. `assets/animations/empty_notifications.json` |
-| 알림 읽음 처리 | 즉시 반영 | 배경색 페이드 전환 | `AnimatedContainer(duration: 200ms)`. 미읽음(`#EFF6FF`) → 읽음(`#FFFFFF`) 전환 |
+| 알림 읽음 처리 | 즉시 반영 | 배경색 페이드 전환 | `AnimatedContainer(duration: 200ms)`. 미읽음(`#FFFFFF15`) → 읽음(`#FFFFFF08`) 전환 |
 
 **Lottie 에셋 준비:**
 - 파일: `assets/animations/empty_notifications.json`
 - 테마: 조용한 종 — "아직 알림 없음" 느낌
-- 색상: `#9CA3AF` (tertiary)
+- 색상: `#FFFFFFAA` (tertiary)
 - 크기: 80x80px
 - 재생: 무한 루프 (loop: true)
 - 대안: Lottie 에셋 준비 전까지 Material Icon `notifications_none` 64px 정적 사용

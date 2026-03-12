@@ -1,6 +1,6 @@
 # 고객 홈 — UI 화면 스펙
 
-> 최종 수정일: 2026-03-04
+> 최종 수정일: 2026-03-12
 
 ---
 
@@ -63,7 +63,7 @@
 │         🏸 (일러스트 120x120)      │
 │                                  │
 │    "아직 진행 중인 작업이 없습니다"   │  headlineMedium
-│    "주변 샵을 검색해 거트를          │  bodyMedium, #9CA3AF
+│    "주변 샵을 검색해 거트를          │  bodyMedium, #FFFFFFAA
 │     맡겨보세요"                    │
 │                                  │
 │      [ 주변 샵 검색하기 ]           │  Primary Outlined 버튼
@@ -78,10 +78,10 @@
 
 | 섹션 | 설명 | 비고 |
 |------|------|------|
-| 상단 앱바 | 앱 타이틀("거트알림")과 알림 아이콘 표시 | 알림 아이콘에 읽지 않은 알림 수 뱃지 표시. 앱바 배경 `#FFFFFF`, 하단 테두리 `#E8E0D8` 0.5px |
+| 상단 앱바 | 앱 타이틀("거트알림")과 알림 아이콘 표시 | 알림 아이콘에 읽지 않은 알림 수 뱃지 표시. 앱바 배경 `transparent`, 하단 테두리 `#FFFFFF20` 0.5px |
 | 진행 중 요약 카드 | 현재 접수됨/작업중 상태의 작업 건수를 요약 표시 | 완료 건은 포함하지 않음. 진행 중 작업이 0건이면 카드 자체를 숨김 |
 | 내 작업 섹션 | 진행 중인 작업 카드를 세로 스크롤 목록으로 표시 | 최신 접수 순(created_at DESC) 정렬. Pull-to-refresh 지원 |
-| 하단 네비게이션 | 5개 탭으로 주요 화면 이동 | 현재 탭(홈)은 `#2563EB`로 활성 상태 강조 |
+| 하단 네비게이션 | 5개 탭으로 주요 화면 이동 | 현재 탭(홈)은 `#F59E0B`로 활성 상태 강조 |
 
 ---
 
@@ -91,31 +91,31 @@
 
 | 컴포넌트 | 타입 | 설명 | 스타일 |
 |----------|------|------|--------|
-| 앱 타이틀 | Text | "거트알림" 텍스트 표시 | `titleLarge` (20sp, Bold), 색상 `#2563EB` (`$--primary`) |
-| 알림 아이콘 | IconButton | 알림 목록 화면으로 이동 | Material Icon `notifications`, 크기 24px, 색상 `#1A1A2E` |
+| 앱 타이틀 | Text | "거트알림" 텍스트 표시 | `titleLarge` (20sp, Bold), 색상 `#FFFFFFCC` (`$--textSecondary`) |
+| 알림 아이콘 | IconButton | 알림 목록 화면으로 이동 | Material Icon `notifications`, 크기 24px, 색상 `#FFFFFFEE` |
 | 알림 뱃지 | Badge | 읽지 않은 알림 수 표시 | 배경 `#EF4444`, 텍스트 `#FFFFFF`, 크기 16px, 우측 상단에 겹침 배치. 0건이면 숨김 |
 
 **앱바 스타일:**
 
 | 속성 | 값 |
 |------|-----|
-| 배경색 | `#FFFFFF` |
+| 배경색 | `#FFFFFF18` (surfaceHigh) |
 | 높이 | 56px |
 | 좌측 패딩 | 16px (타이틀) |
 | 우측 패딩 | 8px (아이콘) |
-| 하단 테두리 | `#E8E0D8` 0.5px |
+| 하단 테두리 | `#FFFFFF20` 0.5px |
 | elevation | 0 |
 
 ### 3.2 진행 중 요약 카드
 
 | 컴포넌트 | 타입 | 설명 | 스타일 |
 |----------|------|------|--------|
-| 요약 카드 컨테이너 | Container | 진행 중 작업 건수 요약 | 배경 `#FFFFFF` (`$--surface`), 모서리 20px, 패딩 16px, shadow (blur 12, y:2, `#0000000A`) |
+| 요약 카드 컨테이너 | Container | 진행 중 작업 건수 요약 | 배경 `#FFFFFF15` (`$--surface`), 모서리 20px, 패딩 16px, shadow (blur 12, y:2, `#0000000A`) |
 | 건수 영역 | Row | 접수/작업중 건수를 균등 2칸 center 배치 | 간격 16px, 각 칸 `Expanded` + center 정렬 |
 | 접수 dot | Container | 접수 상태 색상 원 | 8x8 원형, 색상 `$--status-received` (`#F59E0B`) |
-| 접수 건수 | Text | "접수 N건" | 14sp, SemiBold, 색상 `#1A1A2E` (`$--text-primary`), dot과 간격 8px |
-| 작업중 dot | Container | 작업중 상태 색상 원 | 8x8 원형, 색상 `$--status-progress` (`#2563EB`) |
-| 작업중 건수 | Text | "작업중 N건" | 14sp, SemiBold, 색상 `#1A1A2E` (`$--text-primary`), dot과 간격 8px |
+| 접수 건수 | Text | "접수 N건" | 14sp, SemiBold, 색상 `#FFFFFFEE` (`$--text-primary`), dot과 간격 8px |
+| 작업중 dot | Container | 작업중 상태 색상 원 | 8x8 원형, 색상 `$--status-progress` (`#F59E0B`) |
+| 작업중 건수 | Text | "작업중 N건" | 14sp, SemiBold, 색상 `#FFFFFFEE` (`$--text-primary`), dot과 간격 8px |
 
 **표시 조건:**
 - 접수됨 + 작업중 합계가 1건 이상일 때만 표시
@@ -145,22 +145,22 @@
 |----------|------|------|--------|
 | 카드 컨테이너 | Card (탭 가능) | 개별 작업 정보 카드 | 아래 카드 스타일 참조 |
 | 상태 뱃지 | StatusBadge | 접수됨/작업중/완료 상태 | 아래 상태 뱃지 스타일 참조 |
-| 샵 이름 | Text | 샵 이름 | `bodyMedium` `#4A4A5A` |
-| 타임라인 | OrderTimelineRow | 접수→시작→완료 3단계 타임라인을 가로 한 줄로 표시 | 폰트 11sp, Medium 500. 도달 단계: `#9CA3AF`, 미도달 단계: `#CBD5E1`. 형식: "접수 M/D HH:mm → 시작 M/D HH:mm → 완료 ──". 미도달 시간은 "──"로 표시 |
-| 메모 | Row (Icon + Text) | 메모 아이콘 + 메모 텍스트 (있을 때만 표시) | 아이콘: `notes` 16px `#9CA3AF`, 텍스트: `bodySmall` (12sp) `#9CA3AF`. 최대 1줄, overflow ellipsis |
-| 길찾기 아이콘 | IconButton | 완료 상태일 때만 표시 | `directions` 24px, 색상 `#2563EB`. 탭 시 네이버 지도 길찾기 실행 |
+| 샵 이름 | Text | 샵 이름 | `bodyMedium` `#FFFFFFCC` |
+| 타임라인 | OrderTimelineRow | 접수→시작→완료 3단계 타임라인을 가로 한 줄로 표시 | 폰트 11sp, Medium 500. 도달 단계: `#FFFFFFAA`, 미도달 단계: `#FFFFFF66`. 형식: "접수 M/D HH:mm → 시작 M/D HH:mm → 완료 ──". 미도달 시간은 "──"로 표시 |
+| 메모 | Row (Icon + Text) | 메모 아이콘 + 메모 텍스트 (있을 때만 표시) | 아이콘: `notes` 16px `#FFFFFFAA`, 텍스트: `bodySmall` (12sp) `#FFFFFFAA`. 최대 1줄, overflow ellipsis |
+| 길찾기 아이콘 | IconButton | 완료 상태일 때만 표시 | `directions` 24px, 색상 `#F59E0B`. 탭 시 네이버 지도 길찾기 실행 |
 
 **카드 스타일:**
 
 | 속성 | 값 |
 |------|-----|
-| 카드 배경 | `#FFFFFF` (Surface) |
+| 카드 배경 | `#FFFFFF15` (Glass Surface) |
 | 카드 모서리 | 20px (`radius_lg`) |
 | 카드 내부 패딩 | 16px |
 | 카드 간 간격 | 12px |
-| 카드 테두리 | `#E8E0D8` 1px |
+| 카드 테두리 | `#FFFFFF20` 1px |
 | 카드 그림자 | elevation 1 (미세한 그림자) |
-| **좌측 accent border** | 4px, 상태별 색상 (접수=`#F59E0B`, 작업중=`#2563EB`, 완료=`#10B981`) |
+| **좌측 accent border** | 4px, 상태별 색상 (접수=`#F59E0B`, 작업중=`#3B82F6`, 완료=`#10B981`) |
 | 탭 피드백 | scale 0.98, 100ms (배민 스타일) |
 
 **카드 내부 간격:**
@@ -173,9 +173,9 @@
 
 | 상태 | 전경색 (Foreground) | 배경색 (Background) | 텍스트 색상 | 아이콘 | 텍스트 |
 |------|---------------------|---------------------|-------------|--------|--------|
-| `received` (접수됨) | `#F59E0B` | `#FEF3C7` | `#92400E` | `inventory_2` | "접수됨" |
-| `in_progress` (작업중) | `#2563EB` | `#EFF6FF` | `#1E40AF` | `build_circle` | "작업중" |
-| `completed` (완료) | `#10B981` | `#EFF6FF` | `#065F46` | `check_circle` | "완료" |
+| `received` (접수됨) | `#F59E0B` | `#F59E0B26` | `#F59E0B` | `inventory_2` | "접수됨" |
+| `in_progress` (작업중) | `#3B82F6` | `#FFFFFF15` | `#60A5FA` | `build_circle` | "작업중" |
+| `completed` (완료) | `#10B981` | `#FFFFFF15` | `#34D399` | `check_circle` | "완료" |
 
 **뱃지 스타일:**
 
@@ -188,7 +188,7 @@
 | 점과 텍스트 간격 | 6px |
 
 **작업중 펄스 애니메이션:**
-- 좌측 `#2563EB` 점에 펄스(pulse) 애니메이션 적용
+- 좌측 `#3B82F6` 점에 펄스(pulse) 애니메이션 적용
 - 0% → 50% → 100%: opacity 1.0 → 0.3 → 1.0
 - 지속 시간: 1500ms, 무한 반복
 - 카카오택시의 실시간 상태 추적 느낌 연출
@@ -206,13 +206,13 @@
 
 | 속성 | 값 |
 |------|-----|
-| 바 배경 | `#FFFFFF` (`$--surface`) |
+| 바 배경 | `#FFFFFF15` (`$--surface`) |
 | 바 높이 | 80px (Safe Area 포함) |
-| 상단 테두리 | `#E8E0D8` (`$--border`) 0.5px |
-| 활성 아이콘 색상 | `#2563EB` (`$--primary`) |
-| 활성 라벨 색상 | `#2563EB` (`$--primary`) |
-| 비활성 아이콘 색상 | `#9CA3AF` (`$--text-tertiary`) |
-| 비활성 라벨 색상 | `#9CA3AF` (`$--text-tertiary`) |
+| 상단 테두리 | `#FFFFFF20` (`$--border`) 0.5px |
+| 활성 아이콘 색상 | `#FFFFFFCC` (`$--textSecondary`) |
+| 활성 라벨 색상 | `#FFFFFFCC` (`$--textSecondary`) |
+| 비활성 아이콘 색상 | `#FFFFFFAA` (`$--text-tertiary`) |
+| 비활성 라벨 색상 | `#FFFFFFAA` (`$--text-tertiary`) |
 | 아이콘 크기 | 24px |
 | 라벨 폰트 | 10sp |
 | 아이콘-라벨 간격 | 4px |
@@ -222,9 +222,9 @@
 | 컴포넌트 | 타입 | 설명 | 스타일 |
 |----------|------|------|--------|
 | 일러스트 | Image | 배드민턴 셔틀콕/라켓 일러스트 | 120x120px, 화면 중앙 |
-| 제목 | Text | "아직 진행 중인 작업이 없습니다" | `headlineMedium` (20sp, SemiBold), 색상 `#1A1A2E` |
-| 설명 | Text | "주변 샵을 검색해 거트를 맡겨보세요" | `bodyMedium` (14sp, Regular), 색상 `#9CA3AF` |
-| CTA 버튼 | OutlinedButton | "주변 샵 검색하기" | 테두리 `#2563EB` 1.5px, 텍스트 `#2563EB`, 높이 48px, 모서리 14px |
+| 제목 | Text | "아직 진행 중인 작업이 없습니다" | `headlineMedium` (20sp, SemiBold), 색상 `#FFFFFFEE` |
+| 설명 | Text | "주변 샵을 검색해 거트를 맡겨보세요" | `bodyMedium` (14sp, Regular), 색상 `#FFFFFFAA` |
+| CTA 버튼 | OutlinedButton | "주변 샵 검색하기" | 테두리 `#FFFFFF40` 1.5px, 텍스트 `#F59E0B`, 높이 48px, 모서리 14px |
 
 **레이아웃:**
 - 전체 화면 중앙 정렬 (Center)
@@ -242,16 +242,16 @@
 | 작업 카드 스켈레톤 | 높이 140px, 너비 100%, 모서리 20px, 3개 반복 |
 
 **스켈레톤 스타일:**
-- 배경색: `#E8E0D8` → `#EFF6FF` (shimmer 효과)
+- 배경색: `#FFFFFF10` → `#FFFFFF20` (shimmer 효과)
 - 애니메이션: 1500ms 반복
 
 ### 3.8 에러 상태
 
 | 컴포넌트 | 타입 | 설명 | 스타일 |
 |----------|------|------|--------|
-| 에러 아이콘 | Icon | 오류 표시 | `error_outline`, 48px, 색상 `#9CA3AF` |
-| 에러 메시지 | Text | "데이터를 불러올 수 없습니다" | `bodyLarge` (16sp), 색상 `#4A4A5A` |
-| 재시도 버튼 | FilledButton | "다시 시도" | 배경 `#2563EB`, 텍스트 `#FFFFFF`, 높이 48px, 모서리 14px |
+| 에러 아이콘 | Icon | 오류 표시 | `error_outline`, 48px, 색상 `#FFFFFFAA` |
+| 에러 메시지 | Text | "데이터를 불러올 수 없습니다" | `bodyLarge` (16sp), 색상 `#FFFFFFCC` |
+| 재시도 버튼 | FilledButton | "다시 시도" | 배경 `#F59E0B`, 텍스트 `#FFFFFF`, 높이 48px, 모서리 14px |
 
 ---
 
@@ -288,7 +288,7 @@
 | 1 | 작업 카드 탭 | 작업 카드 터치 | 작업 상세 화면으로 이동 | `customer-order-detail` 화면 전환. `order_id` 전달. 카드 탭 시 scale 0.98 피드백 (100ms) |
 | 2 | 알림 아이콘 탭 | 알림 아이콘 터치 | 알림 목록 화면으로 이동 | 알림 목록 화면 표시. 뱃지 숫자 초기화 |
 | 3 | 하단 탭 전환 | 하단 네비게이션 탭 터치 | 해당 화면으로 이동 | 선택된 탭 화면으로 전환. 활성 탭 색상 변경 |
-| 4 | 아래로 당기기 (Pull-to-refresh) | 목록 영역에서 아래로 스와이프 | 작업 목록 재조회 | Material `RefreshIndicator` 표시 (색상 `#2563EB`). 데이터 갱신 후 인디케이터 사라짐 |
+| 4 | 아래로 당기기 (Pull-to-refresh) | 목록 영역에서 아래로 스와이프 | 작업 목록 재조회 | Material `RefreshIndicator` 표시 (색상 `#F59E0B`). 데이터 갱신 후 인디케이터 사라짐 |
 | 5 | 길찾기 아이콘 탭 | 완료 상태 카드의 길찾기 아이콘 터치 | 네이버 지도 앱 길찾기 호출 | `nmap://route/...` URL Scheme으로 네이버 지도 앱 실행. 미설치 시 웹 지도 폴백 |
 | 6 | 빈 상태 버튼 탭 | "주변 샵 검색하기" 버튼 터치 | 샵 검색 화면으로 이동 | `customer-shop-search` 화면 전환 |
 | 7 | 에러 재시도 | "다시 시도" 버튼 터치 | 데이터 재조회 | 로딩 상태 전환 후 API 재호출 |
@@ -360,11 +360,11 @@ supabase
 
 | 상태 | 조건 | UI 표시 |
 |------|------|---------|
-| **로딩** | 화면 최초 진입 시 데이터 로드 중 | 스켈레톤 shimmer 표시 (요약 카드 1개 + 작업 카드 3개). 배경 `#E8E0D8` → `#EFF6FF` |
+| **로딩** | 화면 최초 진입 시 데이터 로드 중 | 스켈레톤 shimmer 표시 (요약 카드 1개 + 작업 카드 3개). 배경 `#FFFFFF10` → `#FFFFFF20` |
 | **빈 상태** | 조회 결과 활성 작업이 0건 | 화면 중앙에 일러스트(120x120) + "아직 진행 중인 작업이 없습니다" + "주변 샵을 검색해 거트를 맡겨보세요" + [주변 샵 검색하기] 버튼 |
 | **에러** | 네트워크 오류 또는 서버 오류 발생 | 화면 중앙에 에러 아이콘 + "데이터를 불러올 수 없습니다" + [다시 시도] 버튼 |
 | **정상** | 활성 작업이 1건 이상 존재 | 요약 카드 + 작업 카드 목록 표시 |
-| **리프레시 중** | Pull-to-refresh 동작 중 | 상단에 Material `RefreshIndicator` (색상 `#2563EB`) 표시. 기존 목록은 유지 |
+| **리프레시 중** | Pull-to-refresh 동작 중 | 상단에 Material `RefreshIndicator` (색상 `#F59E0B`) 표시. 기존 목록은 유지 |
 
 ### 7.2 로컬 상태 변수
 
@@ -414,7 +414,7 @@ supabase
 - 앱이 이미 실행 중인 경우에도 동일하게 작업 상세 화면으로 이동한다.
 
 ### 길찾기 아이콘
-- 작업 카드에서 완료 상태인 경우에만 카드 우측 하단에 "길찾기" 아이콘 버튼(`directions`, `#2563EB`)을 추가 표시한다.
+- 작업 카드에서 완료 상태인 경우에만 카드 우측 하단에 "길찾기" 아이콘 버튼(`directions`, `#F59E0B`)을 추가 표시한다.
 - 탭 시 네이버 지도 앱의 길찾기를 호출한다 (`nmap://route/...`).
 - 네이버 지도 앱 미설치 시 웹 브라우저로 네이버 지도 웹 버전을 폴백 호출한다.
 
@@ -447,7 +447,7 @@ supabase
 > ui-ux-pro-max 기반 검증
 
 ### 접근성 (CRITICAL)
-- ✅ 텍스트 명암비 4.5:1 이상 — 본문 텍스트(#1A1A2E on #FFFFFF = 15.4:1), 보조 텍스트(#4A4A5A on #FFFFFF ≈ 7.2:1) 충족
+- ✅ 텍스트 명암비 4.5:1 이상 — 본문 텍스트(#FFFFFFEE on #FFFFFF = 15.4:1), 보조 텍스트(#FFFFFFCC on #FFFFFF ≈ 7.2:1) 충족
 - ✅ 아이콘 전용 버튼에 접근성 라벨 명시 — 보완 완료 (비고 섹션에 알림, 길찾기, 네비게이션 semanticLabel 추가)
 - ✅ 색상만으로 정보 구분하지 않음 (아이콘+텍스트 병행) — 상태 뱃지에 색상 + 아이콘 + 텍스트 병행 (섹션 3.4, 비고 접근성 항목)
 
@@ -484,15 +484,15 @@ supabase
 | 요소 | 현재 (정적) | 구현 목표 (동적) | 구현 방법 |
 |------|------------|-----------------|-----------|
 | 빈 상태 일러스트 | 정적 이미지 120x120 | Lottie 애니메이션 셔틀콕 | `lottie` 패키지. 셔틀콕이 가볍게 흔들리는 루프 애니메이션. `assets/animations/empty_orders.json` |
-| 작업중 펄스 | CSS 개념의 펄스 점 | `AnimatedContainer` 펄스 | `AnimationController` + `Tween<double>(begin: 0.6, end: 1.0)`. 좌측 `#2563EB` 점이 1500ms 주기로 불투명도 반복 |
+| 작업중 펄스 | CSS 개념의 펄스 점 | `AnimatedContainer` 펄스 | `AnimationController` + `Tween<double>(begin: 0.6, end: 1.0)`. 좌측 `#3B82F6` 점이 1500ms 주기로 불투명도 반복 |
 | 상태 색상 전환 | 즉시 변경 | 300ms 전환 | `AnimatedSwitcher(duration: 300ms)` 로 상태 뱃지 교체 시 페이드 효과 |
 | 새 카드 추가 | 즉시 표시 | Slide + Fade 300ms | `AnimatedList` + `SlideTransition` + `FadeTransition` |
-| Pull-to-refresh | 기본 인디케이터 | Material 리프레시 | `RefreshIndicator` 기본 사용, 색상 `#2563EB` |
+| Pull-to-refresh | 기본 인디케이터 | Material 리프레시 | `RefreshIndicator` 기본 사용, 색상 `#F59E0B` |
 
 **Lottie 에셋 준비:**
 - 파일: `assets/animations/empty_orders.json`
 - 테마: 배드민턴 셔틀콕이 날아다니는 가벼운 루프 애니메이션
-- 색상: `#2563EB` (primary) + `#E8E0D8` (border)
+- 색상: `#F59E0B` (amber) + `#FFFFFF20` (border)
 - 크기: 120x120px
 - 재생: 무한 루프 (loop: true)
 - 대안: Lottie 에셋 준비 전까지 `assets/images/empty_orders.svg` 정적 일러스트 사용

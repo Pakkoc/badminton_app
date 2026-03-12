@@ -1,6 +1,6 @@
 # 프로필 설정 — UI 화면 스펙
 
-> 최종 수정일: 2026-03-04
+> 최종 수정일: 2026-03-12
 
 ---
 
@@ -64,14 +64,14 @@
 
 | 속성 | 값 |
 |------|-----|
-| 배경색 | `#FFFFFF` (Surface) |
+| 배경색 | `#FFFFFF18` (surfaceHigh) |
 | 높이 | 56px |
 | 타이틀 크기 | 18sp (`titleLarge`) |
 | 타이틀 굵기 | SemiBold (600) |
-| 타이틀 색상 | `#1A1A2E` (Text Primary) |
+| 타이틀 색상 | `#FFFFFFEE` (Text Primary, White 93%) |
 | 뒤로가기 아이콘 | `arrow_back_ios` (Material Symbols) |
-| 아이콘 색상 | `#1A1A2E` (Text Primary) |
-| 하단 테두리 | `#E8E0D8` 0.5px |
+| 아이콘 색상 | `#FFFFFFEE` (Text Primary, White 93%) |
+| 하단 테두리 | `#FFFFFF20` 0.5px |
 
 ### 3.2 서브타이틀
 
@@ -86,7 +86,7 @@
 | 텍스트 | "서비스 이용을 위해 정보를 입력해주세요" |
 | 폰트 크기 | 14sp (`bodyMedium`) |
 | 굵기 | Regular (400) |
-| 색상 | `#4A4A5A` (Text Secondary) |
+| 색상 | `#FFFFFFCC` (Text Secondary, White 80%) |
 | 상단 여백 | 24px |
 | 하단 여백 | 8px |
 | 수평 패딩 | 16px |
@@ -112,15 +112,15 @@
 |------|-----|
 | 라벨 | "이름" |
 | 라벨 크기 | 14sp (`labelLarge`), Medium (500) |
-| 라벨 색상 | `#1A1A2E` (Text Primary) |
+| 라벨 색상 | `#FFFFFFEE` (Text Primary, White 93%) |
 | 라벨-필드 간격 | 8px |
 | 높이 | 48px |
-| 배경색 | `#EFF6FF` (Surface Variant) |
+| 배경색 | `#FFFFFF15` (Surface Variant) |
 | 모서리 둥글기 | 14px (`radius_md`) |
 | 힌트 텍스트 | "이름을 입력해주세요" |
-| 힌트 텍스트 색상 | `#9CA3AF` (Text Tertiary) |
-| 좌측 아이콘 | `person_outline`, 색상 `#9CA3AF` |
-| 포커스 테두리 | `#2563EB` 2px |
+| 힌트 텍스트 색상 | `#FFFFFFAA` (Text Tertiary, White 67%) |
+| 좌측 아이콘 | `person_outline`, 색상 `#FFFFFFAA` |
+| 포커스 테두리 | `#F59E0B` 2px |
 | 오류 테두리 | `#EF4444` 2px |
 | 키보드 타입 | `TextInputType.name` |
 | 기본값 | 소셜 프로필에서 가져온 이름 (사용자가 수정 가능) |
@@ -131,15 +131,15 @@
 |------|-----|
 | 라벨 | "연락처" |
 | 라벨 크기 | 14sp (`labelLarge`), Medium (500) |
-| 라벨 색상 | `#1A1A2E` (Text Primary) |
+| 라벨 색상 | `#FFFFFFEE` (Text Primary, White 93%) |
 | 라벨-필드 간격 | 8px |
 | 높이 | 48px |
-| 배경색 | `#EFF6FF` |
+| 배경색 | `#FFFFFF15` |
 | 모서리 둥글기 | 14px |
 | 힌트 텍스트 | "010-0000-0000" |
-| 힌트 텍스트 색상 | `#9CA3AF` (Text Tertiary) |
-| 좌측 아이콘 | `phone_outline`, 색상 `#9CA3AF` |
-| 포커스 테두리 | `#2563EB` 2px |
+| 힌트 텍스트 색상 | `#FFFFFFAA` (Text Tertiary, White 67%) |
+| 좌측 아이콘 | `phone_outline`, 색상 `#FFFFFFAA` |
+| 포커스 테두리 | `#F59E0B` 2px |
 | 오류 테두리 | `#EF4444` 2px |
 | 키보드 타입 | `TextInputType.phone` |
 | 입력 포맷 | 자동 하이픈 삽입 (010-1234-5678) |
@@ -156,14 +156,14 @@
 |------|-----|
 | 너비 | 화면 전체 (수평 패딩 16px 제외) |
 | 높이 | 48px |
-| 배경색 | `#2563EB` (Primary Blue) |
-| 비활성 배경색 | `#2563EB` 40% 불투명도 |
+| 배경색 | `#F59E0B` (Amber CTA) |
+| 비활성 배경색 | `#F59E0B` 40% 불투명도 |
 | 텍스트 | "시작하기" |
 | 텍스트 색상 | `#FFFFFF` |
 | 텍스트 크기 | 16sp (`titleMedium`) |
 | 텍스트 굵기 | SemiBold (600) |
 | 모서리 둥글기 | 14px (`radius_md`) |
-| 눌림 상태 배경 | `#2563EB` (Primary Dark) |
+| 눌림 상태 배경 | `#F59E0B` (Primary Dark) |
 | 폼과의 간격 | 24px |
 
 ---
@@ -241,8 +241,8 @@
 
 | 속성 | 값 |
 |------|-----|
-| 배경색 | `#EFF6FF` (Primary Container) |
-| 텍스트 색상 | `#065F46` |
+| 배경색 | `#FFFFFF15` (Primary Container) |
+| 텍스트 색상 | `#34D399` |
 | 좌측 아이콘 | `check_circle`, 색상 `#10B981` |
 | 모서리 둥글기 | 14px |
 | 표시 위치 | 화면 상단 |
@@ -252,7 +252,7 @@
 
 | 속성 | 값 |
 |------|-----|
-| 배경색 | `#FEE2E2` (Error Background) |
+| 배경색 | `#EF444426` (Error Background) |
 | 텍스트 색상 | `#EF4444` (Error) |
 | 좌측 아이콘 | `error_outline`, 색상 `#EF4444` |
 | 모서리 둥글기 | 14px |
@@ -309,8 +309,8 @@ await supabase
 | 상태 | 조건 | UI 표시 |
 |------|------|---------|
 | **기본** | 화면 진입 시 | 이름 필드에 소셜 프로필 이름 기본값, 연락처 빈 값, 비활성 버튼 |
-| **입력 중** | 필드에 포커스 | 포커스된 필드 테두리 `#2563EB` |
-| **유효** | 모든 필수 필드 입력 완료 | 시작하기 버튼 활성 (`#2563EB` 배경) |
+| **입력 중** | 필드에 포커스 | 포커스된 필드 테두리 `#F59E0B` |
+| **유효** | 모든 필수 필드 입력 완료 | 시작하기 버튼 활성 (`#F59E0B` 배경) |
 | **로딩** | users INSERT API 호출 중 | 버튼에 CircularProgressIndicator 표시, 모든 입력 비활성 |
 | **에러** | 저장 실패 | 에러 스낵바 표시 + 입력 필드 유지 |
 
@@ -355,7 +355,7 @@ await supabase
 ### 접근성
 
 - 뒤로가기 아이콘(`arrow_back_ios`)에 `semanticLabel: "뒤로가기"` 를 명시한다.
-- 텍스트 색상(`#1A1A2E`)과 배경(`#FFFFFF`)의 명암비는 15.4:1 로 WCAG AA 기준(4.5:1)을 충족한다.
+- 텍스트 색상(`#FFFFFFEE`)과 배경(`#162E14`)의 명암비는 12.8:1 로 WCAG AA 기준(4.5:1)을 충족한다.
 
 ### Flutter 구현 가이드
 
@@ -370,7 +370,7 @@ await supabase
 > ui-ux-pro-max 기반 검증
 
 ### 접근성 (CRITICAL)
-- [x] 텍스트 명암비 4.5:1 이상 -- 본문 텍스트(#1A1A2E on #FFFFFF = 15.4:1) 충족
+- [x] 텍스트 명암비 4.5:1 이상 -- 본문 텍스트(#FFFFFFEE on #FFFFFF = 15.4:1) 충족
 - [x] 아이콘 전용 버튼에 접근성 라벨 명시 -- 뒤로가기 아이콘 semanticLabel 추가 (비고 섹션 참조)
 - [x] 색상만으로 정보 구분하지 않음 (아이콘+텍스트 병행) -- 해당 없음 (역할 선택 제거됨)
 

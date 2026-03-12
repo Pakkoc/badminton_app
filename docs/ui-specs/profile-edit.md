@@ -1,6 +1,6 @@
 # 프로필 수정 — UI 화면 스펙
 
-> 최종 수정일: 2026-03-03
+> 최종 수정일: 2026-03-12
 
 ---
 
@@ -57,10 +57,10 @@
 
 | 섹션 | 설명 | 비고 |
 |------|------|------|
-| 상단 앱바 | 뒤로가기 + "프로필 수정" 타이틀 | 배경 `#FFFFFF`, 하단 테두리 `#E8E0D8` 0.5px |
+| 상단 앱바 | 뒤로가기 + "프로필 수정" 타이틀 | 배경 `transparent`, 하단 테두리 `#FFFFFF20` 0.5px |
 | 프로필 이미지 | 아바타 이미지 + 카메라 버튼 | 중앙 정렬, 80x80px |
 | 입력 필드 영역 | 이름, 이메일(읽기전용), 연락처 | 세로 정렬, gap 16px |
-| 하단 저장 버튼 | "저장" 버튼 | 하단 고정, 배경 `#2563EB` |
+| 하단 저장 버튼 | "저장" 버튼 | 하단 고정, 배경 `#F59E0B` |
 
 ---
 
@@ -70,16 +70,16 @@
 
 | 컴포넌트 | 타입 | 설명 | 스타일 |
 |----------|------|------|--------|
-| 뒤로가기 | IconButton | 이전 화면으로 복귀 | Material Icon `arrow_back_ios`, 24px, `#1A1A2E` |
-| 타이틀 | Text | "프로필 수정" | `titleLarge` (20sp, Bold), `#1A1A2E` |
+| 뒤로가기 | IconButton | 이전 화면으로 복귀 | Material Icon `arrow_back_ios`, 24px, `#FFFFFFEE` |
+| 타이틀 | Text | "프로필 수정" | `titleLarge` (20sp, Bold), `#FFFFFFEE` |
 
 ### 3.2 프로필 이미지
 
 | 컴포넌트 | 타입 | 설명 | 스타일 |
 |----------|------|------|--------|
-| 아바타 컨테이너 | Container | 프로필 이미지 표시 | 80x80px, 원형 (cornerRadius 40px), 배경 `#EFF6FF` |
-| 기본 아이콘 | Icon | 이미지 없을 때 | `person`, 40px, `#2563EB` |
-| 카메라 버튼 | IconButton | 이미지 변경 | 28x28px, 원형, 배경 `#FFFFFF`, 아이콘 `photo_camera` 16px `#4A4A5A`, 아바타 우하단에 오버레이 |
+| 아바타 컨테이너 | Container | 프로필 이미지 표시 | 80x80px, 원형 (cornerRadius 40px), 배경 `#FFFFFF15` |
+| 기본 아이콘 | Icon | 이미지 없을 때 | `person`, 40px, `#F59E0B` |
+| 카메라 버튼 | IconButton | 이미지 변경 | 28x28px, 원형, 배경 `#FFFFFF18`, 아이콘 `photo_camera` 16px `#FFFFFFCC`, 아바타 우하단에 오버레이 |
 
 **레이아웃:**
 - 중앙 정렬
@@ -91,24 +91,24 @@
 | 컴포넌트 | 타입 | 설명 | 스타일 |
 |----------|------|------|--------|
 | 이름 라벨 | Text | "이름" | `bodySmall` (12sp), `#64748B` |
-| 이름 입력 | TextField | 현재 이름 표시/수정 | 배경 `#FFFFFF`, 테두리 `#E8E0D8` 1px, cornerRadius 14px, 높이 48px |
+| 이름 입력 | TextField | 현재 이름 표시/수정 | 배경 `#FFFFFF15`, 테두리 `#FFFFFF20` 1px, cornerRadius 14px, 높이 48px |
 | 이메일 라벨 | Text | "이메일" | `bodySmall` (12sp), `#64748B` |
-| 이메일 표시 | TextField (읽기전용) | 이메일 표시 (수정 불가) | 배경 `#EFF6FF`, 테두리 없음, cornerRadius 14px, 높이 48px, 텍스트 `#9CA3AF` |
+| 이메일 표시 | TextField (읽기전용) | 이메일 표시 (수정 불가) | 배경 `#FFFFFF15`, 테두리 없음, cornerRadius 14px, 높이 48px, 텍스트 `#FFFFFFAA` |
 | 연락처 라벨 | Text | "연락처" | `bodySmall` (12sp), `#64748B` |
-| 연락처 입력 | TextField | 현재 연락처 표시/수정 | 배경 `#FFFFFF`, 테두리 `#E8E0D8` 1px, cornerRadius 14px, 높이 48px |
+| 연락처 입력 | TextField | 현재 연락처 표시/수정 | 배경 `#FFFFFF15`, 테두리 `#FFFFFF20` 1px, cornerRadius 14px, 높이 48px |
 
 **입력 필드 공통:**
 - 내부 패딩: 좌우 16px, 상하 14px
 - 라벨 ~ 필드: 6px
 - 필드 간 간격: 16px
-- 포커스 테두리: `#2563EB` 2px
-- 입력 텍스트: `bodyMedium` (14sp), `#1A1A2E`
+- 포커스 테두리: `#F59E0B` 2px
+- 입력 텍스트: `bodyMedium` (14sp), `#FFFFFFEE`
 
 ### 3.4 저장 버튼
 
 | 컴포넌트 | 타입 | 설명 | 스타일 |
 |----------|------|------|--------|
-| 저장 버튼 | ElevatedButton | "저장" | 배경 `#2563EB`, 텍스트 `#FFFFFF` (16sp, SemiBold), 높이 48px, cornerRadius 14px, 가로 100% (좌우 마진 16px) |
+| 저장 버튼 | ElevatedButton | "저장" | 배경 `#F59E0B`, 텍스트 `#FFFFFF` (16sp, SemiBold), 높이 48px, cornerRadius 14px, 가로 100% (좌우 마진 16px) |
 
 **레이아웃:**
 - 하단 고정 (스크롤 영역 외부)

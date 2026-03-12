@@ -1,6 +1,6 @@
 # 게시글 상세 — UI 화면 스펙
 
-> 최종 수정일: 2026-03-03
+> 최종 수정일: 2026-03-12
 
 ---
 
@@ -53,7 +53,7 @@
 
 | 섹션 | 설명 | 비고 |
 |------|------|------|
-| 상단 앱바 | 뒤로가기 + "게시글" 타이틀 | 배경 `#FFFFFF`, 하단 테두리 `#E8E0D8` 0.5px |
+| 상단 앱바 | 뒤로가기 + "게시글" 타이틀 | 배경 `transparent`, 하단 테두리 `#FFFFFF20` 0.5px |
 | 스크롤 콘텐츠 | 게시글 전문 표시 | 하단 네비게이션 없음 (상세 화면) |
 
 ---
@@ -64,18 +64,18 @@
 
 | 컴포넌트 | 타입 | 설명 | 스타일 |
 |----------|------|------|--------|
-| 뒤로가기 | IconButton | 이전 화면으로 복귀 | Material Icon `arrow_back_ios`, 24px, `#1A1A2E` |
-| 타이틀 | Text | "게시글" | `titleLarge` (20sp, Bold), `#1A1A2E` |
+| 뒤로가기 | IconButton | 이전 화면으로 복귀 | Material Icon `arrow_back_ios`, 24px, `#FFFFFFEE` |
+| 타이틀 | Text | "게시글" | `titleLarge` (20sp, Bold), `#FFFFFFEE` |
 
 ### 3.2 게시글 콘텐츠
 
 | 컴포넌트 | 타입 | 설명 | 스타일 |
 |----------|------|------|--------|
-| 카테고리 뱃지 | Chip | "공지사항" 또는 "이벤트" | pill shape, 공지: 배경 `#EFF6FF` 텍스트 `#065F46`, 이벤트: 배경 `#FEF3C7` 텍스트 `#92400E` |
-| 제목 | Text | 게시글 제목 | `headlineSmall` (20sp, Bold), `#1A1A2E` |
-| 메타 정보 Row | Row | 작성자 · 날짜 | `bodySmall` (12sp), `#9CA3AF` |
-| 구분선 | Divider | 메타와 본문 구분 | `#E8E0D8`, 1px |
-| 본문 | Text | 게시글 내용 | `bodyMedium` (14sp), `#1A1A2E`, lineHeight 1.6 |
+| 카테고리 뱃지 | Chip | "공지사항" 또는 "이벤트" | pill shape, 공지: 배경 `#FFFFFF15` 텍스트 `#34D399`, 이벤트: 배경 `#F59E0B26` 텍스트 `#F59E0B` |
+| 제목 | Text | 게시글 제목 | `headlineSmall` (20sp, Bold), `#FFFFFFEE` |
+| 메타 정보 Row | Row | 작성자 · 날짜 | `bodySmall` (12sp), `#FFFFFFAA` |
+| 구분선 | Divider | 메타와 본문 구분 | `#FFFFFF20`, 1px |
+| 본문 | Text | 게시글 내용 | `bodyMedium` (14sp), `#FFFFFFEE`, lineHeight 1.6 |
 | 이미지 | Image | 첨부 이미지 (있을 경우) | cornerRadius 8px, width 100% (fill_container), `BoxFit.cover` |
 
 **콘텐츠 레이아웃:**
