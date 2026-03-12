@@ -158,22 +158,27 @@ class _ShopQrScreenState extends State<ShopQrScreen> {
       ),
       body: CourtBackground(
         child: SingleChildScrollView(
-        padding: const EdgeInsets.all(16),
-        child: Column(
-          children: [
-            _QrCard(shop: widget.shop),
-            const SizedBox(height: 20),
-            _ButtonRow(
-              isSaving: _isSaving,
-              isSharing: _isSharing,
-              onSave: _saveImage,
-              onShare: _shareImage,
-            ),
-            const SizedBox(height: 20),
-            const _InfoCard(),
-          ],
+          // Content Area: padding [16,28], gap 20
+          padding: const EdgeInsets.symmetric(
+            horizontal: 28,
+            vertical: 16,
+          ),
+          child: Column(
+            children: [
+              _QrCard(shop: widget.shop),
+              const SizedBox(height: 20),
+              // Button Row: gap 16
+              _ButtonRow(
+                isSaving: _isSaving,
+                isSharing: _isSharing,
+                onSave: _saveImage,
+                onShare: _shareImage,
+              ),
+              const SizedBox(height: 20),
+              const _InfoCard(),
+            ],
+          ),
         ),
-      ),
       ),
     );
   }
@@ -187,18 +192,12 @@ class _QrCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
+      // QR Card: cornerRadius 20, fill #ffffff18, padding 24, gap 16
       width: double.infinity,
       padding: const EdgeInsets.all(24),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: AppTheme.surfaceHigh,
         borderRadius: BorderRadius.circular(20),
-        boxShadow: const [
-          BoxShadow(
-            color: Color(0x0D000000),
-            blurRadius: 8,
-            offset: Offset(0, 2),
-          ),
-        ],
       ),
       child: Column(
         children: [
@@ -207,7 +206,7 @@ class _QrCard extends StatelessWidget {
             style: const TextStyle(
               fontSize: 18,
               fontWeight: FontWeight.w700,
-              color: AppTheme.textPrimary,
+              color: AppTheme.textSecondary,
             ),
           ),
           const SizedBox(height: 16),
@@ -337,11 +336,15 @@ class _InfoCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
+      // Info Card: cornerRadius 20, fill #ffffff10, border #3B82F6 1px
       width: double.infinity,
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: AppTheme.primaryContainer,
-        borderRadius: BorderRadius.circular(12),
+        color: const Color(0x10FFFFFF),
+        borderRadius: BorderRadius.circular(20),
+        border: Border.all(
+          color: const Color(0xFF3B82F6),
+        ),
       ),
       child: const Column(
         crossAxisAlignment: CrossAxisAlignment.start,

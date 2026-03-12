@@ -82,17 +82,24 @@ class _OwnerDashboardScreenState
         },
       ),
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          final shopId = ref
-              .read(ownerDashboardNotifierProvider)
-              .shopId;
-          context.push(
-            '/owner/dashboard/order-create'
-            '?shopId=$shopId',
-          );
-        },
-        child: const Icon(Icons.add),
+      floatingActionButton: SizedBox(
+        width: 56,
+        height: 56,
+        child: FloatingActionButton(
+          onPressed: () {
+            final shopId = ref
+                .read(ownerDashboardNotifierProvider)
+                .shopId;
+            context.push(
+              '/owner/dashboard/order-create'
+              '?shopId=$shopId',
+            );
+          },
+          backgroundColor: const Color(0xFF16A34A),
+          foregroundColor: Colors.white,
+          shape: const CircleBorder(),
+          child: const Icon(Icons.add),
+        ),
       ),
     );
   }
@@ -128,20 +135,39 @@ class _DashboardBody extends StatelessWidget {
       onRefresh: () async => onRetry(),
       child: CustomScrollView(
         slivers: [
+          // Stats Section: padding [16,28], gap 12
           SliverPadding(
-            padding: const EdgeInsets.all(16),
+            padding: const EdgeInsets.symmetric(
+              horizontal: 28,
+              vertical: 16,
+            ),
+            sliver: SliverToBoxAdapter(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  _StatsSectionHeader(),
+                  const SizedBox(height: 12),
+                  _StatusCountCards(
+                    receivedCount: state.receivedCount,
+                    inProgressCount: state.inProgressCount,
+                    completedCount: state.completedCount,
+                  ),
+                ],
+              ),
+            ),
+          ),
+          // Recent Header: padding [24,28,8,28]
+          SliverPadding(
+            padding: const EdgeInsets.fromLTRB(28, 24, 28, 8),
+            sliver: SliverToBoxAdapter(
+              child: _RecentHeader(onViewAll: onViewAll),
+            ),
+          ),
+          // Order Cards: padding [0,28], gap 10
+          SliverPadding(
+            padding: const EdgeInsets.symmetric(horizontal: 28),
             sliver: SliverList(
               delegate: SliverChildListDelegate([
-                _StatsSectionHeader(),
-                const SizedBox(height: 12),
-                _StatusCountCards(
-                  receivedCount: state.receivedCount,
-                  inProgressCount: state.inProgressCount,
-                  completedCount: state.completedCount,
-                ),
-                const SizedBox(height: 24),
-                _RecentHeader(onViewAll: onViewAll),
-                const SizedBox(height: 8),
                 if (state.recentOrders.isEmpty)
                   const _EmptyOrdersView()
                 else
@@ -384,17 +410,21 @@ class _OrderCard extends StatelessWidget {
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
         color: AppTheme.surfaceHigh,
-        borderRadius: BorderRadius.circular(20),
-        border: Border.all(
-          color: AppTheme.border,
-        ),
+        borderRadius: BorderRadius.circular(16),
+        boxShadow: const [
+          BoxShadow(
+            color: Color(0x0A000000),
+            blurRadius: 12,
+            offset: Offset(0, 2),
+          ),
+        ],
       ),
       foregroundDecoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(20),
+        borderRadius: BorderRadius.circular(16),
         border: Border(
           left: BorderSide(
             color: _accentColor,
-            width: 4,
+            width: 2,
           ),
         ),
       ),

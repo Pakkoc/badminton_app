@@ -59,7 +59,11 @@ class _PostManageScreenState extends ConsumerState<PostManageScreen> {
                         message: '등록된 게시글이 없습니다',
                       )
                     : ListView.separated(
-                        padding: const EdgeInsets.all(16),
+                        // Post List Content: padding [12,28], gap 12
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 28,
+                          vertical: 12,
+                        ),
                         itemCount: state.posts.length,
                         separatorBuilder: (_, __) =>
                             const SizedBox(height: 12),
@@ -153,7 +157,10 @@ class _CategoryTabs extends StatelessWidget {
       height: 44,
       decoration: const BoxDecoration(
         border: Border(
-          bottom: BorderSide(color: AppTheme.border),
+          bottom: BorderSide(
+            color: Color(0x30FFFFFF),
+            width: 0.5,
+          ),
         ),
       ),
       child: Row(
@@ -186,7 +193,7 @@ class _TabItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    const activeColor = AppTheme.accent;
+    const activeTabBorderColor = Color(0xEEFFFFFF);
     const activeTextColor = AppTheme.textPrimary;
     const inactiveTextColor = AppTheme.textTertiary;
 
@@ -198,7 +205,9 @@ class _TabItem extends StatelessWidget {
         decoration: BoxDecoration(
           border: Border(
             bottom: BorderSide(
-              color: isActive ? activeColor : Colors.transparent,
+              color: isActive
+                  ? activeTabBorderColor
+                  : Colors.transparent,
               width: 2,
             ),
           ),

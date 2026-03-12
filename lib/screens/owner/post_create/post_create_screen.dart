@@ -118,7 +118,11 @@ class _PostCreateScreenState
         children: [
           Expanded(
             child: SingleChildScrollView(
-              padding: const EdgeInsets.all(16),
+              // Content Area: padding [16,28], gap 20
+              padding: const EdgeInsets.symmetric(
+                horizontal: 28,
+                vertical: 16,
+              ),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -136,6 +140,7 @@ class _PostCreateScreenState
                     ),
                   ),
                   const SizedBox(height: 8),
+                  // Title Input: cornerRadius 14, fill #ffffff18, height 48, padding [0,14]
                   SizedBox(
                     height: 48,
                     child: TextField(
@@ -147,9 +152,17 @@ class _PostCreateScreenState
                           color: AppTheme.textTertiary,
                         ),
                         filled: true,
-                        fillColor: AppTheme.primaryContainer,
+                        fillColor: AppTheme.surfaceHigh,
                         border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(8),
+                          borderRadius: BorderRadius.circular(14),
+                          borderSide: BorderSide.none,
+                        ),
+                        enabledBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(14),
+                          borderSide: BorderSide.none,
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(14),
                           borderSide: BorderSide.none,
                         ),
                         contentPadding:
@@ -170,6 +183,7 @@ class _PostCreateScreenState
                     ),
                   ),
                   const SizedBox(height: 8),
+                  // Content Input: cornerRadius 14, fill #ffffff18, height 160, padding 14
                   SizedBox(
                     height: 160,
                     child: TextField(
@@ -181,9 +195,17 @@ class _PostCreateScreenState
                           color: AppTheme.textTertiary,
                         ),
                         filled: true,
-                        fillColor: AppTheme.primaryContainer,
+                        fillColor: AppTheme.surfaceHigh,
                         border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(8),
+                          borderRadius: BorderRadius.circular(14),
+                          borderSide: BorderSide.none,
+                        ),
+                        enabledBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(14),
+                          borderSide: BorderSide.none,
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(14),
                           borderSide: BorderSide.none,
                         ),
                         contentPadding:
@@ -261,13 +283,18 @@ class _PostCreateScreenState
               ),
             ),
           ),
+          // Bottom Bar: padding [16,28], top border #ffffff20 0.5px
           Container(
-            padding: const EdgeInsets.all(16),
+            padding: const EdgeInsets.symmetric(
+              horizontal: 28,
+              vertical: 16,
+            ),
             decoration: const BoxDecoration(
-              color: AppTheme.surfaceHigh,
               border: Border(
                 top: BorderSide(
-                    color: AppTheme.border),
+                  color: Color(0x20FFFFFF),
+                  width: 0.5,
+                ),
               ),
             ),
             child: SizedBox(
@@ -291,13 +318,14 @@ class _PostCreateScreenState
                           context.pop(true);
                         }
                       },
+                // Submit Button: cornerRadius 20, fill #16A34A, height 48
                 style: ElevatedButton.styleFrom(
                   backgroundColor:
-                      AppTheme.accent,
+                      const Color(0xFF16A34A),
                   foregroundColor: Colors.white,
                   shape: RoundedRectangleBorder(
                     borderRadius:
-                        BorderRadius.circular(12),
+                        BorderRadius.circular(20),
                   ),
                 ),
                 child: state.isSubmitting

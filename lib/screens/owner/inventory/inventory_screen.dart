@@ -437,11 +437,18 @@ class _InventoryScreenState
     return Scaffold(
       appBar: AppBar(title: const Text('재고 관리')),
       body: CourtBackground(child: _buildBody(state)),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _showAddItemDialog,
-        backgroundColor: AppTheme.accent,
-        foregroundColor: Colors.white,
-        child: const Icon(Icons.add, size: 28),
+      floatingActionButton: SizedBox(
+        width: 56,
+        height: 56,
+        child: FloatingActionButton(
+          onPressed: _showAddItemDialog,
+          backgroundColor: const Color(0xFF16A34A),
+          foregroundColor: Colors.white,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(28),
+          ),
+          child: const Icon(Icons.add, size: 28),
+        ),
       ),
     );
   }
@@ -470,7 +477,11 @@ class _InventoryScreenState
     return RefreshIndicator(
       onRefresh: _loadInventory,
       child: GridView.builder(
-        padding: const EdgeInsets.all(16),
+        // Grid: 28px left padding
+        padding: const EdgeInsets.symmetric(
+          horizontal: 28,
+          vertical: 16,
+        ),
         gridDelegate:
             const SliverGridDelegateWithFixedCrossAxisCount(
           crossAxisCount: 2,

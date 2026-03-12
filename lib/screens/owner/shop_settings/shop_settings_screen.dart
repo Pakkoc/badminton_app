@@ -92,9 +92,10 @@ class _ShopSettingsScreenState
         children: [
           Expanded(
             child: SingleChildScrollView(
+              // Scroll Content: padding [12,28], gap 12
               padding: const EdgeInsets.symmetric(
                 vertical: 12,
-                horizontal: 16,
+                horizontal: 28,
               ),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -528,12 +529,16 @@ class _SaveButton extends StatelessWidget {
     return Container(
       decoration: const BoxDecoration(
         border: Border(
-          top: BorderSide(color: AppTheme.border),
+          top: BorderSide(
+            color: Color(0x20FFFFFF),
+            width: 0.5,
+          ),
         ),
       ),
+      // Save Bar: padding [12,28], top border #ffffff20 0.5px
       padding: const EdgeInsets.symmetric(
         vertical: 12,
-        horizontal: 16,
+        horizontal: 28,
       ),
       child: SizedBox(
         width: double.infinity,
@@ -541,14 +546,14 @@ class _SaveButton extends StatelessWidget {
         child: ElevatedButton(
           onPressed: isSubmitting ? null : onPressed,
           style: ElevatedButton.styleFrom(
-            backgroundColor: AppTheme.accent,
+            backgroundColor: const Color(0xFF2563EB),
             foregroundColor: Colors.white,
             disabledBackgroundColor:
-                AppTheme.accent.withValues(alpha: 0.5),
+                const Color(0xFF2563EB).withValues(alpha: 0.5),
             disabledForegroundColor:
                 Colors.white.withValues(alpha: 0.5),
             shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(12),
+              borderRadius: BorderRadius.circular(20),
             ),
           ),
           child: isSubmitting

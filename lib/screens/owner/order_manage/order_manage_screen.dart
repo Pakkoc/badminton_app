@@ -108,7 +108,11 @@ class _OrderManageScreenState
     }
 
     return ListView.builder(
-      padding: const EdgeInsets.all(16),
+      // Order List: padding [12,28], gap 10
+      padding: const EdgeInsets.symmetric(
+        horizontal: 28,
+        vertical: 12,
+      ),
       itemCount: orders.length,
       itemBuilder: (context, index) {
         final order = orders[index];
@@ -182,7 +186,7 @@ class _StatusFilterTabs extends StatelessWidget {
     return SingleChildScrollView(
       scrollDirection: Axis.horizontal,
       padding: const EdgeInsets.symmetric(
-        horizontal: 16,
+        horizontal: 28,
         vertical: 8,
       ),
       child: Row(
@@ -237,13 +241,13 @@ class _FilterChip extends StatelessWidget {
         ),
         decoration: BoxDecoration(
           color: isSelected
-              ? AppTheme.accent
-              : AppTheme.surfaceHigh,
+              ? const Color(0xFF16A34A)
+              : const Color(0x12FFFFFF),
           borderRadius: BorderRadius.circular(999),
           border: Border.all(
             color: isSelected
-                ? AppTheme.accent
-                : AppTheme.border,
+                ? const Color(0xFF16A34A)
+                : const Color(0x20FFFFFF),
           ),
         ),
         child: Row(
@@ -302,20 +306,18 @@ class _OrderManageCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final Widget card = Container(
+      // Order Cards: cornerRadius 16, fill #ffffff18, left border 2px
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
         color: AppTheme.surfaceHigh,
-        borderRadius: BorderRadius.circular(20),
-        border: Border.all(
-          color: AppTheme.border,
-        ),
+        borderRadius: BorderRadius.circular(16),
       ),
       foregroundDecoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(20),
+        borderRadius: BorderRadius.circular(16),
         border: Border(
           left: BorderSide(
             color: _accentColor,
-            width: 4,
+            width: 2,
           ),
         ),
       ),
@@ -367,7 +369,7 @@ class _OrderManageCard extends StatelessWidget {
           padding: const EdgeInsets.only(right: 16),
           decoration: BoxDecoration(
             color: Colors.red,
-            borderRadius: BorderRadius.circular(20),
+            borderRadius: BorderRadius.circular(16),
           ),
           child: const Icon(
             Icons.delete,
