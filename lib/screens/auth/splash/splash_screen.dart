@@ -69,44 +69,47 @@ class _SplashScreenState extends ConsumerState<SplashScreen>
 
     return Scaffold(
       body: CourtBackground(
-        showCourtLines: false,
-        child: Center(
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 28),
           child: FadeTransition(
             opacity: _fadeAnimation,
             child: ScaleTransition(
               scale: _scaleAnimation,
               child: Column(
-                mainAxisSize: MainAxisSize.min,
                 children: [
+                  const SizedBox(height: 77),
+                  const Spacer(),
                   Image.asset(
                     'assets/images/logo.png',
                     width: 120,
-                    height: 120,
+                    height: 124,
                   ),
-                  const SizedBox(height: 16),
+                  const SizedBox(height: 12),
                   const Text(
                     '거트알림',
                     style: TextStyle(
-                      fontSize: 32,
+                      fontSize: 28,
                       fontWeight: FontWeight.bold,
                       color: AppTheme.textPrimary,
                     ),
                   ),
-                  const SizedBox(height: 8),
+                  const SizedBox(height: 12),
                   const Text(
-                    '배드민턴 거트 추적 서비스',
+                    '배드민턴 거트 작업 실시간 추적',
                     style: TextStyle(
                       fontSize: 14,
                       color: AppTheme.textTertiary,
                     ),
                   ),
-                  const SizedBox(height: 48),
-                  const SizedBox(
-                    width: 24,
-                    height: 24,
-                    child: CircularProgressIndicator(
-                      strokeWidth: 2.5,
-                      color: AppTheme.accent,
+                  const Spacer(),
+                  const Padding(
+                    padding: EdgeInsets.only(bottom: 60),
+                    child: Text(
+                      '© 2026 거트알림',
+                      style: TextStyle(
+                        fontSize: 12,
+                        color: AppTheme.textDisabled,
+                      ),
                     ),
                   ),
                 ],

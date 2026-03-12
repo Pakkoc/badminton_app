@@ -23,7 +23,17 @@ class CustomerHomeScreen extends ConsumerWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('거트알림'),
+        title: Row(
+          children: [
+            Image.asset(
+              'assets/images/logo.png',
+              width: 28,
+              height: 28,
+            ),
+            const SizedBox(width: 8),
+            const Text('거트알림'),
+          ],
+        ),
         actions: [
           _NotificationBell(
             onPressed: () =>
@@ -157,7 +167,10 @@ class _OrderListBody extends StatelessWidget {
       color: AppTheme.accent,
       onRefresh: onRefresh,
       child: ListView.builder(
-        padding: const EdgeInsets.all(16),
+        padding: const EdgeInsets.symmetric(
+          horizontal: 28,
+          vertical: 16,
+        ),
         itemCount: state.activeOrders.length +
             (showSummary ? 2 : 1), // summary + title + cards
         itemBuilder: (context, index) {
@@ -225,8 +238,8 @@ class _SummaryCard extends StatelessWidget {
       width: double.infinity,
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: AppTheme.surface,
-        borderRadius: BorderRadius.circular(20),
+        color: AppTheme.surfaceHigh,
+        borderRadius: BorderRadius.circular(16),
         boxShadow: const [
           BoxShadow(
             color: Color(0x0A000000),
@@ -319,19 +332,19 @@ class _OrderCard extends StatelessWidget {
     return Card(
       elevation: 0,
       shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(20),
+        borderRadius: BorderRadius.circular(16),
         side: const BorderSide(color: AppTheme.border),
       ),
       clipBehavior: Clip.antiAlias,
       child: InkWell(
         onTap: onTap,
-        borderRadius: BorderRadius.circular(20),
+        borderRadius: BorderRadius.circular(16),
         child: Container(
           decoration: BoxDecoration(
             border: Border(
               left: BorderSide(
                 color: _accentColor,
-                width: 4,
+                width: 3,
               ),
             ),
           ),
@@ -406,7 +419,10 @@ class _ShimmerLoading extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.symmetric(
+        horizontal: 28,
+        vertical: 16,
+      ),
       child: Column(
         children: List.generate(3, (index) {
           return Padding(
@@ -414,7 +430,7 @@ class _ShimmerLoading extends StatelessWidget {
             child: Card(
               elevation: 0,
               shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(20),
+                borderRadius: BorderRadius.circular(16),
                 side: const BorderSide(
                   color: AppTheme.border,
                 ),
