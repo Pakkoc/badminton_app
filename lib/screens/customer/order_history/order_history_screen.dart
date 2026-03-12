@@ -142,7 +142,7 @@ class _HistoryCard extends StatelessWidget {
             color: AppTheme.surfaceHigh,
             border: Border(
               left: BorderSide(
-                color: AppTheme.completedForeground,
+                color: AppTheme.activeTab,
                 width: 3,
               ),
             ),
@@ -164,7 +164,7 @@ class _HistoryCard extends StatelessWidget {
                             fontWeight: FontWeight.bold,
                           ),
                     ),
-                    const SizedBox(height: 4),
+                    const SizedBox(height: 6),
                     Text(
                       '${Formatters.date(completedDate)} 완료',
                       style: Theme.of(context)

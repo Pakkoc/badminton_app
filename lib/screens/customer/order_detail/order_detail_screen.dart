@@ -84,7 +84,7 @@ class OrderDetailScreen extends ConsumerWidget {
             const SizedBox(height: 24),
             _ShopInfoSection(shop: state.shop!),
           ],
-          const SizedBox(height: 32),
+          const SizedBox(height: 16),
         ],
       ),
     );
@@ -122,7 +122,7 @@ class _LargeStatusBadge extends StatelessWidget {
       height: 72,
       padding: const EdgeInsets.symmetric(horizontal: 24),
       decoration: BoxDecoration(
-        color: const Color(0x1Affffff),
+        color: const Color(0x10FFFFFF),
         borderRadius: BorderRadius.circular(20),
         border: Border.all(
           color: const Color(0xFF93C5FD),

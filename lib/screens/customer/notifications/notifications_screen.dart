@@ -152,7 +152,7 @@ class _NotificationTile extends StatelessWidget {
           color: bgColor,
           border: const Border(
             bottom: BorderSide(
-              color: Color(0x33ffffff),
+              color: Color(0x20FFFFFF),
               width: 1,
             ),
           ),
