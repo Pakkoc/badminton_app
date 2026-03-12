@@ -67,7 +67,7 @@ class _ShopSearchScreenState
         ),
         actions: [
           Padding(
-            padding: const EdgeInsets.only(right: 16),
+            padding: const EdgeInsets.only(right: 28),
             child: _ViewModeToggle(
               viewMode: state.viewMode,
               onChanged: (mode) => ref
@@ -146,7 +146,7 @@ class _ViewModeToggle extends StatelessWidget {
     return Container(
       height: 32,
       decoration: BoxDecoration(
-        color: AppTheme.surfaceVariant,
+        color: const Color(0x12FFFFFF),
         borderRadius: BorderRadius.circular(14),
       ),
       child: Row(
@@ -366,7 +366,7 @@ class _ShopCard extends StatelessWidget {
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(20),
         side: const BorderSide(
-          color: Color(0x4Dffffff),
+          color: Color(0x30FFFFFF),
           width: 1,
         ),
       ),

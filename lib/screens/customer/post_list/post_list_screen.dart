@@ -125,8 +125,8 @@ class _PostCard extends StatelessWidget {
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(20),
         side: const BorderSide(
-          color: Color(0x33ffffff),
-          width: 1,
+          color: Color(0x20FFFFFF),
+          width: 0.5,
         ),
       ),
       child: InkWell(

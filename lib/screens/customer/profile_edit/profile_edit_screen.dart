@@ -69,43 +69,64 @@ class _ProfileEditScreenState
     return Scaffold(
       appBar: AppBar(title: const Text('프로필 수정')),
       body: CourtBackground(
-        child: SingleChildScrollView(
-          padding: const EdgeInsets.symmetric(
-            horizontal: 28,
-            vertical: 16,
-          ),
-          child: Column(
-            children: [
-              _ProfileAvatar(
-                imageUrl: state.profileImageUrl,
-                onTap: _pickImage,
-              ),
-              const SizedBox(height: 20),
-              TextFormField(
-                controller: _nameController,
-                decoration: const InputDecoration(
-                  labelText: '이름',
+        child: Column(
+          children: [
+            Expanded(
+              child: SingleChildScrollView(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 28,
+                  vertical: 16,
                 ),
-                validator: Validators.name,
-                autovalidateMode:
-                    AutovalidateMode.onUserInteraction,
-                onChanged: ref
-                    .read(
-                      profileEditNotifierProvider.notifier,
-                    )
-                    .updateName,
+                child: Column(
+                  children: [
+                    _ProfileAvatar(
+                      imageUrl: state.profileImageUrl,
+                      onTap: _pickImage,
+                    ),
+                    const SizedBox(height: 20),
+                    TextFormField(
+                      controller: _nameController,
+                      decoration: const InputDecoration(
+                        labelText: '이름',
+                      ),
+                      validator: Validators.name,
+                      autovalidateMode:
+                          AutovalidateMode.onUserInteraction,
+                      onChanged: ref
+                          .read(
+                            profileEditNotifierProvider.notifier,
+                          )
+                          .updateName,
+                    ),
+                    const SizedBox(height: 16),
+                    PhoneInputField(
+                      controller: _phoneController,
+                      onChanged: ref
+                          .read(
+                            profileEditNotifierProvider.notifier,
+                          )
+                          .updatePhone,
+                    ),
+                  ],
+                ),
               ),
-              const SizedBox(height: 16),
-              PhoneInputField(
-                controller: _phoneController,
-                onChanged: ref
-                    .read(
-                      profileEditNotifierProvider.notifier,
-                    )
-                    .updatePhone,
+            ),
+            // Bottom Bar — 스펙: padding [16,28], fill #ffffff15, top border #ffffff20 0.5px
+            Container(
+              decoration: const BoxDecoration(
+                color: AppTheme.surfaceHigh,
+                border: Border(
+                  top: BorderSide(
+                    color: AppTheme.surfaceBorder,
+                    width: 0.5,
+                  ),
+                ),
               ),
-              const SizedBox(height: 32),
-              SizedBox(
+              padding: const EdgeInsets.symmetric(
+                horizontal: 28,
+                vertical: 16,
+              ),
+              child: SizedBox(
                 width: double.infinity,
                 height: 48,
                 child: ElevatedButton(
@@ -151,8 +172,8 @@ class _ProfileEditScreenState
                       : const Text('저장'),
                 ),
               ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );

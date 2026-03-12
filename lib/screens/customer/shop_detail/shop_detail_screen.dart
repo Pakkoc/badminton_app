@@ -56,14 +56,7 @@ class _ShopDetailScreenState
 
     return Scaffold(
       appBar: AppBar(
-        title: Text(
-          '샵 정보',
-          style: Theme.of(context)
-              .textTheme
-              .titleLarge
-              ?.copyWith(fontWeight: FontWeight.w600),
-        ),
-        centerTitle: true,
+        title: const Text('샵 정보'),
       ),
       body: CourtBackground(
         child: _buildBody(context, ref, state),
@@ -515,13 +508,23 @@ class _TabBarDelegate extends SliverPersistentHeaderDelegate {
     bool overlapsContent,
   ) {
     return Container(
-      color: AppTheme.surfaceHigh,
+      decoration: const BoxDecoration(
+        color: AppTheme.surfaceHigh,
+        border: Border(
+          bottom: BorderSide(
+            color: Color(0x30FFFFFF),
+            width: 0.5,
+          ),
+        ),
+      ),
       child: TabBar(
         controller: tabController,
         labelColor: AppTheme.textPrimary,
         unselectedLabelColor: AppTheme.textTertiary,
-        indicatorColor: AppTheme.accent,
+        indicatorColor: AppTheme.textPrimary,
         indicatorWeight: 2,
+        isScrollable: false,
+        tabAlignment: TabAlignment.fill,
         labelStyle: const TextStyle(
           fontSize: 14,
           fontWeight: FontWeight.w600,

@@ -139,12 +139,26 @@ class _PostContent extends StatelessWidget {
             ),
           ],
           const SizedBox(height: 16),
-          const Divider(),
+          // Post Title — 스펙: fontSize 20, fontWeight Bold, color textPrimary
+          Text(
+            post.title,
+            style: const TextStyle(
+              fontSize: 20,
+              fontWeight: FontWeight.bold,
+              color: AppTheme.textPrimary,
+            ),
+          ),
+          const SizedBox(height: 16),
+          const Divider(
+            color: Color(0x30FFFFFF),
+            height: 1,
+            thickness: 1,
+          ),
           const SizedBox(height: 16),
           Text(
             post.content,
             style: const TextStyle(
-              fontSize: 15,
+              fontSize: 14,
               height: 1.6,
               color: AppTheme.textPrimary,
             ),
@@ -211,21 +225,21 @@ class _ImageGallery extends StatelessWidget {
         return Padding(
           padding: const EdgeInsets.only(bottom: 12),
           child: ClipRRect(
-            borderRadius: BorderRadius.circular(12),
+            borderRadius: BorderRadius.circular(14),
             child: CachedNetworkImage(
               imageUrl: url,
               width: double.infinity,
               fit: BoxFit.cover,
               placeholder: (context, url) => Container(
                 height: 200,
-                color: AppTheme.primaryContainer,
+                color: const Color(0x20FFFFFF),
                 child: const Center(
                   child: CircularProgressIndicator(),
                 ),
               ),
               errorWidget: (context, url, error) => Container(
                 height: 200,
-                color: AppTheme.primaryContainer,
+                color: const Color(0x20FFFFFF),
                 child: const Icon(
                   Icons.broken_image_outlined,
                   color: AppTheme.textTertiary,
