@@ -1,3 +1,4 @@
+import 'package:badminton_app/app/theme.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
@@ -23,43 +24,51 @@ class CustomerBottomNav extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BottomNavigationBar(
-      currentIndex: currentIndex,
-      type: BottomNavigationBarType.fixed,
-      selectedFontSize: 10,
-      unselectedFontSize: 10,
-      onTap: (index) {
-        if (index != currentIndex) {
-          context.go(_routes[index]);
-        }
-      },
-      items: const [
-        BottomNavigationBarItem(
-          icon: Icon(Icons.home_outlined),
-          activeIcon: Icon(Icons.home),
-          label: '홈',
+    return Container(
+      decoration: const BoxDecoration(
+        border: Border(
+          top: BorderSide(
+            color: AppTheme.surfaceBorder,
+            width: 0.5,
+          ),
         ),
-        BottomNavigationBarItem(
-          icon: Icon(Icons.search),
-          activeIcon: Icon(Icons.search),
-          label: '샵검색',
-        ),
-        BottomNavigationBarItem(
-          icon: Icon(Icons.forum_outlined),
-          activeIcon: Icon(Icons.forum),
-          label: '커뮤니티',
-        ),
-        BottomNavigationBarItem(
-          icon: Icon(Icons.history),
-          activeIcon: Icon(Icons.history),
-          label: '이력',
-        ),
-        BottomNavigationBarItem(
-          icon: Icon(Icons.person_outline),
-          activeIcon: Icon(Icons.person),
-          label: 'MY',
-        ),
-      ],
+      ),
+      child: BottomNavigationBar(
+        currentIndex: currentIndex,
+        type: BottomNavigationBarType.fixed,
+        onTap: (index) {
+          if (index != currentIndex) {
+            context.go(_routes[index]);
+          }
+        },
+        items: const [
+          BottomNavigationBarItem(
+            icon: Icon(Icons.home_outlined),
+            activeIcon: Icon(Icons.home),
+            label: '홈',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.search),
+            activeIcon: Icon(Icons.search),
+            label: '샵검색',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.forum_outlined),
+            activeIcon: Icon(Icons.forum),
+            label: '커뮤니티',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.history),
+            activeIcon: Icon(Icons.history),
+            label: '이력',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.person_outline),
+            activeIcon: Icon(Icons.person),
+            label: 'MY',
+          ),
+        ],
+      ),
     );
   }
 }

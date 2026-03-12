@@ -1,3 +1,4 @@
+import 'package:badminton_app/app/theme.dart';
 import 'package:flutter/material.dart';
 
 class EmptyState extends StatelessWidget {
@@ -25,20 +26,14 @@ class EmptyState extends StatelessWidget {
             Icon(
               icon,
               size: 64,
-              color: Theme.of(context)
-                  .colorScheme
-                  .onSurface
-                  .withValues(alpha: 0.3),
+              color: AppTheme.textHint,
             ),
             const SizedBox(height: 16),
             Text(
               message,
               textAlign: TextAlign.center,
               style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                    color: Theme.of(context)
-                        .colorScheme
-                        .onSurface
-                        .withValues(alpha: 0.5),
+                    color: AppTheme.textTertiary,
                   ),
             ),
             if (actionLabel != null && onAction != null) ...[

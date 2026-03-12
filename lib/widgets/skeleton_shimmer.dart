@@ -1,3 +1,4 @@
+import 'package:badminton_app/app/theme.dart';
 import 'package:flutter/material.dart';
 
 class SkeletonShimmer extends StatefulWidget {
@@ -47,10 +48,8 @@ class _SkeletonShimmerState extends State<SkeletonShimmer>
         width: widget.width,
         height: widget.height,
         decoration: BoxDecoration(
-          color: Theme.of(context)
-              .colorScheme
-              .onSurface
-              .withValues(alpha: _animation.value * 0.15),
+          color: AppTheme.textPrimary
+              .withValues(alpha: _animation.value * 0.1),
           borderRadius: BorderRadius.circular(widget.borderRadius),
         ),
       ),

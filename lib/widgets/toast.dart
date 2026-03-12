@@ -9,8 +9,17 @@ class AppToast {
       ..hideCurrentSnackBar()
       ..showSnackBar(
         SnackBar(
-          content: Text(message),
-          backgroundColor: AppTheme.primary,
+          content: Row(
+            children: [
+              const Icon(
+                Icons.check_circle,
+                color: AppTheme.success,
+                size: 20,
+              ),
+              const SizedBox(width: 8),
+              Expanded(child: Text(message)),
+            ],
+          ),
           behavior: SnackBarBehavior.floating,
           duration: const Duration(seconds: 2),
         ),
@@ -22,8 +31,17 @@ class AppToast {
       ..hideCurrentSnackBar()
       ..showSnackBar(
         SnackBar(
-          content: Text(message),
-          backgroundColor: Theme.of(context).colorScheme.error,
+          content: Row(
+            children: [
+              const Icon(
+                Icons.error_outline,
+                color: AppTheme.error,
+                size: 20,
+              ),
+              const SizedBox(width: 8),
+              Expanded(child: Text(message)),
+            ],
+          ),
           behavior: SnackBarBehavior.floating,
           duration: const Duration(seconds: 3),
         ),
