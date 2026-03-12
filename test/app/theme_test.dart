@@ -5,18 +5,24 @@ import 'package:flutter_test/flutter_test.dart';
 void main() {
   group('AppTheme', () {
     group('색상 상수', () {
-      test('primary가 #2563EB이다', () {
-        // Arrange & Act & Assert
+      test('primary가 Court Green #2D5A27이다', () {
         expect(
           AppTheme.primary,
-          const Color(0xFF2563EB),
+          const Color(0xFF2D5A27),
         );
       });
 
-      test('textPrimary가 #1A1A2E이다', () {
+      test('accent가 Amber #F59E0B이다', () {
+        expect(
+          AppTheme.accent,
+          const Color(0xFFF59E0B),
+        );
+      });
+
+      test('textPrimary가 White 93% #FFFFFFEE이다', () {
         expect(
           AppTheme.textPrimary,
-          const Color(0xFF1A1A2E),
+          const Color(0xEEFFFFFF),
         );
       });
 
@@ -27,10 +33,10 @@ void main() {
         );
       });
 
-      test('border가 #E8E0D8이다', () {
+      test('border가 White 12% #20FFFFFF이다', () {
         expect(
           AppTheme.border,
-          const Color(0xFFE8E0D8),
+          const Color(0x20FFFFFF),
         );
       });
 
@@ -72,61 +78,57 @@ void main() {
       });
     });
 
-    group('lightTheme', () {
+    group('darkTheme', () {
       late ThemeData theme;
 
       setUp(() {
-        // Arrange
-        theme = AppTheme.lightTheme;
+        theme = AppTheme.darkTheme;
       });
 
       test('Material 3을 사용한다', () {
-        // Assert
         expect(theme.useMaterial3, isTrue);
       });
 
-      test('primary 색상이 올바르다', () {
-        // Assert
+      test('brightness가 dark이다', () {
+        expect(theme.brightness, Brightness.dark);
+      });
+
+      test('primary 색상이 accent(Amber)이다', () {
         expect(
           theme.colorScheme.primary,
-          AppTheme.primary,
+          AppTheme.accent,
         );
       });
 
       test('error 색상이 올바르다', () {
-        // Assert
         expect(
           theme.colorScheme.error,
           AppTheme.error,
         );
       });
 
-      test('scaffoldBackgroundColor가 웜크림이다', () {
-        // Assert
+      test('scaffoldBackgroundColor가 다크 그린이다', () {
         expect(
           theme.scaffoldBackgroundColor,
           AppTheme.background,
         );
       });
 
-      test('AppBar 배경이 white이다', () {
-        // Assert
+      test('AppBar 배경이 surfaceHigh이다', () {
         expect(
           theme.appBarTheme.backgroundColor,
-          Colors.white,
+          AppTheme.surfaceHigh,
         );
       });
 
-      test('AppBar가 centerTitle이다', () {
-        // Assert
+      test('AppBar가 좌측 정렬이다', () {
         expect(
           theme.appBarTheme.centerTitle,
-          isTrue,
+          isFalse,
         );
       });
 
       test('AppBar elevation이 0이다', () {
-        // Assert
         expect(
           theme.appBarTheme.elevation,
           0,
@@ -134,7 +136,6 @@ void main() {
       });
 
       test('dividerColor가 border이다', () {
-        // Assert
         expect(
           theme.dividerColor,
           AppTheme.border,
@@ -142,7 +143,6 @@ void main() {
       });
 
       test('displayLarge fontSize가 32이다', () {
-        // Assert
         expect(
           theme.textTheme.displayLarge?.fontSize,
           32,
@@ -150,10 +150,18 @@ void main() {
       });
 
       test('bodyMedium 색상이 textSecondary이다', () {
-        // Assert
         expect(
           theme.textTheme.bodyMedium?.color,
           AppTheme.textSecondary,
+        );
+      });
+    });
+
+    group('lightTheme (deprecated)', () {
+      test('darkTheme의 brightness와 동일하다', () {
+        expect(
+          AppTheme.lightTheme.brightness,
+          AppTheme.darkTheme.brightness,
         );
       });
     });
