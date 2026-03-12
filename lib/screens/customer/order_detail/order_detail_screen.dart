@@ -4,6 +4,7 @@ import 'package:badminton_app/models/enums.dart';
 import 'package:badminton_app/models/shop.dart';
 import 'package:badminton_app/screens/customer/order_detail/order_detail_notifier.dart';
 import 'package:badminton_app/screens/customer/order_detail/order_detail_state.dart';
+import 'package:badminton_app/widgets/court_background.dart';
 import 'package:badminton_app/widgets/error_view.dart';
 import 'package:badminton_app/widgets/loading_indicator.dart';
 import 'package:flutter/material.dart';
@@ -26,22 +27,11 @@ class OrderDetailScreen extends ConsumerWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text(
-          '작업 상세',
-          style: Theme.of(context).textTheme.titleLarge,
-        ),
-        centerTitle: true,
-        backgroundColor: Colors.white,
-        elevation: 0,
-        bottom: PreferredSize(
-          preferredSize: const Size.fromHeight(0.5),
-          child: Container(
-            height: 0.5,
-            color: AppTheme.border,
-          ),
-        ),
+        title: const Text('작업 상세'),
       ),
-      body: _buildBody(context, ref, state),
+      body: CourtBackground(
+        child: _buildBody(context, ref, state),
+      ),
     );
   }
 
@@ -387,7 +377,7 @@ class _ShopInfoSection extends StatelessWidget {
                       const Icon(
                         Icons.storefront,
                         size: 20,
-                        color: AppTheme.primary,
+                        color: AppTheme.accent,
                       ),
                       const SizedBox(width: 8),
                       Expanded(
@@ -398,7 +388,7 @@ class _ShopInfoSection extends StatelessWidget {
                               .bodyLarge
                               ?.copyWith(
                                 fontWeight: FontWeight.w600,
-                                color: AppTheme.primary,
+                                color: AppTheme.accent,
                               ),
                         ),
                       ),

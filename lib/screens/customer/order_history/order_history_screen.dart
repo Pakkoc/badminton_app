@@ -3,6 +3,7 @@ import 'package:badminton_app/core/utils/formatters.dart';
 import 'package:badminton_app/models/order.dart';
 import 'package:badminton_app/screens/customer/order_history/order_history_notifier.dart';
 import 'package:badminton_app/screens/customer/order_history/order_history_state.dart';
+import 'package:badminton_app/widgets/court_background.dart';
 import 'package:badminton_app/widgets/customer_bottom_nav.dart';
 import 'package:badminton_app/widgets/error_view.dart';
 import 'package:badminton_app/widgets/loading_indicator.dart';
@@ -19,22 +20,11 @@ class OrderHistoryScreen extends ConsumerWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text(
-          '작업 이력',
-          style: Theme.of(context).textTheme.headlineMedium,
-        ),
-        centerTitle: true,
-        backgroundColor: Colors.white,
-        elevation: 0,
-        bottom: PreferredSize(
-          preferredSize: const Size.fromHeight(0.5),
-          child: Container(
-            height: 0.5,
-            color: AppTheme.border,
-          ),
-        ),
+        title: const Text('작업 이력'),
       ),
-      body: _buildBody(context, ref, state),
+      body: CourtBackground(
+        child: _buildBody(context, ref, state),
+      ),
       bottomNavigationBar: const CustomerBottomNav(
         currentIndex: 3,
       ),
@@ -93,7 +83,7 @@ class OrderHistoryScreen extends ConsumerWidget {
     }
 
     return RefreshIndicator(
-      color: AppTheme.primary,
+      color: AppTheme.accent,
       onRefresh: () => ref
           .read(orderHistoryNotifierProvider.notifier)
           .loadHistory(),

@@ -4,10 +4,11 @@ import 'package:badminton_app/models/order.dart';
 import 'package:badminton_app/providers/unread_notification_count_provider.dart';
 import 'package:badminton_app/screens/customer/home/customer_home_notifier.dart';
 import 'package:badminton_app/screens/customer/home/customer_home_state.dart';
+import 'package:badminton_app/widgets/court_background.dart';
 import 'package:badminton_app/widgets/customer_bottom_nav.dart';
 import 'package:badminton_app/widgets/error_view.dart';
-import 'package:badminton_app/widgets/skeleton_shimmer.dart';
 import 'package:badminton_app/widgets/order_timeline_row.dart';
+import 'package:badminton_app/widgets/skeleton_shimmer.dart';
 import 'package:badminton_app/widgets/status_badge.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -22,23 +23,7 @@ class CustomerHomeScreen extends ConsumerWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text(
-          '거트알림',
-          style: Theme.of(context).textTheme.headlineMedium?.copyWith(
-                color: AppTheme.primary,
-                fontWeight: FontWeight.bold,
-              ),
-        ),
-        centerTitle: false,
-        backgroundColor: Colors.white,
-        elevation: 0,
-        bottom: PreferredSize(
-          preferredSize: const Size.fromHeight(0.5),
-          child: Container(
-            height: 0.5,
-            color: AppTheme.border,
-          ),
-        ),
+        title: const Text('거트알림'),
         actions: [
           _NotificationBell(
             onPressed: () =>
@@ -46,7 +31,9 @@ class CustomerHomeScreen extends ConsumerWidget {
           ),
         ],
       ),
-      body: _buildBody(context, ref, state),
+      body: CourtBackground(
+        child: _buildBody(context, ref, state),
+      ),
       bottomNavigationBar: const CustomerBottomNav(
         currentIndex: 0,
       ),
@@ -97,7 +84,7 @@ class _EmptyBody extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return RefreshIndicator(
-      color: AppTheme.primary,
+      color: AppTheme.accent,
       onRefresh: onRefresh,
       child: ListView(
         children: [
@@ -167,7 +154,7 @@ class _OrderListBody extends StatelessWidget {
     final showSummary = receivedCount + inProgressCount > 0;
 
     return RefreshIndicator(
-      color: AppTheme.primary,
+      color: AppTheme.accent,
       onRefresh: onRefresh,
       child: ListView.builder(
         padding: const EdgeInsets.all(16),
@@ -330,7 +317,7 @@ class _OrderCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
-      elevation: 1,
+      elevation: 0,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(20),
         side: const BorderSide(color: AppTheme.border),
@@ -399,7 +386,7 @@ class _OrderCard extends StatelessWidget {
                   child: Icon(
                     Icons.directions,
                     size: 24,
-                    color: AppTheme.primary,
+                    color: AppTheme.accent,
                     semanticLabel: '길찾기',
                   ),
                 ),

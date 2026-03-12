@@ -1,6 +1,7 @@
 import 'package:badminton_app/app/theme.dart';
 import 'package:badminton_app/screens/auth/login/login_notifier.dart';
 import 'package:badminton_app/screens/auth/login/login_state.dart';
+import 'package:badminton_app/widgets/court_background.dart';
 import 'package:badminton_app/widgets/toast.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -34,8 +35,9 @@ class LoginScreen extends ConsumerWidget {
     );
 
     return Scaffold(
-      backgroundColor: AppTheme.surface,
-      body: SafeArea(
+      body: CourtBackground(
+        showCourtLines: false,
+        child: SafeArea(
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 24),
           child: Column(
@@ -44,7 +46,7 @@ class LoginScreen extends ConsumerWidget {
               const Icon(
                 Icons.sports_tennis,
                 size: 56,
-                color: AppTheme.primary,
+                color: AppTheme.accent,
               ),
               const SizedBox(height: 12),
               const Text(
@@ -120,6 +122,7 @@ class LoginScreen extends ConsumerWidget {
           ),
         ),
       ),
+    ),
     );
   }
 }

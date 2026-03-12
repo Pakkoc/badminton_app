@@ -2,6 +2,7 @@ import 'package:badminton_app/app/theme.dart';
 import 'package:badminton_app/core/utils/validators.dart';
 import 'package:badminton_app/providers/auth_provider.dart';
 import 'package:badminton_app/screens/auth/profile_setup/profile_setup_notifier.dart';
+import 'package:badminton_app/widgets/court_background.dart';
 import 'package:badminton_app/widgets/phone_input_field.dart';
 import 'package:badminton_app/widgets/toast.dart';
 import 'package:flutter/material.dart';
@@ -93,7 +94,8 @@ class _ProfileSetupScreenState
             ),
           ],
         ),
-        body: SingleChildScrollView(
+        body: CourtBackground(
+          child: SingleChildScrollView(
           padding: const EdgeInsets.all(24),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -133,10 +135,10 @@ class _ProfileSetupScreenState
                         }
                       : null,
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: AppTheme.primary,
+                    backgroundColor: AppTheme.accent,
                     foregroundColor: Colors.white,
                     disabledBackgroundColor:
-                        AppTheme.primary.withValues(
+                        AppTheme.accent.withValues(
                       alpha: 0.5,
                     ),
                     disabledForegroundColor:
@@ -161,6 +163,7 @@ class _ProfileSetupScreenState
               ),
             ],
           ),
+        ),
         ),
       ),
     );

@@ -4,6 +4,7 @@ import 'package:badminton_app/models/enums.dart';
 import 'package:badminton_app/models/notification_item.dart';
 import 'package:badminton_app/screens/customer/notifications/notifications_notifier.dart';
 import 'package:badminton_app/screens/customer/notifications/notifications_state.dart';
+import 'package:badminton_app/widgets/court_background.dart';
 import 'package:badminton_app/widgets/empty_state.dart';
 import 'package:badminton_app/widgets/error_view.dart';
 import 'package:badminton_app/widgets/loading_indicator.dart';
@@ -34,7 +35,9 @@ class NotificationsScreen extends ConsumerWidget {
           ),
         ],
       ),
-      body: _buildBody(context, ref, state),
+      body: CourtBackground(
+        child: _buildBody(context, ref, state),
+      ),
     );
   }
 
@@ -154,7 +157,7 @@ class _NotificationTile extends StatelessWidget {
                       AppTheme.primaryContainer,
                   child: Icon(
                     _iconForType(notification.type),
-                    color: AppTheme.primary,
+                    color: AppTheme.accent,
                   ),
                 ),
                 const SizedBox(width: 12),

@@ -2,6 +2,7 @@ import 'package:badminton_app/app/theme.dart';
 import 'package:badminton_app/core/utils/formatters.dart';
 import 'package:badminton_app/core/utils/validators.dart';
 import 'package:badminton_app/screens/auth/shop_signup/shop_signup_notifier.dart';
+import 'package:badminton_app/widgets/court_background.dart';
 import 'package:badminton_app/widgets/map_preview.dart';
 import 'package:badminton_app/widgets/phone_input_field.dart';
 import 'package:badminton_app/widgets/toast.dart';
@@ -93,7 +94,8 @@ class _ShopSignupScreenState
           onPressed: () => context.pop(),
         ),
       ),
-      body: SingleChildScrollView(
+      body: CourtBackground(
+        child: SingleChildScrollView(
         padding: const EdgeInsets.all(24),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -178,10 +180,10 @@ class _ShopSignupScreenState
                           }
                         : null,
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: AppTheme.primary,
+                  backgroundColor: AppTheme.accent,
                   foregroundColor: Colors.white,
                   disabledBackgroundColor:
-                      AppTheme.primary.withValues(
+                      AppTheme.accent.withValues(
                     alpha: 0.5,
                   ),
                   disabledForegroundColor:
@@ -210,6 +212,7 @@ class _ShopSignupScreenState
               ),
             ),
           ],
+        ),
         ),
       ),
     );

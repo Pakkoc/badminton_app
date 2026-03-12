@@ -1,5 +1,6 @@
 import 'package:badminton_app/app/theme.dart';
 import 'package:badminton_app/screens/auth/splash/splash_providers.dart';
+import 'package:badminton_app/widgets/court_background.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -67,47 +68,49 @@ class _SplashScreenState extends ConsumerState<SplashScreen>
     );
 
     return Scaffold(
-      backgroundColor: AppTheme.background,
-      body: Center(
-        child: FadeTransition(
-          opacity: _fadeAnimation,
-          child: ScaleTransition(
-            scale: _scaleAnimation,
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Image.asset(
-                  'assets/images/logo.png',
-                  width: 120,
-                  height: 120,
-                ),
-                const SizedBox(height: 16),
-                const Text(
-                  '거트알림',
-                  style: TextStyle(
-                    fontSize: 32,
-                    fontWeight: FontWeight.bold,
-                    color: AppTheme.textPrimary,
+      body: CourtBackground(
+        showCourtLines: false,
+        child: Center(
+          child: FadeTransition(
+            opacity: _fadeAnimation,
+            child: ScaleTransition(
+              scale: _scaleAnimation,
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Image.asset(
+                    'assets/images/logo.png',
+                    width: 120,
+                    height: 120,
                   ),
-                ),
-                const SizedBox(height: 8),
-                const Text(
-                  '배드민턴 거트 추적 서비스',
-                  style: TextStyle(
-                    fontSize: 14,
-                    color: AppTheme.textTertiary,
+                  const SizedBox(height: 16),
+                  const Text(
+                    '거트알림',
+                    style: TextStyle(
+                      fontSize: 32,
+                      fontWeight: FontWeight.bold,
+                      color: AppTheme.textPrimary,
+                    ),
                   ),
-                ),
-                const SizedBox(height: 48),
-                const SizedBox(
-                  width: 24,
-                  height: 24,
-                  child: CircularProgressIndicator(
-                    strokeWidth: 2.5,
-                    color: AppTheme.primary,
+                  const SizedBox(height: 8),
+                  const Text(
+                    '배드민턴 거트 추적 서비스',
+                    style: TextStyle(
+                      fontSize: 14,
+                      color: AppTheme.textTertiary,
+                    ),
                   ),
-                ),
-              ],
+                  const SizedBox(height: 48),
+                  const SizedBox(
+                    width: 24,
+                    height: 24,
+                    child: CircularProgressIndicator(
+                      strokeWidth: 2.5,
+                      color: AppTheme.accent,
+                    ),
+                  ),
+                ],
+              ),
             ),
           ),
         ),
