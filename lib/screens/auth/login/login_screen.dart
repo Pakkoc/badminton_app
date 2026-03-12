@@ -71,7 +71,7 @@ class LoginScreen extends ConsumerWidget {
                           ),
                         ],
                       ),
-                      const SizedBox(height: 16),
+                      const SizedBox(height: 32),
                       const Text(
                         '반갑습니다!',
                         style: TextStyle(
@@ -168,7 +168,7 @@ class _SocialLoginButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: 48,
+      height: 52,
       width: double.infinity,
       child: ElevatedButton(
         onPressed: isDisabled ? null : onPressed,

@@ -17,10 +17,10 @@ class AppTheme {
   // ── Active Tab ────────────────────────────────
   static const activeTab = Color(0xFF22C55E);
 
-  // ── Background (Court Gradient) ───────────────
-  static const backgroundStart = Color(0xFF000000);
-  static const backgroundEnd = Color(0xFF2D5A27);
-  static const background = Color(0xFF162E14);
+  // ── Background (Solid Court Green) ────────────
+  static const backgroundStart = Color(0xFF1B5E30);
+  static const backgroundEnd = Color(0xFF1B5E30);
+  static const background = Color(0xFF1B5E30);
 
   // ── Surface (Glass) ───────────────────────────
   static const surface = Color(0x15FFFFFF);

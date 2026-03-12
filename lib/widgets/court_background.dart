@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 /// 배드민턴 코트 배경 + 장식 라인.
 ///
 /// 모든 Scaffold의 body를 이 위젯으로 감싼다.
-/// 그라데이션 배경(#000000 → #2D5A27)과 코트 라인 장식을 제공한다.
+/// 단색 배경(#1B5E30)과 코트 라인 장식을 제공한다.
 class CourtBackground extends StatelessWidget {
   const CourtBackground({
     super.key,

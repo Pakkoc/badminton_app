@@ -1,3 +1,4 @@
+import 'package:badminton_app/app/theme.dart';
 import 'package:badminton_app/core/utils/formatters.dart';
 import 'package:badminton_app/core/utils/validators.dart';
 import 'package:badminton_app/screens/auth/shop_signup/shop_signup_notifier.dart';
@@ -85,8 +86,26 @@ class _ShopSignupScreenState
 
     return Scaffold(
       appBar: AppBar(
-        title: Text(
-          state.isReapply ? '샵 재등록' : '샵 등록',
+        title: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Text(
+              state.isReapply ? '샵 재등록' : '샵 등록',
+              style: const TextStyle(
+                fontSize: 18,
+                fontWeight: FontWeight.w600,
+                color: AppTheme.textPrimary,
+              ),
+            ),
+            if (!state.isReapply)
+              const Text(
+                '2/2',
+                style: TextStyle(
+                  fontSize: 14,
+                  color: Color(0x88FFFFFF),
+                ),
+              ),
+          ],
         ),
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
@@ -99,19 +118,39 @@ class _ShopSignupScreenState
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
+              // 단계 표시 (재등록 시 숨김)
+              if (!state.isReapply) ...[
+                const _StepProgressRow(),
+                const SizedBox(height: 16),
+              ],
               // 섹션 제목
-              Text(
+              const Text(
                 '샵 정보',
-                style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                      fontSize: 16,
-                      fontWeight: FontWeight.w700,
-                    ),
+                style: TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.w700,
+                  color: AppTheme.textPrimary,
+                ),
               ),
               const SizedBox(height: 16),
               TextFormField(
                 controller: _shopNameController,
-                decoration: const InputDecoration(
+                decoration: InputDecoration(
                   labelText: '샵 이름',
+                  filled: true,
+                  fillColor: const Color(0x12FFFFFF),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(14),
+                    borderSide: const BorderSide(
+                      color: Color(0x20FFFFFF),
+                    ),
+                  ),
+                  enabledBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(14),
+                    borderSide: const BorderSide(
+                      color: Color(0x20FFFFFF),
+                    ),
+                  ),
                 ),
                 validator: Validators.shopName,
                 autovalidateMode: AutovalidateMode.onUserInteraction,
@@ -147,9 +186,23 @@ class _ShopSignupScreenState
               const SizedBox(height: 16),
               TextFormField(
                 controller: _descriptionController,
-                decoration: const InputDecoration(
+                decoration: InputDecoration(
                   labelText: '소개글',
                   alignLabelWithHint: true,
+                  filled: true,
+                  fillColor: const Color(0x12FFFFFF),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(14),
+                    borderSide: const BorderSide(
+                      color: Color(0x20FFFFFF),
+                    ),
+                  ),
+                  enabledBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(14),
+                    borderSide: const BorderSide(
+                      color: Color(0x20FFFFFF),
+                    ),
+                  ),
                 ),
                 maxLines: 4,
                 validator: Validators.description,
@@ -194,13 +247,86 @@ class _ShopSignupScreenState
                           ),
                         )
                       : Text(
-                          state.isReapply ? '재신청' : '등록 신청',
+                          state.isReapply ? '재신청' : '등록 완료',
                         ),
                 ),
               ),
             ],
           ),
         ),
+      ),
+    );
+  }
+}
+
+/// 샵 등록 단계 표시 (정보 입력 → 샵 등록).
+///
+/// Pencil 스펙 (PdstH): padding [0,60], gap 6
+/// - 체크 원: 18x18, fill #4A8FE2, cornerRadius 9
+/// - "정보 입력": fontSize 12, fontWeight 500
+/// - 연결선: fill #4A8FE2, height 2, width 40
+/// - 활성 점: 10x10, fill #4A8FE2
+/// - "샵 등록": fontSize 12, fontWeight 500
+class _StepProgressRow extends StatelessWidget {
+  const _StepProgressRow();
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 60),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          // 완료된 1단계: 체크 원
+          Container(
+            width: 18,
+            height: 18,
+            decoration: const BoxDecoration(
+              color: Color(0xFF4A8FE2),
+              shape: BoxShape.circle,
+            ),
+            child: const Icon(
+              Icons.check,
+              size: 12,
+              color: Colors.white,
+            ),
+          ),
+          const SizedBox(width: 6),
+          const Text(
+            '정보 입력',
+            style: TextStyle(
+              fontSize: 12,
+              fontWeight: FontWeight.w500,
+              color: AppTheme.textPrimary,
+            ),
+          ),
+          const SizedBox(width: 6),
+          // 연결선
+          Container(
+            width: 40,
+            height: 2,
+            color: const Color(0xFF4A8FE2),
+          ),
+          const SizedBox(width: 6),
+          // 현재 2단계: 활성 점
+          Container(
+            width: 10,
+            height: 10,
+            decoration: const BoxDecoration(
+              color: Color(0xFF4A8FE2),
+              shape: BoxShape.circle,
+            ),
+          ),
+          const SizedBox(width: 6),
+          const Text(
+            '샵 등록',
+            style: TextStyle(
+              fontSize: 12,
+              fontWeight: FontWeight.w500,
+              color: AppTheme.textPrimary,
+            ),
+          ),
+        ],
       ),
     );
   }
@@ -223,7 +349,20 @@ class _AddressField extends StatelessWidget {
       readOnly: true,
       decoration: InputDecoration(
         labelText: '주소',
-        border: const OutlineInputBorder(),
+        filled: true,
+        fillColor: const Color(0x12FFFFFF),
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(14),
+          borderSide: const BorderSide(
+            color: Color(0x20FFFFFF),
+          ),
+        ),
+        enabledBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(14),
+          borderSide: const BorderSide(
+            color: Color(0x20FFFFFF),
+          ),
+        ),
         suffixIcon: IconButton(
           icon: const Icon(Icons.search),
           tooltip: '주소 검색',
@@ -249,10 +388,23 @@ class _BusinessNumberField extends StatelessWidget {
   Widget build(BuildContext context) {
     return TextFormField(
       controller: controller,
-      decoration: const InputDecoration(
+      decoration: InputDecoration(
         labelText: '사업자등록번호',
         hintText: '000-00-00000',
-        border: OutlineInputBorder(),
+        filled: true,
+        fillColor: const Color(0x12FFFFFF),
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(14),
+          borderSide: const BorderSide(
+            color: Color(0x20FFFFFF),
+          ),
+        ),
+        enabledBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(14),
+          borderSide: const BorderSide(
+            color: Color(0x20FFFFFF),
+          ),
+        ),
       ),
       keyboardType: TextInputType.number,
       inputFormatters: [
