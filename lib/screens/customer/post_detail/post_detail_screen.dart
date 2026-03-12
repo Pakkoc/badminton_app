@@ -80,7 +80,7 @@ class _PostDetailScreenState
 
     return Scaffold(
       appBar: AppBar(
-        title: Text(post.title),
+        title: const Text('게시글'),
       ),
       body: CourtBackground(child: _PostContent(state: state)),
     );
@@ -97,7 +97,7 @@ class _PostContent extends StatelessWidget {
     final post = state.post!;
 
     return SingleChildScrollView(
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.fromLTRB(28, 20, 28, 32),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [

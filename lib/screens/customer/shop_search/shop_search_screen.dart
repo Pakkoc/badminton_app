@@ -147,7 +147,7 @@ class _ViewModeToggle extends StatelessWidget {
       height: 32,
       decoration: BoxDecoration(
         color: AppTheme.surfaceVariant,
-        borderRadius: BorderRadius.circular(8),
+        borderRadius: BorderRadius.circular(14),
       ),
       child: Row(
         mainAxisSize: MainAxisSize.min,
@@ -194,7 +194,7 @@ class _ToggleSegment extends StatelessWidget {
           color: isActive
               ? AppTheme.accent
               : Colors.transparent,
-          borderRadius: BorderRadius.circular(8),
+          borderRadius: BorderRadius.circular(14),
         ),
         child: Text(
           label,
@@ -321,7 +321,10 @@ class _ShopListView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListView.builder(
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.symmetric(
+        horizontal: 28,
+        vertical: 12,
+      ),
       itemCount: shops.length,
       itemBuilder: (context, index) {
         final shop = shops[index];
@@ -359,9 +362,13 @@ class _ShopCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Card(
       elevation: 0,
+      color: AppTheme.surfaceHigh,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(20),
-        side: const BorderSide(color: AppTheme.border),
+        side: const BorderSide(
+          color: Color(0x4Dffffff),
+          width: 1,
+        ),
       ),
       child: InkWell(
         onTap: onTap,

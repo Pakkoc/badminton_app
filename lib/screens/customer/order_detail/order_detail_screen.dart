@@ -60,7 +60,10 @@ class OrderDetailScreen extends ConsumerWidget {
     }
 
     return SingleChildScrollView(
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.symmetric(
+        horizontal: 28,
+        vertical: 16,
+      ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -116,10 +119,15 @@ class _LargeStatusBadge extends StatelessWidget {
 
     return Container(
       width: double.infinity,
-      padding: const EdgeInsets.all(24),
+      height: 72,
+      padding: const EdgeInsets.symmetric(horizontal: 24),
       decoration: BoxDecoration(
-        color: bgColor,
+        color: const Color(0x1Affffff),
         borderRadius: BorderRadius.circular(20),
+        border: Border.all(
+          color: const Color(0xFF93C5FD),
+          width: 1,
+        ),
       ),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,

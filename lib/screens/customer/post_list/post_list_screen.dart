@@ -80,7 +80,10 @@ class _PostListScreenState
 
     return ListView.builder(
       itemCount: state.posts.length,
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.symmetric(
+        horizontal: 28,
+        vertical: 12,
+      ),
       itemBuilder: (context, index) {
         final post = state.posts[index];
         return Padding(
@@ -118,9 +121,13 @@ class _PostCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Card(
       elevation: 0,
+      color: AppTheme.surfaceHigh,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(20),
-        side: const BorderSide(color: AppTheme.border),
+        side: const BorderSide(
+          color: Color(0x33ffffff),
+          width: 1,
+        ),
       ),
       child: InkWell(
         onTap: onTap,

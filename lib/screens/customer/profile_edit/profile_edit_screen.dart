@@ -67,85 +67,93 @@ class _ProfileEditScreenState
     );
 
     return Scaffold(
-      appBar: AppBar(title: const Text('프로필 편집')),
+      appBar: AppBar(title: const Text('프로필 수정')),
       body: CourtBackground(
         child: SingleChildScrollView(
-        padding: const EdgeInsets.all(24),
-        child: Column(
-          children: [
-            _ProfileAvatar(
-              imageUrl: state.profileImageUrl,
-              onTap: _pickImage,
-            ),
-            const SizedBox(height: 24),
-            TextFormField(
-              controller: _nameController,
-              decoration: const InputDecoration(
-                labelText: '이름',
+          padding: const EdgeInsets.symmetric(
+            horizontal: 28,
+            vertical: 16,
+          ),
+          child: Column(
+            children: [
+              _ProfileAvatar(
+                imageUrl: state.profileImageUrl,
+                onTap: _pickImage,
               ),
-              validator: Validators.name,
-              autovalidateMode:
-                  AutovalidateMode.onUserInteraction,
-              onChanged: ref
-                  .read(profileEditNotifierProvider.notifier)
-                  .updateName,
-            ),
-            const SizedBox(height: 16),
-            PhoneInputField(
-              controller: _phoneController,
-              onChanged: ref
-                  .read(profileEditNotifierProvider.notifier)
-                  .updatePhone,
-            ),
-            const SizedBox(height: 32),
-            SizedBox(
-              width: double.infinity,
-              height: 48,
-              child: ElevatedButton(
-                onPressed: state.isSubmitting
-                    ? null
-                    : () async {
-                        final success = await ref
-                            .read(
-                              profileEditNotifierProvider
-                                  .notifier,
-                            )
-                            .submit();
-                        if (success && context.mounted) {
-                          AppToast.success(
-                            context,
-                            '프로필이 저장되었습니다',
-                          );
-                          context.pop();
-                        }
-                      },
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: AppTheme.accent,
-                  foregroundColor: Colors.white,
-                  disabledBackgroundColor:
-                      AppTheme.accent.withValues(
-                    alpha: 0.5,
-                  ),
-                  disabledForegroundColor:
-                      Colors.white.withValues(
-                    alpha: 0.5,
-                  ),
+              const SizedBox(height: 20),
+              TextFormField(
+                controller: _nameController,
+                decoration: const InputDecoration(
+                  labelText: '이름',
                 ),
-                child: state.isSubmitting
-                    ? const SizedBox(
-                        width: 24,
-                        height: 24,
-                        child: CircularProgressIndicator(
-                          strokeWidth: 2,
-                          color: Colors.white,
-                        ),
-                      )
-                    : const Text('저장'),
+                validator: Validators.name,
+                autovalidateMode:
+                    AutovalidateMode.onUserInteraction,
+                onChanged: ref
+                    .read(
+                      profileEditNotifierProvider.notifier,
+                    )
+                    .updateName,
               ),
-            ),
-          ],
+              const SizedBox(height: 16),
+              PhoneInputField(
+                controller: _phoneController,
+                onChanged: ref
+                    .read(
+                      profileEditNotifierProvider.notifier,
+                    )
+                    .updatePhone,
+              ),
+              const SizedBox(height: 32),
+              SizedBox(
+                width: double.infinity,
+                height: 48,
+                child: ElevatedButton(
+                  onPressed: state.isSubmitting
+                      ? null
+                      : () async {
+                          final success = await ref
+                              .read(
+                                profileEditNotifierProvider
+                                    .notifier,
+                              )
+                              .submit();
+                          if (success && context.mounted) {
+                            AppToast.success(
+                              context,
+                              '프로필이 저장되었습니다',
+                            );
+                            context.pop();
+                          }
+                        },
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: const Color(0xFF16A34A),
+                    foregroundColor: Colors.white,
+                    shape: RoundedRectangleBorder(
+                      borderRadius:
+                          BorderRadius.circular(12),
+                    ),
+                    disabledBackgroundColor: const Color(
+                      0xFF16A34A,
+                    ).withValues(alpha: 0.5),
+                    disabledForegroundColor:
+                        Colors.white.withValues(alpha: 0.5),
+                  ),
+                  child: state.isSubmitting
+                      ? const SizedBox(
+                          width: 24,
+                          height: 24,
+                          child: CircularProgressIndicator(
+                            strokeWidth: 2,
+                            color: Colors.white,
+                          ),
+                        )
+                      : const Text('저장'),
+                ),
+              ),
+            ],
+          ),
         ),
-      ),
       ),
     );
   }

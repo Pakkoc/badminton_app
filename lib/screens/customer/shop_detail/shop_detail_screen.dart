@@ -188,7 +188,7 @@ class _ShopNameSection extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.fromLTRB(16, 20, 16, 0),
+      padding: const EdgeInsets.fromLTRB(28, 20, 28, 0),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -246,7 +246,7 @@ class _OrderStatusCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.fromLTRB(16, 24, 16, 0),
+      padding: const EdgeInsets.fromLTRB(28, 24, 28, 0),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -351,7 +351,7 @@ class _ContactSection extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.fromLTRB(16, 24, 16, 0),
+      padding: const EdgeInsets.fromLTRB(28, 24, 28, 0),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -450,13 +450,21 @@ class _DirectionsButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.fromLTRB(16, 24, 16, 0),
+      padding: const EdgeInsets.fromLTRB(28, 24, 28, 0),
       child: SizedBox(
         width: double.infinity,
+        height: 48,
         child: ElevatedButton.icon(
           onPressed: () => _openNaverNavigation(),
           icon: const Icon(Icons.directions, size: 20),
           label: const Text('길찾기'),
+          style: ElevatedButton.styleFrom(
+            backgroundColor: const Color(0xFF2563EB),
+            foregroundColor: Colors.white,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(20),
+            ),
+          ),
         ),
       ),
     );
@@ -561,7 +569,10 @@ class _NoticeTab extends StatelessWidget {
     }
 
     return ListView.builder(
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.symmetric(
+        horizontal: 28,
+        vertical: 12,
+      ),
       itemCount: posts.length,
       itemBuilder: (context, index) {
         final post = posts[index];
@@ -571,6 +582,7 @@ class _NoticeTab extends StatelessWidget {
           ),
           child: Card(
             elevation: 0,
+            color: AppTheme.surfaceHigh,
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(20),
               side: const BorderSide(
@@ -661,7 +673,10 @@ class _EventTab extends StatelessWidget {
     }
 
     return ListView.builder(
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.symmetric(
+        horizontal: 28,
+        vertical: 12,
+      ),
       itemCount: posts.length,
       itemBuilder: (context, index) {
         final post = posts[index];

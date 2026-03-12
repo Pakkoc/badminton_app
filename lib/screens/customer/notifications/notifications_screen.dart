@@ -119,12 +119,16 @@ class _NotificationTile extends StatelessWidget {
   IconData _iconForType(NotificationType type) =>
       switch (type) {
         NotificationType.statusChange => Icons.sync,
-        NotificationType.completion => Icons.check_circle_outline,
+        NotificationType.completion =>
+          Icons.check_circle_outline,
         NotificationType.notice => Icons.campaign_outlined,
-        NotificationType.receipt => Icons.receipt_long_outlined,
+        NotificationType.receipt =>
+          Icons.receipt_long_outlined,
         NotificationType.shopApproval => Icons.check_circle,
-        NotificationType.shopRejection => Icons.cancel_outlined,
-        NotificationType.communityReport => Icons.flag_outlined,
+        NotificationType.shopRejection =>
+          Icons.cancel_outlined,
+        NotificationType.communityReport =>
+          Icons.flag_outlined,
         NotificationType.commentOnPost =>
           Icons.chat_bubble_outline,
         NotificationType.replyOnComment =>
@@ -134,68 +138,67 @@ class _NotificationTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final bgColor = notification.isRead
-        ? AppTheme.surface
-        : AppTheme.primaryContainer;
+        ? AppTheme.surfaceHigh
+        : Colors.transparent;
 
-    return Padding(
-      padding: const EdgeInsets.symmetric(
-        horizontal: 16,
-        vertical: 4,
-      ),
-      child: Material(
-        color: bgColor,
-        borderRadius: BorderRadius.circular(20),
-        child: InkWell(
-          borderRadius: BorderRadius.circular(20),
-          onTap: onTap,
-          child: Padding(
-            padding: const EdgeInsets.all(16),
-            child: Row(
-              children: [
-                CircleAvatar(
-                  backgroundColor:
-                      AppTheme.primaryContainer,
-                  child: Icon(
-                    _iconForType(notification.type),
-                    color: AppTheme.accent,
-                  ),
-                ),
-                const SizedBox(width: 12),
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment:
-                        CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        notification.title,
-                        style: TextStyle(
-                          fontWeight: notification.isRead
-                              ? FontWeight.normal
-                              : FontWeight.bold,
-                        ),
-                      ),
-                      const SizedBox(height: 4),
-                      Text(
-                        notification.body,
-                        style: Theme.of(context)
-                            .textTheme
-                            .bodyMedium,
-                      ),
-                    ],
-                  ),
-                ),
-                const SizedBox(width: 8),
-                Text(
-                  Formatters.relativeTime(
-                    notification.createdAt,
-                  ),
-                  style: Theme.of(context)
-                      .textTheme
-                      .bodySmall,
-                ),
-              ],
+    return InkWell(
+      onTap: onTap,
+      child: Container(
+        padding: const EdgeInsets.symmetric(
+          horizontal: 28,
+          vertical: 16,
+        ),
+        decoration: BoxDecoration(
+          color: bgColor,
+          border: const Border(
+            bottom: BorderSide(
+              color: Color(0x33ffffff),
+              width: 1,
             ),
           ),
+        ),
+        child: Row(
+          children: [
+            CircleAvatar(
+              backgroundColor: AppTheme.primaryContainer,
+              child: Icon(
+                _iconForType(notification.type),
+                color: AppTheme.accent,
+              ),
+            ),
+            const SizedBox(width: 12),
+            Expanded(
+              child: Column(
+                crossAxisAlignment:
+                    CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    notification.title,
+                    style: TextStyle(
+                      fontWeight: notification.isRead
+                          ? FontWeight.normal
+                          : FontWeight.bold,
+                    ),
+                  ),
+                  const SizedBox(height: 4),
+                  Text(
+                    notification.body,
+                    style: Theme.of(context)
+                        .textTheme
+                        .bodyMedium,
+                  ),
+                ],
+              ),
+            ),
+            const SizedBox(width: 8),
+            Text(
+              Formatters.relativeTime(
+                notification.createdAt,
+              ),
+              style:
+                  Theme.of(context).textTheme.bodySmall,
+            ),
+          ],
         ),
       ),
     );

@@ -88,7 +88,10 @@ class OrderHistoryScreen extends ConsumerWidget {
           .read(orderHistoryNotifierProvider.notifier)
           .loadHistory(),
       child: ListView.builder(
-        padding: const EdgeInsets.all(16),
+        padding: const EdgeInsets.symmetric(
+          horizontal: 28,
+          vertical: 16,
+        ),
         itemCount: state.orders.length,
         itemBuilder: (context, index) {
           final order = state.orders[index];
@@ -127,19 +130,20 @@ class _HistoryCard extends StatelessWidget {
     return Card(
       elevation: 0,
       shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(20),
+        borderRadius: BorderRadius.circular(16),
         side: const BorderSide(color: AppTheme.border),
       ),
       clipBehavior: Clip.antiAlias,
       child: InkWell(
         onTap: onTap,
-        borderRadius: BorderRadius.circular(20),
+        borderRadius: BorderRadius.circular(16),
         child: Container(
           decoration: const BoxDecoration(
+            color: AppTheme.surfaceHigh,
             border: Border(
               left: BorderSide(
                 color: AppTheme.completedForeground,
-                width: 4,
+                width: 3,
               ),
             ),
           ),

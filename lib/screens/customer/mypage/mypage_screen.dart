@@ -47,7 +47,10 @@ class _MypageScreenState extends ConsumerState<MypageScreen> {
           _notifyCommunity ??= user.notifyCommunity;
 
           return ListView(
-            padding: const EdgeInsets.all(16),
+            padding: const EdgeInsets.symmetric(
+              horizontal: 28,
+              vertical: 16,
+            ),
             children: [
               _ProfileCard(
                 name: user.name,
