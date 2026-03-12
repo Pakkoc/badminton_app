@@ -76,6 +76,7 @@ class _SplashScreenState extends ConsumerState<SplashScreen>
             child: ScaleTransition(
               scale: _scaleAnimation,
               child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   const SizedBox(height: 77),
                   const Spacer(),
