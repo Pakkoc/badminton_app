@@ -617,16 +617,20 @@ class _BottomSheetCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      decoration: const BoxDecoration(
-        color: AppTheme.surfaceHigh,
-        borderRadius: BorderRadius.vertical(
+      decoration: BoxDecoration(
+        color: const Color(0xFF1A4D2B),
+        borderRadius: const BorderRadius.vertical(
           top: Radius.circular(20),
         ),
-        boxShadow: [
+        border: Border.all(
+          color: const Color(0x30FFFFFF),
+          width: 0.5,
+        ),
+        boxShadow: const [
           BoxShadow(
-            color: Color(0x1A000000),
-            blurRadius: 8,
-            offset: Offset(0, -2),
+            color: Color(0x40000000),
+            blurRadius: 16,
+            offset: Offset(0, -4),
           ),
         ],
       ),
@@ -643,7 +647,7 @@ class _BottomSheetCard extends StatelessWidget {
             ),
           ),
           Padding(
-            padding: const EdgeInsets.all(16),
+            padding: const EdgeInsets.fromLTRB(28, 12, 28, 16),
             child: _ShopCard(
               shop: shop,
               counts: counts,
