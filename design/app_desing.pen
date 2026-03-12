@@ -284,11 +284,11 @@
           "width": 390,
           "height": 844,
           "layout": "vertical",
-          "gap": 24,
+          "gap": 32,
           "padding": [
             24,
             28,
-            40,
+            64,
             28
           ],
           "children": [
@@ -310,14 +310,18 @@
                   "alignItems": "center",
                   "children": [
                     {
-                      "type": "icon_font",
-                      "id": "mpFIY",
-                      "name": "logoIcon",
-                      "width": 40,
-                      "height": 40,
-                      "iconFontName": "sports_tennis",
-                      "iconFontFamily": "Material Symbols Rounded",
-                      "fill": "$--primary"
+                      "type": "frame",
+                      "id": "otGFh",
+                      "name": "logoImage",
+                      "width": 48,
+                      "height": 48,
+                      "fill": {
+                        "type": "image",
+                        "enabled": true,
+                        "url": "app_logo_2-removebg.png",
+                        "mode": "fill"
+                      },
+                      "cornerRadius": 8
                     },
                     {
                       "type": "text",
@@ -935,7 +939,7 @@
                           "type": "ellipse",
                           "id": "6f3BB",
                           "name": "dot1",
-                          "fill": "$--status-received",
+                          "fill": "#F59E0B",
                           "width": 8,
                           "height": 8
                         },
@@ -965,7 +969,7 @@
                           "type": "ellipse",
                           "id": "WNok5",
                           "name": "dot2",
-                          "fill": "$--status-progress",
+                          "fill": "#3B82F6",
                           "width": 8,
                           "height": 8
                         },
@@ -1034,7 +1038,7 @@
                     "thickness": {
                       "left": 3
                     },
-                    "fill": "$--status-progress"
+                    "fill": "#3B82F6"
                   },
                   "effect": {
                     "type": "shadow",
@@ -1067,7 +1071,7 @@
                           "type": "ellipse",
                           "id": "7VH9V",
                           "name": "card1BadgeDot",
-                          "fill": "$--status-progress",
+                          "fill": "#3B82F6",
                           "width": 8,
                           "height": 8
                         },
@@ -1137,7 +1141,7 @@
                     "thickness": {
                       "left": 3
                     },
-                    "fill": "$--status-received"
+                    "fill": "#F59E0B"
                   },
                   "effect": {
                     "type": "shadow",
@@ -1170,7 +1174,7 @@
                           "type": "ellipse",
                           "id": "3hRvv",
                           "name": "card2BadgeDot",
-                          "fill": "$--status-received",
+                          "fill": "#F59E0B",
                           "width": 8,
                           "height": 8
                         },
@@ -1276,13 +1280,13 @@
                       "height": 24,
                       "iconFontName": "home",
                       "iconFontFamily": "Material Symbols Rounded",
-                      "fill": "#FFFFFFCC"
+                      "fill": "#22C55E"
                     },
                     {
                       "type": "text",
                       "id": "6NOuz",
                       "name": "tab1Label",
-                      "fill": "#FFFFFFCC",
+                      "fill": "#22C55E",
                       "content": "홈",
                       "fontFamily": "Pretendard",
                       "fontSize": 10,
@@ -1306,13 +1310,13 @@
                       "height": 24,
                       "iconFontName": "search",
                       "iconFontFamily": "Material Symbols Rounded",
-                      "fill": "#FFFFFF88"
+                      "fill": "#FFFFFF80"
                     },
                     {
                       "type": "text",
                       "id": "FgExT",
                       "name": "tab2Label",
-                      "fill": "#FFFFFF88",
+                      "fill": "#FFFFFF80",
                       "content": "샵검색",
                       "fontFamily": "Pretendard",
                       "fontSize": 10,
@@ -1336,13 +1340,13 @@
                       "height": 24,
                       "iconFontName": "forum",
                       "iconFontFamily": "Material Symbols Rounded",
-                      "fill": "#FFFFFF88"
+                      "fill": "#FFFFFF80"
                     },
                     {
                       "type": "text",
                       "id": "nDtKM",
                       "name": "commText1",
-                      "fill": "#FFFFFF88",
+                      "fill": "#FFFFFF80",
                       "content": "커뮤니티",
                       "fontFamily": "Pretendard",
                       "fontSize": 10,
@@ -1366,13 +1370,13 @@
                       "height": 24,
                       "iconFontName": "history",
                       "iconFontFamily": "Material Symbols Rounded",
-                      "fill": "#FFFFFF88"
+                      "fill": "#FFFFFF80"
                     },
                     {
                       "type": "text",
                       "id": "wsfoA",
                       "name": "tab4Label",
-                      "fill": "#FFFFFF88",
+                      "fill": "#FFFFFF80",
                       "content": "이력",
                       "fontFamily": "Pretendard",
                       "fontSize": 10,
@@ -1396,13 +1400,13 @@
                       "height": 24,
                       "iconFontName": "person",
                       "iconFontFamily": "Material Symbols Rounded",
-                      "fill": "#FFFFFF88"
+                      "fill": "#FFFFFF80"
                     },
                     {
                       "type": "text",
                       "id": "edKfI",
                       "name": "tab5Label",
-                      "fill": "#FFFFFF88",
+                      "fill": "#FFFFFF80",
                       "content": "MY",
                       "fontFamily": "Pretendard",
                       "fontSize": 10,
@@ -1523,7 +1527,7 @@
                   "type": "text",
                   "id": "UcRxg",
                   "name": "appBarTitle",
-                  "fill": "$--text-primary",
+                  "fill": "#FFFFFFCC",
                   "content": "대시보드",
                   "fontFamily": "Pretendard",
                   "fontSize": 20,
@@ -1537,7 +1541,7 @@
                   "height": 24,
                   "iconFontName": "settings",
                   "iconFontFamily": "Material Symbols Rounded",
-                  "fill": "$--text-secondary"
+                  "fill": "#FFFFFF88"
                 }
               ]
             },
@@ -1557,7 +1561,7 @@
                   "type": "text",
                   "id": "0ZGO1",
                   "name": "statsTitle",
-                  "fill": "$--text-primary",
+                  "fill": "#FFFFFFEE",
                   "content": "오늘의 작업 현황",
                   "fontFamily": "Pretendard",
                   "fontSize": 16,
@@ -1580,7 +1584,7 @@
                       "stroke": {
                         "align": "inside",
                         "thickness": 1,
-                        "fill": "$--status-received"
+                        "fill": "#F59E0B"
                       },
                       "layout": "vertical",
                       "gap": 4,
@@ -1591,7 +1595,7 @@
                           "type": "text",
                           "id": "IqZxK",
                           "name": "card1Num",
-                          "fill": "$--status-received",
+                          "fill": "#F59E0B",
                           "content": "3",
                           "fontFamily": "Pretendard",
                           "fontSize": 36,
@@ -1619,7 +1623,7 @@
                       "stroke": {
                         "align": "inside",
                         "thickness": 1,
-                        "fill": "$--status-progress"
+                        "fill": "#3B82F6"
                       },
                       "layout": "vertical",
                       "gap": 4,
@@ -1630,7 +1634,7 @@
                           "type": "text",
                           "id": "4jV3Y",
                           "name": "card2Num",
-                          "fill": "$--status-progress",
+                          "fill": "#3B82F6",
                           "content": "2",
                           "fontFamily": "Pretendard",
                           "fontSize": 36,
@@ -1658,7 +1662,7 @@
                       "stroke": {
                         "align": "inside",
                         "thickness": 1,
-                        "fill": "$--status-completed"
+                        "fill": "#22C55E"
                       },
                       "layout": "vertical",
                       "gap": 4,
@@ -1669,7 +1673,7 @@
                           "type": "text",
                           "id": "XLHAd",
                           "name": "card3Num",
-                          "fill": "$--status-completed",
+                          "fill": "#22C55E",
                           "content": "5",
                           "fontFamily": "Pretendard",
                           "fontSize": 36,
@@ -1709,7 +1713,7 @@
                   "type": "text",
                   "id": "yPCeJ",
                   "name": "recentTitle",
-                  "fill": "$--text-primary",
+                  "fill": "#FFFFFFEE",
                   "content": "최근 작업",
                   "fontFamily": "Pretendard",
                   "fontSize": 18,
@@ -1719,7 +1723,7 @@
                   "type": "text",
                   "id": "0HA4Z",
                   "name": "recentViewAll",
-                  "fill": "$--primary",
+                  "fill": "#FFFFFFAA",
                   "content": "전체보기",
                   "fontFamily": "Pretendard",
                   "fontSize": 14,
@@ -1751,7 +1755,7 @@
                     "thickness": {
                       "left": 2
                     },
-                    "fill": "$--status-received"
+                    "fill": "#F59E0B"
                   },
                   "effect": {
                     "type": "shadow",
@@ -1801,7 +1805,7 @@
                               "type": "text",
                               "id": "VR6VB",
                               "name": "badge1Text",
-                              "fill": "$--status-received",
+                              "fill": "#F59E0B",
                               "content": "접수됨",
                               "fontFamily": "Pretendard",
                               "fontSize": 12,
@@ -1823,7 +1827,7 @@
                           "type": "text",
                           "id": "uFwaS",
                           "name": "t1a",
-                          "fill": "$--text-tertiary",
+                          "fill": "#FFFFFF88",
                           "content": "접수 3/4 14:30",
                           "fontFamily": "Pretendard",
                           "fontSize": 11,
@@ -1877,7 +1881,7 @@
                       "name": "Action Button",
                       "width": "fill_container",
                       "height": 36,
-                      "fill": "$--status-progress",
+                      "fill": "#3B82F6",
                       "cornerRadius": 14,
                       "padding": [
                         0,
@@ -1912,7 +1916,7 @@
                     "thickness": {
                       "left": 2
                     },
-                    "fill": "$--status-progress"
+                    "fill": "#3B82F6"
                   },
                   "effect": {
                     "type": "shadow",
@@ -1962,7 +1966,7 @@
                               "type": "text",
                               "id": "LAXvn",
                               "name": "badge2Text",
-                              "fill": "$--status-progress",
+                              "fill": "#3B82F6",
                               "content": "작업중",
                               "fontFamily": "Pretendard",
                               "fontSize": 12,
@@ -1984,7 +1988,7 @@
                           "type": "text",
                           "id": "0BExP",
                           "name": "t2a",
-                          "fill": "$--text-tertiary",
+                          "fill": "#FFFFFF88",
                           "content": "접수 3/4 13:15",
                           "fontFamily": "Pretendard",
                           "fontSize": 11,
@@ -1994,7 +1998,7 @@
                           "type": "text",
                           "id": "npy27",
                           "name": "t2b",
-                          "fill": "$--text-tertiary",
+                          "fill": "#FFFFFF88",
                           "content": "→",
                           "fontFamily": "Pretendard",
                           "fontSize": 11,
@@ -2004,7 +2008,7 @@
                           "type": "text",
                           "id": "ec7hA",
                           "name": "t2c",
-                          "fill": "$--text-tertiary",
+                          "fill": "#FFFFFF88",
                           "content": "시작 3/4 13:40",
                           "fontFamily": "Pretendard",
                           "fontSize": 11,
@@ -2038,7 +2042,7 @@
                       "name": "Action Button",
                       "width": "fill_container",
                       "height": 36,
-                      "fill": "$--primary",
+                      "fill": "#16A34A",
                       "cornerRadius": 14,
                       "padding": [
                         0,
@@ -2073,7 +2077,7 @@
                     "thickness": {
                       "left": 2
                     },
-                    "fill": "$--status-completed"
+                    "fill": "#22C55E"
                   },
                   "effect": {
                     "type": "shadow",
@@ -2123,7 +2127,7 @@
                               "type": "text",
                               "id": "OPSnN",
                               "name": "badge3Text",
-                              "fill": "$--status-completed",
+                              "fill": "#22C55E",
                               "content": "완료",
                               "fontFamily": "Pretendard",
                               "fontSize": 12,
@@ -2145,7 +2149,7 @@
                           "type": "text",
                           "id": "ZFiZx",
                           "name": "t3a",
-                          "fill": "$--text-tertiary",
+                          "fill": "#FFFFFF88",
                           "content": "접수 3/4 12:00",
                           "fontFamily": "Pretendard",
                           "fontSize": 11,
@@ -2155,7 +2159,7 @@
                           "type": "text",
                           "id": "YRPCh",
                           "name": "t3b",
-                          "fill": "$--text-tertiary",
+                          "fill": "#FFFFFF88",
                           "content": "→",
                           "fontFamily": "Pretendard",
                           "fontSize": 11,
@@ -2165,7 +2169,7 @@
                           "type": "text",
                           "id": "POzJv",
                           "name": "t3c",
-                          "fill": "$--text-tertiary",
+                          "fill": "#FFFFFF88",
                           "content": "시작 3/4 12:30",
                           "fontFamily": "Pretendard",
                           "fontSize": 11,
@@ -2175,7 +2179,7 @@
                           "type": "text",
                           "id": "XSEr7",
                           "name": "t3d",
-                          "fill": "$--text-tertiary",
+                          "fill": "#FFFFFF88",
                           "content": "→",
                           "fontFamily": "Pretendard",
                           "fontSize": 11,
@@ -2185,7 +2189,7 @@
                           "type": "text",
                           "id": "3sig1",
                           "name": "t3e",
-                          "fill": "$--text-tertiary",
+                          "fill": "#FFFFFF88",
                           "content": "완료 3/4 16:20",
                           "fontFamily": "Pretendard",
                           "fontSize": 11,
@@ -2220,7 +2224,7 @@
                   "name": "FAB",
                   "width": 56,
                   "height": 56,
-                  "fill": "$--primary",
+                  "fill": "#16A34A",
                   "cornerRadius": 999,
                   "effect": {
                     "type": "shadow",
@@ -2288,13 +2292,13 @@
                           "height": 24,
                           "iconFontName": "dashboard",
                           "iconFontFamily": "Material Symbols Rounded",
-                          "fill": "$--primary"
+                          "fill": "#22C55E"
                         },
                         {
                           "type": "text",
                           "id": "S5oek",
                           "name": "tab1Label",
-                          "fill": "$--primary",
+                          "fill": "#22C55E",
                           "content": "대시보드",
                           "fontFamily": "Pretendard",
                           "fontSize": 10,
@@ -2318,13 +2322,13 @@
                           "height": 24,
                           "iconFontName": "add_circle",
                           "iconFontFamily": "Material Symbols Rounded",
-                          "fill": "$--text-tertiary"
+                          "fill": "#FFFFFF80"
                         },
                         {
                           "type": "text",
                           "id": "rDNBL",
                           "name": "tab2Label",
-                          "fill": "$--text-tertiary",
+                          "fill": "#FFFFFF80",
                           "content": "접수",
                           "fontFamily": "Pretendard",
                           "fontSize": 10,
@@ -2348,13 +2352,13 @@
                           "height": 24,
                           "iconFontName": "list_alt",
                           "iconFontFamily": "Material Symbols Rounded",
-                          "fill": "$--text-tertiary"
+                          "fill": "#FFFFFF80"
                         },
                         {
                           "type": "text",
                           "id": "zG0W0",
                           "name": "tab4Label",
-                          "fill": "$--text-tertiary",
+                          "fill": "#FFFFFF80",
                           "content": "관리",
                           "fontFamily": "Pretendard",
                           "fontSize": 10,
@@ -2480,7 +2484,7 @@
                   "height": 24,
                   "iconFontName": "arrow_back",
                   "iconFontFamily": "Material Symbols Rounded",
-                  "fill": "$--text-primary"
+                  "fill": "#FFFFFFEE"
                 },
                 {
                   "type": "frame",
@@ -2493,7 +2497,7 @@
                   "type": "text",
                   "id": "QRp4v",
                   "name": "title1",
-                  "fill": "$--text-primary",
+                  "fill": "#FFFFFFEE",
                   "content": "작업 접수",
                   "fontFamily": "Pretendard",
                   "fontSize": 20,
@@ -2566,13 +2570,13 @@
                   "name": "line1",
                   "width": "fill_container",
                   "height": 1,
-                  "fill": "$--border"
+                  "fill": "#ffffff20"
                 },
                 {
                   "type": "text",
                   "id": "WGDkc",
                   "name": "orText",
-                  "fill": "$--text-tertiary",
+                  "fill": "#FFFFFF66",
                   "content": "또는",
                   "fontFamily": "Pretendard",
                   "fontSize": 12,
@@ -2584,7 +2588,7 @@
                   "name": "line2",
                   "width": "fill_container",
                   "height": 1,
-                  "fill": "$--border"
+                  "fill": "#ffffff20"
                 }
               ]
             },
@@ -2605,8 +2609,13 @@
                   "name": "Search Input",
                   "width": "fill_container",
                   "height": 48,
-                  "fill": "$--surface-variant",
+                  "fill": "#ffffff12",
                   "cornerRadius": 14,
+                  "stroke": {
+                    "align": "inside",
+                    "thickness": 1,
+                    "fill": "#ffffff20"
+                  },
                   "gap": 8,
                   "padding": [
                     0,
@@ -2622,13 +2631,13 @@
                       "height": 16,
                       "iconFontName": "search",
                       "iconFontFamily": "Material Symbols Rounded",
-                      "fill": "$--text-tertiary"
+                      "fill": "#FFFFFF66"
                     },
                     {
                       "type": "text",
                       "id": "QMog1",
                       "name": "searchPlaceholder",
-                      "fill": "$--text-tertiary",
+                      "fill": "#FFFFFF66",
                       "content": "회원 이름 또는 연락처 검색",
                       "fontFamily": "Pretendard",
                       "fontSize": 14,
@@ -2654,12 +2663,12 @@
                   "id": "9dyZb",
                   "name": "Member Card",
                   "width": "fill_container",
-                  "fill": "$--surface",
+                  "fill": "#ffffff18",
                   "cornerRadius": 20,
                   "stroke": {
                     "align": "inside",
                     "thickness": 1,
-                    "fill": "$--border"
+                    "fill": "#ffffff20"
                   },
                   "layout": "vertical",
                   "gap": 8,
@@ -2677,7 +2686,7 @@
                           "type": "text",
                           "id": "NRcTP",
                           "name": "memberName",
-                          "fill": "$--text-primary",
+                          "fill": "#FFFFFFEE",
                           "content": "김민수",
                           "fontFamily": "Pretendard",
                           "fontSize": 16,
@@ -2687,7 +2696,7 @@
                           "type": "text",
                           "id": "zgVJd",
                           "name": "memberPhone",
-                          "fill": "$--text-secondary",
+                          "fill": "#FFFFFFCC",
                           "content": "010-1234-5678",
                           "fontFamily": "Pretendard",
                           "fontSize": 14,
@@ -2715,7 +2724,7 @@
                   "type": "text",
                   "id": "h1Mt2",
                   "name": "formLabel",
-                  "fill": "$--text-secondary",
+                  "fill": "#FFFFFFCC",
                   "content": "메모",
                   "fontFamily": "Pretendard",
                   "fontSize": 14,
@@ -2727,15 +2736,20 @@
                   "name": "Memo Input",
                   "width": "fill_container",
                   "height": 80,
-                  "fill": "$--surface-variant",
+                  "fill": "#ffffff12",
                   "cornerRadius": 14,
+                  "stroke": {
+                    "align": "inside",
+                    "thickness": 1,
+                    "fill": "#ffffff20"
+                  },
                   "padding": 16,
                   "children": [
                     {
                       "type": "text",
                       "id": "A3rAg",
                       "name": "memoText",
-                      "fill": "$--text-tertiary",
+                      "fill": "#FFFFFF66",
                       "content": "메모 (선택사항)",
                       "fontFamily": "Pretendard",
                       "fontSize": 14,
@@ -2891,7 +2905,7 @@
                   "type": "text",
                   "id": "2ta30",
                   "name": "title2",
-                  "fill": "$--text-primary",
+                  "fill": "#FFFFFFEE",
                   "content": "작업 관리",
                   "fontFamily": "Pretendard",
                   "fontSize": 20,
@@ -2904,22 +2918,23 @@
               "id": "0hAtS",
               "name": "Filter Tabs",
               "width": "fill_container",
-              "gap": 8,
+              "gap": 6,
               "padding": [
                 8,
-                28
+                0
               ],
+              "justifyContent": "center",
               "alignItems": "center",
               "children": [
                 {
                   "type": "frame",
                   "id": "yIMhe",
                   "name": "tab1",
-                  "fill": "$--primary",
+                  "fill": "#16A34A",
                   "cornerRadius": 999,
                   "padding": [
-                    8,
-                    16
+                    6,
+                    12
                   ],
                   "justifyContent": "center",
                   "alignItems": "center",
@@ -2940,17 +2955,17 @@
                   "type": "frame",
                   "id": "CWP1p",
                   "name": "tab2",
-                  "fill": "$--surface",
+                  "fill": "#ffffff12",
                   "cornerRadius": 999,
                   "stroke": {
                     "align": "inside",
                     "thickness": 1,
-                    "fill": "$--border"
+                    "fill": "#ffffff20"
                   },
                   "gap": 6,
                   "padding": [
-                    8,
-                    16
+                    6,
+                    12
                   ],
                   "justifyContent": "center",
                   "alignItems": "center",
@@ -2959,7 +2974,7 @@
                       "type": "ellipse",
                       "id": "ANIyC",
                       "name": "d1",
-                      "fill": "$--status-received",
+                      "fill": "#FCD34D",
                       "width": 6,
                       "height": 6
                     },
@@ -2967,7 +2982,7 @@
                       "type": "text",
                       "id": "FpmMQ",
                       "name": "tab2Text",
-                      "fill": "$--text-secondary",
+                      "fill": "#FFFFFFCC",
                       "content": "접수 3",
                       "fontFamily": "Pretendard",
                       "fontSize": 13,
@@ -2979,17 +2994,17 @@
                   "type": "frame",
                   "id": "7dkBR",
                   "name": "tab3",
-                  "fill": "$--surface",
+                  "fill": "#ffffff12",
                   "cornerRadius": 999,
                   "stroke": {
                     "align": "inside",
                     "thickness": 1,
-                    "fill": "$--border"
+                    "fill": "#ffffff20"
                   },
                   "gap": 6,
                   "padding": [
-                    8,
-                    16
+                    6,
+                    12
                   ],
                   "justifyContent": "center",
                   "alignItems": "center",
@@ -2998,7 +3013,7 @@
                       "type": "ellipse",
                       "id": "ycABO",
                       "name": "d2",
-                      "fill": "$--status-progress",
+                      "fill": "#93C5FD",
                       "width": 6,
                       "height": 6
                     },
@@ -3006,7 +3021,7 @@
                       "type": "text",
                       "id": "p1b83",
                       "name": "tab3Text",
-                      "fill": "$--text-secondary",
+                      "fill": "#FFFFFFCC",
                       "content": "작업중 2",
                       "fontFamily": "Pretendard",
                       "fontSize": 13,
@@ -3018,17 +3033,17 @@
                   "type": "frame",
                   "id": "6ka91",
                   "name": "tab4",
-                  "fill": "$--surface",
+                  "fill": "#ffffff12",
                   "cornerRadius": 999,
                   "stroke": {
                     "align": "inside",
                     "thickness": 1,
-                    "fill": "$--border"
+                    "fill": "#ffffff20"
                   },
                   "gap": 6,
                   "padding": [
-                    8,
-                    16
+                    6,
+                    12
                   ],
                   "justifyContent": "center",
                   "alignItems": "center",
@@ -3037,7 +3052,7 @@
                       "type": "ellipse",
                       "id": "bZHFx",
                       "name": "d3",
-                      "fill": "$--status-completed",
+                      "fill": "#6EE7B7",
                       "width": 6,
                       "height": 6
                     },
@@ -3045,7 +3060,7 @@
                       "type": "text",
                       "id": "JvUd1",
                       "name": "tab4Text",
-                      "fill": "$--text-secondary",
+                      "fill": "#FFFFFFCC",
                       "content": "완료 5",
                       "fontFamily": "Pretendard",
                       "fontSize": 13,
@@ -3079,7 +3094,7 @@
                     "thickness": {
                       "left": 2
                     },
-                    "fill": "$--status-received"
+                    "fill": "#F59E0B"
                   },
                   "effect": {
                     "type": "shadow",
@@ -3129,7 +3144,7 @@
                               "type": "text",
                               "id": "1Vrp8",
                               "name": "badge1Text",
-                              "fill": "$--status-received",
+                              "fill": "#F59E0B",
                               "content": "접수",
                               "fontFamily": "Pretendard",
                               "fontSize": 12,
@@ -3151,7 +3166,7 @@
                           "type": "text",
                           "id": "UvfHf",
                           "name": "a1",
-                          "fill": "$--text-tertiary",
+                          "fill": "#FFFFFF88",
                           "content": "접수 3/4 14:30",
                           "fontFamily": "Pretendard",
                           "fontSize": 11,
@@ -3205,7 +3220,7 @@
                       "name": "Action Button",
                       "width": "fill_container",
                       "height": 36,
-                      "fill": "$--status-progress",
+                      "fill": "#3B82F6",
                       "cornerRadius": 14,
                       "justifyContent": "center",
                       "alignItems": "center",
@@ -3236,7 +3251,7 @@
                     "thickness": {
                       "left": 2
                     },
-                    "fill": "$--status-progress"
+                    "fill": "#3B82F6"
                   },
                   "effect": {
                     "type": "shadow",
@@ -3286,7 +3301,7 @@
                               "type": "text",
                               "id": "klOdO",
                               "name": "badge2Text",
-                              "fill": "$--status-progress",
+                              "fill": "#3B82F6",
                               "content": "작업중",
                               "fontFamily": "Pretendard",
                               "fontSize": 12,
@@ -3308,7 +3323,7 @@
                           "type": "text",
                           "id": "HAM55",
                           "name": "a2",
-                          "fill": "$--text-tertiary",
+                          "fill": "#FFFFFF88",
                           "content": "접수 3/4 13:00",
                           "fontFamily": "Pretendard",
                           "fontSize": 11,
@@ -3318,7 +3333,7 @@
                           "type": "text",
                           "id": "9nHPU",
                           "name": "b2",
-                          "fill": "$--text-tertiary",
+                          "fill": "#FFFFFF88",
                           "content": "→",
                           "fontFamily": "Pretendard",
                           "fontSize": 11,
@@ -3328,7 +3343,7 @@
                           "type": "text",
                           "id": "wJEut",
                           "name": "c2",
-                          "fill": "$--text-tertiary",
+                          "fill": "#FFFFFF88",
                           "content": "시작 3/4 13:25",
                           "fontFamily": "Pretendard",
                           "fontSize": 11,
@@ -3362,7 +3377,7 @@
                       "name": "Action Button",
                       "width": "fill_container",
                       "height": 36,
-                      "fill": "$--primary",
+                      "fill": "#16A34A",
                       "cornerRadius": 14,
                       "justifyContent": "center",
                       "alignItems": "center",
@@ -3393,7 +3408,7 @@
                     "thickness": {
                       "left": 2
                     },
-                    "fill": "$--status-completed"
+                    "fill": "#22C55E"
                   },
                   "effect": {
                     "type": "shadow",
@@ -3443,7 +3458,7 @@
                               "type": "text",
                               "id": "FHjKg",
                               "name": "badge3Text",
-                              "fill": "$--status-completed",
+                              "fill": "#22C55E",
                               "content": "완료",
                               "fontFamily": "Pretendard",
                               "fontSize": 12,
@@ -3465,7 +3480,7 @@
                           "type": "text",
                           "id": "OMdxX",
                           "name": "a3",
-                          "fill": "$--text-tertiary",
+                          "fill": "#FFFFFF88",
                           "content": "접수 3/3 15:00",
                           "fontFamily": "Pretendard",
                           "fontSize": 11,
@@ -3475,7 +3490,7 @@
                           "type": "text",
                           "id": "2Tnuc",
                           "name": "b3",
-                          "fill": "$--text-tertiary",
+                          "fill": "#FFFFFF88",
                           "content": "→",
                           "fontFamily": "Pretendard",
                           "fontSize": 11,
@@ -3485,7 +3500,7 @@
                           "type": "text",
                           "id": "NdZst",
                           "name": "c3",
-                          "fill": "$--text-tertiary",
+                          "fill": "#FFFFFF88",
                           "content": "시작 3/3 15:20",
                           "fontFamily": "Pretendard",
                           "fontSize": 11,
@@ -3495,7 +3510,7 @@
                           "type": "text",
                           "id": "jp3Vo",
                           "name": "d3",
-                          "fill": "$--text-tertiary",
+                          "fill": "#FFFFFF88",
                           "content": "→",
                           "fontFamily": "Pretendard",
                           "fontSize": 11,
@@ -3505,7 +3520,7 @@
                           "type": "text",
                           "id": "5QoTi",
                           "name": "e3",
-                          "fill": "$--text-tertiary",
+                          "fill": "#FFFFFF88",
                           "content": "완료 3/3 16:00",
                           "fontFamily": "Pretendard",
                           "fontSize": 11,
@@ -3563,13 +3578,13 @@
                       "height": 24,
                       "iconFontName": "dashboard",
                       "iconFontFamily": "Material Symbols Rounded",
-                      "fill": "$--text-tertiary"
+                      "fill": "#FFFFFF80"
                     },
                     {
                       "type": "text",
                       "id": "2TL8I",
                       "name": "navLabel1",
-                      "fill": "$--text-tertiary",
+                      "fill": "#FFFFFF80",
                       "content": "대시보드",
                       "fontFamily": "Pretendard",
                       "fontSize": 10,
@@ -3593,13 +3608,13 @@
                       "height": 24,
                       "iconFontName": "add_circle",
                       "iconFontFamily": "Material Symbols Rounded",
-                      "fill": "$--text-tertiary"
+                      "fill": "#FFFFFF80"
                     },
                     {
                       "type": "text",
                       "id": "jZlem",
                       "name": "navLabel2",
-                      "fill": "$--text-tertiary",
+                      "fill": "#FFFFFF80",
                       "content": "접수",
                       "fontFamily": "Pretendard",
                       "fontSize": 10,
@@ -3623,17 +3638,17 @@
                       "height": 24,
                       "iconFontName": "list_alt",
                       "iconFontFamily": "Material Symbols Rounded",
-                      "fill": "$--primary"
+                      "fill": "#22C55E"
                     },
                     {
                       "type": "text",
                       "id": "SiFXF",
                       "name": "navLabel4",
-                      "fill": "$--primary",
+                      "fill": "#22C55E",
                       "content": "관리",
                       "fontFamily": "Pretendard",
                       "fontSize": 10,
-                      "fontWeight": "SemiBold"
+                      "fontWeight": "normal"
                     }
                   ]
                 }
@@ -4184,13 +4199,13 @@
                               "height": 20,
                               "iconFontName": "storefront",
                               "iconFontFamily": "Material Symbols Rounded",
-                              "fill": "$--primary"
+                              "fill": "#60A5FA"
                             },
                             {
                               "type": "text",
                               "id": "Qxewa",
                               "name": "shopName",
-                              "fill": "$--primary",
+                              "fill": "#FFFFFFEE",
                               "content": "OO 거트 스트링샵",
                               "fontFamily": "Pretendard",
                               "fontSize": 16,
@@ -4204,7 +4219,7 @@
                               "height": 20,
                               "iconFontName": "chevron_right",
                               "iconFontFamily": "Material Symbols Rounded",
-                              "fill": "$--primary"
+                              "fill": "#FFFFFF88"
                             }
                           ]
                         },
@@ -4286,7 +4301,7 @@
                               "stroke": {
                                 "align": "inside",
                                 "thickness": 1,
-                                "fill": "$--primary"
+                                "fill": "#ffffff40"
                               },
                               "gap": 8,
                               "justifyContent": "center",
@@ -4300,13 +4315,13 @@
                                   "height": 20,
                                   "iconFontName": "call",
                                   "iconFontFamily": "Material Symbols Rounded",
-                                  "fill": "$--primary"
+                                  "fill": "#FFFFFFEE"
                                 },
                                 {
                                   "type": "text",
                                   "id": "fvniD",
                                   "name": "phoneText",
-                                  "fill": "$--primary",
+                                  "fill": "#FFFFFFEE",
                                   "content": "전화하기",
                                   "fontFamily": "Pretendard",
                                   "fontSize": 16,
@@ -4320,7 +4335,7 @@
                               "name": "Directions Button",
                               "width": "fill_container",
                               "height": 48,
-                              "fill": "$--primary",
+                              "fill": "#16A34A",
                               "cornerRadius": 20,
                               "gap": 8,
                               "justifyContent": "center",
@@ -4474,7 +4489,7 @@
                   "type": "text",
                   "id": "PHKyH",
                   "name": "Title",
-                  "fill": "$--text-primary",
+                  "fill": "#FFFFFFCC",
                   "content": "주변 샵",
                   "fontFamily": "Pretendard",
                   "fontSize": 20,
@@ -4485,7 +4500,7 @@
                   "id": "wSSO9",
                   "name": "View Toggle",
                   "height": 32,
-                  "fill": "$--surface-variant",
+                  "fill": "#ffffff12",
                   "cornerRadius": 14,
                   "children": [
                     {
@@ -4531,7 +4546,7 @@
                           "type": "text",
                           "id": "KU7Gg",
                           "name": "toggleInactiveText",
-                          "fill": "#4A4A5A",
+                          "fill": "#FFFFFFAA",
                           "content": "리스트",
                           "fontFamily": "Pretendard",
                           "fontSize": 12,
@@ -4583,6 +4598,36 @@
                       "fill": "#2563EB",
                       "width": 28,
                       "height": 28
+                    },
+                    {
+                      "type": "frame",
+                      "id": "Fn1fT",
+                      "x": 274,
+                      "y": 290,
+                      "name": "Current Location Btn",
+                      "width": 48,
+                      "height": 48,
+                      "fill": "#ffffff25",
+                      "cornerRadius": 999,
+                      "effect": {
+                        "type": "shadow",
+                        "shadowType": "outer",
+                        "color": "#00000000"
+                      },
+                      "justifyContent": "center",
+                      "alignItems": "center",
+                      "children": [
+                        {
+                          "type": "icon_font",
+                          "id": "r00WK",
+                          "name": "locIcon",
+                          "width": 24,
+                          "height": 24,
+                          "iconFontName": "my_location",
+                          "iconFontFamily": "Material Symbols Rounded",
+                          "fill": "#60A5FA"
+                        }
+                      ]
                     },
                     {
                       "type": "icon_font",
@@ -4639,36 +4684,6 @@
                       "iconFontName": "storefront",
                       "iconFontFamily": "Material Symbols Rounded",
                       "fill": "#FFFFFF"
-                    },
-                    {
-                      "type": "frame",
-                      "id": "Fn1fT",
-                      "x": 322,
-                      "y": 286,
-                      "name": "Current Location Btn",
-                      "width": 48,
-                      "height": 48,
-                      "fill": "#ffffff25",
-                      "cornerRadius": 999,
-                      "effect": {
-                        "type": "shadow",
-                        "shadowType": "outer",
-                        "color": "#00000000"
-                      },
-                      "justifyContent": "center",
-                      "alignItems": "center",
-                      "children": [
-                        {
-                          "type": "icon_font",
-                          "id": "r00WK",
-                          "name": "locIcon",
-                          "width": 24,
-                          "height": 24,
-                          "iconFontName": "my_location",
-                          "iconFontFamily": "Material Symbols Rounded",
-                          "fill": "#60A5FA"
-                        }
-                      ]
                     }
                   ]
                 }
@@ -5009,13 +5024,13 @@
                       "height": 24,
                       "iconFontName": "home",
                       "iconFontFamily": "Material Symbols Rounded",
-                      "fill": "$--text-tertiary"
+                      "fill": "#FFFFFF80"
                     },
                     {
                       "type": "text",
                       "id": "XDFvn",
                       "name": "tab1Label",
-                      "fill": "$--text-tertiary",
+                      "fill": "#FFFFFF80",
                       "content": "홈",
                       "fontFamily": "Pretendard",
                       "fontSize": 10,
@@ -5040,13 +5055,13 @@
                       "height": 24,
                       "iconFontName": "search",
                       "iconFontFamily": "Material Symbols Rounded",
-                      "fill": "$--primary"
+                      "fill": "#22C55E"
                     },
                     {
                       "type": "text",
                       "id": "n4DOd",
                       "name": "tab2Label",
-                      "fill": "$--primary",
+                      "fill": "#22C55E",
                       "content": "샵검색",
                       "fontFamily": "Pretendard",
                       "fontSize": 10,
@@ -5071,13 +5086,13 @@
                       "height": 24,
                       "iconFontName": "forum",
                       "iconFontFamily": "Material Symbols Rounded",
-                      "fill": "$--text-tertiary"
+                      "fill": "#FFFFFF80"
                     },
                     {
                       "type": "text",
                       "id": "uuJFR",
                       "name": "commText3",
-                      "fill": "$--text-tertiary",
+                      "fill": "#FFFFFF80",
                       "content": "커뮤니티",
                       "fontFamily": "Pretendard",
                       "fontSize": 10,
@@ -5102,13 +5117,13 @@
                       "height": 24,
                       "iconFontName": "history",
                       "iconFontFamily": "Material Symbols Rounded",
-                      "fill": "$--text-tertiary"
+                      "fill": "#FFFFFF80"
                     },
                     {
                       "type": "text",
                       "id": "cfv1l",
                       "name": "tab4Label",
-                      "fill": "$--text-tertiary",
+                      "fill": "#FFFFFF80",
                       "content": "이력",
                       "fontFamily": "Pretendard",
                       "fontSize": 10,
@@ -5133,13 +5148,13 @@
                       "height": 24,
                       "iconFontName": "person",
                       "iconFontFamily": "Material Symbols Rounded",
-                      "fill": "$--text-tertiary"
+                      "fill": "#FFFFFF80"
                     },
                     {
                       "type": "text",
                       "id": "ha8Mb",
                       "name": "tab5Label",
-                      "fill": "$--text-tertiary",
+                      "fill": "#FFFFFF80",
                       "content": "MY",
                       "fontFamily": "Pretendard",
                       "fontSize": 10,
@@ -5990,7 +6005,7 @@
                     "thickness": {
                       "left": 3
                     },
-                    "fill": "$--status-completed"
+                    "fill": "#22C55E"
                   },
                   "effect": {
                     "type": "shadow",
@@ -6024,7 +6039,7 @@
                           "type": "frame",
                           "id": "Pkiqh",
                           "name": "card1badge",
-                          "fill": "$--status-completed-bg",
+                          "fill": "#D1FAE5",
                           "cornerRadius": 10,
                           "padding": [
                             4,
@@ -6081,7 +6096,7 @@
                     "thickness": {
                       "left": 3
                     },
-                    "fill": "$--status-completed"
+                    "fill": "#22C55E"
                   },
                   "effect": {
                     "type": "shadow",
@@ -6115,7 +6130,7 @@
                           "type": "frame",
                           "id": "2nb5c",
                           "name": "card2badge",
-                          "fill": "$--status-completed-bg",
+                          "fill": "#D1FAE5",
                           "cornerRadius": 10,
                           "padding": [
                             4,
@@ -6172,7 +6187,7 @@
                     "thickness": {
                       "left": 3
                     },
-                    "fill": "$--status-completed"
+                    "fill": "#22C55E"
                   },
                   "effect": {
                     "type": "shadow",
@@ -6206,7 +6221,7 @@
                           "type": "frame",
                           "id": "Gr2qD",
                           "name": "card3badge",
-                          "fill": "$--status-completed-bg",
+                          "fill": "#D1FAE5",
                           "cornerRadius": 10,
                           "padding": [
                             4,
@@ -6299,13 +6314,13 @@
                       "height": 24,
                       "iconFontName": "home",
                       "iconFontFamily": "Material Symbols Rounded",
-                      "fill": "#FFFFFF88"
+                      "fill": "#FFFFFF80"
                     },
                     {
                       "type": "text",
                       "id": "2bWbj",
                       "name": "tab1label",
-                      "fill": "#FFFFFF88",
+                      "fill": "#FFFFFF80",
                       "content": "홈",
                       "fontFamily": "Pretendard",
                       "fontSize": 10,
@@ -6329,13 +6344,13 @@
                       "height": 24,
                       "iconFontName": "search",
                       "iconFontFamily": "Material Symbols Rounded",
-                      "fill": "#FFFFFF88"
+                      "fill": "#FFFFFF80"
                     },
                     {
                       "type": "text",
                       "id": "hbWlY",
                       "name": "tab2label",
-                      "fill": "#FFFFFF88",
+                      "fill": "#FFFFFF80",
                       "content": "샵검색",
                       "fontFamily": "Pretendard",
                       "fontSize": 10,
@@ -6359,13 +6374,13 @@
                       "height": 24,
                       "iconFontName": "forum",
                       "iconFontFamily": "Material Symbols Rounded",
-                      "fill": "#FFFFFF88"
+                      "fill": "#FFFFFF80"
                     },
                     {
                       "type": "text",
                       "id": "osSex",
                       "name": "commText4",
-                      "fill": "#FFFFFF88",
+                      "fill": "#FFFFFF80",
                       "content": "커뮤니티",
                       "fontFamily": "Pretendard",
                       "fontSize": 10,
@@ -6389,13 +6404,13 @@
                       "height": 24,
                       "iconFontName": "history",
                       "iconFontFamily": "Material Symbols Rounded",
-                      "fill": "#FFFFFFCC"
+                      "fill": "#22C55E"
                     },
                     {
                       "type": "text",
                       "id": "C0cAR",
                       "name": "tab4label",
-                      "fill": "#FFFFFFCC",
+                      "fill": "#22C55E",
                       "content": "이력",
                       "fontFamily": "Pretendard",
                       "fontSize": 10,
@@ -6419,13 +6434,13 @@
                       "height": 24,
                       "iconFontName": "person",
                       "iconFontFamily": "Material Symbols Rounded",
-                      "fill": "#FFFFFF88"
+                      "fill": "#FFFFFF80"
                     },
                     {
                       "type": "text",
                       "id": "2DNfG",
                       "name": "tab5label",
-                      "fill": "#FFFFFF88",
+                      "fill": "#FFFFFF80",
                       "content": "MY",
                       "fontFamily": "Pretendard",
                       "fontSize": 10,
@@ -6598,7 +6613,7 @@
                           "name": "Avatar",
                           "width": 48,
                           "height": 48,
-                          "fill": "$--surface-variant",
+                          "fill": "#ffffff12",
                           "cornerRadius": 24,
                           "justifyContent": "center",
                           "alignItems": "center",
@@ -6611,7 +6626,7 @@
                               "height": 28,
                               "iconFontName": "person",
                               "iconFontFamily": "Material Symbols Rounded",
-                              "fill": "#2563EB"
+                              "fill": "#22C55E"
                             }
                           ]
                         },
@@ -6649,7 +6664,7 @@
                           "type": "text",
                           "id": "qIadB",
                           "name": "editBtn",
-                          "fill": "#60A5FA",
+                          "fill": "#FFFFFFAA",
                           "content": "프로필 수정",
                           "fontFamily": "Pretendard",
                           "fontSize": 13,
@@ -6740,7 +6755,7 @@
                       "name": "Divider",
                       "width": "fill_container",
                       "height": 1,
-                      "fill": "$--border"
+                      "fill": "#ffffff20"
                     },
                     {
                       "type": "frame",
@@ -6809,7 +6824,7 @@
                           "name": "Icon Wrap",
                           "width": 36,
                           "height": 36,
-                          "fill": "#EFF6FF",
+                          "fill": "#2563EB20",
                           "cornerRadius": 10,
                           "justifyContent": "center",
                           "alignItems": "center",
@@ -6822,7 +6837,7 @@
                               "height": 20,
                               "iconFontName": "storefront",
                               "iconFontFamily": "Material Symbols Rounded",
-                              "fill": "#2563EB"
+                              "fill": "#22C55E"
                             }
                           ]
                         },
@@ -6910,7 +6925,7 @@
                   "stroke": {
                     "align": "inside",
                     "thickness": 1,
-                    "fill": "$--error"
+                    "fill": "#EF4444"
                   },
                   "effect": {
                     "type": "shadow",
@@ -6925,7 +6940,7 @@
                       "type": "text",
                       "id": "ubprQ",
                       "name": "logoutText",
-                      "fill": "$--error",
+                      "fill": "#EF4444",
                       "content": "로그아웃",
                       "fontFamily": "Pretendard",
                       "fontSize": 16,
@@ -6974,13 +6989,13 @@
                       "height": 24,
                       "iconFontName": "home",
                       "iconFontFamily": "Material Symbols Rounded",
-                      "fill": "$--text-tertiary"
+                      "fill": "#FFFFFF80"
                     },
                     {
                       "type": "text",
                       "id": "hXBvB",
                       "name": "t1l",
-                      "fill": "$--text-tertiary",
+                      "fill": "#FFFFFF80",
                       "content": "홈",
                       "fontFamily": "Pretendard",
                       "fontSize": 10,
@@ -7004,13 +7019,13 @@
                       "height": 24,
                       "iconFontName": "search",
                       "iconFontFamily": "Material Symbols Rounded",
-                      "fill": "$--text-tertiary"
+                      "fill": "#FFFFFF80"
                     },
                     {
                       "type": "text",
                       "id": "jecO2",
                       "name": "t2l",
-                      "fill": "$--text-tertiary",
+                      "fill": "#FFFFFF80",
                       "content": "샵검색",
                       "fontFamily": "Pretendard",
                       "fontSize": 10,
@@ -7034,13 +7049,13 @@
                       "height": 24,
                       "iconFontName": "forum",
                       "iconFontFamily": "Material Symbols Rounded",
-                      "fill": "$--text-tertiary"
+                      "fill": "#FFFFFF80"
                     },
                     {
                       "type": "text",
                       "id": "Wbv65",
                       "name": "commText5",
-                      "fill": "$--text-tertiary",
+                      "fill": "#FFFFFF80",
                       "content": "커뮤니티",
                       "fontFamily": "Pretendard",
                       "fontSize": 10,
@@ -7064,13 +7079,13 @@
                       "height": 24,
                       "iconFontName": "history",
                       "iconFontFamily": "Material Symbols Rounded",
-                      "fill": "$--text-tertiary"
+                      "fill": "#FFFFFF80"
                     },
                     {
                       "type": "text",
                       "id": "ae74C",
                       "name": "t4l",
-                      "fill": "$--text-tertiary",
+                      "fill": "#FFFFFF80",
                       "content": "이력",
                       "fontFamily": "Pretendard",
                       "fontSize": 10,
@@ -7094,13 +7109,13 @@
                       "height": 24,
                       "iconFontName": "person",
                       "iconFontFamily": "Material Symbols Rounded",
-                      "fill": "$--primary"
+                      "fill": "#22C55E"
                     },
                     {
                       "type": "text",
                       "id": "wa9Xi",
                       "name": "t5l",
-                      "fill": "$--primary",
+                      "fill": "#22C55E",
                       "content": "MY",
                       "fontFamily": "Pretendard",
                       "fontSize": 10,
@@ -8008,13 +8023,13 @@
                       "height": 24,
                       "iconFontName": "dashboard",
                       "iconFontFamily": "Material Symbols Rounded",
-                      "fill": "#FFFFFF88"
+                      "fill": "#FFFFFF80"
                     },
                     {
                       "type": "text",
                       "id": "5uaWj",
                       "name": "s2tab1Text",
-                      "fill": "#FFFFFF88",
+                      "fill": "#FFFFFF80",
                       "content": "대시보드",
                       "fontFamily": "Pretendard",
                       "fontSize": 10,
@@ -8041,13 +8056,13 @@
                       "height": 24,
                       "iconFontName": "assignment",
                       "iconFontFamily": "Material Symbols Rounded",
-                      "fill": "#FFFFFF88"
+                      "fill": "#FFFFFF80"
                     },
                     {
                       "type": "text",
                       "id": "BYNmp",
                       "name": "s2tab2Text",
-                      "fill": "#FFFFFF88",
+                      "fill": "#FFFFFF80",
                       "content": "작업관리",
                       "fontFamily": "Pretendard",
                       "fontSize": 10,
@@ -8074,13 +8089,13 @@
                       "height": 24,
                       "iconFontName": "settings",
                       "iconFontFamily": "Material Symbols Rounded",
-                      "fill": "$--primary"
+                      "fill": "#22C55E"
                     },
                     {
                       "type": "text",
                       "id": "7hpPZ",
                       "name": "s2tab4Text",
-                      "fill": "$--primary",
+                      "fill": "#22C55E",
                       "content": "설정",
                       "fontFamily": "Pretendard",
                       "fontSize": 10,
@@ -9055,7 +9070,7 @@
                       "stroke": {
                         "align": "inside",
                         "thickness": 1.5,
-                        "fill": "#4A8FE2"
+                        "fill": "#3B82F6"
                       },
                       "gap": 6,
                       "justifyContent": "center",
@@ -9069,13 +9084,13 @@
                           "height": 18,
                           "iconFontName": "download",
                           "iconFontFamily": "lucide",
-                          "fill": "#4A8FE2"
+                          "fill": "#3B82F6"
                         },
                         {
                           "type": "text",
                           "id": "HIDwm",
                           "name": "saveTxt",
-                          "fill": "#4A8FE2",
+                          "fill": "#3B82F6",
                           "content": "이미지 저장",
                           "fontFamily": "Pretendard",
                           "fontSize": 14,
@@ -9089,7 +9104,7 @@
                       "name": "shareBtn",
                       "width": "fill_container",
                       "height": 44,
-                      "fill": "#4A8FE2",
+                      "fill": "#3B82F6",
                       "cornerRadius": 10,
                       "gap": 6,
                       "justifyContent": "center",
@@ -9124,8 +9139,13 @@
                   "id": "NROgk",
                   "name": "infoCard",
                   "width": "fill_container",
-                  "fill": "$--primary-container",
+                  "fill": "#ffffff10",
                   "cornerRadius": 20,
+                  "stroke": {
+                    "align": "inside",
+                    "thickness": 1,
+                    "fill": "#3B82F6"
+                  },
                   "layout": "vertical",
                   "gap": 6,
                   "padding": 16,
@@ -9198,13 +9218,13 @@
                       "height": 24,
                       "iconFontName": "dashboard",
                       "iconFontFamily": "Material Symbols Rounded",
-                      "fill": "$--text-tertiary"
+                      "fill": "#FFFFFF80"
                     },
                     {
                       "type": "text",
                       "id": "8dVgo",
                       "name": "tab1Txt",
-                      "fill": "$--text-tertiary",
+                      "fill": "#FFFFFF80",
                       "content": "대시보드",
                       "fontFamily": "Pretendard",
                       "fontSize": 10,
@@ -9230,13 +9250,13 @@
                       "height": 24,
                       "iconFontName": "assignment",
                       "iconFontFamily": "Material Symbols Rounded",
-                      "fill": "$--text-tertiary"
+                      "fill": "#FFFFFF80"
                     },
                     {
                       "type": "text",
                       "id": "a4kON",
                       "name": "tab2Txt",
-                      "fill": "$--text-tertiary",
+                      "fill": "#FFFFFF80",
                       "content": "작업관리",
                       "fontFamily": "Pretendard",
                       "fontSize": 10,
@@ -9262,13 +9282,13 @@
                       "height": 24,
                       "iconFontName": "settings",
                       "iconFontFamily": "Material Symbols Rounded",
-                      "fill": "$--primary"
+                      "fill": "#22C55E"
                     },
                     {
                       "type": "text",
                       "id": "m81P7",
                       "name": "tab4Txt",
-                      "fill": "$--primary",
+                      "fill": "#22C55E",
                       "content": "설정",
                       "fontFamily": "Pretendard",
                       "fontSize": 10,
@@ -9711,7 +9731,7 @@
                   "name": "submitBtn",
                   "width": "fill_container",
                   "height": 48,
-                  "fill": "$--primary",
+                  "fill": "#16A34A",
                   "cornerRadius": 20,
                   "justifyContent": "center",
                   "alignItems": "center",
@@ -10209,7 +10229,7 @@
                   "name": "fab",
                   "width": 56,
                   "height": 56,
-                  "fill": "$--primary",
+                  "fill": "#16A34A",
                   "cornerRadius": 28,
                   "effect": {
                     "type": "shadow",
@@ -11051,7 +11071,7 @@
                   "name": "Save Button",
                   "width": "fill_container",
                   "height": 52,
-                  "fill": "$--primary",
+                  "fill": "#16A34A",
                   "cornerRadius": 20,
                   "justifyContent": "center",
                   "alignItems": "center",
@@ -11830,7 +11850,7 @@
                             {
                               "type": "frame",
                               "id": "7dzL5",
-                              "x": 48,
+                              "x": 64,
                               "y": -4,
                               "name": "deleteBtn",
                               "width": 20,
@@ -11879,7 +11899,7 @@
                       "name": "Save Button",
                       "width": "fill_container",
                       "height": 52,
-                      "fill": "$--primary",
+                      "fill": "#16A34A",
                       "cornerRadius": 20,
                       "justifyContent": "center",
                       "alignItems": "center",
@@ -12174,7 +12194,7 @@
                   "name": "Navigate Button",
                   "width": "fill_container",
                   "height": 48,
-                  "fill": "$--primary",
+                  "fill": "#16A34A",
                   "cornerRadius": 20,
                   "gap": 8,
                   "justifyContent": "center",
@@ -12217,6 +12237,10 @@
                 },
                 "fill": "#ffffff30"
               },
+              "padding": [
+                0,
+                28
+              ],
               "justifyContent": "space_around",
               "alignItems": "center",
               "children": [
@@ -12975,13 +12999,13 @@
                       "height": 24,
                       "iconFontName": "home",
                       "iconFontFamily": "Material Symbols Rounded",
-                      "fill": "#FFFFFFCC"
+                      "fill": "#22C55E"
                     },
                     {
                       "type": "text",
                       "id": "0WorD",
                       "name": "n1t",
-                      "fill": "#FFFFFFCC",
+                      "fill": "#22C55E",
                       "content": "홈",
                       "fontFamily": "Pretendard",
                       "fontSize": 10,
@@ -13005,13 +13029,13 @@
                       "height": 24,
                       "iconFontName": "search",
                       "iconFontFamily": "Material Symbols Rounded",
-                      "fill": "#FFFFFF88"
+                      "fill": "#FFFFFF80"
                     },
                     {
                       "type": "text",
                       "id": "XvSwT",
                       "name": "n2t",
-                      "fill": "#FFFFFF88",
+                      "fill": "#FFFFFF80",
                       "content": "샵검색",
                       "fontFamily": "Pretendard",
                       "fontSize": 10,
@@ -13035,13 +13059,13 @@
                       "height": 24,
                       "iconFontName": "forum",
                       "iconFontFamily": "Material Symbols Rounded",
-                      "fill": "#FFFFFF88"
+                      "fill": "#FFFFFF80"
                     },
                     {
                       "type": "text",
                       "id": "LMFk4",
                       "name": "commText2",
-                      "fill": "#FFFFFF88",
+                      "fill": "#FFFFFF80",
                       "content": "커뮤니티",
                       "fontFamily": "Pretendard",
                       "fontSize": 10,
@@ -13065,13 +13089,13 @@
                       "height": 24,
                       "iconFontName": "history",
                       "iconFontFamily": "Material Symbols Rounded",
-                      "fill": "#FFFFFF88"
+                      "fill": "#FFFFFF80"
                     },
                     {
                       "type": "text",
                       "id": "YhdIq",
                       "name": "n3t",
-                      "fill": "#FFFFFF88",
+                      "fill": "#FFFFFF80",
                       "content": "이력",
                       "fontFamily": "Pretendard",
                       "fontSize": 10,
@@ -13095,13 +13119,13 @@
                       "height": 24,
                       "iconFontName": "person",
                       "iconFontFamily": "Material Symbols Rounded",
-                      "fill": "#FFFFFF88"
+                      "fill": "#FFFFFF80"
                     },
                     {
                       "type": "text",
                       "id": "GPXyO",
                       "name": "n4t",
-                      "fill": "#FFFFFF88",
+                      "fill": "#FFFFFF80",
                       "content": "MY",
                       "fontFamily": "Pretendard",
                       "fontSize": 10,
@@ -13310,12 +13334,12 @@
                       "height": 24,
                       "iconFontName": "home",
                       "iconFontFamily": "Material Symbols Rounded",
-                      "fill": "#FFFFFF88"
+                      "fill": "#FFFFFF80"
                     },
                     {
                       "type": "text",
                       "id": "wad9D",
-                      "fill": "#FFFFFF88",
+                      "fill": "#FFFFFF80",
                       "content": "홈",
                       "fontFamily": "Pretendard",
                       "fontSize": 10,
@@ -13338,12 +13362,12 @@
                       "height": 24,
                       "iconFontName": "search",
                       "iconFontFamily": "Material Symbols Rounded",
-                      "fill": "#FFFFFF88"
+                      "fill": "#FFFFFF80"
                     },
                     {
                       "type": "text",
                       "id": "NdYtn",
-                      "fill": "#FFFFFF88",
+                      "fill": "#FFFFFF80",
                       "content": "샵검색",
                       "fontFamily": "Pretendard",
                       "fontSize": 10,
@@ -13367,13 +13391,13 @@
                       "height": 24,
                       "iconFontName": "forum",
                       "iconFontFamily": "Material Symbols Rounded",
-                      "fill": "#FFFFFF88"
+                      "fill": "#FFFFFF80"
                     },
                     {
                       "type": "text",
                       "id": "ql362",
                       "name": "commText6",
-                      "fill": "#FFFFFF88",
+                      "fill": "#FFFFFF80",
                       "content": "커뮤니티",
                       "fontFamily": "Pretendard",
                       "fontSize": 10,
@@ -13396,12 +13420,12 @@
                       "height": 24,
                       "iconFontName": "history",
                       "iconFontFamily": "Material Symbols Rounded",
-                      "fill": "#FFFFFFCC"
+                      "fill": "#22C55E"
                     },
                     {
                       "type": "text",
                       "id": "hJA2Z",
-                      "fill": "#FFFFFFCC",
+                      "fill": "#22C55E",
                       "content": "이력",
                       "fontFamily": "Pretendard",
                       "fontSize": 10,
@@ -13424,12 +13448,12 @@
                       "height": 24,
                       "iconFontName": "person",
                       "iconFontFamily": "Material Symbols Rounded",
-                      "fill": "#FFFFFF88"
+                      "fill": "#FFFFFF80"
                     },
                     {
                       "type": "text",
                       "id": "LYavk",
-                      "fill": "#FFFFFF88",
+                      "fill": "#FFFFFF80",
                       "content": "MY",
                       "fontFamily": "Pretendard",
                       "fontSize": 10,
@@ -13607,7 +13631,7 @@
                       "stroke": {
                         "align": "inside",
                         "thickness": 1,
-                        "fill": "$--status-received"
+                        "fill": "#F59E0B"
                       },
                       "layout": "vertical",
                       "gap": 4,
@@ -13619,7 +13643,7 @@
                           "type": "text",
                           "id": "wl92Z",
                           "name": "e3s1n",
-                          "fill": "$--status-received",
+                          "fill": "#F59E0B",
                           "content": "0",
                           "fontFamily": "Pretendard",
                           "fontSize": 36,
@@ -13647,7 +13671,7 @@
                       "stroke": {
                         "align": "inside",
                         "thickness": 1,
-                        "fill": "$--status-progress"
+                        "fill": "#3B82F6"
                       },
                       "layout": "vertical",
                       "gap": 4,
@@ -13659,7 +13683,7 @@
                           "type": "text",
                           "id": "ZCZES",
                           "name": "e3s2n",
-                          "fill": "$--status-progress",
+                          "fill": "#3B82F6",
                           "content": "0",
                           "fontFamily": "Pretendard",
                           "fontSize": 36,
@@ -13687,7 +13711,7 @@
                       "stroke": {
                         "align": "inside",
                         "thickness": 1,
-                        "fill": "$--status-completed"
+                        "fill": "#22C55E"
                       },
                       "layout": "vertical",
                       "gap": 4,
@@ -13699,7 +13723,7 @@
                           "type": "text",
                           "id": "k30FI",
                           "name": "e3s3n",
-                          "fill": "$--status-completed",
+                          "fill": "#22C55E",
                           "content": "0",
                           "fontFamily": "Pretendard",
                           "fontSize": 36,
@@ -13740,7 +13764,7 @@
                   "height": 64,
                   "iconFontName": "storefront",
                   "iconFontFamily": "Material Symbols Rounded",
-                  "fill": "$--secondary-light"
+                  "fill": "#FB923C"
                 },
                 {
                   "type": "text",
@@ -13802,12 +13826,12 @@
                       "height": 24,
                       "iconFontName": "dashboard",
                       "iconFontFamily": "Material Symbols Rounded",
-                      "fill": "$--primary"
+                      "fill": "#22C55E"
                     },
                     {
                       "type": "text",
                       "id": "3mzM0",
-                      "fill": "$--primary",
+                      "fill": "#22C55E",
                       "content": "대시보드",
                       "fontFamily": "Pretendard",
                       "fontSize": 10,
@@ -13830,12 +13854,12 @@
                       "height": 24,
                       "iconFontName": "add_circle",
                       "iconFontFamily": "Material Symbols Rounded",
-                      "fill": "$--text-tertiary"
+                      "fill": "#FFFFFF80"
                     },
                     {
                       "type": "text",
                       "id": "BGJ4E",
-                      "fill": "$--text-tertiary",
+                      "fill": "#FFFFFF80",
                       "content": "접수",
                       "fontFamily": "Pretendard",
                       "fontSize": 10,
@@ -13858,12 +13882,12 @@
                       "height": 24,
                       "iconFontName": "list_alt",
                       "iconFontFamily": "Material Symbols Rounded",
-                      "fill": "$--text-tertiary"
+                      "fill": "#FFFFFF80"
                     },
                     {
                       "type": "text",
                       "id": "zv8Yt",
-                      "fill": "$--text-tertiary",
+                      "fill": "#FFFFFF80",
                       "content": "관리",
                       "fontFamily": "Pretendard",
                       "fontSize": 10,
@@ -13996,21 +14020,22 @@
               "id": "nvm5U",
               "name": "Filter Tabs",
               "width": "fill_container",
-              "gap": 8,
+              "gap": 6,
               "padding": [
                 8,
-                28
+                0
               ],
+              "justifyContent": "center",
               "children": [
                 {
                   "type": "frame",
                   "id": "urcSh",
                   "name": "tab1",
-                  "fill": "$--primary",
+                  "fill": "#16A34A",
                   "cornerRadius": 999,
                   "padding": [
-                    8,
-                    16
+                    6,
+                    12
                   ],
                   "justifyContent": "center",
                   "alignItems": "center",
@@ -14031,7 +14056,7 @@
                   "type": "frame",
                   "id": "yabIh",
                   "name": "tab2",
-                  "fill": "#ffffff18",
+                  "fill": "#ffffff12",
                   "cornerRadius": 999,
                   "stroke": {
                     "align": "inside",
@@ -14040,8 +14065,8 @@
                   },
                   "gap": 6,
                   "padding": [
-                    8,
-                    16
+                    6,
+                    12
                   ],
                   "justifyContent": "center",
                   "alignItems": "center",
@@ -14050,7 +14075,7 @@
                       "type": "ellipse",
                       "id": "ZbNr8",
                       "name": "d4",
-                      "fill": "$--status-received",
+                      "fill": "#FCD34D",
                       "width": 6,
                       "height": 6
                     },
@@ -14070,7 +14095,7 @@
                   "type": "frame",
                   "id": "9s7mc",
                   "name": "tab3",
-                  "fill": "#ffffff18",
+                  "fill": "#ffffff12",
                   "cornerRadius": 999,
                   "stroke": {
                     "align": "inside",
@@ -14079,8 +14104,8 @@
                   },
                   "gap": 6,
                   "padding": [
-                    8,
-                    16
+                    6,
+                    12
                   ],
                   "justifyContent": "center",
                   "alignItems": "center",
@@ -14089,7 +14114,7 @@
                       "type": "ellipse",
                       "id": "0KOX9",
                       "name": "d5",
-                      "fill": "$--status-progress",
+                      "fill": "#93C5FD",
                       "width": 6,
                       "height": 6
                     },
@@ -14109,7 +14134,7 @@
                   "type": "frame",
                   "id": "yzgs1",
                   "name": "tab4",
-                  "fill": "#ffffff18",
+                  "fill": "#ffffff12",
                   "cornerRadius": 999,
                   "stroke": {
                     "align": "inside",
@@ -14118,8 +14143,8 @@
                   },
                   "gap": 6,
                   "padding": [
-                    8,
-                    16
+                    6,
+                    12
                   ],
                   "justifyContent": "center",
                   "alignItems": "center",
@@ -14128,7 +14153,7 @@
                       "type": "ellipse",
                       "id": "RyE4a",
                       "name": "d6",
-                      "fill": "$--status-completed",
+                      "fill": "#6EE7B7",
                       "width": 6,
                       "height": 6
                     },
@@ -14228,13 +14253,13 @@
                       "height": 24,
                       "iconFontName": "dashboard",
                       "iconFontFamily": "Material Symbols Rounded",
-                      "fill": "#FFFFFF88"
+                      "fill": "#FFFFFF80"
                     },
                     {
                       "type": "text",
                       "id": "MJNad",
                       "name": "nav1t",
-                      "fill": "#FFFFFF88",
+                      "fill": "#FFFFFF80",
                       "content": "대시보드",
                       "fontFamily": "Pretendard",
                       "fontSize": 10,
@@ -14258,13 +14283,13 @@
                       "height": 24,
                       "iconFontName": "add_circle",
                       "iconFontFamily": "Material Symbols Rounded",
-                      "fill": "#FFFFFF88"
+                      "fill": "#FFFFFF80"
                     },
                     {
                       "type": "text",
                       "id": "cMPt3",
                       "name": "nav2t",
-                      "fill": "#FFFFFF88",
+                      "fill": "#FFFFFF80",
                       "content": "접수",
                       "fontFamily": "Pretendard",
                       "fontSize": 10,
@@ -14288,17 +14313,17 @@
                       "height": 24,
                       "iconFontName": "list_alt",
                       "iconFontFamily": "Material Symbols Rounded",
-                      "fill": "$--primary"
+                      "fill": "#22C55E"
                     },
                     {
                       "type": "text",
                       "id": "qAPRV",
                       "name": "nav3t",
-                      "fill": "$--primary",
+                      "fill": "#22C55E",
                       "content": "관리",
                       "fontFamily": "Pretendard",
                       "fontSize": 10,
-                      "fontWeight": "SemiBold"
+                      "fontWeight": "normal"
                     }
                   ]
                 }
@@ -14543,8 +14568,13 @@
                   "name": "Search Input",
                   "width": "fill_container",
                   "height": 48,
-                  "fill": "$--surface-variant",
+                  "fill": "#ffffff12",
                   "cornerRadius": 14,
+                  "stroke": {
+                    "align": "inside",
+                    "thickness": 1,
+                    "fill": "#ffffff20"
+                  },
                   "gap": 8,
                   "padding": [
                     0,
@@ -14840,7 +14870,7 @@
                   "type": "text",
                   "id": "Ibkug",
                   "name": "bgTitle",
-                  "fill": "$--text-primary",
+                  "fill": "#FFFFFFCC",
                   "content": "마이페이지",
                   "fontFamily": "Pretendard",
                   "fontSize": 20,
@@ -16082,7 +16112,7 @@
               "stroke": {
                 "align": "inside",
                 "thickness": {
-                  "top": 1
+                  "top": 0.5
                 },
                 "fill": "#ffffff20"
               },
@@ -16111,17 +16141,17 @@
                       "height": 24,
                       "iconFontName": "dashboard",
                       "iconFontFamily": "Material Symbols Rounded",
-                      "fill": "#86EFAC"
+                      "fill": "#22C55E"
                     },
                     {
                       "type": "text",
                       "id": "xt2F2",
                       "name": "n1t",
-                      "fill": "#86EFAC",
+                      "fill": "#22C55E",
                       "content": "대시보드",
                       "fontFamily": "Pretendard",
-                      "fontSize": 11,
-                      "fontWeight": "Bold"
+                      "fontSize": 10,
+                      "fontWeight": "normal"
                     }
                   ]
                 },
@@ -16141,17 +16171,17 @@
                       "height": 24,
                       "iconFontName": "list_alt",
                       "iconFontFamily": "Material Symbols Rounded",
-                      "fill": "#ffffff60"
+                      "fill": "#FFFFFF80"
                     },
                     {
                       "type": "text",
                       "id": "kw114",
                       "name": "n2t",
-                      "fill": "#ffffff60",
+                      "fill": "#FFFFFF80",
                       "content": "작업관리",
                       "fontFamily": "Pretendard",
-                      "fontSize": 11,
-                      "fontWeight": "500"
+                      "fontSize": 10,
+                      "fontWeight": "normal"
                     }
                   ]
                 },
@@ -16171,17 +16201,17 @@
                       "height": 24,
                       "iconFontName": "settings",
                       "iconFontFamily": "Material Symbols Rounded",
-                      "fill": "#ffffff60"
+                      "fill": "#FFFFFF80"
                     },
                     {
                       "type": "text",
                       "id": "0r4n7",
                       "name": "n3t",
-                      "fill": "#ffffff60",
+                      "fill": "#FFFFFF80",
                       "content": "설정",
                       "fontFamily": "Pretendard",
-                      "fontSize": 11,
-                      "fontWeight": "500"
+                      "fontSize": 10,
+                      "fontWeight": "normal"
                     }
                   ]
                 }
@@ -16685,9 +16715,9 @@
               "stroke": {
                 "align": "inside",
                 "thickness": {
-                  "top": 1
+                  "top": 0.5
                 },
-                "fill": "#ffffff10"
+                "fill": "#ffffff20"
               },
               "padding": [
                 8,
@@ -16714,17 +16744,17 @@
                       "height": 24,
                       "iconFontName": "dashboard",
                       "iconFontFamily": "Material Symbols Rounded",
-                      "fill": "#FFFFFF55"
+                      "fill": "#FFFFFF80"
                     },
                     {
                       "type": "text",
                       "id": "MkKUE",
                       "name": "sn1t",
-                      "fill": "#FFFFFF55",
+                      "fill": "#FFFFFF80",
                       "content": "대시보드",
                       "fontFamily": "Pretendard",
-                      "fontSize": 11,
-                      "fontWeight": "500"
+                      "fontSize": 10,
+                      "fontWeight": "normal"
                     }
                   ]
                 },
@@ -16744,17 +16774,17 @@
                       "height": 24,
                       "iconFontName": "list_alt",
                       "iconFontFamily": "Material Symbols Rounded",
-                      "fill": "#FFFFFF55"
+                      "fill": "#FFFFFF80"
                     },
                     {
                       "type": "text",
                       "id": "HTkbh",
                       "name": "sn2t",
-                      "fill": "#FFFFFF55",
+                      "fill": "#FFFFFF80",
                       "content": "작업관리",
                       "fontFamily": "Pretendard",
-                      "fontSize": 11,
-                      "fontWeight": "500"
+                      "fontSize": 10,
+                      "fontWeight": "normal"
                     }
                   ]
                 },
@@ -16774,17 +16804,17 @@
                       "height": 24,
                       "iconFontName": "settings",
                       "iconFontFamily": "Material Symbols Rounded",
-                      "fill": "$--primary"
+                      "fill": "#22C55E"
                     },
                     {
                       "type": "text",
                       "id": "J95p2",
                       "name": "sn3t",
-                      "fill": "$--primary",
+                      "fill": "#22C55E",
                       "content": "설정",
                       "fontFamily": "Pretendard",
-                      "fontSize": 11,
-                      "fontWeight": "Bold"
+                      "fontSize": 10,
+                      "fontWeight": "normal"
                     }
                   ]
                 }
@@ -17926,13 +17956,13 @@
                   "height": 24,
                   "iconFontName": "arrow_back_ios",
                   "iconFontFamily": "Material Symbols Outlined",
-                  "fill": "$--text-primary"
+                  "fill": "#FFFFFFCC"
                 },
                 {
                   "type": "text",
                   "id": "K3fq7",
                   "name": "plTitle",
-                  "fill": "$--text-primary",
+                  "fill": "#FFFFFFCC",
                   "content": "게시판",
                   "fontFamily": "Pretendard",
                   "fontSize": 20,
@@ -18308,13 +18338,13 @@
                       "height": 24,
                       "iconFontName": "home",
                       "iconFontFamily": "Material Symbols Rounded",
-                      "fill": "$--text-tertiary"
+                      "fill": "#FFFFFF80"
                     },
                     {
                       "type": "text",
                       "id": "1ctts",
                       "name": "t1t",
-                      "fill": "$--text-tertiary",
+                      "fill": "#FFFFFF80",
                       "content": "홈",
                       "fontFamily": "Pretendard",
                       "fontSize": 10,
@@ -18341,13 +18371,13 @@
                       "height": 24,
                       "iconFontName": "search",
                       "iconFontFamily": "Material Symbols Rounded",
-                      "fill": "$--text-tertiary"
+                      "fill": "#FFFFFF80"
                     },
                     {
                       "type": "text",
                       "id": "WsW2A",
                       "name": "t2t",
-                      "fill": "$--text-tertiary",
+                      "fill": "#FFFFFF80",
                       "content": "샵검색",
                       "fontFamily": "Pretendard",
                       "fontSize": 10,
@@ -18374,13 +18404,13 @@
                       "height": 24,
                       "iconFontName": "forum",
                       "iconFontFamily": "Material Symbols Rounded",
-                      "fill": "$--text-tertiary"
+                      "fill": "#FFFFFF80"
                     },
                     {
                       "type": "text",
                       "id": "5o9no",
                       "name": "commText7",
-                      "fill": "$--text-tertiary",
+                      "fill": "#FFFFFF80",
                       "content": "커뮤니티",
                       "fontFamily": "Pretendard",
                       "fontSize": 10,
@@ -18407,13 +18437,13 @@
                       "height": 24,
                       "iconFontName": "history",
                       "iconFontFamily": "Material Symbols Rounded",
-                      "fill": "$--text-tertiary"
+                      "fill": "#FFFFFF80"
                     },
                     {
                       "type": "text",
                       "id": "5kuyU",
                       "name": "t3t",
-                      "fill": "$--text-tertiary",
+                      "fill": "#FFFFFF80",
                       "content": "이력",
                       "fontFamily": "Pretendard",
                       "fontSize": 10,
@@ -18440,13 +18470,13 @@
                       "height": 24,
                       "iconFontName": "person",
                       "iconFontFamily": "Material Symbols Rounded",
-                      "fill": "$--text-tertiary"
+                      "fill": "#FFFFFF80"
                     },
                     {
                       "type": "text",
                       "id": "m64Nb",
                       "name": "t4t",
-                      "fill": "$--text-tertiary",
+                      "fill": "#FFFFFF80",
                       "content": "MY",
                       "fontFamily": "Pretendard",
                       "fontSize": 10,
@@ -18571,13 +18601,13 @@
                   "height": 24,
                   "iconFontName": "arrow_back_ios",
                   "iconFontFamily": "Material Symbols Outlined",
-                  "fill": "$--text-primary"
+                  "fill": "#FFFFFFCC"
                 },
                 {
                   "type": "text",
                   "id": "dbK8q",
                   "name": "pdTitle",
-                  "fill": "$--text-primary",
+                  "fill": "#FFFFFFCC",
                   "content": "게시글",
                   "fontFamily": "Pretendard",
                   "fontSize": 20,
@@ -19314,8 +19344,8 @@
                   "name": "peBack",
                   "width": 24,
                   "height": 24,
-                  "iconFontName": "arrow_back_ios",
-                  "iconFontFamily": "Material Symbols Outlined",
+                  "iconFontName": "arrow_back",
+                  "iconFontFamily": "Material Symbols Rounded",
                   "fill": "#FFFFFFCC"
                 },
                 {
@@ -19597,7 +19627,7 @@
                   "name": "Save Button",
                   "width": "fill_container",
                   "height": 48,
-                  "fill": "#2563EB",
+                  "fill": "#16A34A",
                   "cornerRadius": 12,
                   "justifyContent": "center",
                   "alignItems": "center",
@@ -19791,13 +19821,13 @@
                   "height": 24,
                   "iconFontName": "arrow_back",
                   "iconFontFamily": "Material Symbols Rounded",
-                  "fill": "$--text-primary"
+                  "fill": "#FFFFFFCC"
                 },
                 {
                   "type": "text",
                   "id": "NK2Wd",
                   "name": "appTitle",
-                  "fill": "$--text-primary",
+                  "fill": "#FFFFFFCC",
                   "content": "게시글 관리",
                   "fontFamily": "Pretendard",
                   "fontSize": 18,
@@ -20165,7 +20195,7 @@
       "name": "FAB",
       "width": 56,
       "height": 56,
-      "fill": "$--primary",
+      "fill": "#16A34A",
       "cornerRadius": 28,
       "justifyContent": "center",
       "alignItems": "center",
@@ -21054,7 +21084,7 @@
                   "name": "Approve Button",
                   "width": "fill_container",
                   "height": 48,
-                  "fill": "$--primary",
+                  "fill": "#16A34A",
                   "cornerRadius": 12,
                   "justifyContent": "center",
                   "alignItems": "center",
@@ -21082,7 +21112,7 @@
                   "stroke": {
                     "align": "inside",
                     "thickness": 1,
-                    "fill": "$--error"
+                    "fill": "#EF4444"
                   },
                   "justifyContent": "center",
                   "alignItems": "center",
@@ -21091,7 +21121,7 @@
                       "type": "text",
                       "id": "cEcYL",
                       "name": "rejectTxt",
-                      "fill": "$--error",
+                      "fill": "#EF4444",
                       "content": "거절",
                       "fontFamily": "Pretendard",
                       "fontSize": 16,
@@ -21258,7 +21288,7 @@
                   "id": "KavhU",
                   "name": "Search Input",
                   "width": "fill_container",
-                  "height": 40,
+                  "height": 44,
                   "fill": "#ffffff18",
                   "cornerRadius": 20,
                   "gap": 8,
@@ -21795,13 +21825,13 @@
                       "height": 24,
                       "iconFontName": "home",
                       "iconFontFamily": "Material Symbols Rounded",
-                      "fill": "#FFFFFF88"
+                      "fill": "#FFFFFF80"
                     },
                     {
                       "type": "text",
                       "id": "sZEMg",
                       "name": "tab1Label",
-                      "fill": "#FFFFFF88",
+                      "fill": "#FFFFFF80",
                       "content": "홈",
                       "fontFamily": "Pretendard",
                       "fontSize": 10,
@@ -21825,13 +21855,13 @@
                       "height": 24,
                       "iconFontName": "search",
                       "iconFontFamily": "Material Symbols Rounded",
-                      "fill": "#FFFFFF88"
+                      "fill": "#FFFFFF80"
                     },
                     {
                       "type": "text",
                       "id": "Cxddp",
                       "name": "tab2Label",
-                      "fill": "#FFFFFF88",
+                      "fill": "#FFFFFF80",
                       "content": "샵검색",
                       "fontFamily": "Pretendard",
                       "fontSize": 10,
@@ -21855,13 +21885,13 @@
                       "height": 24,
                       "iconFontName": "forum",
                       "iconFontFamily": "Material Symbols Rounded",
-                      "fill": "$--primary"
+                      "fill": "#22C55E"
                     },
                     {
                       "type": "text",
                       "id": "JmTeL",
                       "name": "tab3Label",
-                      "fill": "$--primary",
+                      "fill": "#22C55E",
                       "content": "커뮤니티",
                       "fontFamily": "Pretendard",
                       "fontSize": 10,
@@ -21885,13 +21915,13 @@
                       "height": 24,
                       "iconFontName": "history",
                       "iconFontFamily": "Material Symbols Rounded",
-                      "fill": "#FFFFFF88"
+                      "fill": "#FFFFFF80"
                     },
                     {
                       "type": "text",
                       "id": "k5f95",
                       "name": "tab4Label",
-                      "fill": "#FFFFFF88",
+                      "fill": "#FFFFFF80",
                       "content": "이력",
                       "fontFamily": "Pretendard",
                       "fontSize": 10,
@@ -21915,13 +21945,13 @@
                       "height": 24,
                       "iconFontName": "person",
                       "iconFontFamily": "Material Symbols Rounded",
-                      "fill": "#FFFFFF88"
+                      "fill": "#FFFFFF80"
                     },
                     {
                       "type": "text",
                       "id": "Gx7D8",
                       "name": "tab5Label",
-                      "fill": "#FFFFFF88",
+                      "fill": "#FFFFFF80",
                       "content": "MY",
                       "fontFamily": "Pretendard",
                       "fontSize": 10,
@@ -22056,8 +22086,8 @@
                   "name": "backIcon",
                   "width": 24,
                   "height": 24,
-                  "iconFontName": "arrow_back_ios",
-                  "iconFontFamily": "Material Symbols Outlined",
+                  "iconFontName": "arrow_back",
+                  "iconFontFamily": "Material Symbols Rounded",
                   "fill": "#FFFFFFCC"
                 },
                 {
@@ -22685,7 +22715,7 @@
                   "id": "vDCCd",
                   "name": "Input Field",
                   "width": "fill_container",
-                  "height": 40,
+                  "height": 44,
                   "fill": "#ffffff18",
                   "cornerRadius": 20,
                   "padding": [
@@ -22714,7 +22744,7 @@
                   "height": 24,
                   "iconFontName": "send",
                   "iconFontFamily": "Material Symbols Rounded",
-                  "fill": "$--primary"
+                  "fill": "#22C55E"
                 }
               ]
             }
@@ -23073,7 +23103,7 @@
                   "name": "submitButton",
                   "width": "fill_container",
                   "height": 48,
-                  "fill": "$--primary",
+                  "fill": "#16A34A",
                   "cornerRadius": 12,
                   "justifyContent": "center",
                   "alignItems": "center",
@@ -23198,7 +23228,7 @@
               },
               "padding": [
                 0,
-                16
+                28
               ],
               "justifyContent": "space_between",
               "alignItems": "center",
@@ -23243,14 +23273,15 @@
               "gap": 8,
               "padding": [
                 8,
-                16
+                28
               ],
+              "justifyContent": "center",
               "children": [
                 {
                   "type": "frame",
                   "id": "nhbl1",
                   "name": "filterAll",
-                  "fill": "$--primary",
+                  "fill": "#16A34A",
                   "cornerRadius": 20,
                   "padding": [
                     6,
@@ -23333,7 +23364,7 @@
               "gap": 12,
               "padding": [
                 12,
-                16
+                28
               ],
               "children": [
                 {
@@ -23758,10 +23789,10 @@
               "id": "PU6TO",
               "name": "Bottom Sheet",
               "width": "fill_container",
-              "fill": "$--surface",
+              "fill": "#1A2E1A",
               "cornerRadius": [
-                20,
-                20,
+                24,
+                24,
                 0,
                 0
               ],
@@ -23786,7 +23817,7 @@
                       "cornerRadius": 2,
                       "id": "o8kaV",
                       "name": "handleBar",
-                      "fill": "$--text-tertiary",
+                      "fill": "#FFFFFF44",
                       "width": 40,
                       "height": 4
                     }
@@ -23796,7 +23827,7 @@
                   "type": "text",
                   "id": "IDk3M",
                   "name": "sheetTitle",
-                  "fill": "$--text-primary",
+                  "fill": "#FFFFFFEE",
                   "content": "신고 처리",
                   "fontFamily": "Pretendard",
                   "fontSize": 18,
@@ -23807,7 +23838,7 @@
                   "id": "J72Xa",
                   "name": "Report Info",
                   "width": "fill_container",
-                  "fill": "$--surface-variant",
+                  "fill": "#ffffff12",
                   "cornerRadius": 12,
                   "layout": "vertical",
                   "gap": 10,
@@ -23825,7 +23856,7 @@
                           "type": "text",
                           "id": "oVoqp",
                           "name": "typeLabel",
-                          "fill": "$--text-secondary",
+                          "fill": "#FFFFFF88",
                           "content": "유형",
                           "fontFamily": "Pretendard",
                           "fontSize": 13,
@@ -23835,7 +23866,7 @@
                           "type": "text",
                           "id": "SgBFE",
                           "name": "typeValue",
-                          "fill": "$--text-primary",
+                          "fill": "#FFFFFFEE",
                           "content": "게시글 신고",
                           "fontFamily": "Pretendard",
                           "fontSize": 13,
@@ -23854,7 +23885,7 @@
                           "type": "text",
                           "id": "3RQ7B",
                           "name": "reasonLabel",
-                          "fill": "$--text-secondary",
+                          "fill": "#FFFFFF88",
                           "content": "사유",
                           "fontFamily": "Pretendard",
                           "fontSize": 13,
@@ -23864,7 +23895,7 @@
                           "type": "text",
                           "id": "fiQG8",
                           "name": "reasonValue",
-                          "fill": "$--text-primary",
+                          "fill": "#FFFFFFEE",
                           "content": "부적절한 내용이 포함되어 있습니다.",
                           "fontFamily": "Pretendard",
                           "fontSize": 13,
@@ -23884,7 +23915,7 @@
                           "type": "text",
                           "id": "OFXu0",
                           "name": "reporterLabel",
-                          "fill": "$--text-secondary",
+                          "fill": "#FFFFFF88",
                           "content": "신고자",
                           "fontFamily": "Pretendard",
                           "fontSize": 13,
@@ -23894,7 +23925,7 @@
                           "type": "text",
                           "id": "mMkoZ",
                           "name": "reporterValue",
-                          "fill": "$--text-primary",
+                          "fill": "#FFFFFFEE",
                           "content": "사용자A",
                           "fontFamily": "Pretendard",
                           "fontSize": 13,
@@ -23914,7 +23945,7 @@
                           "type": "text",
                           "id": "Kbgbq",
                           "name": "dateLabel",
-                          "fill": "$--text-secondary",
+                          "fill": "#FFFFFF88",
                           "content": "신고일",
                           "fontFamily": "Pretendard",
                           "fontSize": 13,
@@ -23924,7 +23955,7 @@
                           "type": "text",
                           "id": "cMxuR",
                           "name": "dateValue",
-                          "fill": "$--text-primary",
+                          "fill": "#FFFFFFEE",
                           "content": "2026.03.06 14:30",
                           "fontFamily": "Pretendard",
                           "fontSize": 13,
@@ -23943,7 +23974,7 @@
                   "stroke": {
                     "align": "inside",
                     "thickness": 1,
-                    "fill": "$--border"
+                    "fill": "#ffffff20"
                   },
                   "layout": "vertical",
                   "gap": 6,
@@ -23953,7 +23984,7 @@
                       "type": "text",
                       "id": "Qer3D",
                       "name": "previewLabel",
-                      "fill": "$--text-secondary",
+                      "fill": "#FFFFFF88",
                       "content": "신고된 콘텐츠",
                       "fontFamily": "Pretendard",
                       "fontSize": 13,
@@ -23963,7 +23994,7 @@
                       "type": "text",
                       "id": "jqnCS",
                       "name": "previewText",
-                      "fill": "$--text-primary",
+                      "fill": "#FFFFFFEE",
                       "content": "이 게시글의 내용이 여기에 표시됩니다. 관리자가 직접 확인하고 판단할 수 있습니다...",
                       "fontFamily": "Pretendard",
                       "fontSize": 14,
@@ -23973,7 +24004,7 @@
                       "type": "text",
                       "id": "XYYVc",
                       "name": "viewOriginal",
-                      "fill": "$--primary",
+                      "fill": "#22C55E",
                       "content": "원문 보기 →",
                       "fontFamily": "Pretendard",
                       "fontSize": 13,
@@ -23994,12 +24025,12 @@
                       "name": "dismissBtn",
                       "width": "fill_container",
                       "height": 48,
-                      "fill": "$--surface",
+                      "fill": "#ffffff15",
                       "cornerRadius": 12,
                       "stroke": {
                         "align": "inside",
                         "thickness": 1,
-                        "fill": "$--border"
+                        "fill": "#ffffff20"
                       },
                       "justifyContent": "center",
                       "alignItems": "center",
@@ -24008,7 +24039,7 @@
                           "type": "text",
                           "id": "yswtI",
                           "name": "dismissText",
-                          "fill": "$--text-secondary",
+                          "fill": "#FFFFFFCC",
                           "content": "기각",
                           "fontFamily": "Pretendard",
                           "fontSize": 15,
@@ -24022,7 +24053,7 @@
                       "name": "deleteBtn",
                       "width": "fill_container",
                       "height": 48,
-                      "fill": "$--error",
+                      "fill": "#EF4444",
                       "cornerRadius": 12,
                       "justifyContent": "center",
                       "alignItems": "center",
@@ -24141,6 +24172,7 @@
       "id": "NomyO",
       "x": -31,
       "y": -560,
+      "name": "Rectangle",
       "fill": {
         "type": "image",
         "enabled": true,
