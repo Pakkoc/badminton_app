@@ -75,8 +75,9 @@ class _SplashScreenState extends ConsumerState<SplashScreen>
             opacity: _fadeAnimation,
             child: ScaleTransition(
               scale: _scaleAnimation,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
+              child: SizedBox(
+                width: double.infinity,
+                child: Column(
                 children: [
                   const SizedBox(height: 77),
                   const Spacer(),
@@ -114,6 +115,7 @@ class _SplashScreenState extends ConsumerState<SplashScreen>
                     ),
                   ),
                 ],
+              ),
               ),
             ),
           ),
