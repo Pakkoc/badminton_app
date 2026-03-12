@@ -1,5 +1,12 @@
 # CLAUDE.md
 
+## 스킬 사용 판별
+
+| 사용자 요청 패턴 | 스킬 | 진입점 |
+|----------------|------|--------|
+| "에이전트 만들어줘", "새 에이전트 생성" | `subagent-creator` | SKILL.md |
+| "스킬 만들어줘", "새 스킬 생성" | `skill-creator` | SKILL.md |
+
 ## Git Commit Convention
 
 ### 규칙
