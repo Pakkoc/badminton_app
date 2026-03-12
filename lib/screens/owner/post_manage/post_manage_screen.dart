@@ -147,7 +147,7 @@ class _CategoryTabs extends StatelessWidget {
 
   static const _tabs = <(String, PostCategory?)>[
     ('전체', null),
-    ('공지사항', PostCategory.notice),
+    ('공지', PostCategory.notice),
     ('이벤트', PostCategory.event),
   ];
 

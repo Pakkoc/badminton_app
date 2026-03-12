@@ -75,7 +75,10 @@ class _CommunityCreateScreenState
       appBar: AppBar(
         title: Text(
           isEditing ? '게시글 수정' : '게시글 작성',
-          style: const TextStyle(fontSize: 18),
+          style: const TextStyle(
+            fontSize: 18,
+            fontWeight: FontWeight.w500,
+          ),
         ),
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
@@ -95,7 +98,7 @@ class _CommunityCreateScreenState
                         children: [
                           // 제목 라벨
                           const Text(
-                            '제목',
+                            '제목 *',
                             style: TextStyle(
                               fontSize: 14,
                               fontWeight: FontWeight.w500,
@@ -134,7 +137,7 @@ class _CommunityCreateScreenState
                           const SizedBox(height: 20),
                           // 내용 라벨
                           const Text(
-                            '내용',
+                            '내용 *',
                             style: TextStyle(
                               fontSize: 14,
                               fontWeight: FontWeight.w500,
@@ -197,6 +200,7 @@ class _CommunityCreateScreenState
                   Container(
                     padding: const EdgeInsets.fromLTRB(28, 16, 28, 16),
                     decoration: const BoxDecoration(
+                      color: Color(0x15FFFFFF),
                       border: Border(
                         top: BorderSide(
                           color: Color(0x20FFFFFF),

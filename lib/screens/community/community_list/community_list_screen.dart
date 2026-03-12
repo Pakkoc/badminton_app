@@ -48,7 +48,13 @@ class _CommunityListScreenState extends ConsumerState<CommunityListScreen> {
                 ),
                 onSubmitted: (_) => setState(() {}),
               )
-            : const Text('커뮤니티'),
+            : const Text(
+                '커뮤니티',
+                style: TextStyle(
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
         actions: [
           IconButton(
             icon: Icon(_isSearching ? Icons.close : Icons.search),
@@ -117,6 +123,13 @@ class _PostCard extends StatelessWidget {
             color: AppTheme.border,
             width: 0.5,
           ),
+          boxShadow: const [
+            BoxShadow(
+              color: Color(0x0A000000),
+              blurRadius: 12,
+              offset: Offset(0, 2),
+            ),
+          ],
         ),
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.start,

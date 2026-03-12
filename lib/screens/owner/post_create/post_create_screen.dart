@@ -136,7 +136,7 @@ class _PostCreateScreenState
                     style: TextStyle(
                       fontSize: 14,
                       fontWeight: FontWeight.w500,
-                      color: AppTheme.textPrimary,
+                      color: AppTheme.textSecondary,
                     ),
                   ),
                   const SizedBox(height: 8),
@@ -179,7 +179,7 @@ class _PostCreateScreenState
                     style: TextStyle(
                       fontSize: 14,
                       fontWeight: FontWeight.w500,
-                      color: AppTheme.textPrimary,
+                      color: AppTheme.textSecondary,
                     ),
                   ),
                   const SizedBox(height: 8),
@@ -283,13 +283,14 @@ class _PostCreateScreenState
               ),
             ),
           ),
-          // Bottom Bar: padding [16,28], top border #ffffff20 0.5px
+          // Bottom Bar: padding [16,28], fill #ffffff15, top border #ffffff20 0.5px
           Container(
             padding: const EdgeInsets.symmetric(
               horizontal: 28,
               vertical: 16,
             ),
             decoration: const BoxDecoration(
+              color: Color(0x15FFFFFF),
               border: Border(
                 top: BorderSide(
                   color: Color(0x20FFFFFF),

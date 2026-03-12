@@ -203,7 +203,12 @@ class _CommunityDetailScreenState
     ));
 
     return Scaffold(
-      appBar: AppBar(title: const Text('게시글')),
+      appBar: AppBar(
+        title: const Text(
+          '게시글',
+          style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+        ),
+      ),
       body: CourtBackground(
         child: postAsync.when(
         loading: () => const LoadingIndicator(),
@@ -312,6 +317,7 @@ class _CommunityDetailScreenState
                             ?.copyWith(
                               fontSize: 14,
                               height: 1.6,
+                              color: AppTheme.textSecondary,
                             ),
                       ),
                       // 이미지
@@ -404,6 +410,7 @@ class _CommunityDetailScreenState
               Container(
                 padding: const EdgeInsets.fromLTRB(28, 8, 28, 8),
                 decoration: const BoxDecoration(
+                  color: Color(0x15FFFFFF),
                   border: Border(
                     top: BorderSide(
                       color: Color(0x20FFFFFF),
@@ -475,6 +482,7 @@ class _CommunityDetailScreenState
                             icon: const Icon(
                               Icons.send,
                               color: Color(0xFF22C55E),
+                              size: 24,
                             ),
                           ),
                         ],
