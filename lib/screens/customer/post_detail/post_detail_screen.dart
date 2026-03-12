@@ -3,6 +3,7 @@ import 'package:badminton_app/core/utils/formatters.dart';
 import 'package:badminton_app/models/enums.dart';
 import 'package:badminton_app/screens/customer/post_detail/post_detail_notifier.dart';
 import 'package:badminton_app/screens/customer/post_detail/post_detail_state.dart';
+import 'package:badminton_app/widgets/court_background.dart';
 import 'package:badminton_app/widgets/empty_state.dart';
 import 'package:badminton_app/widgets/error_view.dart';
 import 'package:badminton_app/widgets/loading_indicator.dart';
@@ -44,20 +45,22 @@ class _PostDetailScreenState
     if (state.isLoading) {
       return Scaffold(
         appBar: AppBar(title: const Text('게시글')),
-        body: const LoadingIndicator(),
+        body: const CourtBackground(child: LoadingIndicator()),
       );
     }
 
     if (state.error != null && state.post == null) {
       return Scaffold(
         appBar: AppBar(title: const Text('게시글')),
-        body: ErrorView(
-          message: state.error!,
-          onRetry: () {
-            ref
-                .read(postDetailNotifierProvider.notifier)
-                .loadPost(widget.postId);
-          },
+        body: CourtBackground(
+          child: ErrorView(
+            message: state.error!,
+            onRetry: () {
+              ref
+                  .read(postDetailNotifierProvider.notifier)
+                  .loadPost(widget.postId);
+            },
+          ),
         ),
       );
     }
@@ -66,9 +69,11 @@ class _PostDetailScreenState
     if (post == null) {
       return Scaffold(
         appBar: AppBar(title: const Text('게시글')),
-        body: const EmptyState(
-          icon: Icons.article_outlined,
-          message: '게시글을 찾을 수 없습니다',
+        body: const CourtBackground(
+          child: EmptyState(
+            icon: Icons.article_outlined,
+            message: '게시글을 찾을 수 없습니다',
+          ),
         ),
       );
     }
@@ -77,7 +82,7 @@ class _PostDetailScreenState
       appBar: AppBar(
         title: Text(post.title),
       ),
-      body: _PostContent(state: state),
+      body: CourtBackground(child: _PostContent(state: state)),
     );
   }
 }

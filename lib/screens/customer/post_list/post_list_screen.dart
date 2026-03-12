@@ -4,6 +4,7 @@ import 'package:badminton_app/models/enums.dart';
 import 'package:badminton_app/models/post.dart';
 import 'package:badminton_app/screens/customer/post_list/post_list_notifier.dart';
 import 'package:badminton_app/screens/customer/post_list/post_list_state.dart';
+import 'package:badminton_app/widgets/court_background.dart';
 import 'package:badminton_app/widgets/empty_state.dart';
 import 'package:badminton_app/widgets/error_view.dart';
 import 'package:badminton_app/widgets/loading_indicator.dart';
@@ -48,7 +49,9 @@ class _PostListScreenState
       appBar: AppBar(
         title: Text(widget.categoryLabel),
       ),
-      body: _buildBody(state),
+      body: CourtBackground(
+        child: _buildBody(state),
+      ),
     );
   }
 

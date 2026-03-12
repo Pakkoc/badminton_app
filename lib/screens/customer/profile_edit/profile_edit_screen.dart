@@ -1,6 +1,7 @@
 import 'package:badminton_app/app/theme.dart';
 import 'package:badminton_app/core/utils/validators.dart';
 import 'package:badminton_app/screens/customer/profile_edit/profile_edit_notifier.dart';
+import 'package:badminton_app/widgets/court_background.dart';
 import 'package:badminton_app/widgets/phone_input_field.dart';
 import 'package:badminton_app/widgets/toast.dart';
 import 'package:cached_network_image/cached_network_image.dart';
@@ -67,7 +68,8 @@ class _ProfileEditScreenState
 
     return Scaffold(
       appBar: AppBar(title: const Text('프로필 편집')),
-      body: SingleChildScrollView(
+      body: CourtBackground(
+        child: SingleChildScrollView(
         padding: const EdgeInsets.all(24),
         child: Column(
           children: [
@@ -118,10 +120,10 @@ class _ProfileEditScreenState
                         }
                       },
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: AppTheme.primary,
+                  backgroundColor: AppTheme.accent,
                   foregroundColor: Colors.white,
                   disabledBackgroundColor:
-                      AppTheme.primary.withValues(
+                      AppTheme.accent.withValues(
                     alpha: 0.5,
                   ),
                   disabledForegroundColor:
@@ -143,6 +145,7 @@ class _ProfileEditScreenState
             ),
           ],
         ),
+      ),
       ),
     );
   }
@@ -181,7 +184,7 @@ class _ProfileAvatar extends StatelessWidget {
             child: Container(
               padding: const EdgeInsets.all(4),
               decoration: BoxDecoration(
-                color: AppTheme.primary,
+                color: AppTheme.accent,
                 shape: BoxShape.circle,
                 border: Border.all(
                   color: Theme.of(context)

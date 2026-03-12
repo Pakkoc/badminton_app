@@ -5,6 +5,7 @@ import 'package:badminton_app/models/post.dart';
 import 'package:badminton_app/models/shop.dart';
 import 'package:badminton_app/screens/customer/shop_detail/shop_detail_notifier.dart';
 import 'package:badminton_app/screens/customer/shop_detail/shop_detail_state.dart';
+import 'package:badminton_app/widgets/court_background.dart';
 import 'package:badminton_app/widgets/error_view.dart';
 import 'package:badminton_app/widgets/loading_indicator.dart';
 import 'package:badminton_app/widgets/map_preview.dart';
@@ -63,17 +64,10 @@ class _ShopDetailScreenState
               ?.copyWith(fontWeight: FontWeight.w600),
         ),
         centerTitle: true,
-        backgroundColor: Colors.white,
-        elevation: 0,
-        bottom: PreferredSize(
-          preferredSize: const Size.fromHeight(0.5),
-          child: Container(
-            height: 0.5,
-            color: AppTheme.border,
-          ),
-        ),
       ),
-      body: _buildBody(context, ref, state),
+      body: CourtBackground(
+        child: _buildBody(context, ref, state),
+      ),
     );
   }
 
@@ -203,7 +197,7 @@ class _ShopNameSection extends StatelessWidget {
               const Icon(
                 Icons.storefront,
                 size: 24,
-                color: AppTheme.primary,
+                color: AppTheme.accent,
               ),
               const SizedBox(width: 8),
               Expanded(
@@ -513,12 +507,12 @@ class _TabBarDelegate extends SliverPersistentHeaderDelegate {
     bool overlapsContent,
   ) {
     return Container(
-      color: Colors.white,
+      color: AppTheme.surfaceHigh,
       child: TabBar(
         controller: tabController,
-        labelColor: AppTheme.primary,
+        labelColor: AppTheme.textPrimary,
         unselectedLabelColor: AppTheme.textTertiary,
-        indicatorColor: AppTheme.primary,
+        indicatorColor: AppTheme.accent,
         indicatorWeight: 2,
         labelStyle: const TextStyle(
           fontSize: 14,

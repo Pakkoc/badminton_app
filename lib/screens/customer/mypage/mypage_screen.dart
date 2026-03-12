@@ -6,6 +6,7 @@ import 'package:badminton_app/providers/auth_provider.dart';
 import 'package:badminton_app/providers/supabase_provider.dart';
 import 'package:badminton_app/repositories/user_repository.dart';
 import 'package:badminton_app/widgets/confirm_dialog.dart';
+import 'package:badminton_app/widgets/court_background.dart';
 import 'package:badminton_app/widgets/customer_bottom_nav.dart';
 import 'package:badminton_app/widgets/loading_indicator.dart';
 import 'package:badminton_app/widgets/toast.dart';
@@ -33,7 +34,8 @@ class _MypageScreenState extends ConsumerState<MypageScreen> {
       bottomNavigationBar: const CustomerBottomNav(
         currentIndex: 4,
       ),
-      body: userAsync.when(
+      body: CourtBackground(
+        child: userAsync.when(
         data: (user) {
           if (user == null) {
             return const Center(
@@ -91,6 +93,7 @@ class _MypageScreenState extends ConsumerState<MypageScreen> {
         error: (e, st) => const Center(
           child: Text('오류가 발생했습니다'),
         ),
+      ),
       ),
     );
   }
@@ -162,7 +165,7 @@ class _ProfileCard extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: AppTheme.surfaceHigh,
         borderRadius: BorderRadius.circular(20),
         boxShadow: const [
           BoxShadow(
@@ -184,7 +187,7 @@ class _ProfileCard extends StatelessWidget {
             child: const Icon(
               Icons.person,
               size: 28,
-              color: AppTheme.primary,
+              color: AppTheme.accent,
             ),
           ),
           const SizedBox(width: 12),
@@ -250,7 +253,7 @@ class _SettingsCard extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: AppTheme.surfaceHigh,
         borderRadius: BorderRadius.circular(20),
         boxShadow: const [
           BoxShadow(
@@ -356,7 +359,7 @@ class _NotifyToggleRow extends StatelessWidget {
           Switch(
             value: value,
             onChanged: onChanged,
-            activeTrackColor: AppTheme.primary,
+            activeTrackColor: AppTheme.accent,
           ),
         ],
       ),
@@ -379,7 +382,7 @@ class _AdminMenuCard extends StatelessWidget {
           horizontal: 16,
         ),
         decoration: BoxDecoration(
-          color: Colors.white,
+          color: AppTheme.surfaceHigh,
           borderRadius: BorderRadius.circular(20),
           boxShadow: const [
             BoxShadow(
@@ -440,7 +443,7 @@ class _ShopModeCard extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: AppTheme.surfaceHigh,
         borderRadius: BorderRadius.circular(20),
         boxShadow: const [
           BoxShadow(
@@ -476,7 +479,7 @@ class _ShopModeCard extends StatelessWidget {
                         config.icon,
                         color: isRejected
                             ? AppTheme.error
-                            : AppTheme.primary,
+                            : AppTheme.accent,
                         size: 22,
                       ),
                       const SizedBox(width: 12),
@@ -592,7 +595,7 @@ class _AppInfoCard extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: AppTheme.surfaceHigh,
         borderRadius: BorderRadius.circular(20),
         boxShadow: const [
           BoxShadow(
@@ -640,7 +643,7 @@ class _LogoutButton extends StatelessWidget {
       child: Container(
         height: 48,
         decoration: BoxDecoration(
-          color: Colors.white,
+          color: AppTheme.surfaceHigh,
           borderRadius: BorderRadius.circular(20),
           border: Border.all(
             color: AppTheme.error,

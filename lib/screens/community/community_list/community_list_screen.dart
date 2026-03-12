@@ -1,6 +1,8 @@
+import 'package:badminton_app/app/theme.dart';
 import 'package:badminton_app/core/utils/formatters.dart';
 import 'package:badminton_app/models/community_post.dart';
 import 'package:badminton_app/providers/community_provider.dart';
+import 'package:badminton_app/widgets/court_background.dart';
 import 'package:badminton_app/widgets/customer_bottom_nav.dart';
 import 'package:badminton_app/widgets/empty_state.dart';
 import 'package:badminton_app/widgets/error_view.dart';
@@ -59,7 +61,8 @@ class _CommunityListScreenState extends ConsumerState<CommunityListScreen> {
           ),
         ],
       ),
-      body: postsAsync.when(
+      body: CourtBackground(
+        child: postsAsync.when(
         loading: () => const LoadingIndicator(),
         error: (e, _) => ErrorView(
           message: e.toString(),
@@ -86,6 +89,7 @@ class _CommunityListScreenState extends ConsumerState<CommunityListScreen> {
             ),
           );
         },
+      ),
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () => context.push('/community/create'),
@@ -122,7 +126,7 @@ class _PostListTile extends StatelessWidget {
             Text(
               Formatters.relativeTime(post.createdAt),
               style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                    color: Colors.grey,
+                    color: AppTheme.textTertiary,
                   ),
             ),
             const Spacer(),
@@ -157,7 +161,7 @@ class _PostListTile extends StatelessWidget {
                 errorBuilder: (_, __, ___) => const SizedBox(
                   width: 60,
                   height: 60,
-                  child: Icon(Icons.image, color: Colors.grey),
+                  child: Icon(Icons.image, color: AppTheme.textTertiary),
                 ),
               ),
             )

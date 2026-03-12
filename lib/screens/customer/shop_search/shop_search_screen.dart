@@ -3,6 +3,7 @@ import 'package:badminton_app/models/shop.dart';
 import 'package:badminton_app/providers/location_provider.dart';
 import 'package:badminton_app/screens/customer/shop_search/shop_search_notifier.dart';
 import 'package:badminton_app/screens/customer/shop_search/shop_search_state.dart';
+import 'package:badminton_app/widgets/court_background.dart';
 import 'package:badminton_app/widgets/customer_bottom_nav.dart';
 import 'package:badminton_app/widgets/error_view.dart';
 import 'package:badminton_app/widgets/loading_indicator.dart';
@@ -64,9 +65,6 @@ class _ShopSearchScreenState
               .titleLarge
               ?.copyWith(fontWeight: FontWeight.bold),
         ),
-        centerTitle: false,
-        backgroundColor: Colors.white,
-        elevation: 0,
         actions: [
           Padding(
             padding: const EdgeInsets.only(right: 16),
@@ -78,16 +76,10 @@ class _ShopSearchScreenState
             ),
           ),
         ],
-        bottom: PreferredSize(
-          preferredSize: const Size.fromHeight(0.5),
-          child: Container(
-            height: 0.5,
-            color: AppTheme.border,
-          ),
-        ),
       ),
       // 위치 권한 미허용 시 안내 화면, 그 외에는 지도+리스트.
-      body: !state.hasLocationPermission
+      body: CourtBackground(
+        child: !state.hasLocationPermission
           ? const _LocationPermissionView()
           : Stack(
               children: [
@@ -98,6 +90,7 @@ class _ShopSearchScreenState
                   _buildListBody(context, state),
               ],
             ),
+      ),
       bottomNavigationBar: const CustomerBottomNav(
         currentIndex: 1,
       ),
@@ -199,7 +192,7 @@ class _ToggleSegment extends StatelessWidget {
         ),
         decoration: BoxDecoration(
           color: isActive
-              ? AppTheme.primary
+              ? AppTheme.accent
               : Colors.transparent,
           borderRadius: BorderRadius.circular(8),
         ),
@@ -365,7 +358,7 @@ class _ShopCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
-      elevation: 1,
+      elevation: 0,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(20),
         side: const BorderSide(color: AppTheme.border),
@@ -618,7 +611,7 @@ class _BottomSheetCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       decoration: const BoxDecoration(
-        color: Colors.white,
+        color: AppTheme.surfaceHigh,
         borderRadius: BorderRadius.vertical(
           top: Radius.circular(20),
         ),

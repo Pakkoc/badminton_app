@@ -8,6 +8,7 @@ import 'package:badminton_app/repositories/community_like_repository.dart';
 import 'package:badminton_app/repositories/community_post_repository.dart';
 import 'package:badminton_app/repositories/community_report_repository.dart';
 import 'package:badminton_app/widgets/confirm_dialog.dart';
+import 'package:badminton_app/widgets/court_background.dart';
 import 'package:badminton_app/widgets/error_view.dart';
 import 'package:badminton_app/widgets/loading_indicator.dart';
 import 'package:badminton_app/widgets/toast.dart';
@@ -203,7 +204,8 @@ class _CommunityDetailScreenState
 
     return Scaffold(
       appBar: AppBar(title: const Text('게시글')),
-      body: postAsync.when(
+      body: CourtBackground(
+        child: postAsync.when(
         loading: () => const LoadingIndicator(),
         error: (e, _) => ErrorView(
           message: e.toString(),
@@ -382,8 +384,8 @@ class _CommunityDetailScreenState
                 padding: const EdgeInsets.all(8),
                 decoration: BoxDecoration(
                   color: Theme.of(context).scaffoldBackgroundColor,
-                  border: Border(
-                    top: BorderSide(color: Colors.grey.shade300),
+                  border: const Border(
+                    top: BorderSide(color: AppTheme.border),
                   ),
                 ),
                 child: SafeArea(
@@ -443,6 +445,7 @@ class _CommunityDetailScreenState
             ],
           );
         },
+      ),
       ),
     );
   }
@@ -633,7 +636,7 @@ class _CommentRow extends StatelessWidget {
                         '· 작성자',
                         style:
                             theme.textTheme.labelSmall?.copyWith(
-                          color: AppTheme.primary,
+                          color: AppTheme.accent,
                         ),
                       ),
                     ],
@@ -791,7 +794,7 @@ class _ThreadSection extends StatelessWidget {
                     padding: EdgeInsets.zero,
                     minimumSize: Size.zero,
                     tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                    foregroundColor: AppTheme.primary,
+                    foregroundColor: AppTheme.accent,
                   ),
                   icon: Icon(
                     expanded
@@ -806,7 +809,7 @@ class _ThreadSection extends StatelessWidget {
                     style: Theme.of(context)
                         .textTheme
                         .labelMedium
-                        ?.copyWith(color: AppTheme.primary),
+                        ?.copyWith(color: AppTheme.accent),
                   ),
                 ),
                 // 펼쳤을 때 대댓글 목록
@@ -955,7 +958,7 @@ class _ReplyRow extends StatelessWidget {
                           '· 작성자',
                           style:
                               theme.textTheme.labelSmall?.copyWith(
-                            color: AppTheme.primary,
+                            color: AppTheme.accent,
                           ),
                         ),
                       ],
@@ -1155,7 +1158,7 @@ class _CommentContent extends StatelessWidget {
         TextSpan(
           text: content,
           style: base?.copyWith(
-            color: AppTheme.primary,
+            color: AppTheme.accent,
             fontWeight: FontWeight.bold,
           ),
         ),
@@ -1171,7 +1174,7 @@ class _CommentContent extends StatelessWidget {
           TextSpan(
             text: mention,
             style: base?.copyWith(
-              color: AppTheme.primary,
+              color: AppTheme.accent,
               fontWeight: FontWeight.bold,
             ),
           ),

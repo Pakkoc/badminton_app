@@ -1,3 +1,4 @@
+import 'package:badminton_app/widgets/court_background.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -85,7 +86,8 @@ class _CommunityCreateScreenState
           ),
         ],
       ),
-      body: state.isLoadingPost
+      body: CourtBackground(
+        child: state.isLoadingPost
           ? const Center(child: CircularProgressIndicator())
           : SingleChildScrollView(
               padding: const EdgeInsets.all(16),
@@ -130,6 +132,7 @@ class _CommunityCreateScreenState
                 ],
               ),
             ),
+      ),
     );
   }
 }
