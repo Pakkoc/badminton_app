@@ -2,6 +2,7 @@ import 'package:badminton_app/app/theme.dart';
 import 'package:badminton_app/core/utils/formatters.dart';
 import 'package:badminton_app/screens/admin/shop_request_detail/shop_request_detail_notifier.dart';
 import 'package:badminton_app/screens/admin/shop_request_detail/shop_request_detail_state.dart';
+import 'package:badminton_app/widgets/court_background.dart';
 import 'package:badminton_app/widgets/error_view.dart';
 import 'package:badminton_app/widgets/toast.dart';
 import 'package:flutter/material.dart';
@@ -135,7 +136,7 @@ class _ShopRequestDetailScreenState
       appBar: AppBar(
         title: const Text('등록 요청 상세'),
       ),
-      body: _buildBody(state),
+      body: CourtBackground(child: _buildBody(state)),
       bottomNavigationBar: state.shop != null
           ? _BottomActions(
               isProcessing: state.isProcessing,

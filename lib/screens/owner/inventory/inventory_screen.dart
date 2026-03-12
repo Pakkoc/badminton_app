@@ -9,6 +9,7 @@ import 'package:badminton_app/repositories/shop_repository.dart';
 import 'package:badminton_app/screens/owner/inventory/inventory_notifier.dart';
 import 'package:badminton_app/screens/owner/inventory/inventory_state.dart';
 import 'package:badminton_app/widgets/confirm_dialog.dart';
+import 'package:badminton_app/widgets/court_background.dart';
 import 'package:badminton_app/widgets/empty_state.dart';
 import 'package:badminton_app/widgets/error_view.dart';
 import 'package:badminton_app/widgets/loading_indicator.dart';
@@ -212,7 +213,7 @@ class _InventoryScreenState
                     },
                     style: ElevatedButton.styleFrom(
                       backgroundColor:
-                          AppTheme.primary,
+                          AppTheme.accent,
                       foregroundColor:
                           const Color(0xFFFFFFFF),
                       shape: RoundedRectangleBorder(
@@ -401,7 +402,7 @@ class _InventoryScreenState
                     },
                     style: ElevatedButton.styleFrom(
                       backgroundColor:
-                          AppTheme.primary,
+                          AppTheme.accent,
                       foregroundColor:
                           const Color(0xFFFFFFFF),
                       shape: RoundedRectangleBorder(
@@ -435,10 +436,10 @@ class _InventoryScreenState
 
     return Scaffold(
       appBar: AppBar(title: const Text('재고 관리')),
-      body: _buildBody(state),
+      body: CourtBackground(child: _buildBody(state)),
       floatingActionButton: FloatingActionButton(
         onPressed: _showAddItemDialog,
-        backgroundColor: AppTheme.primary,
+        backgroundColor: AppTheme.accent,
         foregroundColor: Colors.white,
         child: const Icon(Icons.add, size: 28),
       ),
@@ -523,7 +524,7 @@ class _InventoryGridCard extends StatelessWidget {
       onLongPress: onLongPress,
       child: Container(
         decoration: BoxDecoration(
-          color: Colors.white,
+          color: AppTheme.surfaceHigh,
           borderRadius: BorderRadius.circular(20),
           border: Border.all(
             color: AppTheme.border,

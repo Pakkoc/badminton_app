@@ -3,6 +3,7 @@ import 'package:badminton_app/core/utils/formatters.dart';
 import 'package:badminton_app/models/enums.dart';
 import 'package:badminton_app/screens/owner/post_create/post_create_notifier.dart';
 import 'package:badminton_app/widgets/confirm_dialog.dart';
+import 'package:badminton_app/widgets/court_background.dart';
 import 'package:badminton_app/widgets/toast.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -86,7 +87,9 @@ class _PostCreateScreenState
     if (state.isLoadingPost) {
       return Scaffold(
         appBar: AppBar(title: const Text('게시글 수정')),
-        body: const Center(child: CircularProgressIndicator()),
+        body: const CourtBackground(
+          child: Center(child: CircularProgressIndicator()),
+        ),
       );
     }
 
@@ -110,7 +113,8 @@ class _PostCreateScreenState
           title: Text(
               _isEditMode ? '게시글 수정' : '게시글 작성'),
         ),
-        body: Column(
+        body: CourtBackground(
+          child: Column(
         children: [
           Expanded(
             child: SingleChildScrollView(
@@ -260,7 +264,7 @@ class _PostCreateScreenState
           Container(
             padding: const EdgeInsets.all(16),
             decoration: const BoxDecoration(
-              color: Colors.white,
+              color: AppTheme.surfaceHigh,
               border: Border(
                 top: BorderSide(
                     color: AppTheme.border),
@@ -289,7 +293,7 @@ class _PostCreateScreenState
                       },
                 style: ElevatedButton.styleFrom(
                   backgroundColor:
-                      AppTheme.primary,
+                      AppTheme.accent,
                   foregroundColor: Colors.white,
                   shape: RoundedRectangleBorder(
                     borderRadius:
@@ -319,6 +323,7 @@ class _PostCreateScreenState
             ),
           ),
         ],
+      ),
       ),
       ),
     );
@@ -356,7 +361,7 @@ class _CategoryChip extends StatelessWidget {
             fontSize: 14,
             fontWeight: FontWeight.w500,
             color: isSelected
-                ? AppTheme.primary
+                ? AppTheme.accent
                 : AppTheme.textSecondary,
           ),
         ),

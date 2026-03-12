@@ -2,6 +2,7 @@ import 'package:badminton_app/app/theme.dart';
 import 'package:badminton_app/core/utils/formatters.dart';
 import 'package:badminton_app/screens/admin/shop_requests/shop_requests_notifier.dart';
 import 'package:badminton_app/screens/admin/shop_requests/shop_requests_state.dart';
+import 'package:badminton_app/widgets/court_background.dart';
 import 'package:badminton_app/widgets/empty_state.dart';
 import 'package:badminton_app/widgets/error_view.dart';
 import 'package:flutter/material.dart';
@@ -36,7 +37,7 @@ class _ShopRequestsScreenState
       appBar: AppBar(
         title: const Text('샵 등록 요청'),
       ),
-      body: _buildBody(state),
+      body: CourtBackground(child: _buildBody(state)),
     );
   }
 
@@ -116,12 +117,12 @@ class _ShopRequestCard extends StatelessWidget {
                 width: 48,
                 height: 48,
                 decoration: BoxDecoration(
-                  color: AppTheme.primaryContainer,
+                  color: AppTheme.surfaceHigh,
                   borderRadius: BorderRadius.circular(12),
                 ),
                 child: const Icon(
                   Icons.store,
-                  color: AppTheme.primary,
+                  color: AppTheme.accent,
                 ),
               ),
               const SizedBox(width: 12),

@@ -7,6 +7,7 @@ import 'package:badminton_app/repositories/member_repository.dart';
 import 'package:badminton_app/repositories/order_repository.dart';
 import 'package:badminton_app/repositories/shop_repository.dart';
 import 'package:badminton_app/repositories/user_repository.dart';
+import 'package:badminton_app/widgets/court_background.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -123,7 +124,7 @@ class _QrOrderScreenState extends ConsumerState<QrOrderScreen> {
       builder: (context) => AlertDialog(
         icon: const Icon(
           Icons.check_circle,
-          color: AppTheme.primary,
+          color: AppTheme.accent,
           size: 48,
         ),
         title: const Text('접수 완료'),
@@ -137,7 +138,7 @@ class _QrOrderScreenState extends ConsumerState<QrOrderScreen> {
               this.context.go('/customer/home');
             },
             style: FilledButton.styleFrom(
-              backgroundColor: AppTheme.primary,
+              backgroundColor: AppTheme.accent,
             ),
             child: const Text('확인'),
           ),
@@ -152,13 +153,14 @@ class _QrOrderScreenState extends ConsumerState<QrOrderScreen> {
       appBar: AppBar(
         title: const Text('QR 접수'),
       ),
-      body: Center(
+      body: CourtBackground(
+        child: Center(
         child: _isProcessing
             ? Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   const CircularProgressIndicator(
-                    color: AppTheme.primary,
+                    color: AppTheme.accent,
                   ),
                   const SizedBox(height: 24),
                   Text(
@@ -205,6 +207,7 @@ class _QrOrderScreenState extends ConsumerState<QrOrderScreen> {
                     ],
                   )
                 : const SizedBox.shrink(),
+      ),
       ),
     );
   }

@@ -5,6 +5,7 @@ import 'package:badminton_app/providers/owner_shop_provider.dart';
 import 'package:badminton_app/screens/owner/order_manage/order_manage_notifier.dart';
 import 'package:badminton_app/screens/owner/order_manage/order_manage_state.dart';
 import 'package:badminton_app/widgets/confirm_dialog.dart';
+import 'package:badminton_app/widgets/court_background.dart';
 import 'package:badminton_app/widgets/empty_state.dart';
 import 'package:badminton_app/widgets/error_view.dart';
 import 'package:badminton_app/widgets/loading_indicator.dart';
@@ -60,7 +61,8 @@ class _OrderManageScreenState
 
     return Scaffold(
       appBar: AppBar(title: const Text('작업 관리')),
-      body: Column(
+      body: CourtBackground(
+        child: Column(
         children: [
           _StatusFilterTabs(
             selectedFilter: state.selectedFilter,
@@ -79,6 +81,7 @@ class _OrderManageScreenState
           ),
           Expanded(child: _buildBody(state)),
         ],
+      ),
       ),
     );
   }
@@ -234,12 +237,12 @@ class _FilterChip extends StatelessWidget {
         ),
         decoration: BoxDecoration(
           color: isSelected
-              ? AppTheme.primary
-              : Colors.white,
+              ? AppTheme.accent
+              : AppTheme.surfaceHigh,
           borderRadius: BorderRadius.circular(999),
           border: Border.all(
             color: isSelected
-                ? AppTheme.primary
+                ? AppTheme.accent
                 : AppTheme.border,
           ),
         ),
@@ -301,7 +304,7 @@ class _OrderManageCard extends StatelessWidget {
     final Widget card = Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: AppTheme.surfaceHigh,
         borderRadius: BorderRadius.circular(20),
         border: Border.all(
           color: AppTheme.border,
@@ -399,7 +402,7 @@ class _ActionButton extends StatelessWidget {
       ),
       OrderStatus.inProgress => (
         '작업 완료',
-        AppTheme.primary,
+        AppTheme.accent,
       ),
       _ => ('', Colors.transparent),
     };

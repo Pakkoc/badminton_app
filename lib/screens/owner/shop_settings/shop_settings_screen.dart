@@ -2,6 +2,7 @@ import 'package:badminton_app/app/theme.dart';
 import 'package:badminton_app/core/utils/validators.dart';
 import 'package:badminton_app/providers/app_mode_provider.dart';
 import 'package:badminton_app/screens/owner/shop_settings/shop_settings_notifier.dart';
+import 'package:badminton_app/widgets/court_background.dart';
 import 'package:badminton_app/widgets/loading_indicator.dart';
 import 'package:badminton_app/widgets/map_preview.dart';
 import 'package:badminton_app/widgets/phone_input_field.dart';
@@ -80,13 +81,14 @@ class _ShopSettingsScreenState
     if (state.isLoading) {
       return Scaffold(
         appBar: AppBar(title: const Text('샵 설정')),
-        body: const LoadingIndicator(),
+        body: const CourtBackground(child: LoadingIndicator()),
       );
     }
 
     return Scaffold(
       appBar: AppBar(title: const Text('샵 설정')),
-      body: Column(
+      body: CourtBackground(
+        child: Column(
         children: [
           Expanded(
             child: SingleChildScrollView(
@@ -102,7 +104,7 @@ class _ShopSettingsScreenState
                     children: [
                       const Icon(
                         Icons.menu,
-                        color: AppTheme.primary,
+                        color: AppTheme.accent,
                         size: 20,
                       ),
                       const SizedBox(width: 6),
@@ -279,6 +281,7 @@ class _ShopSettingsScreenState
             },
           ),
         ],
+      ),
       ),
     );
   }
@@ -494,7 +497,7 @@ class _SectionHeader extends StatelessWidget {
       children: [
         Icon(
           icon,
-          color: AppTheme.primary,
+          color: AppTheme.accent,
           size: 20,
         ),
         const SizedBox(width: 6),
@@ -538,10 +541,10 @@ class _SaveButton extends StatelessWidget {
         child: ElevatedButton(
           onPressed: isSubmitting ? null : onPressed,
           style: ElevatedButton.styleFrom(
-            backgroundColor: AppTheme.primary,
+            backgroundColor: AppTheme.accent,
             foregroundColor: Colors.white,
             disabledBackgroundColor:
-                AppTheme.primary.withValues(alpha: 0.5),
+                AppTheme.accent.withValues(alpha: 0.5),
             disabledForegroundColor:
                 Colors.white.withValues(alpha: 0.5),
             shape: RoundedRectangleBorder(

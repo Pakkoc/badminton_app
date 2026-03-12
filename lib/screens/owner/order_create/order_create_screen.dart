@@ -1,6 +1,7 @@
 import 'package:badminton_app/app/theme.dart';
 import 'package:badminton_app/models/member.dart';
 import 'package:badminton_app/screens/owner/order_create/order_create_notifier.dart';
+import 'package:badminton_app/widgets/court_background.dart';
 import 'package:badminton_app/widgets/loading_indicator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -57,7 +58,8 @@ class _OrderCreateScreenState
           ),
         ),
       ),
-      body: state.isSubmitting
+      body: CourtBackground(
+        child: state.isSubmitting
           ? const LoadingIndicator()
           : SingleChildScrollView(
               padding: const EdgeInsets.all(16),
@@ -74,7 +76,7 @@ class _OrderCreateScreenState
                       },
                       style: ElevatedButton.styleFrom(
                         backgroundColor:
-                            AppTheme.primary,
+                            AppTheme.accent,
                         foregroundColor: Colors.white,
                         shape: RoundedRectangleBorder(
                           borderRadius:
@@ -242,7 +244,7 @@ class _OrderCreateScreenState
                         : null,
                     style: ElevatedButton.styleFrom(
                       backgroundColor:
-                          AppTheme.primary,
+                          AppTheme.accent,
                       foregroundColor: Colors.white,
                       minimumSize:
                           const Size.fromHeight(48),
@@ -262,6 +264,7 @@ class _OrderCreateScreenState
                 ],
               ),
             ),
+      ),
     );
   }
 }
@@ -312,7 +315,7 @@ class _SelectedMemberCard extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: AppTheme.surfaceHigh,
         borderRadius: BorderRadius.circular(20),
         border: Border.all(color: AppTheme.border),
       ),

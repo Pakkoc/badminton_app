@@ -3,6 +3,7 @@ import 'dart:ui' as ui;
 
 import 'package:badminton_app/app/theme.dart';
 import 'package:badminton_app/models/shop.dart';
+import 'package:badminton_app/widgets/court_background.dart';
 import 'package:flutter/material.dart';
 import 'package:gal/gal.dart';
 import 'package:qr_flutter/qr_flutter.dart';
@@ -155,7 +156,8 @@ class _ShopQrScreenState extends State<ShopQrScreen> {
         ),
         centerTitle: true,
       ),
-      body: SingleChildScrollView(
+      body: CourtBackground(
+        child: SingleChildScrollView(
         padding: const EdgeInsets.all(16),
         child: Column(
           children: [
@@ -171,6 +173,7 @@ class _ShopQrScreenState extends State<ShopQrScreen> {
             const _InfoCard(),
           ],
         ),
+      ),
       ),
     );
   }
@@ -280,9 +283,9 @@ class _ButtonRow extends StatelessWidget {
                     : const Icon(Icons.download, size: 18),
                 label: const Text('이미지 저장'),
                 style: OutlinedButton.styleFrom(
-                  foregroundColor: AppTheme.primary,
+                  foregroundColor: AppTheme.accent,
                   side: const BorderSide(
-                    color: AppTheme.primary,
+                    color: AppTheme.accent,
                     width: 1.5,
                   ),
                   shape: RoundedRectangleBorder(
@@ -313,7 +316,7 @@ class _ButtonRow extends StatelessWidget {
                     : const Icon(Icons.share, size: 18),
                 label: const Text('공유하기'),
                 style: FilledButton.styleFrom(
-                  backgroundColor: AppTheme.primary,
+                  backgroundColor: AppTheme.accent,
                   foregroundColor: Colors.white,
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(10),

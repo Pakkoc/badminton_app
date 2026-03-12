@@ -4,6 +4,7 @@ import 'package:badminton_app/models/enums.dart';
 import 'package:badminton_app/models/post.dart';
 import 'package:badminton_app/screens/owner/post_manage/post_manage_notifier.dart';
 import 'package:badminton_app/widgets/confirm_dialog.dart';
+import 'package:badminton_app/widgets/court_background.dart';
 import 'package:badminton_app/widgets/empty_state.dart';
 import 'package:badminton_app/widgets/loading_indicator.dart';
 import 'package:badminton_app/widgets/toast.dart';
@@ -41,7 +42,8 @@ class _PostManageScreenState extends ConsumerState<PostManageScreen> {
 
     return Scaffold(
       appBar: AppBar(title: const Text('게시글 관리')),
-      body: Column(
+      body: CourtBackground(
+        child: Column(
         children: [
           _CategoryTabs(
             selected: state.selectedCategory,
@@ -73,9 +75,10 @@ class _PostManageScreenState extends ConsumerState<PostManageScreen> {
           ),
         ],
       ),
+      ),
       floatingActionButton: FloatingActionButton(
         onPressed: _onCreatePost,
-        backgroundColor: AppTheme.primary,
+        backgroundColor: AppTheme.accent,
         child: const Icon(Icons.add, color: Colors.white),
       ),
     );
@@ -183,7 +186,7 @@ class _TabItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    const activeColor = AppTheme.primary;
+    const activeColor = AppTheme.accent;
     const activeTextColor = AppTheme.textPrimary;
     const inactiveTextColor = AppTheme.textTertiary;
 
@@ -234,7 +237,7 @@ class _PostCard extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: AppTheme.surfaceHigh,
         borderRadius: BorderRadius.circular(20),
         border: Border.all(color: AppTheme.border),
       ),

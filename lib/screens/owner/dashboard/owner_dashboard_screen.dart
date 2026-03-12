@@ -4,6 +4,7 @@ import 'package:badminton_app/models/order.dart';
 import 'package:badminton_app/providers/supabase_provider.dart';
 import 'package:badminton_app/screens/owner/dashboard/owner_dashboard_notifier.dart';
 import 'package:badminton_app/screens/owner/dashboard/owner_dashboard_state.dart';
+import 'package:badminton_app/widgets/court_background.dart';
 import 'package:badminton_app/widgets/error_view.dart';
 import 'package:badminton_app/widgets/loading_indicator.dart';
 import 'package:badminton_app/widgets/order_timeline_row.dart';
@@ -67,7 +68,8 @@ class _OwnerDashboardScreenState
           ),
         ],
       ),
-      body: _DashboardBody(
+      body: CourtBackground(
+        child: _DashboardBody(
         state: state,
         onRetry: _loadDashboard,
         onStatusChange: (orderId, newStatus) {
@@ -78,6 +80,7 @@ class _OwnerDashboardScreenState
         onViewAll: () {
           StatefulNavigationShell.of(context).goBranch(1);
         },
+      ),
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
@@ -308,7 +311,7 @@ class _RecentHeader extends StatelessWidget {
             '전체보기',
             style: TextStyle(
               fontSize: 14,
-              color: AppTheme.primary,
+              color: AppTheme.accent,
             ),
           ),
         ),
@@ -380,7 +383,7 @@ class _OrderCard extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: AppTheme.surfaceHigh,
         borderRadius: BorderRadius.circular(20),
         border: Border.all(
           color: AppTheme.border,

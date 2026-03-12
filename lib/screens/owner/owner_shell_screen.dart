@@ -22,7 +22,7 @@ class OwnerShellScreen extends StatelessWidget {
         currentIndex: navigationShell.currentIndex,
         type: BottomNavigationBarType.fixed,
         backgroundColor: AppTheme.surface,
-        selectedItemColor: AppTheme.primary,
+        selectedItemColor: AppTheme.activeTab,
         unselectedItemColor: AppTheme.textTertiary,
         selectedFontSize: 10,
         unselectedFontSize: 10,
