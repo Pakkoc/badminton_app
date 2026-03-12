@@ -59,7 +59,7 @@ class _OwnerDashboardScreenState
           IconButton(
             icon: const Icon(
               Icons.settings,
-              color: AppTheme.textSecondary,
+              color: AppTheme.textHint,
               size: 24,
             ),
             onPressed: () {
@@ -337,7 +337,7 @@ class _RecentHeader extends StatelessWidget {
             '전체보기',
             style: TextStyle(
               fontSize: 14,
-              color: AppTheme.accent,
+              color: AppTheme.textTertiary,
             ),
           ),
         ),

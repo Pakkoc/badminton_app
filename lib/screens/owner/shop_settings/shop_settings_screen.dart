@@ -125,7 +125,7 @@ class _ShopSettingsScreenState
                   const SizedBox(height: 12),
                   Container(
                     decoration: BoxDecoration(
-                      color: AppTheme.surface,
+                      color: AppTheme.surfaceHigh,
                       borderRadius: BorderRadius.circular(20),
                       border: Border.all(
                         color: AppTheme.border,
@@ -187,8 +187,9 @@ class _ShopSettingsScreenState
                   Container(
                     padding: const EdgeInsets.all(14),
                     decoration: BoxDecoration(
-                      color: AppTheme.surface,
+                      color: AppTheme.surfaceHigh,
                       borderRadius: BorderRadius.circular(20),
+                      border: Border.all(color: AppTheme.border),
                     ),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -241,8 +242,9 @@ class _ShopSettingsScreenState
                   Container(
                     padding: const EdgeInsets.all(14),
                     decoration: BoxDecoration(
-                      color: AppTheme.surface,
+                      color: AppTheme.surfaceHigh,
                       borderRadius: BorderRadius.circular(20),
+                      border: Border.all(color: AppTheme.border),
                     ),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,

@@ -193,11 +193,19 @@ class _QrCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       // QR Card: cornerRadius 20, fill #ffffff18, padding 24, gap 16
+      // shadow: blur 8, color #0000000D, offset (0,2)
       width: double.infinity,
       padding: const EdgeInsets.all(24),
       decoration: BoxDecoration(
         color: AppTheme.surfaceHigh,
         borderRadius: BorderRadius.circular(20),
+        boxShadow: const [
+          BoxShadow(
+            color: Color(0x0D000000),
+            blurRadius: 8,
+            offset: Offset(0, 2),
+          ),
+        ],
       ),
       child: Column(
         children: [

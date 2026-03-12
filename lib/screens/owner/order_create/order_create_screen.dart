@@ -107,11 +107,11 @@ class _OrderCreateScreenState
                     ),
                   ),
                   // Divider: "또는" padding [0,28], gap 12
-                  Padding(
-                    padding: const EdgeInsets.symmetric(
+                  const Padding(
+                    padding: EdgeInsets.symmetric(
                       horizontal: 28,
                     ),
-                    child: const Row(
+                    child: Row(
                       children: [
                         Expanded(
                           child: Divider(
@@ -122,7 +122,7 @@ class _OrderCreateScreenState
                         Text(
                           '또는',
                           style: TextStyle(
-                            color: AppTheme.textTertiary,
+                            color: AppTheme.textDisabled,
                             fontSize: 12,
                           ),
                         ),

@@ -60,7 +60,16 @@ class _OrderManageScreenState
     final state = ref.watch(orderManageNotifierProvider);
 
     return Scaffold(
-      appBar: AppBar(title: const Text('작업 관리')),
+      appBar: AppBar(
+        title: const Text(
+          '작업 관리',
+          style: TextStyle(
+            fontSize: 20,
+            fontWeight: FontWeight.bold,
+            color: AppTheme.textPrimary,
+          ),
+        ),
+      ),
       body: CourtBackground(
         child: Column(
         children: [
@@ -196,10 +205,10 @@ class _StatusFilterTabs extends StatelessWidget {
             isSelected: selectedFilter == null,
             onTap: () => onFilterChanged(null),
           ),
-          const SizedBox(width: 8),
+          const SizedBox(width: 6),
           ...OrderStatus.values.map(
             (status) => Padding(
-              padding: const EdgeInsets.only(right: 8),
+              padding: const EdgeInsets.only(right: 6),
               child: _FilterChip(
                 label:
                     '${_tabLabel(status)} '
@@ -311,6 +320,13 @@ class _OrderManageCard extends StatelessWidget {
       decoration: BoxDecoration(
         color: AppTheme.surfaceHigh,
         borderRadius: BorderRadius.circular(16),
+        boxShadow: const [
+          BoxShadow(
+            color: Color(0x0A000000),
+            blurRadius: 12,
+            offset: Offset(0, 2),
+          ),
+        ],
       ),
       foregroundDecoration: BoxDecoration(
         borderRadius: BorderRadius.circular(16),
