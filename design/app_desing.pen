@@ -484,7 +484,7 @@
     {
       "type": "frame",
       "id": "s2pzz",
-      "x": 940,
+      "x": 1410,
       "y": 100,
       "name": "Signup",
       "clip": true,
@@ -1534,14 +1534,46 @@
                   "fontWeight": "Bold"
                 },
                 {
-                  "type": "icon_font",
-                  "id": "MciM9",
-                  "name": "settingsIcon",
-                  "width": 24,
-                  "height": 24,
-                  "iconFontName": "settings",
-                  "iconFontFamily": "Material Symbols Rounded",
-                  "fill": "#FFFFFF88"
+                  "type": "frame",
+                  "id": "dUAAb",
+                  "name": "bell1",
+                  "width": 28,
+                  "height": 28,
+                  "children": [
+                    {
+                      "type": "icon_font",
+                      "id": "DISJh",
+                      "name": "bellIcon",
+                      "width": 24,
+                      "height": 24,
+                      "iconFontName": "notifications",
+                      "iconFontFamily": "Material Symbols Rounded",
+                      "fill": "#FFFFFFCC"
+                    },
+                    {
+                      "type": "frame",
+                      "id": "OrONW",
+                      "name": "Badge",
+                      "width": 16,
+                      "height": 16,
+                      "fill": "#EF4444",
+                      "cornerRadius": 999,
+                      "justifyContent": "center",
+                      "alignItems": "center",
+                      "children": [
+                        {
+                          "type": "text",
+                          "id": "tj3kV",
+                          "name": "badgeText",
+                          "fill": "#FFFFFF",
+                          "content": "2",
+                          "fontFamily": "Pretendard",
+                          "fontSize": 10,
+                          "fontWeight": "Bold"
+                        }
+                      ]
+                    }
+                  ]
                 }
               ]
             },
@@ -8160,7 +8192,7 @@
     {
       "type": "text",
       "id": "9ZhTy",
-      "x": 1072,
+      "x": 1542,
       "y": 960,
       "name": "n3",
       "fill": "#94A3B8",
@@ -8268,7 +8300,7 @@
     {
       "type": "frame",
       "id": "PdstH",
-      "x": 1410,
+      "x": 1880,
       "y": 100,
       "name": "Shop Signup Step2",
       "clip": true,
@@ -8839,7 +8871,7 @@
     {
       "type": "text",
       "id": "jzCAi",
-      "x": 1500,
+      "x": 1970,
       "y": 960,
       "name": "shopSignupLabel",
       "fill": "#94A3B8",
@@ -13581,14 +13613,46 @@
                   "fontWeight": "Bold"
                 },
                 {
-                  "type": "icon_font",
-                  "id": "VCq9A",
-                  "name": "e3gear",
-                  "width": 24,
-                  "height": 24,
-                  "iconFontName": "settings",
-                  "iconFontFamily": "Material Symbols Rounded",
-                  "fill": "#FFFFFF88"
+                  "type": "frame",
+                  "id": "h2ybM",
+                  "name": "bell",
+                  "width": 28,
+                  "height": 28,
+                  "children": [
+                    {
+                      "type": "icon_font",
+                      "id": "sX42I",
+                      "name": "bellIcon",
+                      "width": 24,
+                      "height": 24,
+                      "iconFontName": "notifications",
+                      "iconFontFamily": "Material Symbols Rounded",
+                      "fill": "#FFFFFFCC"
+                    },
+                    {
+                      "type": "frame",
+                      "id": "QpV4z",
+                      "name": "Badge",
+                      "width": 16,
+                      "height": 16,
+                      "fill": "#EF4444",
+                      "cornerRadius": 999,
+                      "justifyContent": "center",
+                      "alignItems": "center",
+                      "children": [
+                        {
+                          "type": "text",
+                          "id": "P3pgl",
+                          "name": "badgeText",
+                          "fill": "#FFFFFF",
+                          "content": "2",
+                          "fontFamily": "Pretendard",
+                          "fontSize": 10,
+                          "fontWeight": "Bold"
+                        }
+                      ]
+                    }
+                  ]
                 }
               ]
             },
@@ -16866,7 +16930,7 @@
     {
       "type": "group",
       "id": "nAfQv",
-      "x": 1880,
+      "x": 2350,
       "y": 100,
       "name": "Address Search BottomSheet",
       "children": [
@@ -24185,7 +24249,7 @@
     {
       "type": "frame",
       "id": "OuAiV",
-      "x": 2350,
+      "x": 940,
       "y": 100,
       "name": "Login (iOS)",
       "clip": true,
