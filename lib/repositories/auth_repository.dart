@@ -4,6 +4,7 @@ import 'dart:developer' as developer;
 import 'package:app_links/app_links.dart';
 import 'package:badminton_app/core/error/app_exception.dart';
 import 'package:badminton_app/core/error/error_handler.dart';
+import 'package:sign_in_with_apple/sign_in_with_apple.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -135,6 +136,38 @@ class AuthRepository {
     });
 
     return completer.future;
+  }
+
+  /// Apple 네이티브 로그인을 수행한다 (iOS 전용).
+  ///
+  /// sign_in_with_apple로 idToken을 받아 Supabase에 전달한다.
+  Future<void> signInWithApple() async {
+    try {
+      final credential =
+          await SignInWithApple.getAppleIDCredential(
+        scopes: [
+          AppleIDAuthorizationScopes.email,
+          AppleIDAuthorizationScopes.fullName,
+        ],
+      );
+      final idToken = credential.identityToken;
+      if (idToken == null) {
+        throw AppException(
+          code: 'apple_no_token',
+          message: 'Apple identity token is null',
+          userMessage: 'Apple 로그인에 실패했습니다',
+        );
+      }
+      await _client.auth.signInWithIdToken(
+        provider: OAuthProvider.apple,
+        idToken: idToken,
+        nonce: credential.authorizationCode,
+      );
+    } on AppException {
+      rethrow;
+    } catch (e) {
+      throw ErrorHandler.handle(e);
+    }
   }
 
   /// 로그아웃을 수행한다.

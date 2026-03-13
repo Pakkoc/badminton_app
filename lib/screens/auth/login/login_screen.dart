@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:badminton_app/app/theme.dart';
 import 'package:badminton_app/screens/auth/login/login_notifier.dart';
 import 'package:badminton_app/screens/auth/login/login_state.dart';
@@ -33,6 +35,8 @@ class LoginScreen extends ConsumerWidget {
       authenticating: (provider) => provider,
       orElse: () => null,
     );
+
+    final isIOS = Platform.isIOS;
 
     return Scaffold(
       body: CourtBackground(
@@ -93,62 +97,57 @@ class LoginScreen extends ConsumerWidget {
                   ),
                 ),
                 const SizedBox(height: 32),
-                // 카카오 로그인 (공식 디자인 가이드 준수)
+
+                // iOS: Apple 로그인 (최상단) + 구분선
+                if (isIOS) ...[
+                  _AppleLoginButton(
+                    isLoading: isLoading &&
+                        loadingProvider == 'apple',
+                    isDisabled: isLoading,
+                    onPressed: () => ref
+                        .read(loginNotifierProvider.notifier)
+                        .signInWithApple(),
+                  ),
+                  const SizedBox(height: 12),
+                  const _Divider(),
+                  const SizedBox(height: 12),
+                ],
+
+                // 카카오 로그인 (공식 디자인 가이드)
                 _KakaoLoginButton(
                   isLoading:
                       isLoading && loadingProvider == 'kakao',
                   isDisabled: isLoading,
-                  onPressed: () {
-                    ref
-                        .read(loginNotifierProvider.notifier)
-                        .signInWithKakao();
-                  },
+                  onPressed: () => ref
+                      .read(loginNotifierProvider.notifier)
+                      .signInWithKakao(),
                 ),
                 const SizedBox(height: 12),
                 _SocialLoginButton(
-                  iconWidget: const Text(
-                    'N',
-                    style: TextStyle(
-                      fontSize: 18,
-                      fontWeight: FontWeight.w900,
-                      color: Colors.white,
-                    ),
-                  ),
+                  iconWidget: const _NaverIcon(),
                   label: '네이버 로그인',
                   backgroundColor: AppTheme.naverGreen,
                   textColor: Colors.white,
                   isLoading:
                       isLoading && loadingProvider == 'naver',
                   isDisabled: isLoading,
-                  onPressed: () {
-                    ref
-                        .read(loginNotifierProvider.notifier)
-                        .signInWithNaver();
-                  },
+                  onPressed: () => ref
+                      .read(loginNotifierProvider.notifier)
+                      .signInWithNaver(),
                 ),
                 const SizedBox(height: 12),
                 _SocialLoginButton(
-                  iconWidget: const Text(
-                    'G',
-                    style: TextStyle(
-                      fontSize: 18,
-                      fontWeight: FontWeight.w700,
-                      color: AppTheme.textPrimary,
-                    ),
-                  ),
+                  iconWidget: const _GoogleIcon(),
                   label: 'Gmail로 시작',
                   backgroundColor: AppTheme.surfaceHigh,
                   textColor: AppTheme.textPrimary,
                   borderColor: const Color(0x30FFFFFF),
-                  isLoading:
-                      isLoading &&
+                  isLoading: isLoading &&
                       loadingProvider == 'google',
                   isDisabled: isLoading,
-                  onPressed: () {
-                    ref
-                        .read(loginNotifierProvider.notifier)
-                        .signInWithGoogle();
-                  },
+                  onPressed: () => ref
+                      .read(loginNotifierProvider.notifier)
+                      .signInWithGoogle(),
                 ),
               ],
             ),
@@ -159,12 +158,147 @@ class LoginScreen extends ConsumerWidget {
   }
 }
 
-/// 카카오 공식 디자인 가이드 준수 버튼.
+/// Apple 로그인 버튼 (iOS 전용, Apple HIG 준수).
 ///
-/// - 배경: #FEE500
-/// - 심볼: 검정 말풍선 (CustomPaint)
-/// - 텍스트: "카카오 로그인", #000000 85%
-/// - cornerRadius: 12
+/// - 배경: #000000, 텍스트: #FFFFFF
+/// - Apple 로고 + "Apple로 로그인"
+/// - cornerRadius: 12, height: 52
+class _AppleLoginButton extends StatelessWidget {
+  const _AppleLoginButton({
+    required this.isLoading,
+    required this.isDisabled,
+    required this.onPressed,
+  });
+
+  final bool isLoading;
+  final bool isDisabled;
+  final VoidCallback onPressed;
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      height: 52,
+      width: double.infinity,
+      child: ElevatedButton(
+        onPressed: isDisabled ? null : onPressed,
+        style: ElevatedButton.styleFrom(
+          backgroundColor: Colors.black,
+          foregroundColor: Colors.white,
+          disabledBackgroundColor:
+              Colors.black.withValues(alpha: 0.6),
+          disabledForegroundColor:
+              Colors.white.withValues(alpha: 0.5),
+          elevation: 0,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(12),
+          ),
+        ),
+        child: isLoading
+            ? const SizedBox(
+                width: 24,
+                height: 24,
+                child: CircularProgressIndicator(
+                  strokeWidth: 2.5,
+                  color: Colors.white,
+                ),
+              )
+            : Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  SizedBox(
+                    width: 16,
+                    height: 20,
+                    child: CustomPaint(
+                      painter: _AppleLogoPainter(),
+                    ),
+                  ),
+                  const SizedBox(width: 8),
+                  const Text(
+                    'Apple로 로그인',
+                    style: TextStyle(
+                      fontSize: 15,
+                      fontWeight: FontWeight.w600,
+                      color: Colors.white,
+                    ),
+                  ),
+                ],
+              ),
+      ),
+    );
+  }
+}
+
+/// Apple 로고 페인터 (사과 모양).
+class _AppleLogoPainter extends CustomPainter {
+  @override
+  void paint(Canvas canvas, Size size) {
+    final paint = Paint()
+      ..color = Colors.white
+      ..style = PaintingStyle.fill;
+
+    final w = size.width;
+    final h = size.height;
+
+    // 사과 몸통
+    final path = Path()
+      ..moveTo(w * 0.5, h * 0.18)
+      ..cubicTo(
+        w * 0.5, h * 0.18,
+        w * 0.8, h * 0.1,
+        w * 0.92, h * 0.35,
+      )
+      ..cubicTo(
+        w * 1.05, h * 0.6,
+        w * 0.85, h * 1.0,
+        w * 0.65, h * 1.0,
+      )
+      ..cubicTo(
+        w * 0.55, h * 1.0,
+        w * 0.5, h * 0.92,
+        w * 0.5, h * 0.92,
+      )
+      ..cubicTo(
+        w * 0.5, h * 0.92,
+        w * 0.45, h * 1.0,
+        w * 0.35, h * 1.0,
+      )
+      ..cubicTo(
+        w * 0.15, h * 1.0,
+        w * -0.05, h * 0.6,
+        w * 0.08, h * 0.35,
+      )
+      ..cubicTo(
+        w * 0.2, h * 0.1,
+        w * 0.5, h * 0.18,
+        w * 0.5, h * 0.18,
+      )
+      ..close();
+    canvas.drawPath(path, paint);
+
+    // 꼭지
+    final stemPath = Path()
+      ..moveTo(w * 0.5, h * 0.18)
+      ..cubicTo(
+        w * 0.5, h * 0.18,
+        w * 0.52, h * 0.02,
+        w * 0.7, h * 0.0,
+      )
+      ..lineTo(w * 0.7, h * 0.04)
+      ..cubicTo(
+        w * 0.55, h * 0.06,
+        w * 0.52, h * 0.18,
+        w * 0.5, h * 0.18,
+      )
+      ..close();
+    canvas.drawPath(stemPath, paint);
+  }
+
+  @override
+  bool shouldRepaint(covariant CustomPainter oldDelegate) =>
+      false;
+}
+
+/// 카카오 로그인 버튼 (공식 디자인 가이드 준수).
 class _KakaoLoginButton extends StatelessWidget {
   const _KakaoLoginButton({
     required this.isLoading,
@@ -207,7 +341,6 @@ class _KakaoLoginButton extends StatelessWidget {
             : Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  // 카카오 공식 말풍선 심볼
                   SizedBox(
                     width: 18,
                     height: 18,
@@ -221,7 +354,7 @@ class _KakaoLoginButton extends StatelessWidget {
                     style: TextStyle(
                       fontSize: 15,
                       fontWeight: FontWeight.w600,
-                      color: Color(0xD9000000), // #000000 85%
+                      color: Color(0xD9000000),
                     ),
                   ),
                 ],
@@ -231,7 +364,7 @@ class _KakaoLoginButton extends StatelessWidget {
   }
 }
 
-/// 카카오 말풍선 심볼 페인터.
+/// 카카오 말풍선 심볼 (공식).
 class _KakaoSymbolPainter extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
@@ -242,11 +375,11 @@ class _KakaoSymbolPainter extends CustomPainter {
     final w = size.width;
     final h = size.height;
 
-    // 말풍선 본체 (타원)
-    final bodyRect = Rect.fromLTWH(0, 0, w, h * 0.72);
-    canvas.drawOval(bodyRect, paint);
+    canvas.drawOval(
+      Rect.fromLTWH(0, 0, w, h * 0.72),
+      paint,
+    );
 
-    // 말풍선 꼬리 (삼각형, 왼쪽 하단)
     final tailPath = Path()
       ..moveTo(w * 0.25, h * 0.62)
       ..lineTo(w * 0.15, h * 0.92)
@@ -258,6 +391,89 @@ class _KakaoSymbolPainter extends CustomPainter {
   @override
   bool shouldRepaint(covariant CustomPainter oldDelegate) =>
       false;
+}
+
+/// 네이버 'N' 아이콘.
+class _NaverIcon extends StatelessWidget {
+  const _NaverIcon();
+
+  @override
+  Widget build(BuildContext context) {
+    return const SizedBox(
+      width: 18,
+      height: 18,
+      child: Center(
+        child: Text(
+          'N',
+          style: TextStyle(
+            fontSize: 16,
+            fontWeight: FontWeight.w900,
+            color: Colors.white,
+            height: 1,
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+/// Google 'G' 아이콘.
+class _GoogleIcon extends StatelessWidget {
+  const _GoogleIcon();
+
+  @override
+  Widget build(BuildContext context) {
+    return const SizedBox(
+      width: 18,
+      height: 18,
+      child: Center(
+        child: Text(
+          'G',
+          style: TextStyle(
+            fontSize: 16,
+            fontWeight: FontWeight.w700,
+            color: AppTheme.textPrimary,
+            height: 1,
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+/// "또는" 구분선 (iOS 화면에서 Apple ↔ 기타 버튼 사이).
+class _Divider extends StatelessWidget {
+  const _Divider();
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      children: [
+        Expanded(
+          child: Container(
+            height: 1,
+            color: const Color(0x40FFFFFF),
+          ),
+        ),
+        const Padding(
+          padding: EdgeInsets.symmetric(horizontal: 12),
+          child: Text(
+            '또는',
+            style: TextStyle(
+              fontSize: 12,
+              color: Color(0x80FFFFFF),
+            ),
+          ),
+        ),
+        Expanded(
+          child: Container(
+            height: 1,
+            color: const Color(0x40FFFFFF),
+          ),
+        ),
+      ],
+    );
+  }
 }
 
 /// 범용 소셜 로그인 버튼.

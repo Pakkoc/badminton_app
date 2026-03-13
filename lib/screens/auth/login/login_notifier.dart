@@ -2,6 +2,7 @@ import 'package:badminton_app/core/error/app_exception.dart';
 import 'package:badminton_app/providers/auth_provider.dart';
 import 'package:badminton_app/screens/auth/login/login_state.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:sign_in_with_apple/sign_in_with_apple.dart';
 import 'package:supabase_flutter/supabase_flutter.dart' hide Provider;
 
 final loginNotifierProvider =
@@ -34,6 +35,29 @@ class LoginNotifier extends Notifier<LoginState> {
 
   Future<void> signInWithGoogle() async {
     await _signInWithOAuth('google', OAuthProvider.google);
+  }
+
+  Future<void> signInWithApple() async {
+    state = const LoginState.authenticating('apple');
+    try {
+      final authRepository = ref.read(authRepositoryProvider);
+      await authRepository.signInWithApple();
+      state = const LoginState.idle();
+    } on AppException catch (e) {
+      state = LoginState.error(e.userMessage);
+      await Future<void>.delayed(const Duration(seconds: 3));
+      state = const LoginState.idle();
+    } on SignInWithAppleAuthorizationException catch (e) {
+      if (e.code != AuthorizationErrorCode.canceled) {
+        state = const LoginState.error('Apple 로그인에 실패했습니다');
+        await Future<void>.delayed(const Duration(seconds: 3));
+      }
+      state = const LoginState.idle();
+    } catch (e) {
+      state = const LoginState.error('Apple 로그인에 실패했습니다');
+      await Future<void>.delayed(const Duration(seconds: 3));
+      state = const LoginState.idle();
+    }
   }
 
   Future<void> _signInWithOAuth(
