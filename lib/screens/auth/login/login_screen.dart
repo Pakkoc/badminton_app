@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:badminton_app/app/theme.dart';
 import 'package:badminton_app/screens/auth/login/login_notifier.dart';
 import 'package:badminton_app/screens/auth/login/login_state.dart';
@@ -34,8 +36,7 @@ class LoginScreen extends ConsumerWidget {
       orElse: () => null,
     );
 
-    // TODO: 확인 후 아래 줄 제거하고 Platform.isIOS 로 복원
-    const bool isIOS = true; // ignore: dead_code
+    final isIOS = Platform.isIOS;
 
     return Scaffold(
       body: CourtBackground(
