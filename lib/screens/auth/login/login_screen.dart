@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:badminton_app/app/theme.dart';
 import 'package:badminton_app/screens/auth/login/login_notifier.dart';
 import 'package:badminton_app/screens/auth/login/login_state.dart';
@@ -36,7 +34,8 @@ class LoginScreen extends ConsumerWidget {
       orElse: () => null,
     );
 
-    final isIOS = Platform.isIOS;
+    // TODO: 확인 후 아래 줄 제거하고 Platform.isIOS 로 복원
+    const bool isIOS = true; // ignore: dead_code
 
     return Scaffold(
       body: CourtBackground(
@@ -202,18 +201,16 @@ class _AppleLoginButton extends StatelessWidget {
                   color: Colors.white,
                 ),
               )
-            : Row(
+            : const Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  SizedBox(
-                    width: 16,
-                    height: 20,
-                    child: CustomPaint(
-                      painter: _AppleLogoPainter(),
-                    ),
+                  Icon(
+                    Icons.apple,
+                    size: 22,
+                    color: Colors.white,
                   ),
-                  const SizedBox(width: 8),
-                  const Text(
+                  SizedBox(width: 8),
+                  Text(
                     'Apple로 로그인',
                     style: TextStyle(
                       fontSize: 15,
@@ -226,76 +223,6 @@ class _AppleLoginButton extends StatelessWidget {
       ),
     );
   }
-}
-
-/// Apple 로고 페인터 (사과 모양).
-class _AppleLogoPainter extends CustomPainter {
-  @override
-  void paint(Canvas canvas, Size size) {
-    final paint = Paint()
-      ..color = Colors.white
-      ..style = PaintingStyle.fill;
-
-    final w = size.width;
-    final h = size.height;
-
-    // 사과 몸통
-    final path = Path()
-      ..moveTo(w * 0.5, h * 0.18)
-      ..cubicTo(
-        w * 0.5, h * 0.18,
-        w * 0.8, h * 0.1,
-        w * 0.92, h * 0.35,
-      )
-      ..cubicTo(
-        w * 1.05, h * 0.6,
-        w * 0.85, h * 1.0,
-        w * 0.65, h * 1.0,
-      )
-      ..cubicTo(
-        w * 0.55, h * 1.0,
-        w * 0.5, h * 0.92,
-        w * 0.5, h * 0.92,
-      )
-      ..cubicTo(
-        w * 0.5, h * 0.92,
-        w * 0.45, h * 1.0,
-        w * 0.35, h * 1.0,
-      )
-      ..cubicTo(
-        w * 0.15, h * 1.0,
-        w * -0.05, h * 0.6,
-        w * 0.08, h * 0.35,
-      )
-      ..cubicTo(
-        w * 0.2, h * 0.1,
-        w * 0.5, h * 0.18,
-        w * 0.5, h * 0.18,
-      )
-      ..close();
-    canvas.drawPath(path, paint);
-
-    // 꼭지
-    final stemPath = Path()
-      ..moveTo(w * 0.5, h * 0.18)
-      ..cubicTo(
-        w * 0.5, h * 0.18,
-        w * 0.52, h * 0.02,
-        w * 0.7, h * 0.0,
-      )
-      ..lineTo(w * 0.7, h * 0.04)
-      ..cubicTo(
-        w * 0.55, h * 0.06,
-        w * 0.52, h * 0.18,
-        w * 0.5, h * 0.18,
-      )
-      ..close();
-    canvas.drawPath(stemPath, paint);
-  }
-
-  @override
-  bool shouldRepaint(covariant CustomPainter oldDelegate) =>
-      false;
 }
 
 /// 카카오 로그인 버튼 (공식 디자인 가이드 준수).
