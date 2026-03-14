@@ -20,7 +20,7 @@ class OrderTimelineRow extends StatelessWidget {
 
   static const _inactive = TextStyle(
     fontSize: 11,
-    color: Color(0xFFCBD5E1),
+    color: AppTheme.textHint,
   );
 
   @override

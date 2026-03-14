@@ -141,7 +141,7 @@ class LoginScreen extends ConsumerWidget {
                   label: 'Gmail로 시작',
                   backgroundColor: AppTheme.surfaceHigh,
                   textColor: AppTheme.textPrimary,
-                  borderColor: const Color(0x30FFFFFF),
+                  borderColor: const Color(0x50FFFFFF),
                   isLoading: isLoading &&
                       loadingProvider == 'google',
                   isDisabled: isLoading,
@@ -380,7 +380,7 @@ class _Divider extends StatelessWidget {
         Expanded(
           child: Container(
             height: 1,
-            color: const Color(0x40FFFFFF),
+            color: AppTheme.border,
           ),
         ),
         const Padding(
@@ -389,14 +389,14 @@ class _Divider extends StatelessWidget {
             '또는',
             style: TextStyle(
               fontSize: 12,
-              color: Color(0x80FFFFFF),
+              color: AppTheme.textInactive,
             ),
           ),
         ),
         Expanded(
           child: Container(
             height: 1,
-            color: const Color(0x40FFFFFF),
+            color: AppTheme.border,
           ),
         ),
       ],

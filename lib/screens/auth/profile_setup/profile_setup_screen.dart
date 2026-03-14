@@ -90,11 +90,16 @@ class _ProfileSetupScreenState
                   // Custom Header: back icon + title
                   Row(
                     children: [
-                      GestureDetector(
-                        onTap: _showSignOutDialog,
-                        child: const Icon(
+                      IconButton(
+                        onPressed: _showSignOutDialog,
+                        icon: const Icon(
                           Icons.arrow_back,
                           color: AppTheme.textSecondary,
+                        ),
+                        padding: EdgeInsets.zero,
+                        constraints: const BoxConstraints(
+                          minWidth: 48,
+                          minHeight: 48,
                         ),
                       ),
                       const SizedBox(width: 12),
@@ -123,7 +128,7 @@ class _ProfileSetupScreenState
                     decoration: InputDecoration(
                       labelText: '이름',
                       filled: true,
-                      fillColor: const Color(0x12FFFFFF),
+                      fillColor: AppTheme.surfaceVariant,
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(14),
                         borderSide: const BorderSide(
@@ -164,10 +169,10 @@ class _ProfileSetupScreenState
                             }
                           : null,
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: const Color(0xFF2563EB),
+                        backgroundColor: AppTheme.primaryCta,
                         foregroundColor: Colors.white,
                         disabledBackgroundColor:
-                            const Color(0xFF2563EB).withValues(alpha: 0.5),
+                            AppTheme.primaryCta.withValues(alpha: 0.5),
                         disabledForegroundColor:
                             Colors.white.withValues(alpha: 0.5),
                         shape: RoundedRectangleBorder(
