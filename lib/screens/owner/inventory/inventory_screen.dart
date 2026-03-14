@@ -265,11 +265,45 @@ class _InventoryScreenState
               crossAxisAlignment:
                   CrossAxisAlignment.start,
               children: [
-                Text(
-                  '상품 수정',
-                  style: Theme.of(sheetContext)
-                      .textTheme
-                      .titleLarge,
+                Row(
+                  mainAxisAlignment:
+                      MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      '상품 수정',
+                      style: Theme.of(sheetContext)
+                          .textTheme
+                          .titleLarge,
+                    ),
+                    IconButton(
+                      onPressed: () {
+                        Navigator.of(sheetContext).pop();
+                        showConfirmDialog(
+                          context: context,
+                          title: '상품 삭제',
+                          content:
+                              '${item.name}을(를) 삭제하시겠습니까?',
+                          onConfirm: () {
+                            ref
+                                .read(
+                                  inventoryNotifierProvider
+                                      .notifier,
+                                )
+                                .deleteItem(item.id);
+                            AppToast.success(
+                              context,
+                              '상품이 삭제되었습니다',
+                            );
+                          },
+                        );
+                      },
+                      icon: const Icon(
+                        Icons.delete_outline,
+                        color: Color(0xFFEF4444),
+                      ),
+                      tooltip: '삭제',
+                    ),
+                  ],
                 ),
                 const SizedBox(height: 16),
                 TextFormField(
@@ -495,21 +529,6 @@ class _InventoryScreenState
           return _InventoryGridCard(
             item: item,
             onTap: () => _showEditItemDialog(item),
-            onLongPress: () {
-              showConfirmDialog(
-                context: context,
-                title: '상품 삭제',
-                content:
-                    '${item.name}을(를) 삭제하시겠습니까?',
-                onConfirm: () {
-                  ref
-                      .read(
-                        inventoryNotifierProvider.notifier,
-                      )
-                      .deleteItem(item.id);
-                },
-              );
-            },
           );
         },
       ),
@@ -521,18 +540,15 @@ class _InventoryGridCard extends StatelessWidget {
   const _InventoryGridCard({
     required this.item,
     required this.onTap,
-    required this.onLongPress,
   });
 
   final InventoryItem item;
   final VoidCallback onTap;
-  final VoidCallback onLongPress;
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: onTap,
-      onLongPress: onLongPress,
       child: Container(
         decoration: BoxDecoration(
           color: AppTheme.surfaceHigh,
