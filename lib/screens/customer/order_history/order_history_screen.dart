@@ -57,7 +57,7 @@ class OrderHistoryScreen extends ConsumerWidget {
             const Icon(
               Icons.sports_tennis,
               size: 80,
-              color: Color(0xFFCBD5E1),
+              color: AppTheme.textTertiary,
             ),
             const SizedBox(height: 16),
             Text(

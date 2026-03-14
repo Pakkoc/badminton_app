@@ -65,7 +65,7 @@ class _PostManageScreenState extends ConsumerState<PostManageScreen> {
                           vertical: 12,
                         ),
                         itemCount: state.posts.length,
-                        separatorBuilder: (_, __) =>
+                        separatorBuilder: (_, _) =>
                             const SizedBox(height: 12),
                         itemBuilder: (context, index) {
                           final post = state.posts[index];
@@ -311,21 +311,26 @@ class _CardHeader extends StatelessWidget {
       children: [
         _CategoryBadge(category: category),
         const Spacer(),
-        GestureDetector(
-          onTap: onEdit,
-          child: const Icon(
-            Icons.edit,
-            size: 22,
-            color: AppTheme.textSecondary,
+        IconButton(
+          onPressed: onEdit,
+          icon: const Icon(Icons.edit),
+          iconSize: 22,
+          color: AppTheme.textSecondary,
+          padding: EdgeInsets.zero,
+          constraints: const BoxConstraints(
+            minWidth: 44,
+            minHeight: 44,
           ),
         ),
-        const SizedBox(width: 8),
-        GestureDetector(
-          onTap: onDelete,
-          child: const Icon(
-            Icons.delete_outline,
-            size: 22,
-            color: Color(0xFFEF4444),
+        IconButton(
+          onPressed: onDelete,
+          icon: const Icon(Icons.delete_outline),
+          iconSize: 22,
+          color: const Color(0xFFEF4444),
+          padding: EdgeInsets.zero,
+          constraints: const BoxConstraints(
+            minWidth: 44,
+            minHeight: 44,
           ),
         ),
       ],

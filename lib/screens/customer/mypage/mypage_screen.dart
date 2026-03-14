@@ -221,12 +221,19 @@ class _ProfileCard extends StatelessWidget {
           ),
           GestureDetector(
             onTap: onEditTap,
-            child: const Text(
-              '프로필 수정',
-              style: TextStyle(
-                fontSize: 13,
-                fontWeight: FontWeight.w500,
-                color: Color(0xFF1D4ED8),
+            behavior: HitTestBehavior.opaque,
+            child: const Padding(
+              padding: EdgeInsets.symmetric(
+                horizontal: 8,
+                vertical: 12,
+              ),
+              child: Text(
+                '프로필 수정',
+                style: TextStyle(
+                  fontSize: 13,
+                  fontWeight: FontWeight.w500,
+                  color: AppTheme.info,
+                ),
               ),
             ),
           ),
@@ -401,7 +408,7 @@ class _AdminMenuCard extends StatelessWidget {
               width: 36,
               height: 36,
               decoration: BoxDecoration(
-                color: const Color(0xFFFEE2E2),
+                color: const Color(0xFF5B2020),
                 borderRadius:
                     BorderRadius.circular(10),
               ),
@@ -424,7 +431,7 @@ class _AdminMenuCard extends StatelessWidget {
             const Icon(
               Icons.chevron_right,
               size: 20,
-              color: Color(0xFF9CA3AF),
+              color: AppTheme.textTertiary,
             ),
           ],
         ),

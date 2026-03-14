@@ -95,7 +95,7 @@ class _OwnerDashboardScreenState
               '?shopId=$shopId',
             );
           },
-          backgroundColor: const Color(0xFF16A34A),
+          backgroundColor: AppTheme.primaryCta,
           foregroundColor: Colors.white,
           shape: const CircleBorder(),
           child: const Icon(Icons.add),
@@ -411,13 +411,6 @@ class _OrderCard extends StatelessWidget {
       decoration: BoxDecoration(
         color: AppTheme.surfaceHigh,
         borderRadius: BorderRadius.circular(16),
-        boxShadow: const [
-          BoxShadow(
-            color: Color(0x0A000000),
-            blurRadius: 12,
-            offset: Offset(0, 2),
-          ),
-        ],
       ),
       foregroundDecoration: BoxDecoration(
         borderRadius: BorderRadius.circular(16),
@@ -484,7 +477,7 @@ class _ActionButton extends StatelessWidget {
       OrderStatus.received => ('작업 시작', AppTheme.inProgressForeground),
       OrderStatus.inProgress => (
         '작업 완료',
-        AppTheme.completedForeground,
+        AppTheme.primaryCta,
       ),
       _ => ('', Colors.transparent),
     };

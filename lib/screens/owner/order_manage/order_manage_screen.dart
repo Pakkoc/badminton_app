@@ -250,13 +250,13 @@ class _FilterChip extends StatelessWidget {
         ),
         decoration: BoxDecoration(
           color: isSelected
-              ? const Color(0xFF16A34A)
-              : const Color(0x12FFFFFF),
+              ? AppTheme.primaryCta
+              : AppTheme.surfaceVariant,
           borderRadius: BorderRadius.circular(999),
           border: Border.all(
             color: isSelected
-                ? const Color(0xFF16A34A)
-                : const Color(0x20FFFFFF),
+                ? AppTheme.primaryCta
+                : AppTheme.border,
           ),
         ),
         child: Row(
@@ -420,7 +420,7 @@ class _ActionButton extends StatelessWidget {
       ),
       OrderStatus.inProgress => (
         '작업 완료',
-        AppTheme.accent,
+        AppTheme.primaryCta,
       ),
       _ => ('', Colors.transparent),
     };

@@ -125,7 +125,7 @@ class _LargeStatusBadge extends StatelessWidget {
         color: const Color(0x10FFFFFF),
         borderRadius: BorderRadius.circular(20),
         border: Border.all(
-          color: const Color(0xFF93C5FD),
+          color: fgColor.withValues(alpha: 0.4),
           width: 1,
         ),
       ),
@@ -191,7 +191,7 @@ class _TimelineSection extends StatelessWidget {
                   label: '접수됨',
                   time: Formatters.dateTime(createdAt),
                   isActive: true,
-                  color: const Color(0xFFF59E0B),
+                  color: AppTheme.receivedForeground,
                   isLast: false,
                   nextActive: inProgressAt != null,
                 ),
@@ -241,7 +241,7 @@ class _TimelineNode extends StatelessWidget {
   final bool isLast;
   final bool nextActive;
 
-  static const _inactiveColor = Color(0xFFCBD5E1);
+  static const _inactiveColor = AppTheme.textHint;
 
   @override
   Widget build(BuildContext context) {

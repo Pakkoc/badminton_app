@@ -138,10 +138,10 @@ class _NotificationTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final bgColor = notification.isRead
-        ? AppTheme.surfaceHigh
-        : Colors.transparent;
+        ? Colors.transparent
+        : AppTheme.surfaceHigh;
 
-    return InkWell(
+    final tile = InkWell(
       onTap: onTap,
       child: Container(
         padding: const EdgeInsets.symmetric(
@@ -202,5 +202,13 @@ class _NotificationTile extends StatelessWidget {
         ),
       ),
     );
+
+    if (!notification.isRead) {
+      return Semantics(
+        label: '읽지 않은 알림: ${notification.title}',
+        child: tile,
+      );
+    }
+    return tile;
   }
 }
