@@ -345,25 +345,18 @@ class _NaverIcon extends StatelessWidget {
   }
 }
 
-/// Google 'G' 아이콘.
+/// Google 공식 4색 'G' 로고.
 class _GoogleIcon extends StatelessWidget {
   const _GoogleIcon();
 
   @override
   Widget build(BuildContext context) {
-    return const SizedBox(
-      width: 18,
-      height: 18,
-      child: Center(
-        child: Text(
-          'G',
-          style: TextStyle(
-            fontSize: 16,
-            fontWeight: FontWeight.w700,
-            color: AppTheme.textPrimary,
-            height: 1,
-          ),
-        ),
+    return ClipOval(
+      child: Image.asset(
+        'assets/images/google_logo.png',
+        width: 20,
+        height: 20,
+        fit: BoxFit.cover,
       ),
     );
   }
