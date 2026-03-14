@@ -138,10 +138,10 @@ class LoginScreen extends ConsumerWidget {
                 const SizedBox(height: 12),
                 _SocialLoginButton(
                   iconWidget: const _GoogleIcon(),
-                  label: 'Gmail로 시작',
-                  backgroundColor: AppTheme.surfaceHigh,
-                  textColor: AppTheme.textPrimary,
-                  borderColor: const Color(0x50FFFFFF),
+                  label: 'Google로 시작',
+                  backgroundColor: Colors.white,
+                  textColor: const Color(0xFF1F1F1F),
+                  borderColor: Colors.transparent,
                   isLoading: isLoading &&
                       loadingProvider == 'google',
                   isDisabled: isLoading,
