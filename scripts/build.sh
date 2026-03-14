@@ -62,4 +62,5 @@ echo "  모드: $BUILD_MODE"
 echo "  dart-define: ${#REQUIRED_KEYS[@]}개 키 로드됨"
 echo ""
 
-eval flutter build "$BUILD_TYPE" "$BUILD_MODE" $DART_DEFINES "$@"
+# shellcheck disable=SC2086
+flutter build "$BUILD_TYPE" "$BUILD_MODE" $DART_DEFINES "$@"

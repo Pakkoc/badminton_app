@@ -6,6 +6,12 @@ plugins {
     id("dev.flutter.flutter-gradle-plugin")
 }
 
+val localPropertiesFile = rootProject.file("local.properties")
+val localProperties = java.util.Properties()
+if (localPropertiesFile.exists()) {
+    localProperties.load(localPropertiesFile.inputStream())
+}
+
 android {
     namespace = "com.gurtalim.app"
     compileSdk = flutter.compileSdkVersion
@@ -30,13 +36,34 @@ android {
         targetSdk = flutter.targetSdkVersion
         versionCode = flutter.versionCode
         versionName = flutter.versionName
+
+        manifestPlaceholders["NAVER_MAP_CLIENT_ID"] =
+            localProperties.getProperty("NAVER_MAP_CLIENT_ID", "")
+        manifestPlaceholders["NAVER_CLIENT_ID"] =
+            localProperties.getProperty("NAVER_CLIENT_ID", "")
+        manifestPlaceholders["NAVER_CLIENT_SECRET"] =
+            localProperties.getProperty("NAVER_CLIENT_SECRET", "")
+    }
+
+    signingConfigs {
+        create("release") {
+            val storeFilePath = localProperties.getProperty("RELEASE_STORE_FILE")
+            if (storeFilePath != null) {
+                storeFile = file(storeFilePath)
+                storePassword = localProperties.getProperty("RELEASE_STORE_PASSWORD")
+                keyAlias = localProperties.getProperty("RELEASE_KEY_ALIAS")
+                keyPassword = localProperties.getProperty("RELEASE_KEY_PASSWORD")
+            }
+        }
     }
 
     buildTypes {
         release {
-            // TODO: Add your own signing config for the release build.
-            // Signing with the debug keys for now, so `flutter run --release` works.
-            signingConfig = signingConfigs.getByName("debug")
+            signingConfig = if (localProperties.getProperty("RELEASE_STORE_FILE") != null) {
+                signingConfigs.getByName("release")
+            } else {
+                signingConfigs.getByName("debug")
+            }
         }
     }
 }
