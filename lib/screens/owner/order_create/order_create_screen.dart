@@ -80,7 +80,7 @@ class _OrderCreateScreenState
                         },
                         style: ElevatedButton.styleFrom(
                           backgroundColor:
-                              const Color(0xFF2563EB),
+                              AppTheme.primaryCta,
                           foregroundColor: Colors.white,
                           shape: RoundedRectangleBorder(
                             borderRadius:
@@ -184,7 +184,8 @@ class _OrderCreateScreenState
                                 borderRadius:
                                     BorderRadius.circular(14),
                                 borderSide: const BorderSide(
-                                  color: Color(0x20FFFFFF),
+                                  color: AppTheme.accent,
+                                  width: 2,
                                 ),
                               ),
                               contentPadding:
@@ -288,7 +289,8 @@ class _OrderCreateScreenState
                                 borderRadius:
                                     BorderRadius.circular(14),
                                 borderSide: const BorderSide(
-                                  color: Color(0x20FFFFFF),
+                                  color: AppTheme.accent,
+                                  width: 2,
                                 ),
                               ),
                               contentPadding:
@@ -331,7 +333,7 @@ class _OrderCreateScreenState
                             : null,
                         style: ElevatedButton.styleFrom(
                           backgroundColor:
-                              const Color(0xFF2563EB),
+                              AppTheme.primaryCta,
                           foregroundColor: Colors.white,
                           minimumSize:
                               const Size.fromHeight(48),

@@ -618,7 +618,7 @@ class _BottomSheetCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
-        color: const Color(0xFF1A4D2B),
+        color: AppTheme.dialogSurface,
         borderRadius: const BorderRadius.vertical(
           top: Radius.circular(20),
         ),

@@ -227,10 +227,10 @@ class _ShopSignupScreenState
                         }
                       : null,
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: const Color(0xFF4A8FE2),
+                    backgroundColor: AppTheme.primaryCta,
                     foregroundColor: Colors.white,
                     disabledBackgroundColor:
-                        const Color(0xFF4A8FE2).withValues(alpha: 0.5),
+                        AppTheme.primaryCta.withValues(alpha: 0.5),
                     disabledForegroundColor:
                         Colors.white.withValues(alpha: 0.5),
                     shape: RoundedRectangleBorder(
@@ -305,7 +305,7 @@ class _StepProgressRow extends StatelessWidget {
           Container(
             width: 40,
             height: 2,
-            color: const Color(0xFF4A8FE2),
+            color: AppTheme.primaryCta,
           ),
           const SizedBox(width: 6),
           // 현재 2단계: 활성 점

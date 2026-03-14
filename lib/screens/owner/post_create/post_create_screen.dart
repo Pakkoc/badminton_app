@@ -319,10 +319,9 @@ class _PostCreateScreenState
                           context.pop(true);
                         }
                       },
-                // Submit Button: cornerRadius 20, fill #16A34A, height 48
+                // Submit Button: cornerRadius 20, fill primaryCta, height 48
                 style: ElevatedButton.styleFrom(
-                  backgroundColor:
-                      const Color(0xFF16A34A),
+                  backgroundColor: AppTheme.primaryCta,
                   foregroundColor: Colors.white,
                   shape: RoundedRectangleBorder(
                     borderRadius:
@@ -390,7 +389,7 @@ class _CategoryChip extends StatelessWidget {
             fontSize: 14,
             fontWeight: FontWeight.w500,
             color: isSelected
-                ? AppTheme.accent
+                ? AppTheme.activeTab
                 : AppTheme.textSecondary,
           ),
         ),

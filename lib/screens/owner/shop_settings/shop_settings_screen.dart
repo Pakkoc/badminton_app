@@ -548,10 +548,10 @@ class _SaveButton extends StatelessWidget {
         child: ElevatedButton(
           onPressed: isSubmitting ? null : onPressed,
           style: ElevatedButton.styleFrom(
-            backgroundColor: const Color(0xFF2563EB),
+            backgroundColor: AppTheme.primaryCta,
             foregroundColor: Colors.white,
             disabledBackgroundColor:
-                const Color(0xFF2563EB).withValues(alpha: 0.5),
+                AppTheme.primaryCta.withValues(alpha: 0.5),
             disabledForegroundColor:
                 Colors.white.withValues(alpha: 0.5),
             shape: RoundedRectangleBorder(
@@ -615,7 +615,10 @@ class _MenuItemTile extends StatelessWidget {
                   Expanded(
                     child: Text(
                       label,
-                      style: const TextStyle(fontSize: 14),
+                      style: const TextStyle(
+                        fontSize: 14,
+                        color: AppTheme.textPrimary,
+                      ),
                     ),
                   ),
                   const Icon(

@@ -452,7 +452,7 @@ class _DirectionsButton extends StatelessWidget {
           icon: const Icon(Icons.directions, size: 20),
           label: const Text('길찾기'),
           style: ElevatedButton.styleFrom(
-            backgroundColor: const Color(0xFF2563EB),
+            backgroundColor: AppTheme.primaryCta,
             foregroundColor: Colors.white,
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(20),

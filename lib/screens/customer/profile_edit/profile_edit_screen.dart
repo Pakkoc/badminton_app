@@ -148,15 +148,14 @@ class _ProfileEditScreenState
                           }
                         },
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: const Color(0xFF16A34A),
+                    backgroundColor: AppTheme.primaryCta,
                     foregroundColor: Colors.white,
                     shape: RoundedRectangleBorder(
                       borderRadius:
                           BorderRadius.circular(12),
                     ),
-                    disabledBackgroundColor: const Color(
-                      0xFF16A34A,
-                    ).withValues(alpha: 0.5),
+                    disabledBackgroundColor:
+                        AppTheme.primaryCta.withValues(alpha: 0.5),
                     disabledForegroundColor:
                         Colors.white.withValues(alpha: 0.5),
                   ),
