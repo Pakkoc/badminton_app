@@ -1,17 +1,34 @@
+import 'package:badminton_app/repositories/shop_repository.dart';
 import 'package:badminton_app/screens/owner/shop_qr/shop_qr_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:mocktail/mocktail.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 
 import '../../../helpers/fixtures.dart';
 
-void main() {
-  group('ShopQrScreen', () {
-    Widget buildApp() => MaterialApp(
-          home: ShopQrScreen(shop: testShop),
-        );
+class MockShopRepository extends Mock implements ShopRepository {}
 
-    setUp(() {});
+void main() {
+  late MockShopRepository mockShopRepo;
+
+  setUp(() {
+    mockShopRepo = MockShopRepository();
+    when(() => mockShopRepo.getById(testShop.id))
+        .thenAnswer((_) async => testShop);
+  });
+
+  group('ShopQrScreen', () {
+    Widget buildApp() => ProviderScope(
+          overrides: [
+            shopRepositoryProvider
+                .overrideWithValue(mockShopRepo),
+          ],
+          child: MaterialApp(
+            home: ShopQrScreen(shopId: testShop.id),
+          ),
+        );
 
     testWidgets('AppBar에 내 샵 QR코드를 표시한다', (tester) async {
       // Arrange
@@ -22,6 +39,7 @@ void main() {
 
       // Act
       await tester.pumpWidget(buildApp());
+      await tester.pumpAndSettle();
 
       // Assert
       expect(find.text('내 샵 QR코드'), findsOneWidget);
@@ -36,6 +54,7 @@ void main() {
 
       // Act
       await tester.pumpWidget(buildApp());
+      await tester.pumpAndSettle();
 
       // Assert
       expect(find.byType(QrImageView), findsOneWidget);
@@ -50,6 +69,7 @@ void main() {
 
       // Act
       await tester.pumpWidget(buildApp());
+      await tester.pumpAndSettle();
 
       // Assert
       expect(find.text('거트 프로샵'), findsOneWidget);
@@ -64,6 +84,7 @@ void main() {
 
       // Act
       await tester.pumpWidget(buildApp());
+      await tester.pumpAndSettle();
 
       // Assert
       expect(
@@ -83,8 +104,9 @@ void main() {
 
       // Act
       await tester.pumpWidget(buildApp());
+      await tester.pumpAndSettle();
 
-      // Assert: '이미지 저장' 텍스트가 화면에 존재한다
+      // Assert
       expect(find.text('이미지 저장'), findsOneWidget);
     });
 
@@ -97,12 +119,14 @@ void main() {
 
       // Act
       await tester.pumpWidget(buildApp());
+      await tester.pumpAndSettle();
 
-      // Assert: '공유하기' 텍스트가 화면에 존재한다
+      // Assert
       expect(find.text('공유하기'), findsOneWidget);
     });
 
-    testWidgets('InfoCard에 가게에 QR을 비치하세요 메시지를 표시한다', (tester) async {
+    testWidgets('InfoCard에 가게에 QR을 비치하세요 메시지를 표시한다',
+        (tester) async {
       // Arrange
       tester.view.physicalSize = const Size(800, 1200);
       tester.view.devicePixelRatio = 1.0;
@@ -111,9 +135,13 @@ void main() {
 
       // Act
       await tester.pumpWidget(buildApp());
+      await tester.pumpAndSettle();
 
       // Assert
-      expect(find.textContaining('가게에 QR을 비치하세요'), findsOneWidget);
+      expect(
+        find.textContaining('가게에 QR을 비치하세요'),
+        findsOneWidget,
+      );
     });
   });
 }
