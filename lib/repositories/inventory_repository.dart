@@ -5,7 +5,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 final inventoryRepositoryProvider = Provider<InventoryRepository>((ref) {
-  return InventoryRepository(ref.watch(supabaseProvider));
+  return InventoryRepository(ref.read(supabaseProvider));
 });
 
 /// 재고 리포지토리.

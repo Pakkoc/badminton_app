@@ -7,11 +7,11 @@ import 'package:badminton_app/repositories/order_repository.dart';
 import 'package:badminton_app/screens/owner/order_create/order_create_state.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-final orderCreateNotifierProvider = StateNotifierProvider<
+final orderCreateNotifierProvider = StateNotifierProvider.autoDispose<
     OrderCreateNotifier, OrderCreateState>(
   (ref) => OrderCreateNotifier(
-    memberRepository: ref.watch(memberRepositoryProvider),
-    orderRepository: ref.watch(orderRepositoryProvider),
+    memberRepository: ref.read(memberRepositoryProvider),
+    orderRepository: ref.read(orderRepositoryProvider),
   ),
 );
 

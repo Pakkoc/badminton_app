@@ -7,7 +7,7 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 
 final communityReportRepositoryProvider =
     Provider<CommunityReportRepository>((ref) {
-  return CommunityReportRepository(ref.watch(supabaseProvider));
+  return CommunityReportRepository(ref.read(supabaseProvider));
 });
 
 /// 커뮤니티 신고 리포지토리.

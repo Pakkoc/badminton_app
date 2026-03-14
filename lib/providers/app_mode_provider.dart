@@ -10,33 +10,6 @@ enum AppMode { customer, owner }
 final activeModeProvider =
     StateProvider<AppMode>((ref) => AppMode.customer);
 
-/// 현재 유저가 승인된 샵을 보유하는지 여부.
-final hasShopProvider =
-    FutureProvider.autoDispose<bool>((ref) async {
-  final userId =
-      ref.read(supabaseProvider).auth.currentUser?.id;
-  if (userId == null) return false;
-
-  final shop = await ref
-      .read(shopRepositoryProvider)
-      .getByOwner(userId);
-  return shop != null &&
-      shop.status == ShopStatus.approved;
-});
-
-/// 현재 사용자의 샵 등록 상태.
-/// null = 미신청, pending/approved/rejected
-final shopStatusProvider =
-    FutureProvider.autoDispose<ShopStatus?>((ref) async {
-  final userId =
-      ref.read(supabaseProvider).auth.currentUser?.id;
-  if (userId == null) return null;
-  final shop = await ref
-      .read(shopRepositoryProvider)
-      .getByOwner(userId);
-  return shop?.status;
-});
-
 /// 현재 사용자의 샵 정보 (상태 무관).
 final myShopProvider =
     FutureProvider.autoDispose<Shop?>((ref) async {
@@ -46,4 +19,20 @@ final myShopProvider =
   return ref
       .read(shopRepositoryProvider)
       .getByOwner(userId);
+});
+
+/// 현재 유저가 승인된 샵을 보유하는지 여부.
+final hasShopProvider =
+    FutureProvider.autoDispose<bool>((ref) async {
+  final shop = await ref.watch(myShopProvider.future);
+  return shop != null &&
+      shop.status == ShopStatus.approved;
+});
+
+/// 현재 사용자의 샵 등록 상태.
+/// null = 미신청, pending/approved/rejected
+final shopStatusProvider =
+    FutureProvider.autoDispose<ShopStatus?>((ref) async {
+  final shop = await ref.watch(myShopProvider.future);
+  return shop?.status;
 });

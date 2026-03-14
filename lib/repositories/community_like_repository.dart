@@ -5,7 +5,7 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 
 final communityLikeRepositoryProvider =
     Provider<CommunityLikeRepository>((ref) {
-  return CommunityLikeRepository(ref.watch(supabaseProvider));
+  return CommunityLikeRepository(ref.read(supabaseProvider));
 });
 
 /// 커뮤니티 좋아요 리포지토리.

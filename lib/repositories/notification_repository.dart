@@ -7,7 +7,7 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 
 final notificationRepositoryProvider =
     Provider<NotificationRepository>((ref) {
-  return NotificationRepository(ref.watch(supabaseProvider));
+  return NotificationRepository(ref.read(supabaseProvider));
 });
 
 /// 알림 리포지토리.

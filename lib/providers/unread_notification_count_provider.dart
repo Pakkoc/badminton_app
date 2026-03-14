@@ -7,7 +7,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 /// 읽지 않은 알림 수를 실시간으로 제공하는 프로바이더.
 final unreadNotificationCountProvider =
-    StateNotifierProvider<UnreadNotificationCountNotifier, int>(
+    StateNotifierProvider.autoDispose<UnreadNotificationCountNotifier, int>(
   (ref) => UnreadNotificationCountNotifier(ref),
 );
 

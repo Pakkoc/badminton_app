@@ -6,7 +6,7 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 
 final communityCommentRepositoryProvider =
     Provider<CommunityCommentRepository>((ref) {
-  return CommunityCommentRepository(ref.watch(supabaseProvider));
+  return CommunityCommentRepository(ref.read(supabaseProvider));
 });
 
 /// 커뮤니티 댓글 리포지토리.

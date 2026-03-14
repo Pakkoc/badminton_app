@@ -6,7 +6,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 final postRepositoryProvider = Provider<PostRepository>((ref) {
-  return PostRepository(ref.watch(supabaseProvider));
+  return PostRepository(ref.read(supabaseProvider));
 });
 
 /// 게시글 리포지토리.

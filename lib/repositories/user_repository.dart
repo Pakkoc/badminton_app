@@ -5,7 +5,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:supabase_flutter/supabase_flutter.dart' hide User;
 
 final userRepositoryProvider = Provider<UserRepository>((ref) {
-  return UserRepository(ref.watch(supabaseProvider));
+  return UserRepository(ref.read(supabaseProvider));
 });
 
 /// 사용자 데이터를 관리하는 리포지토리.

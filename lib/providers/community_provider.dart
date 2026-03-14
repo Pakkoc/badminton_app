@@ -8,7 +8,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 /// 커뮤니티 게시글 목록 Provider.
 final communityPostListProvider =
     FutureProvider.autoDispose<List<CommunityPost>>((ref) async {
-  final repo = ref.watch(communityPostRepositoryProvider);
+  final repo = ref.read(communityPostRepositoryProvider);
   return repo.getAll();
 });
 
@@ -16,7 +16,7 @@ final communityPostListProvider =
 final communityPostDetailProvider =
     FutureProvider.autoDispose
         .family<CommunityPost?, String>((ref, postId) async {
-  final repo = ref.watch(communityPostRepositoryProvider);
+  final repo = ref.read(communityPostRepositoryProvider);
   return repo.getById(postId);
 });
 
@@ -24,14 +24,14 @@ final communityPostDetailProvider =
 final communityCommentsProvider =
     FutureProvider.autoDispose
         .family<List<CommunityComment>, String>((ref, postId) async {
-  final repo = ref.watch(communityCommentRepositoryProvider);
+  final repo = ref.read(communityCommentRepositoryProvider);
   return repo.getByPostId(postId);
 });
 
 /// 게시글 좋아요 상태 Provider.
 final communityPostLikeStatusProvider = FutureProvider.autoDispose
     .family<bool, ({String userId, String postId})>((ref, params) async {
-  final repo = ref.watch(communityLikeRepositoryProvider);
+  final repo = ref.read(communityLikeRepositoryProvider);
   return repo.getPostLikeStatus(params.userId, params.postId);
 });
 
@@ -40,6 +40,6 @@ final communitySearchProvider =
     FutureProvider.autoDispose
         .family<List<CommunityPost>, String>((ref, query) async {
   if (query.trim().isEmpty) return [];
-  final repo = ref.watch(communityPostRepositoryProvider);
+  final repo = ref.read(communityPostRepositoryProvider);
   return repo.search(query);
 });

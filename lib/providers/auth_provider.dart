@@ -8,7 +8,7 @@ import 'package:supabase_flutter/supabase_flutter.dart' hide User;
 
 /// AuthRepository 프로바이더.
 final authRepositoryProvider = Provider<AuthRepository>((ref) {
-  return AuthRepository(ref.watch(supabaseProvider));
+  return AuthRepository(ref.read(supabaseProvider));
 });
 
 /// 인증 상태 변경 스트림 프로바이더.

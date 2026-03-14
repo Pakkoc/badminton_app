@@ -5,7 +5,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 final orderRepositoryProvider = Provider<OrderRepository>((ref) {
-  return OrderRepository(ref.watch(supabaseProvider));
+  return OrderRepository(ref.read(supabaseProvider));
 });
 
 /// 주문(거트 작업) 데이터를 관리하는 리포지토리.

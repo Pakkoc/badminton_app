@@ -9,12 +9,12 @@ import 'package:badminton_app/repositories/shop_repository.dart';
 import 'package:badminton_app/screens/owner/dashboard/owner_dashboard_state.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-final ownerDashboardNotifierProvider = StateNotifierProvider<
+final ownerDashboardNotifierProvider = StateNotifierProvider.autoDispose<
     OwnerDashboardNotifier, OwnerDashboardState>(
   (ref) => OwnerDashboardNotifier(
-    shopRepository: ref.watch(shopRepositoryProvider),
-    orderRepository: ref.watch(orderRepositoryProvider),
-    memberRepository: ref.watch(memberRepositoryProvider),
+    shopRepository: ref.read(shopRepositoryProvider),
+    orderRepository: ref.read(orderRepositoryProvider),
+    memberRepository: ref.read(memberRepositoryProvider),
   ),
 );
 

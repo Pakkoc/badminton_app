@@ -6,7 +6,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 final storageRepositoryProvider = Provider<StorageRepository>((ref) {
-  return StorageRepository(ref.watch(supabaseProvider));
+  return StorageRepository(ref.read(supabaseProvider));
 });
 
 /// 스토리지 리포지토리.
