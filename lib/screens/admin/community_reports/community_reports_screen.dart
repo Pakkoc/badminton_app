@@ -1,3 +1,4 @@
+import 'package:badminton_app/app/theme.dart';
 import 'package:badminton_app/core/utils/formatters.dart';
 import 'package:badminton_app/models/community_report.dart';
 import 'package:badminton_app/models/enums.dart';
@@ -243,13 +244,13 @@ class _ReportCard extends StatelessWidget {
                     vertical: 3,
                   ),
                   decoration: BoxDecoration(
-                    color: const Color(0xFFFEF3C7),
+                    color: AppTheme.receivedBackground,
                     borderRadius: BorderRadius.circular(10),
                   ),
                   child: Text(
                     '대기중',
                     style: theme.textTheme.labelSmall?.copyWith(
-                      color: const Color(0xFFD97706),
+                      color: AppTheme.receivedText,
                       fontWeight: FontWeight.w600,
                     ),
                   ),

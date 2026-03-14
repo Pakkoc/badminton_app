@@ -209,12 +209,12 @@ class _CategoryBadge extends StatelessWidget {
   Widget build(BuildContext context) {
     final (bgColor, textColor) = switch (category) {
       PostCategory.notice => (
-        AppTheme.primaryContainer,
-        const Color(0xFF065F46),
+        AppTheme.completedBackground,
+        AppTheme.completedText,
       ),
       PostCategory.event => (
-        const Color(0xFFFEF3C7),
-        const Color(0xFF92400E),
+        AppTheme.receivedBackground,
+        AppTheme.receivedText,
       ),
     };
 

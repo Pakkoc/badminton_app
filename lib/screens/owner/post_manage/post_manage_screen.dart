@@ -347,8 +347,8 @@ class _CategoryBadge extends StatelessWidget {
           '공지사항',
         ),
       PostCategory.event => (
-          const Color(0xFFFEF3C7),
-          const Color(0xFF92400E),
+          AppTheme.receivedBackground,
+          AppTheme.receivedText,
           '이벤트',
         ),
     };

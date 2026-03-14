@@ -55,18 +55,18 @@ class AppTheme {
   static const kakaoYellow = Color(0xFFFEE500);
   static const naverGreen = Color(0xFF03C75A);
 
-  // ── Status Badge ──────────────────────────────
-  static const receivedBackground = Color(0xFFFEF3C7);
+  // ── Status Badge (Dark Court 최적화) ──────────
+  static const receivedBackground = Color(0xFF422006);
   static const receivedForeground = Color(0xFFF59E0B);
-  static const receivedText = Color(0xFF92400E);
+  static const receivedText = Color(0xFFFCD34D);
 
-  static const inProgressBackground = Color(0xFFEFF6FF);
-  static const inProgressForeground = Color(0xFF3B82F6);
-  static const inProgressText = Color(0xFF1E40AF);
+  static const inProgressBackground = Color(0xFF1E3A5F);
+  static const inProgressForeground = Color(0xFF60A5FA);
+  static const inProgressText = Color(0xFF93C5FD);
 
-  static const completedBackground = Color(0xFFD1FAE5);
-  static const completedForeground = Color(0xFF10B981);
-  static const completedText = Color(0xFF065F46);
+  static const completedBackground = Color(0xFF064E3B);
+  static const completedForeground = Color(0xFF34D399);
+  static const completedText = Color(0xFF6EE7B7);
 
   // ── Legacy Compat ──────────────────────────────
   /// @deprecated `primaryContainer` → `surfaceHigh`로 마이그레이션.

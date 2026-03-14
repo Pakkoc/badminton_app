@@ -101,13 +101,13 @@ class _LargeStatusBadge extends StatelessWidget {
   Widget build(BuildContext context) {
     final (bgColor, fgColor, icon) = switch (status) {
       OrderStatus.received => (
-        const Color(0xFFFEF3C7),
-        const Color(0xFF92400E),
+        AppTheme.receivedBackground,
+        AppTheme.receivedText,
         Icons.inventory_2,
       ),
       OrderStatus.inProgress => (
         AppTheme.inProgressBackground,
-        const Color(0xFF1E40AF),
+        AppTheme.inProgressText,
         Icons.build_circle,
       ),
       OrderStatus.completed => (

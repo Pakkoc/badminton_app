@@ -55,25 +55,25 @@ void main() {
       });
     });
 
-    group('Status Badge 색상', () {
-      test('received 상태 배경색이 #FEF3C7이다', () {
+    group('Status Badge 색상 (Dark Court)', () {
+      test('received 상태 배경색이 #422006이다', () {
         expect(
           AppTheme.receivedBackground,
-          const Color(0xFFFEF3C7),
+          const Color(0xFF422006),
         );
       });
 
-      test('inProgress 상태 배경색이 #EFF6FF이다', () {
+      test('inProgress 상태 배경색이 #1E3A5F이다', () {
         expect(
           AppTheme.inProgressBackground,
-          const Color(0xFFEFF6FF),
+          const Color(0xFF1E3A5F),
         );
       });
 
-      test('completed 상태 배경색이 #D1FAE5이다', () {
+      test('completed 상태 배경색이 #064E3B이다', () {
         expect(
           AppTheme.completedBackground,
-          const Color(0xFFD1FAE5),
+          const Color(0xFF064E3B),
         );
       });
     });

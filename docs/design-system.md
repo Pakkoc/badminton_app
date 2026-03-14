@@ -83,14 +83,14 @@ static const backgroundGradient = LinearGradient(
 
 | 상태 | 전경 Hex | 배경 Hex | 텍스트 Hex | 아이콘 |
 |------|----------|----------|-----------|--------|
-| 접수됨 (received) | `#F59E0B` | `#FEF3C7` | `#92400E` | `inventory_2` |
-| 작업중 (in_progress) | `#3B82F6` | `#EFF6FF` | `#1E40AF` | `build_circle` |
-| 완료 (completed) | `#10B981` | `#D1FAE5` | `#065F46` | `check_circle` |
+| 접수됨 (received) | `#F59E0B` | `#422006` | `#FCD34D` | `inventory_2` |
+| 작업중 (in_progress) | `#60A5FA` | `#1E3A5F` | `#93C5FD` | `build_circle` |
+| 완료 (completed) | `#34D399` | `#064E3B` | `#6EE7B7` | `check_circle` |
 
-**다크 테마에서의 상태 뱃지:**
-- 배경: `#FFFFFF15` (글래스), 모서리 999px
+**다크 코트 테마 상태 뱃지:**
+- 배경: 상태별 불투명 다크 톤, 모서리 999px
 - 좌측 도트: 상태 전경색 8px 원
-- 텍스트: `#FFFFFFCC` (White 80%), 12sp Medium
+- 텍스트: 상태별 밝은 톤, 12sp Medium
 
 **카드 좌측 컬러바:**
 - 두께: 3px, 상태별 전경색
@@ -181,16 +181,16 @@ class AppTheme {
   static const kakaoYellow = Color(0xFFFEE500);
   static const naverGreen = Color(0xFF03C75A);
 
-  // ── Status Badge ──────────────────
+  // ── Status Badge (Dark Court 최적화) ──
   static const receivedForeground = Color(0xFFF59E0B);
-  static const receivedBackground = Color(0xFFFEF3C7);
-  static const receivedText = Color(0xFF92400E);
-  static const inProgressForeground = Color(0xFF3B82F6);
-  static const inProgressBackground = Color(0xFFEFF6FF);
-  static const inProgressText = Color(0xFF1E40AF);
-  static const completedForeground = Color(0xFF10B981);
-  static const completedBackground = Color(0xFFD1FAE5);
-  static const completedText = Color(0xFF065F46);
+  static const receivedBackground = Color(0xFF422006);
+  static const receivedText = Color(0xFFFCD34D);
+  static const inProgressForeground = Color(0xFF60A5FA);
+  static const inProgressBackground = Color(0xFF1E3A5F);
+  static const inProgressText = Color(0xFF93C5FD);
+  static const completedForeground = Color(0xFF34D399);
+  static const completedBackground = Color(0xFF064E3B);
+  static const completedText = Color(0xFF6EE7B7);
 
   // ── Font ──────────────────────────
   static const fontFamily = 'Pretendard';
@@ -506,9 +506,9 @@ class AppTheme {
 |------|--------|------|
 | `#FFFFFFEE` on `#162E14` (본문 on 배경) | 13.8:1 | PASS |
 | `#FFFFFF` on `#F59E0B` (Amber 버튼) | 4.6:1 | PASS |
-| `#92400E` on `#FEF3C7` (접수됨 뱃지) | 5.8:1 | PASS |
-| `#1E40AF` on `#EFF6FF` (작업중 뱃지) | 7.2:1 | PASS |
-| `#065F46` on `#D1FAE5` (완료 뱃지) | 7.1:1 | PASS |
+| `#FCD34D` on `#422006` (접수됨 뱃지) | 6.8:1 | PASS |
+| `#93C5FD` on `#1E3A5F` (작업중 뱃지) | 5.2:1 | PASS |
+| `#6EE7B7` on `#064E3B` (완료 뱃지) | 5.7:1 | PASS |
 
 ---
 
