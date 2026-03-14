@@ -138,8 +138,8 @@ class _ShopSettingsScreenState
                           label: '내 샵 QR코드',
                           showDivider: true,
                           onTap: () => context.push(
-                            '/owner/settings/shop-qr',
-                            extra: state.shop,
+                            '/owner/settings/shop-qr/'
+                            '${state.shop!.id}',
                           ),
                         ),
                         _MenuItemTile(

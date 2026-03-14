@@ -1,11 +1,12 @@
 import 'package:badminton_app/core/error/app_exception.dart';
+import 'package:badminton_app/core/utils/escape_like.dart';
 import 'package:badminton_app/models/member.dart';
 import 'package:badminton_app/providers/supabase_provider.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 final memberRepositoryProvider = Provider<MemberRepository>((ref) {
-  return MemberRepository(ref.watch(supabaseProvider));
+  return MemberRepository(ref.read(supabaseProvider));
 });
 
 /// 회원 데이터를 관리하는 리포지토리.
@@ -64,7 +65,7 @@ class MemberRepository {
           .from(_table)
           .select()
           .eq('shop_id', shopId)
-          .or('name.ilike.%$query%,phone.ilike.%$query%');
+          .or('name.ilike.%${escapeLike(query)}%,phone.ilike.%${escapeLike(query)}%');
       return data.map(Member.fromJson).toList();
     } catch (e) {
       throw ErrorHandler.handle(e);

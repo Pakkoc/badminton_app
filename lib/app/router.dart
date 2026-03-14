@@ -1,8 +1,8 @@
 import 'dart:async';
 
 import 'package:badminton_app/models/enums.dart';
-import 'package:badminton_app/models/shop.dart';
 import 'package:badminton_app/providers/app_mode_provider.dart';
+import 'package:badminton_app/providers/auth_provider.dart';
 import 'package:badminton_app/providers/supabase_provider.dart';
 import 'package:badminton_app/screens/admin/community_reports/community_reports_screen.dart';
 import 'package:badminton_app/screens/admin/shop_request_detail/shop_request_detail_screen.dart';
@@ -55,7 +55,12 @@ class _AuthRefreshNotifier extends ChangeNotifier {
 }
 
 /// 인증이 필요하지 않은 경로 목록.
-const _publicPaths = {'/splash', '/login'};
+const _publicPaths = {
+  '/splash',
+  '/login',
+  '/profile-setup',
+  '/shop-register',
+};
 
 final routerProvider = Provider<GoRouter>((ref) {
   final client = ref.read(supabaseProvider);
@@ -79,6 +84,14 @@ final routerProvider = Provider<GoRouter>((ref) {
       // 세션이 있는데 /login에 있으면 → 스플래시로 (라우트 해석)
       if (state.matchedLocation == '/login') {
         return '/splash';
+      }
+
+      // /admin/* 라우트는 admin 역할만 접근 가능
+      if (state.matchedLocation.startsWith('/admin')) {
+        final user = await getCurrentUser(ref);
+        if (user?.role != UserRole.admin) {
+          return '/customer/home';
+        }
       }
 
       // /owner/* 라우트는 approved 샵이 있을 때만 접근 가능
@@ -323,11 +336,13 @@ final routerProvider = Provider<GoRouter>((ref) {
                   ],
                 ),
                 GoRoute(
-                  path: 'shop-qr',
-                  builder: (context, state) =>
-                      ShopQrScreen(
-                    shop: state.extra! as Shop,
-                  ),
+                  path: 'shop-qr/:shopId',
+                  builder: (context, state) {
+                    final shopId =
+                        state.pathParameters['shopId']!;
+                    return ShopQrScreen(
+                        shopId: shopId);
+                  },
                 ),
               ],
             ),

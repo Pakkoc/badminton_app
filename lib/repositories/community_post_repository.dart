@@ -1,4 +1,5 @@
 import 'package:badminton_app/core/error/app_exception.dart';
+import 'package:badminton_app/core/utils/escape_like.dart';
 import 'package:badminton_app/models/community_post.dart';
 import 'package:badminton_app/providers/supabase_provider.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -6,7 +7,7 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 
 final communityPostRepositoryProvider =
     Provider<CommunityPostRepository>((ref) {
-  return CommunityPostRepository(ref.watch(supabaseProvider));
+  return CommunityPostRepository(ref.read(supabaseProvider));
 });
 
 /// 커뮤니티 게시글 리포지토리.
@@ -114,7 +115,7 @@ class CommunityPostRepository {
       final data = await client
           .from('community_posts')
           .select(_selectWithAuthor)
-          .or('title.ilike.%$query%,content.ilike.%$query%')
+          .or('title.ilike.%${escapeLike(query)}%,content.ilike.%${escapeLike(query)}%')
           .order('created_at', ascending: false)
           .limit(50);
       return data.map(CommunityPost.fromJson).toList();

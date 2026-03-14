@@ -1,11 +1,12 @@
 import 'package:badminton_app/core/error/app_exception.dart';
+import 'package:badminton_app/core/utils/escape_like.dart';
 import 'package:badminton_app/models/shop.dart';
 import 'package:badminton_app/providers/supabase_provider.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 final shopRepositoryProvider = Provider<ShopRepository>((ref) {
-  return ShopRepository(ref.watch(supabaseProvider));
+  return ShopRepository(ref.read(supabaseProvider));
 });
 
 /// 매장 데이터를 관리하는 리포지토리.
@@ -82,7 +83,7 @@ class ShopRepository {
       final data = await _client
           .from(_table)
           .select()
-          .ilike('name', '%$query%')
+          .ilike('name', '%${escapeLike(query)}%')
           .order('name');
       return data.map(Shop.fromJson).toList();
     } catch (e) {
