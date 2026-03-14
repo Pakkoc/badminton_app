@@ -20,9 +20,9 @@ class AppTheme {
   // ── CTA Button ──────────────────────────────
   static const primaryCta = Color(0xFF16A34A);
 
-  // ── Background (Solid Court Green) ────────────
-  static const backgroundStart = Color(0xFF1B5E30);
-  static const backgroundEnd = Color(0xFF1B5E30);
+  // ── Background (Black → Court Green gradient) ─
+  static const backgroundStart = Color(0xFF000000);
+  static const backgroundEnd = Color(0xFF2D5A27);
   static const background = Color(0xFF1B5E30);
 
   // ── Surface (Glass) ───────────────────────────
@@ -47,6 +47,9 @@ class AppTheme {
 
   // ── Border ────────────────────────────────────
   static const border = Color(0x20FFFFFF);
+
+  // ── Shadow ──────────────────────────────────
+  static const shadowSubtle = Color(0x0A000000);
 
   // ── Semantic ──────────────────────────────────
   static const error = Color(0xFFEF4444);
@@ -386,6 +389,7 @@ class AppTheme {
         ),
       );
 
-  /// @deprecated `lightTheme` → `darkTheme`로 마이그레이션하세요.
+  /// 현재 다크 테마 단일 지원 (docs/design-system.md 참조)
+  /// 라이트 테마가 필요할 때 별도 구현 예정
   static ThemeData get lightTheme => darkTheme;
 }

@@ -274,7 +274,7 @@ class _PostCreateScreenState
                     Text(
                       state.errorMessage!,
                       style: const TextStyle(
-                        color: Color(0xFFEF4444),
+                        color: AppTheme.error,
                         fontSize: 14,
                       ),
                     ),
@@ -580,7 +580,7 @@ class _ImageThumbnail extends StatelessWidget {
             child: Container(
               padding: const EdgeInsets.all(2),
               decoration: const BoxDecoration(
-                color: Color(0xFFEF4444),
+                color: AppTheme.error,
                 shape: BoxShape.circle,
               ),
               child: const Icon(

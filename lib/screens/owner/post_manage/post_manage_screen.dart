@@ -326,7 +326,7 @@ class _CardHeader extends StatelessWidget {
           onPressed: onDelete,
           icon: const Icon(Icons.delete_outline),
           iconSize: 22,
-          color: const Color(0xFFEF4444),
+          color: AppTheme.error,
           padding: EdgeInsets.zero,
           constraints: const BoxConstraints(
             minWidth: 44,

@@ -215,7 +215,7 @@ class _InventoryScreenState
                       backgroundColor:
                           AppTheme.accent,
                       foregroundColor:
-                          const Color(0xFFFFFFFF),
+                          Colors.white,
                       shape: RoundedRectangleBorder(
                         borderRadius:
                             BorderRadius.circular(12),
@@ -299,7 +299,7 @@ class _InventoryScreenState
                       },
                       icon: const Icon(
                         Icons.delete_outline,
-                        color: Color(0xFFEF4444),
+                        color: AppTheme.error,
                       ),
                       tooltip: '삭제',
                     ),
@@ -438,7 +438,7 @@ class _InventoryScreenState
                       backgroundColor:
                           AppTheme.accent,
                       foregroundColor:
-                          const Color(0xFFFFFFFF),
+                          Colors.white,
                       shape: RoundedRectangleBorder(
                         borderRadius:
                             BorderRadius.circular(12),
@@ -476,7 +476,7 @@ class _InventoryScreenState
         height: 56,
         child: FloatingActionButton(
           onPressed: _showAddItemDialog,
-          backgroundColor: const Color(0xFF16A34A),
+          backgroundColor: AppTheme.primaryCta,
           foregroundColor: Colors.white,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(28),
@@ -716,7 +716,7 @@ class _ImagePickerTile extends StatelessWidget {
                     padding:
                         const EdgeInsets.all(2),
                     decoration: const BoxDecoration(
-                      color: Color(0xFFEF4444),
+                      color: AppTheme.error,
                       shape: BoxShape.circle,
                     ),
                     child: const Icon(

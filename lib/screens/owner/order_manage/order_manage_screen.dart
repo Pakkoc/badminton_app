@@ -322,7 +322,7 @@ class _OrderManageCard extends StatelessWidget {
         borderRadius: BorderRadius.circular(16),
         boxShadow: const [
           BoxShadow(
-            color: Color(0x0A000000),
+            color: AppTheme.shadowSubtle,
             blurRadius: 12,
             offset: Offset(0, 2),
           ),
@@ -384,7 +384,7 @@ class _OrderManageCard extends StatelessWidget {
           alignment: Alignment.centerRight,
           padding: const EdgeInsets.only(right: 16),
           decoration: BoxDecoration(
-            color: Colors.red,
+            color: AppTheme.error,
             borderRadius: BorderRadius.circular(16),
           ),
           child: const Icon(

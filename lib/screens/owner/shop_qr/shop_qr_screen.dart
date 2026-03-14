@@ -3,32 +3,43 @@ import 'dart:ui' as ui;
 
 import 'package:badminton_app/app/theme.dart';
 import 'package:badminton_app/models/shop.dart';
+import 'package:badminton_app/repositories/shop_repository.dart';
 import 'package:badminton_app/widgets/court_background.dart';
+import 'package:badminton_app/widgets/loading_indicator.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:gal/gal.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 import 'package:share_plus/share_plus.dart';
 
-class ShopQrScreen extends StatefulWidget {
+/// shopId로 Shop을 조회하는 프로바이더.
+final _shopByIdProvider =
+    FutureProvider.autoDispose.family<Shop?, String>(
+  (ref, shopId) =>
+      ref.read(shopRepositoryProvider).getById(shopId),
+);
+
+class ShopQrScreen extends ConsumerStatefulWidget {
   const ShopQrScreen({
     super.key,
-    required this.shop,
+    required this.shopId,
   });
 
-  final Shop shop;
+  final String shopId;
 
   @override
-  State<ShopQrScreen> createState() => _ShopQrScreenState();
+  ConsumerState<ShopQrScreen> createState() =>
+      _ShopQrScreenState();
 }
 
-class _ShopQrScreenState extends State<ShopQrScreen> {
+class _ShopQrScreenState extends ConsumerState<ShopQrScreen> {
   bool _isSaving = false;
   bool _isSharing = false;
 
   /// QR코드를 PNG Uint8List로 렌더링한다.
   /// [size]는 렌더링할 픽셀 크기 (인쇄용은 1024px, 공유용은 512px).
   Future<Uint8List> _renderQrPng(double size) async {
-    final qrData = 'https://gutalarm.app/shop/${widget.shop.id}';
+    final qrData = 'https://gutalarm.app/shop/${widget.shopId}';
     final painter = QrPainter(
       data: qrData,
       version: QrVersions.auto,
@@ -120,16 +131,19 @@ class _ShopQrScreenState extends State<ShopQrScreen> {
 
     try {
       final bytes = await _renderQrPng(512);
+      final shop =
+          await ref.read(_shopByIdProvider(widget.shopId).future);
+      final shopName = shop?.name ?? '';
       final xFile = XFile.fromData(
         bytes,
         mimeType: 'image/png',
-        name: 'qr_${widget.shop.id}.png',
+        name: 'qr_${widget.shopId}.png',
       );
       await Share.shareXFiles(
         [xFile],
         text:
-            '거트알림 앱으로 QR을 스캔하면 ${widget.shop.name}의 회원 등록이 됩니다.',
-        fileNameOverrides: ['qr_${widget.shop.id}.png'],
+            '거트알림 앱으로 QR을 스캔하면 $shopName의 회원 등록이 됩니다.',
+        fileNameOverrides: ['qr_${widget.shopId}.png'],
       );
     } catch (_) {
       if (mounted) {
@@ -144,6 +158,9 @@ class _ShopQrScreenState extends State<ShopQrScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final shopAsync =
+        ref.watch(_shopByIdProvider(widget.shopId));
+
     return Scaffold(
       appBar: AppBar(
         title: const Text(
@@ -156,29 +173,42 @@ class _ShopQrScreenState extends State<ShopQrScreen> {
         ),
         centerTitle: true,
       ),
-      body: CourtBackground(
-        child: SingleChildScrollView(
-          // Content Area: padding [16,28], gap 20
-          padding: const EdgeInsets.symmetric(
-            horizontal: 28,
-            vertical: 16,
-          ),
-          child: Column(
-            children: [
-              _QrCard(shop: widget.shop),
-              const SizedBox(height: 20),
-              // Button Row: gap 16
-              _ButtonRow(
-                isSaving: _isSaving,
-                isSharing: _isSharing,
-                onSave: _saveImage,
-                onShare: _shareImage,
-              ),
-              const SizedBox(height: 20),
-              const _InfoCard(),
-            ],
-          ),
+      body: shopAsync.when(
+        loading: () => const LoadingIndicator(),
+        error: (e, _) => Center(
+          child: Text('매장 정보를 불러올 수 없습니다: $e'),
         ),
+        data: (shop) {
+          if (shop == null) {
+            return const Center(
+              child: Text('매장 정보를 찾을 수 없습니다.'),
+            );
+          }
+          return CourtBackground(
+            child: SingleChildScrollView(
+              // Content Area: padding [16,28], gap 20
+              padding: const EdgeInsets.symmetric(
+                horizontal: 28,
+                vertical: 16,
+              ),
+              child: Column(
+                children: [
+                  _QrCard(shop: shop),
+                  const SizedBox(height: 20),
+                  // Button Row: gap 16
+                  _ButtonRow(
+                    isSaving: _isSaving,
+                    isSharing: _isSharing,
+                    onSave: _saveImage,
+                    onShare: _shareImage,
+                  ),
+                  const SizedBox(height: 20),
+                  const _InfoCard(),
+                ],
+              ),
+            ),
+          );
+        },
       ),
     );
   }
@@ -351,7 +381,7 @@ class _InfoCard extends StatelessWidget {
         color: const Color(0x10FFFFFF),
         borderRadius: BorderRadius.circular(20),
         border: Border.all(
-          color: const Color(0xFF3B82F6),
+          color: AppTheme.info,
         ),
       ),
       child: const Column(
