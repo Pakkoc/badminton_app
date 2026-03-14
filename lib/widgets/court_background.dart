@@ -82,16 +82,19 @@ class _CourtLinePainter extends CustomPainter {
       paint,
     );
 
-    // 상단 서비스라인 (Pencil 기준: y=44.19 / 844px)
-    final topY = size.height * (44.19 / 844);
+    // 상하 대칭 — 하단 간격(12.19/844)을 기준으로 상단도 동일
+    final inset = size.height * (12.19 / 844);
+    final topY = inset;
+    final bottomY = size.height - inset;
+
+    // 상단 경계선
     canvas.drawLine(
       Offset(0, topY),
       Offset(size.width, topY),
       paint,
     );
 
-    // 하단 경계선 (Pencil 기준: y=831.81 / 844px)
-    final bottomY = size.height * (831.81 / 844);
+    // 하단 경계선
     canvas.drawLine(
       Offset(0, bottomY),
       Offset(size.width, bottomY),
