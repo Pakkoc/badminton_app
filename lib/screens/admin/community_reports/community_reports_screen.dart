@@ -6,6 +6,7 @@ import 'package:badminton_app/repositories/community_comment_repository.dart';
 import 'package:badminton_app/repositories/community_post_repository.dart';
 import 'package:badminton_app/repositories/community_report_repository.dart';
 import 'package:badminton_app/repositories/notification_repository.dart';
+import 'package:badminton_app/widgets/court_background.dart';
 import 'package:badminton_app/widgets/empty_state.dart';
 import 'package:badminton_app/widgets/error_view.dart';
 import 'package:badminton_app/widgets/loading_indicator.dart';
@@ -27,39 +28,41 @@ class CommunityReportsScreen extends ConsumerWidget {
 
     return Scaffold(
       appBar: AppBar(title: const Text('커뮤니티 신고 관리')),
-      body: reportsAsync.when(
-        loading: () => const LoadingIndicator(),
-        error: (e, _) => ErrorView(
-          message: e.toString(),
-          onRetry: () => ref.invalidate(_pendingReportsProvider),
-        ),
-        data: (reports) {
-          if (reports.isEmpty) {
-            return const EmptyState(
-              icon: Icons.report_off_outlined,
-              message: '대기 중인 신고가 없습니다',
-            );
-          }
-          return ListView.separated(
-            padding: const EdgeInsets.all(16),
-            itemCount: reports.length,
-            separatorBuilder: (_, __) => const SizedBox(height: 12),
-            itemBuilder: (context, index) {
-              final report = reports[index];
-              final isPostReport = report.postId != null;
-              return _ReportCard(
-                type: isPostReport ? '게시글 신고' : '댓글 신고',
-                reason: report.reason,
-                date: Formatters.relativeTime(report.createdAt),
-                onTap: () => _showReportActionSheet(
-                  context,
-                  ref,
-                  report: report,
-                ),
+      body: CourtBackground(
+        child: reportsAsync.when(
+          loading: () => const LoadingIndicator(),
+          error: (e, _) => ErrorView(
+            message: e.toString(),
+            onRetry: () => ref.invalidate(_pendingReportsProvider),
+          ),
+          data: (reports) {
+            if (reports.isEmpty) {
+              return const EmptyState(
+                icon: Icons.report_off_outlined,
+                message: '대기 중인 신고가 없습니다',
               );
-            },
-          );
-        },
+            }
+            return ListView.separated(
+              padding: const EdgeInsets.all(16),
+              itemCount: reports.length,
+              separatorBuilder: (_, __) => const SizedBox(height: 12),
+              itemBuilder: (context, index) {
+                final report = reports[index];
+                final isPostReport = report.postId != null;
+                return _ReportCard(
+                  type: isPostReport ? '게시글 신고' : '댓글 신고',
+                  reason: report.reason,
+                  date: Formatters.relativeTime(report.createdAt),
+                  onTap: () => _showReportActionSheet(
+                    context,
+                    ref,
+                    report: report,
+                  ),
+                );
+              },
+            );
+          },
+        ),
       ),
     );
   }

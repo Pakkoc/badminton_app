@@ -215,10 +215,10 @@ class _CommunityCreateScreenState
                         child: ElevatedButton(
                           onPressed: state.isSubmitting ? null : _submit,
                           style: ElevatedButton.styleFrom(
-                            backgroundColor: const Color(0xFF16A34A),
+                            backgroundColor: AppTheme.primaryCta,
                             foregroundColor: Colors.white,
                             disabledBackgroundColor:
-                                const Color(0xFF16A34A).withValues(alpha: 0.5),
+                                AppTheme.primaryCta.withValues(alpha: 0.5),
                             disabledForegroundColor:
                                 Colors.white.withValues(alpha: 0.5),
                             shape: RoundedRectangleBorder(
@@ -311,7 +311,7 @@ class _ImageSection extends StatelessWidget {
                       onTap: () => onRemove(index),
                       child: Container(
                         decoration: const BoxDecoration(
-                          color: Colors.black54,
+                          color: AppTheme.error,
                           shape: BoxShape.circle,
                         ),
                         padding: const EdgeInsets.all(4),

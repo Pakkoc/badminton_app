@@ -348,7 +348,9 @@ class _CommunityDetailScreenState
                               isLiked
                                   ? Icons.favorite
                                   : Icons.favorite_border,
-                              color: isLiked ? Colors.red : null,
+                              color: isLiked
+                                  ? Colors.red
+                                  : AppTheme.textTertiary,
                             ),
                           ),
                           const SizedBox(width: 4),
@@ -481,7 +483,7 @@ class _CommunityDetailScreenState
                             onPressed: _submitComment,
                             icon: const Icon(
                               Icons.send,
-                              color: Color(0xFF22C55E),
+                              color: AppTheme.activeTab,
                               size: 24,
                             ),
                           ),

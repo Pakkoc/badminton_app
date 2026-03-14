@@ -99,6 +99,7 @@ class _CommunityListScreenState extends ConsumerState<CommunityListScreen> {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () => context.push('/community/create'),
+        tooltip: '글쓰기',
         child: const Icon(Icons.edit),
       ),
     );
