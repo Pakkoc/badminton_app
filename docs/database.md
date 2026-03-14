@@ -72,6 +72,8 @@
 | phone | TEXT | NOT NULL | 연락처 |
 | profile_image_url | TEXT | NULLABLE | 프로필 이미지 URL (Storage) |
 | fcm_token | TEXT | NULLABLE | FCM 푸시 알림 토큰 |
+| notify_shop | BOOLEAN | NOT NULL, DEFAULT true | 샵 알림 수신 여부 |
+| notify_community | BOOLEAN | NOT NULL, DEFAULT true | 커뮤니티 알림 수신 여부 |
 | created_at | TIMESTAMPTZ | NOT NULL, DEFAULT now() | 가입일 |
 
 > PK: auth.users(id)를 참조하므로 UUID 유지 (auth.users가 UUIDv4 사용)
@@ -135,8 +137,8 @@
 | title | TEXT | NOT NULL | 제목 |
 | content | TEXT | NOT NULL | 내용 |
 | images | JSONB | NOT NULL, DEFAULT '[]'::jsonb | 이미지 URL 배열 (최대 5장) |
-| event_start_date | DATE | NULLABLE | 이벤트 시작일 (이벤트만) |
-| event_end_date | DATE | NULLABLE | 이벤트 종료일 (이벤트만) |
+| event_start_date | DATE | NULLABLE | 이벤트 시작일 (이벤트만, Dart에서 DateTime으로 파싱) |
+| event_end_date | DATE | NULLABLE | 이벤트 종료일 (이벤트만, Dart에서 DateTime으로 파싱) |
 | created_at | TIMESTAMPTZ | NOT NULL, DEFAULT now() | 작성일 |
 
 ### 테이블: inventory — 가게 재고
@@ -157,7 +159,7 @@
 |------|------|---------|------|
 | id | UUID | PK, DEFAULT uuid_generate_v7() | 알림 고유 ID |
 | user_id | UUID | NOT NULL, FK → users(id) ON DELETE CASCADE | 수신 사용자 |
-| type | TEXT | NOT NULL, CHECK (type IN ('status_change', 'completion', 'notice', 'receipt', 'comment_on_post', 'reply_on_comment')) | 알림 유형 |
+| type | TEXT | NOT NULL, CHECK (type IN ('status_change', 'completion', 'notice', 'receipt', 'shop_approval', 'shop_rejection', 'community_report', 'comment_on_post', 'reply_on_comment')) | 알림 유형 |
 | title | TEXT | NOT NULL | 알림 제목 |
 | body | TEXT | NOT NULL | 알림 내용 |
 | order_id | UUID | NULLABLE, FK → orders(id) ON DELETE SET NULL | 연결된 작업 (주문 관련 알림) |
@@ -212,7 +214,7 @@
 | post_id | UUID | NULLABLE, FK → community_posts(id) ON DELETE CASCADE | 신고 대상 게시글 |
 | comment_id | UUID | NULLABLE, FK → community_comments(id) ON DELETE CASCADE | 신고 대상 댓글 |
 | reason | TEXT | NOT NULL | 신고 사유 |
-| status | TEXT | NOT NULL, DEFAULT 'pending', CHECK (IN 'pending', 'resolved', 'dismissed') | 처리 상태 |
+| status | TEXT | NOT NULL, DEFAULT 'pending', CHECK (status IN ('pending', 'resolved', 'dismissed')) | 처리 상태 |
 | created_at | TIMESTAMPTZ | NOT NULL, DEFAULT now() | 생성일 |
 
 ---
@@ -488,6 +490,8 @@ create table users (
   phone text not null,
   profile_image_url text,
   fcm_token text,
+  notify_shop boolean not null default true,
+  notify_community boolean not null default true,
   created_at timestamptz not null default now()
 );
 
@@ -570,7 +574,7 @@ create table notifications (
   id uuid primary key default uuid_generate_v7(),
   user_id uuid not null references users(id) on delete cascade,
   type text not null
-    check (type in ('status_change', 'completion', 'notice', 'receipt', 'comment_on_post', 'reply_on_comment')),
+    check (type in ('status_change', 'completion', 'notice', 'receipt', 'shop_approval', 'shop_rejection', 'community_report', 'comment_on_post', 'reply_on_comment')),
   title text not null,
   body text not null,
   order_id uuid references orders(id) on delete set null,
