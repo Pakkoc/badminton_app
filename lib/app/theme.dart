@@ -17,6 +17,9 @@ class AppTheme {
   // ── Active Tab ────────────────────────────────
   static const activeTab = Color(0xFF22C55E);
 
+  // ── CTA Button ──────────────────────────────
+  static const primaryCta = Color(0xFF16A34A);
+
   // ── Background (Solid Court Green) ────────────
   static const backgroundStart = Color(0xFF1B5E30);
   static const backgroundEnd = Color(0xFF1B5E30);
