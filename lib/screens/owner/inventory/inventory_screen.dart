@@ -56,6 +56,7 @@ class _InventoryScreenState
         .loadItems(shop.id);
   }
 
+  // TODO: 별도 위젯 클래스로 분리하여 함수 길이 최적화
   void _showAddItemDialog() {
     if (_shopId == null) return;
 
@@ -232,6 +233,7 @@ class _InventoryScreenState
     );
   }
 
+  // TODO: 별도 위젯 클래스로 분리하여 함수 길이 최적화
   void _showEditItemDialog(InventoryItem item) {
     final nameController =
         TextEditingController(text: item.name);

@@ -45,6 +45,20 @@
 	<true/>
 	<key>UIApplicationSupportsIndirectInputEvents</key>
 	<true/>
+	<!-- 딥링크: Custom URL Scheme -->
+	<key>CFBundleURLTypes</key>
+	<array>
+		<dict>
+			<key>CFBundleTypeRole</key>
+			<string>Editor</string>
+			<key>CFBundleURLName</key>
+			<string>com.gurtalim.app</string>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>com.gurtalim.app</string>
+			</array>
+		</dict>
+	</array>
 	<!-- 위치: 주변 샵 검색 및 내 위치 표시 -->
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string>주변 배드민턴 샵을 찾기 위해 위치 정보를 사용합니다.</string>

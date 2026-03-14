@@ -50,7 +50,7 @@ flowchart TD
     end
 
     subgraph 알림 Provider
-        NOTI[notificationsProvider<br/>AsyncNotifierProvider]
+        NOTI[notificationsProvider<br/>NotifierProvider]
     end
 
     subgraph Repository
@@ -66,7 +66,7 @@ flowchart TD
 
 | Provider | 타입 | 역할 |
 |----------|------|------|
-| `notificationsProvider` | `AsyncNotifierProvider<NotificationsNotifier, NotificationsState>` | 알림 화면 전체 상태 관리. 알림 목록 조회, 전체 읽음 처리, Pull-to-refresh 처리 |
+| `notificationsProvider` | `NotifierProvider<NotificationsNotifier, NotificationsState>` | 알림 화면 전체 상태 관리. 알림 목록 조회, 전체 읽음 처리, Pull-to-refresh 처리 |
 
 ---
 

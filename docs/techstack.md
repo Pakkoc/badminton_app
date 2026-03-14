@@ -33,7 +33,7 @@
 
 ### 프론트엔드: Flutter
 
-- **기술**: Flutter 3.27.x (stable)
+- **기술**: Flutter 3.38.x (stable)
 - **역할**: iOS/Android 크로스 플랫폼 앱 UI 전체
 - **선택 이유**: 단일 코드베이스로 두 플랫폼 동시 지원, Material 3 디자인 시스템 네이티브 지원, Supabase 공식 Flutter SDK 제공
 - **대안 고려**: React Native — Supabase 연동은 동일하나 Material 3 지원이 Flutter보다 약함
@@ -51,7 +51,7 @@
 - **역할**: 회원가입, 로그인, 세션 관리
 - **소셜 로그인 공급자**:
   - **카카오** — 국내 최대 사용자 기반
-  - **네이버** — 국내 주요 소셜 로그인
+  - **네이버** — 국내 주요 소셜 로그인 (SDK 없이 브라우저+Edge Function 방식으로 구현)
   - **Google** — Android 사용자 기본 계정
   - **Apple** — App Store 정책 필수 (제3자 소셜 로그인 제공 시 Apple Sign In 필수)
 - **선택 이유**: Supabase Auth가 OAuth 2.0 기반 소셜 로그인을 통합 관리, 커스텀 OIDC로 카카오/네이버 연동 가능
@@ -153,8 +153,8 @@
 | flutter_naver_map | 네이버 지도 표시 |
 | firebase_messaging | FCM 푸시 알림 |
 | firebase_core | Firebase 초기화 |
-| kakao_flutter_sdk | 카카오 로그인 |
-| flutter_naver_login | 네이버 로그인 |
+| kakao_flutter_sdk (^1.9.7) | 카카오 로그인 |
+| 네이버 로그인 (SDK 없이 브라우저+Edge Function 방식) | 네이버 로그인 — flutter_naver_login SDK 미사용, Supabase Edge Function을 통한 OAuth 처리 |
 | sign_in_with_apple | Apple 로그인 |
 | google_sign_in | Google 로그인 |
 | image_picker | 이미지 선택 (카메라/갤러리) |
