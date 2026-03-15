@@ -228,7 +228,7 @@ void main() {
       expect(find.textContaining('더보기'), findsOneWidget);
     });
 
-    testWidgets('대댓글이 있을 때 세로 연결선(IntrinsicHeight)이 렌더링된다',
+    testWidgets('대댓글이 있을 때 답글 더보기 버튼이 들여쓰기되어 표시된다',
         (tester) async {
       final post = CommunityPost(
         id: 'p1',
@@ -271,11 +271,11 @@ void main() {
         ),
       );
       await tester.pumpAndSettle();
-      // _ThreadSection이 IntrinsicHeight로 감싸진 구조 확인
-      expect(find.byType(IntrinsicHeight), findsWidgets);
+      // 대댓글이 있으면 답글 더보기 토글 버튼이 표시된다
+      expect(find.textContaining('더보기'), findsOneWidget);
     });
 
-    testWidgets('대댓글 없는 댓글에는 연결선이 표시되지 않는다',
+    testWidgets('대댓글 없는 댓글에는 답글 토글이 표시되지 않는다',
         (tester) async {
       final post = CommunityPost(
         id: 'p1',
@@ -310,8 +310,8 @@ void main() {
         ),
       );
       await tester.pumpAndSettle();
-      // 대댓글 없으면 _ThreadSection(IntrinsicHeight) 없음
-      expect(find.byType(IntrinsicHeight), findsNothing);
+      // 대댓글 없으면 답글 토글 버튼이 없음
+      expect(find.textContaining('더보기'), findsNothing);
     });
 
     testWidgets('답글 더보기를 누르면 대댓글이 표시된다', (tester) async {
