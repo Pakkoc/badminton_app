@@ -20,9 +20,9 @@ class AppTheme {
   // ── CTA Button ──────────────────────────────
   static const primaryCta = Color(0xFF16A34A);
 
-  // ── Background (Black → Court Green gradient) ─
-  static const backgroundStart = Color(0xFF000000);
-  static const backgroundEnd = Color(0xFF2D5A27);
+  // ── Background (Court Green gradient) ──────
+  static const backgroundStart = Color(0xFF1B5E30);
+  static const backgroundEnd = Color(0xFF1B5E30);
   static const background = Color(0xFF1B5E30);
 
   // ── Surface (Glass) ───────────────────────────
