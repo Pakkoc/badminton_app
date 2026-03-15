@@ -28,20 +28,16 @@
 
 ## 2. 색상 팔레트
 
-### 2.1 배경 (Background — Court Gradient)
+### 2.1 배경 (Background — Court Green 단색)
 
 | 역할 | Hex | 용도 |
 |------|-----|------|
-| Gradient Start | `#000000` | 그라디언트 상단 (검정) |
-| Gradient End | `#2D5A27` | 그라디언트 하단 (코트 그린) |
-| Scaffold Fallback | `#162E14` | 그라디언트 불가 시 단색 배경 |
+| Background | `#1B5E30` | 전체 배경 (단색 코트 그린) |
 
 ```dart
-static const backgroundGradient = LinearGradient(
-  begin: Alignment.topCenter,
-  end: Alignment.bottomCenter,
-  colors: [Color(0xFF000000), Color(0xFF2D5A27)],
-);
+static const backgroundStart = Color(0xFF1B5E30);
+static const backgroundEnd = Color(0xFF1B5E30);
+static const background = Color(0xFF1B5E30);
 ```
 
 ### 2.2 Surface (Glass Cards)
@@ -143,10 +139,10 @@ class AppTheme {
   // ── Active Tab ────────────────────
   static const activeTab = Color(0xFF22C55E);
 
-  // ── Background (Gradient) ─────────
-  static const backgroundStart = Color(0xFF000000);
-  static const backgroundEnd = Color(0xFF2D5A27);
-  static const background = Color(0xFF162E14);
+  // ── Background (Court Green 단색) ──
+  static const backgroundStart = Color(0xFF1B5E30);
+  static const backgroundEnd = Color(0xFF1B5E30);
+  static const background = Color(0xFF1B5E30);
 
   // ── Surface (Glass) ───────────────
   static const surface = Color(0x15FFFFFF);       // 8%
@@ -519,7 +515,7 @@ class AppTheme {
 | 영역 | 이전 (Light Blue) | 이후 (Dark Court) |
 |------|-------------------|-------------------|
 | 전체 테마 | 라이트 모드 | 다크 그린 단일 |
-| Background | `#FBF8F4` (웜크림) | Gradient `#000000` → `#2D5A27` |
+| Background | `#FBF8F4` (웜크림) | 단색 `#1B5E30` (코트 그린) |
 | Surface | `#FFFFFF` (화이트) | `#FFFFFF15` (글래스) |
 | Primary | `#2563EB` (블루) | `#2D5A27` (코트 그린) |
 | CTA/Accent | `#2563EB` (블루) | `#F59E0B` (앰버) |
