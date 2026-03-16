@@ -176,6 +176,18 @@ class _ShopSettingsScreenState
                   ),
                   const SizedBox(height: 24),
 
+                  // 알림 설정 섹션
+                  const _SectionHeader(
+                    icon: Icons.notifications,
+                    label: '알림 설정',
+                  ),
+                  const SizedBox(height: 12),
+                  _NotifyShopToggle(
+                    value: state.notifyShop,
+                    onChanged: notifier.toggleNotifyShop,
+                  ),
+                  const SizedBox(height: 24),
+
                   // 샵 정보 섹션 헤더
                   const _SectionHeader(
                     icon: Icons.store,
@@ -481,6 +493,67 @@ class _AddressSettingsField extends StatelessWidget {
           ),
         ),
       ],
+    );
+  }
+}
+
+class _NotifyShopToggle extends StatelessWidget {
+  const _NotifyShopToggle({
+    required this.value,
+    required this.onChanged,
+  });
+
+  final bool value;
+  final ValueChanged<bool> onChanged;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.symmetric(
+        horizontal: 16,
+        vertical: 4,
+      ),
+      decoration: BoxDecoration(
+        color: AppTheme.surfaceHigh,
+        borderRadius: BorderRadius.circular(20),
+        border: Border.all(color: AppTheme.border),
+      ),
+      child: Row(
+        children: [
+          const Icon(
+            Icons.store,
+            color: AppTheme.textSecondary,
+            size: 22,
+          ),
+          const SizedBox(width: 12),
+          const Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  '가게 알림',
+                  style: TextStyle(
+                    fontSize: 14,
+                    color: AppTheme.textPrimary,
+                  ),
+                ),
+                Text(
+                  'QR 접수, 새 주문 등',
+                  style: TextStyle(
+                    fontSize: 12,
+                    color: AppTheme.textSecondary,
+                  ),
+                ),
+              ],
+            ),
+          ),
+          Switch(
+            value: value,
+            onChanged: onChanged,
+            activeTrackColor: AppTheme.accent,
+          ),
+        ],
+      ),
     );
   }
 }

@@ -253,6 +253,13 @@ final routerProvider = Provider<GoRouter>((ref) {
         ],
       ),
 
+      // 사장님 알림 (하단 네비 밖 — 상세 화면)
+      GoRoute(
+        path: '/owner/notifications',
+        builder: (context, state) =>
+            const NotificationsScreen(),
+      ),
+
       // 사장님 라우트 (하단 네비게이션 바 공유)
       StatefulShellRoute.indexedStack(
         builder: (context, state, navigationShell) =>

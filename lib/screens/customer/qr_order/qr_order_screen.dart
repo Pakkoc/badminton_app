@@ -4,6 +4,7 @@ import 'package:badminton_app/models/member.dart';
 import 'package:badminton_app/models/order.dart';
 import 'package:badminton_app/providers/auth_provider.dart';
 import 'package:badminton_app/repositories/member_repository.dart';
+import 'package:badminton_app/repositories/notification_repository.dart';
 import 'package:badminton_app/repositories/order_repository.dart';
 import 'package:badminton_app/repositories/shop_repository.dart';
 import 'package:badminton_app/repositories/user_repository.dart';
@@ -103,6 +104,9 @@ class _QrOrderScreenState extends ConsumerState<QrOrderScreen> {
         ),
       );
 
+      // 사장님에게 알림 전송 (notify_shop이 켜져 있을 때만)
+      await _notifyOwner(shop.ownerId, user.name, shop.name);
+
       if (!mounted) return;
       setState(() => _isProcessing = false);
 
@@ -114,6 +118,30 @@ class _QrOrderScreenState extends ConsumerState<QrOrderScreen> {
         _isProcessing = false;
         _error = '접수에 실패했습니다. 다시 시도해 주세요.';
       });
+    }
+  }
+
+  /// 사장님에게 새 작업 접수 알림을 전송한다.
+  ///
+  /// 사장님의 `notify_shop` 설정이 꺼져 있으면 전송하지 않는다.
+  Future<void> _notifyOwner(
+    String ownerId,
+    String customerName,
+    String shopName,
+  ) async {
+    try {
+      final owner =
+          await ref.read(userRepositoryProvider).getById(ownerId);
+      if (owner == null || !owner.notifyShop) return;
+
+      await ref.read(notificationRepositoryProvider).create(
+            userId: ownerId,
+            type: NotificationType.receipt,
+            title: '새 작업 접수',
+            body: '$customerName님이 QR코드로 $shopName에 접수했습니다',
+          );
+    } catch (_) {
+      // 알림 전송 실패는 주문 접수에 영향을 주지 않는다
     }
   }
 

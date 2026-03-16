@@ -1,12 +1,12 @@
 import 'package:badminton_app/app/theme.dart';
 import 'package:badminton_app/models/enums.dart';
 import 'package:badminton_app/models/order.dart';
-import 'package:badminton_app/providers/unread_notification_count_provider.dart';
 import 'package:badminton_app/screens/customer/home/customer_home_notifier.dart';
 import 'package:badminton_app/screens/customer/home/customer_home_state.dart';
 import 'package:badminton_app/widgets/court_background.dart';
 import 'package:badminton_app/widgets/customer_bottom_nav.dart';
 import 'package:badminton_app/widgets/error_view.dart';
+import 'package:badminton_app/widgets/notification_bell.dart';
 import 'package:badminton_app/widgets/order_timeline_row.dart';
 import 'package:badminton_app/widgets/skeleton_shimmer.dart';
 import 'package:badminton_app/widgets/status_badge.dart';
@@ -35,7 +35,7 @@ class CustomerHomeScreen extends ConsumerWidget {
           ],
         ),
         actions: [
-          _NotificationBell(
+          NotificationBell(
             onPressed: () =>
                 context.push('/customer/notifications'),
           ),
@@ -472,28 +472,3 @@ class _ShimmerLoading extends StatelessWidget {
 }
 
 /// 읽지 않은 알림 수를 뱃지로 표시하는 알림 아이콘.
-class _NotificationBell extends ConsumerWidget {
-  const _NotificationBell({required this.onPressed});
-
-  final VoidCallback onPressed;
-
-  @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final count =
-        ref.watch(unreadNotificationCountProvider);
-
-    return IconButton(
-      icon: Badge(
-        isLabelVisible: count > 0,
-        label: Text(
-          count > 99 ? '99+' : '$count',
-          style: const TextStyle(fontSize: 10),
-        ),
-        child: const Icon(Icons.notifications_outlined),
-      ),
-      color: AppTheme.textPrimary,
-      onPressed: onPressed,
-      tooltip: '알림',
-    );
-  }
-}

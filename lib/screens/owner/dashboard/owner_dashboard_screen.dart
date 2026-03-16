@@ -7,6 +7,7 @@ import 'package:badminton_app/screens/owner/dashboard/owner_dashboard_state.dart
 import 'package:badminton_app/widgets/court_background.dart';
 import 'package:badminton_app/widgets/error_view.dart';
 import 'package:badminton_app/widgets/loading_indicator.dart';
+import 'package:badminton_app/widgets/notification_bell.dart';
 import 'package:badminton_app/widgets/order_timeline_row.dart';
 import 'package:badminton_app/widgets/status_badge.dart';
 import 'package:flutter/material.dart';
@@ -56,15 +57,9 @@ class _OwnerDashboardScreenState
           ),
         ),
         actions: [
-          IconButton(
-            icon: const Icon(
-              Icons.settings,
-              color: AppTheme.textHint,
-              size: 24,
-            ),
-            onPressed: () {
-              StatefulNavigationShell.of(context).goBranch(2);
-            },
+          NotificationBell(
+            onPressed: () =>
+                context.push('/owner/notifications'),
           ),
         ],
       ),

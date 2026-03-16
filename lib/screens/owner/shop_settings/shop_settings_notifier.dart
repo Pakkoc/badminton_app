@@ -45,6 +45,7 @@ class ShopSettingsNotifier extends Notifier<ShopSettingsState> {
         shop: shop,
         ownerName: user?.name ?? '',
         ownerPhone: user?.phone ?? '',
+        notifyShop: user?.notifyShop ?? true,
       );
     } on AppException catch (e) {
       state = state.copyWith(
@@ -110,6 +111,23 @@ class ShopSettingsNotifier extends Notifier<ShopSettingsState> {
     state = state.copyWith(
       shop: state.shop!.copyWith(description: description),
     );
+  }
+
+  /// 가게 알림 토글을 변경한다. 즉시 서버에 저장한다.
+  Future<void> toggleNotifyShop(bool value) async {
+    final prev = state.notifyShop;
+    state = state.copyWith(notifyShop: value);
+    try {
+      final userId =
+          ref.read(supabaseProvider).auth.currentUser?.id;
+      if (userId == null) return;
+      await ref
+          .read(userRepositoryProvider)
+          .updateNotifyShop(userId, value: value);
+    } catch (_) {
+      // 실패 시 롤백
+      state = state.copyWith(notifyShop: prev);
+    }
   }
 
   void updateOwnerName(String name) {

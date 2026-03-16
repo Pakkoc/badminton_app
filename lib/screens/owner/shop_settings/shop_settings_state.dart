@@ -9,6 +9,7 @@ class ShopSettingsState with _$ShopSettingsState {
     Shop? shop,
     @Default('') String ownerName,
     @Default('') String ownerPhone,
+    @Default(true) bool notifyShop,
     @Default(false) bool isLoading,
     @Default(false) bool isSubmitting,
     String? errorMessage,

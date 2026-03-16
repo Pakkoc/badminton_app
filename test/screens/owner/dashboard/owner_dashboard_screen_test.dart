@@ -168,7 +168,7 @@ void main() {
       expect(find.text('대시보드'), findsOneWidget);
     });
 
-    testWidgets('설정 아이콘이 표시된다', (tester) async {
+    testWidgets('알림 벨 아이콘이 표시된다', (tester) async {
       await tester.pumpWidget(
         buildApp(
           const OwnerDashboardState(isLoading: false),
@@ -176,7 +176,7 @@ void main() {
       );
 
       expect(
-        find.byIcon(Icons.settings),
+        find.byIcon(Icons.notifications_outlined),
         findsOneWidget,
       );
     });
