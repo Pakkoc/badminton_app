@@ -6,6 +6,7 @@
 |----------------|------|--------|
 | "에이전트 만들어줘", "새 에이전트 생성" | `subagent-creator` | SKILL.md |
 | "스킬 만들어줘", "새 스킬 생성" | `skill-creator` | SKILL.md |
+| "ㅇㅇㅇ 오류가 발생했습니다", "ㅇㅇㅇ 에러/버그" | `problem-tracker` | SKILL.md |
 
 ## Git Commit Convention
 
