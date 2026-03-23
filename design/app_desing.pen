@@ -1,5 +1,5 @@
 {
-  "version": "2.8",
+  "version": "2.9",
   "children": [
     {
       "type": "frame",
@@ -15,8 +15,7 @@
         "#2d5a27ff"
       ],
       "stroke": {
-        "align": "inside",
-        "thickness": 1
+        "thickness": 0
       },
       "layout": "none",
       "children": [
@@ -109,26 +108,18 @@
               "type": "frame",
               "id": "kBEwc",
               "name": "Center Content",
-              "fill": "#ffffff25",
-              "cornerRadius": 16,
+              "fill": "#00000000",
               "stroke": {
-                "align": "inside",
-                "thickness": 1,
-                "fill": "#ffffff35"
+                "thickness": 0
               },
               "effect": {
                 "type": "shadow",
                 "shadowType": "outer",
-                "color": "#00000030",
-                "offset": {
-                  "x": 0,
-                  "y": 2
-                },
-                "blur": 12
+                "enabled": false,
+                "color": "#000000"
               },
               "layout": "vertical",
               "gap": 12,
-              "padding": 16,
               "justifyContent": "center",
               "alignItems": "center",
               "children": [
