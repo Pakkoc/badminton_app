@@ -404,7 +404,7 @@ class _OrderCard extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: AppTheme.surfaceHigh,
+        color: AppTheme.cardBackground,
         borderRadius: BorderRadius.circular(16),
       ),
       foregroundDecoration: BoxDecoration(
@@ -427,7 +427,7 @@ class _OrderCard extends StatelessWidget {
                 style: const TextStyle(
                   fontSize: 16,
                   fontWeight: FontWeight.w600,
-                  color: AppTheme.textPrimary,
+                  color: AppTheme.onCardPrimary,
                 ),
               ),
               StatusBadge(

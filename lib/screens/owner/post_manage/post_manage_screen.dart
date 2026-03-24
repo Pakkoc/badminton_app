@@ -246,9 +246,9 @@ class _PostCard extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: AppTheme.surfaceHigh,
+        color: AppTheme.cardBackground,
         borderRadius: BorderRadius.circular(20),
-        border: Border.all(color: AppTheme.border),
+        border: Border.all(color: AppTheme.cardBorder),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -266,7 +266,7 @@ class _PostCard extends StatelessWidget {
             style: const TextStyle(
               fontSize: 14,
               fontWeight: FontWeight.bold,
-              color: AppTheme.textPrimary,
+              color: AppTheme.onCardPrimary,
             ),
           ),
           const SizedBox(height: 4),
@@ -276,7 +276,7 @@ class _PostCard extends StatelessWidget {
             overflow: TextOverflow.ellipsis,
             style: const TextStyle(
               fontSize: 13,
-              color: AppTheme.textSecondary,
+              color: AppTheme.onCardSecondary,
               height: 1.5,
             ),
           ),
@@ -285,7 +285,7 @@ class _PostCard extends StatelessWidget {
             Formatters.date(post.createdAt),
             style: const TextStyle(
               fontSize: 12,
-              color: AppTheme.textTertiary,
+              color: AppTheme.onCardTertiary,
             ),
           ),
         ],
@@ -315,7 +315,7 @@ class _CardHeader extends StatelessWidget {
           onPressed: onEdit,
           icon: const Icon(Icons.edit),
           iconSize: 22,
-          color: AppTheme.textSecondary,
+          color: AppTheme.onCardSecondary,
           padding: EdgeInsets.zero,
           constraints: const BoxConstraints(
             minWidth: 44,

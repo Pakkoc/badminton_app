@@ -227,7 +227,7 @@ class _QrCard extends StatelessWidget {
       width: double.infinity,
       padding: const EdgeInsets.all(24),
       decoration: BoxDecoration(
-        color: AppTheme.surfaceHigh,
+        color: AppTheme.cardBackground,
         borderRadius: BorderRadius.circular(20),
         boxShadow: const [
           BoxShadow(
@@ -244,7 +244,7 @@ class _QrCard extends StatelessWidget {
             style: const TextStyle(
               fontSize: 18,
               fontWeight: FontWeight.w700,
-              color: AppTheme.textSecondary,
+              color: AppTheme.onCardSecondary,
             ),
           ),
           const SizedBox(height: 16),
@@ -257,7 +257,7 @@ class _QrCard extends StatelessWidget {
                 color: Colors.white,
                 borderRadius: BorderRadius.circular(8),
                 border: Border.all(
-                  color: AppTheme.border,
+                  color: AppTheme.cardBorder,
                   width: 2,
                 ),
               ),
@@ -277,7 +277,7 @@ class _QrCard extends StatelessWidget {
               textAlign: TextAlign.center,
               style: TextStyle(
                 fontSize: 13,
-                color: AppTheme.textSecondary,
+                color: AppTheme.onCardSecondary,
               ),
             ),
           ),
@@ -378,7 +378,7 @@ class _InfoCard extends StatelessWidget {
       width: double.infinity,
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: AppTheme.surfaceVariant,
+        color: AppTheme.cardBackgroundVariant,
         borderRadius: BorderRadius.circular(20),
         border: Border.all(
           color: AppTheme.info,
@@ -392,6 +392,7 @@ class _InfoCard extends StatelessWidget {
             style: TextStyle(
               fontSize: 14,
               fontWeight: FontWeight.bold,
+              color: AppTheme.onCardPrimary,
             ),
           ),
           SizedBox(height: 6),
@@ -399,7 +400,7 @@ class _InfoCard extends StatelessWidget {
             '앱이 없는 고객도 QR을 스캔하면 앱 다운로드 페이지로 이동합니다',
             style: TextStyle(
               fontSize: 13,
-              color: AppTheme.textSecondary,
+              color: AppTheme.onCardSecondary,
               height: 1.5,
             ),
           ),

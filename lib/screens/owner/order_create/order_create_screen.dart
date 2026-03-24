@@ -406,10 +406,10 @@ class _SelectedMemberCard extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: AppTheme.surfaceHigh,
+        color: AppTheme.cardBackground,
         borderRadius: BorderRadius.circular(20),
         border: Border.all(
-          color: AppTheme.border,
+          color: AppTheme.cardBorder,
         ),
       ),
       child: Row(
@@ -423,7 +423,7 @@ class _SelectedMemberCard extends StatelessWidget {
                   style: const TextStyle(
                     fontSize: 16,
                     fontWeight: FontWeight.w600,
-                    color: AppTheme.textPrimary,
+                    color: AppTheme.onCardPrimary,
                   ),
                 ),
                 const SizedBox(height: 8),
@@ -431,7 +431,7 @@ class _SelectedMemberCard extends StatelessWidget {
                   phone,
                   style: const TextStyle(
                     fontSize: 14,
-                    color: AppTheme.textSecondary,
+                    color: AppTheme.onCardSecondary,
                   ),
                 ),
               ],

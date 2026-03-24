@@ -553,10 +553,10 @@ class _InventoryGridCard extends StatelessWidget {
       onTap: onTap,
       child: Container(
         decoration: BoxDecoration(
-          color: AppTheme.surfaceHigh,
+          color: AppTheme.cardBackground,
           borderRadius: BorderRadius.circular(20),
           border: Border.all(
-            color: AppTheme.border,
+            color: AppTheme.cardBorder,
           ),
         ),
         clipBehavior: Clip.hardEdge,
@@ -577,7 +577,7 @@ class _InventoryGridCard extends StatelessWidget {
                         .bodyMedium
                         ?.copyWith(
                       fontWeight: FontWeight.w500,
-                      color: AppTheme.textPrimary,
+                      color: AppTheme.onCardPrimary,
                     ),
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
@@ -589,7 +589,7 @@ class _InventoryGridCard extends StatelessWidget {
                         .textTheme
                         .bodySmall
                         ?.copyWith(
-                      color: AppTheme.textTertiary,
+                      color: AppTheme.onCardTertiary,
                     ),
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
@@ -602,7 +602,7 @@ class _InventoryGridCard extends StatelessWidget {
                         .bodySmall
                         ?.copyWith(
                       fontWeight: FontWeight.w600,
-                      color: AppTheme.textSecondary,
+                      color: AppTheme.onCardSecondary,
                     ),
                   ),
                 ],
@@ -645,7 +645,7 @@ class _CardImage extends StatelessWidget {
       width: double.infinity,
       height: 120,
       decoration: const BoxDecoration(
-        color: AppTheme.primaryContainer,
+        color: AppTheme.cardBackground,
         borderRadius: BorderRadius.vertical(
           top: Radius.circular(20),
         ),
@@ -653,7 +653,7 @@ class _CardImage extends StatelessWidget {
       child: const Icon(
         Icons.inventory_2,
         size: 40,
-        color: AppTheme.textTertiary,
+        color: AppTheme.onCardTertiary,
       ),
     );
   }

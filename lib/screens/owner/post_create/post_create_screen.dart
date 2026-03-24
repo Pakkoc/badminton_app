@@ -379,7 +379,7 @@ class _CategoryChip extends StatelessWidget {
         decoration: BoxDecoration(
           color: isSelected
               ? AppTheme.completedBackground
-              : AppTheme.primaryContainer,
+              : AppTheme.cardBackground,
           borderRadius: BorderRadius.circular(18),
         ),
         alignment: Alignment.center,
@@ -564,10 +564,10 @@ class _ImageThumbnail extends StatelessWidget {
             errorBuilder: (_, _, _) => Container(
               width: 80,
               height: 80,
-              color: AppTheme.primaryContainer,
+              color: AppTheme.cardBackground,
               child: const Icon(
                 Icons.image,
-                color: AppTheme.textTertiary,
+                color: AppTheme.onCardTertiary,
               ),
             ),
           ),

@@ -108,10 +108,10 @@ class _ShopSettingsScreenState
                   const SizedBox(height: 12),
                   Container(
                     decoration: BoxDecoration(
-                      color: AppTheme.surfaceHigh,
+                      color: AppTheme.cardBackground,
                       borderRadius: BorderRadius.circular(20),
                       border: Border.all(
-                        color: AppTheme.border,
+                        color: AppTheme.cardBorder,
                       ),
                     ),
                     child: Column(
@@ -182,9 +182,9 @@ class _ShopSettingsScreenState
                   Container(
                     padding: const EdgeInsets.all(20),
                     decoration: BoxDecoration(
-                      color: AppTheme.surfaceHigh,
+                      color: AppTheme.cardBackground,
                       borderRadius: BorderRadius.circular(20),
-                      border: Border.all(color: AppTheme.border),
+                      border: Border.all(color: AppTheme.cardBorder),
                     ),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -237,9 +237,9 @@ class _ShopSettingsScreenState
                   Container(
                     padding: const EdgeInsets.all(20),
                     decoration: BoxDecoration(
-                      color: AppTheme.surfaceHigh,
+                      color: AppTheme.cardBackground,
                       borderRadius: BorderRadius.circular(20),
-                      border: Border.all(color: AppTheme.border),
+                      border: Border.all(color: AppTheme.cardBorder),
                     ),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -311,7 +311,7 @@ class _SettingsField extends StatelessWidget {
           label,
           style: const TextStyle(
             fontSize: 12,
-            color: AppTheme.textSecondary,
+            color: AppTheme.onCardSecondary,
           ),
         ),
         const SizedBox(height: 6),
@@ -326,10 +326,10 @@ class _SettingsField extends StatelessWidget {
             decoration: InputDecoration(
               hintStyle: const TextStyle(
                 fontSize: 14,
-                color: AppTheme.textTertiary,
+                color: AppTheme.onCardTertiary,
               ),
               filled: true,
-              fillColor: AppTheme.surfaceVariant,
+              fillColor: AppTheme.cardBackgroundVariant,
               border: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(14),
                 borderSide: BorderSide.none,
@@ -369,7 +369,7 @@ class _PhoneSettingsField extends StatelessWidget {
           label,
           style: const TextStyle(
             fontSize: 12,
-            color: AppTheme.textSecondary,
+            color: AppTheme.onCardSecondary,
           ),
         ),
         const SizedBox(height: 6),
@@ -377,7 +377,7 @@ class _PhoneSettingsField extends StatelessWidget {
           data: Theme.of(context).copyWith(
             inputDecorationTheme: const InputDecorationTheme(
               filled: true,
-              fillColor: AppTheme.surfaceVariant,
+              fillColor: AppTheme.cardBackgroundVariant,
               border: OutlineInputBorder(
                 borderRadius: BorderRadius.all(Radius.circular(14)),
                 borderSide: BorderSide.none,
@@ -439,7 +439,7 @@ class _AddressSettingsField extends StatelessWidget {
           '주소',
           style: TextStyle(
             fontSize: 12,
-            color: AppTheme.textSecondary,
+            color: AppTheme.onCardSecondary,
           ),
         ),
         const SizedBox(height: 6),
@@ -452,10 +452,10 @@ class _AddressSettingsField extends StatelessWidget {
             decoration: InputDecoration(
               hintStyle: const TextStyle(
                 fontSize: 14,
-                color: AppTheme.textTertiary,
+                color: AppTheme.onCardTertiary,
               ),
               filled: true,
-              fillColor: AppTheme.surfaceVariant,
+              fillColor: AppTheme.cardBackgroundVariant,
               border: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(14),
                 borderSide: BorderSide.none,
@@ -467,7 +467,7 @@ class _AddressSettingsField extends StatelessWidget {
               suffixIcon: IconButton(
                 icon: const Icon(
                   Icons.search,
-                  color: AppTheme.textTertiary,
+                  color: AppTheme.onCardTertiary,
                 ),
                 tooltip: '주소 검색',
                 onPressed: onSearch,
@@ -497,15 +497,15 @@ class _NotifyShopToggle extends StatelessWidget {
         vertical: 4,
       ),
       decoration: BoxDecoration(
-        color: AppTheme.surfaceHigh,
+        color: AppTheme.cardBackground,
         borderRadius: BorderRadius.circular(20),
-        border: Border.all(color: AppTheme.border),
+        border: Border.all(color: AppTheme.cardBorder),
       ),
       child: Row(
         children: [
           const Icon(
             Icons.store,
-            color: AppTheme.textSecondary,
+            color: AppTheme.onCardSecondary,
             size: 22,
           ),
           const SizedBox(width: 12),
@@ -517,14 +517,14 @@ class _NotifyShopToggle extends StatelessWidget {
                   '가게 알림',
                   style: TextStyle(
                     fontSize: 14,
-                    color: AppTheme.textPrimary,
+                    color: AppTheme.onCardPrimary,
                   ),
                 ),
                 Text(
                   'QR 접수, 새 주문 등',
                   style: TextStyle(
                     fontSize: 12,
-                    color: AppTheme.textSecondary,
+                    color: AppTheme.onCardSecondary,
                   ),
                 ),
               ],
@@ -664,7 +664,7 @@ class _MenuItemTile extends StatelessWidget {
                 children: [
                   Icon(
                     icon,
-                    color: AppTheme.textSecondary,
+                    color: AppTheme.onCardSecondary,
                     size: 22,
                   ),
                   const SizedBox(width: 12),
@@ -673,13 +673,13 @@ class _MenuItemTile extends StatelessWidget {
                       label,
                       style: const TextStyle(
                         fontSize: 14,
-                        color: AppTheme.textPrimary,
+                        color: AppTheme.onCardPrimary,
                       ),
                     ),
                   ),
                   const Icon(
                     Icons.chevron_right,
-                    color: AppTheme.textTertiary,
+                    color: AppTheme.onCardTertiary,
                     size: 20,
                   ),
                 ],
@@ -691,7 +691,7 @@ class _MenuItemTile extends StatelessWidget {
           const Divider(
             height: 1,
             thickness: 1,
-            color: AppTheme.primaryContainer,
+            color: AppTheme.cardBorder,
             indent: 0,
             endIndent: 0,
           ),
