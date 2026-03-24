@@ -25,11 +25,13 @@ class AppTheme {
   static const backgroundEnd = Color(0xFF1B5E30);
   static const background = Color(0xFF1B5E30);
 
-  // ── Surface (Glass) ───────────────────────────
-  static const surface = Color(0x15FFFFFF);
-  static const surfaceHigh = Color(0x18FFFFFF);
+  // ── Surface (Opaque Dark Green) ───────────────
+  // 기존 white overlay를 #1B5E30 위에 합성한 불투명 등가색.
+  // 코트 라인이 카드를 관통하지 않도록 불투명 처리.
+  static const surface = Color(0xFF2E6B41);
+  static const surfaceHigh = Color(0xFF306D44);
   static const surfaceBorder = Color(0x20FFFFFF);
-  static const surfaceVariant = Color(0x10FFFFFF);
+  static const surfaceVariant = Color(0xFF29683D);
 
   // ── Dialog ────────────────────────────────────
   static const dialogSurface = Color(0xFF1A2E1A);

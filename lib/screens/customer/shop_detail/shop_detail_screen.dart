@@ -105,6 +105,17 @@ class _ShopDetailScreenState
                   inProgressCount:
                       state.inProgressCount,
                 ),
+                // 섹션 구분선
+                const Padding(
+                  padding: EdgeInsets.symmetric(
+                    horizontal: 28,
+                    vertical: 8,
+                  ),
+                  child: Divider(
+                    color: AppTheme.border,
+                    height: 1,
+                  ),
+                ),
                 // 위치 및 연락처 — 스펙 3.5
                 _ContactSection(shop: shop),
                 // 길찾기 버튼 — 스펙 3.6
@@ -512,16 +523,16 @@ class _TabBarDelegate extends SliverPersistentHeaderDelegate {
         color: AppTheme.surfaceHigh,
         border: Border(
           bottom: BorderSide(
-            color: Color(0x30FFFFFF),
+            color: AppTheme.border,
             width: 0.5,
           ),
         ),
       ),
       child: TabBar(
         controller: tabController,
-        labelColor: AppTheme.textPrimary,
+        labelColor: AppTheme.activeTab,
         unselectedLabelColor: AppTheme.textTertiary,
-        indicatorColor: AppTheme.textPrimary,
+        indicatorColor: AppTheme.activeTab,
         indicatorWeight: 2,
         isScrollable: false,
         tabAlignment: TabAlignment.fill,
@@ -852,7 +863,10 @@ class _InventoryTab extends StatelessWidget {
         ),
         Expanded(
           child: GridView.builder(
-            padding: const EdgeInsets.all(16),
+            padding: const EdgeInsets.symmetric(
+              horizontal: 28,
+              vertical: 12,
+            ),
             gridDelegate:
                 const SliverGridDelegateWithFixedCrossAxisCount(
               crossAxisCount: 3,

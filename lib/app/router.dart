@@ -40,15 +40,27 @@ import 'package:go_router/go_router.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 /// 인증 상태 변경 시 GoRouter를 갱신하는 Listenable.
+///
+/// 앱 시작 직후 auth 스트림이 initialSession / tokenRefreshed /
+/// signedIn 이벤트를 연속 발행하여 redirect가 2~3회 연속 호출되는
+/// 문제를 방지하기 위해 500ms 디바운스를 적용한다.
 class _AuthRefreshNotifier extends ChangeNotifier {
   _AuthRefreshNotifier(Stream<AuthState> stream) {
-    _subscription = stream.listen((_) => notifyListeners());
+    _subscription = stream.listen((_) {
+      _debounceTimer?.cancel();
+      _debounceTimer = Timer(
+        const Duration(milliseconds: 500),
+        notifyListeners,
+      );
+    });
   }
 
+  Timer? _debounceTimer;
   late final StreamSubscription<AuthState> _subscription;
 
   @override
   void dispose() {
+    _debounceTimer?.cancel();
     _subscription.cancel();
     super.dispose();
   }
@@ -106,7 +118,19 @@ final routerProvider = Provider<GoRouter>((ref) {
     routes: [
       GoRoute(
         path: '/splash',
-        builder: (context, state) => const SplashScreen(),
+        pageBuilder: (context, state) => CustomTransitionPage(
+          child: const SplashScreen(),
+          transitionDuration: const Duration(milliseconds: 600),
+          reverseTransitionDuration:
+              const Duration(milliseconds: 400),
+          transitionsBuilder:
+              (context, animation, secondaryAnimation, child) {
+            return FadeTransition(
+              opacity: animation,
+              child: child,
+            );
+          },
+        ),
       ),
       GoRoute(
         path: '/login',
