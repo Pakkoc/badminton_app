@@ -122,7 +122,7 @@ class _LargeStatusBadge extends StatelessWidget {
       height: 72,
       padding: const EdgeInsets.symmetric(horizontal: 24),
       decoration: BoxDecoration(
-        color: AppTheme.surfaceVariant,
+        color: AppTheme.cardBackgroundVariant,
         borderRadius: BorderRadius.circular(20),
         border: Border.all(
           color: fgColor.withValues(alpha: 0.4),
@@ -179,9 +179,10 @@ class _TimelineSection extends StatelessWidget {
         const SizedBox(height: 12),
         Card(
           elevation: 0,
+          color: AppTheme.cardBackground,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(20),
-            side: const BorderSide(color: AppTheme.border),
+            side: const BorderSide(color: AppTheme.cardBorder),
           ),
           child: Padding(
             padding: const EdgeInsets.all(16),
@@ -241,7 +242,7 @@ class _TimelineNode extends StatelessWidget {
   final bool isLast;
   final bool nextActive;
 
-  static const _inactiveColor = AppTheme.textHint;
+  static const _inactiveColor = AppTheme.onCardHint;
 
   @override
   Widget build(BuildContext context) {
@@ -270,7 +271,7 @@ class _TimelineNode extends StatelessWidget {
                           ? FontWeight.w600
                           : FontWeight.normal,
                       color: isActive
-                          ? AppTheme.textPrimary
+                          ? AppTheme.onCardPrimary
                           : _inactiveColor,
                     ),
               ),
@@ -281,7 +282,7 @@ class _TimelineNode extends StatelessWidget {
                   .textTheme
                   .bodySmall
                   ?.copyWith(
-                    color: AppTheme.textTertiary,
+                    color: AppTheme.onCardTertiary,
                   ),
             ),
           ],
@@ -367,9 +368,10 @@ class _ShopInfoSection extends StatelessWidget {
         const SizedBox(height: 12),
         Card(
           elevation: 0,
+          color: AppTheme.cardBackground,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(20),
-            side: const BorderSide(color: AppTheme.border),
+            side: const BorderSide(color: AppTheme.cardBorder),
           ),
           child: Padding(
             padding: const EdgeInsets.all(16),
@@ -403,7 +405,7 @@ class _ShopInfoSection extends StatelessWidget {
                       const Icon(
                         Icons.chevron_right,
                         size: 20,
-                        color: AppTheme.textTertiary,
+                        color: AppTheme.onCardTertiary,
                       ),
                     ],
                   ),
@@ -414,7 +416,7 @@ class _ShopInfoSection extends StatelessWidget {
                     const Icon(
                       Icons.location_on,
                       size: 20,
-                      color: AppTheme.textTertiary,
+                      color: AppTheme.onCardTertiary,
                     ),
                     const SizedBox(width: 8),
                     Expanded(
@@ -424,7 +426,7 @@ class _ShopInfoSection extends StatelessWidget {
                             .textTheme
                             .bodyMedium
                             ?.copyWith(
-                              color: AppTheme.textSecondary,
+                              color: AppTheme.onCardSecondary,
                             ),
                       ),
                     ),
@@ -438,7 +440,7 @@ class _ShopInfoSection extends StatelessWidget {
                       const Icon(
                         Icons.call,
                         size: 20,
-                        color: AppTheme.textTertiary,
+                        color: AppTheme.onCardTertiary,
                       ),
                       const SizedBox(width: 8),
                       Text(
@@ -447,7 +449,7 @@ class _ShopInfoSection extends StatelessWidget {
                             .textTheme
                             .bodyMedium
                             ?.copyWith(
-                              color: AppTheme.textSecondary,
+                              color: AppTheme.onCardSecondary,
                             ),
                       ),
                     ],

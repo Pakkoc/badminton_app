@@ -131,7 +131,7 @@ class _HistoryCard extends StatelessWidget {
       elevation: 0,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(16),
-        side: const BorderSide(color: AppTheme.border),
+        side: const BorderSide(color: AppTheme.cardBorder),
       ),
       clipBehavior: Clip.antiAlias,
       child: InkWell(
@@ -139,7 +139,7 @@ class _HistoryCard extends StatelessWidget {
         borderRadius: BorderRadius.circular(16),
         child: Container(
           decoration: const BoxDecoration(
-            color: AppTheme.surfaceHigh,
+            color: AppTheme.cardBackground,
             border: Border(
               left: BorderSide(
                 color: AppTheme.activeTab,
@@ -162,6 +162,7 @@ class _HistoryCard extends StatelessWidget {
                           .titleMedium
                           ?.copyWith(
                             fontWeight: FontWeight.bold,
+                            color: AppTheme.onCardPrimary,
                           ),
                     ),
                     const SizedBox(height: 6),
@@ -171,7 +172,7 @@ class _HistoryCard extends StatelessWidget {
                           .textTheme
                           .bodySmall
                           ?.copyWith(
-                            color: AppTheme.textTertiary,
+                            color: AppTheme.onCardTertiary,
                           ),
                     ),
                   ],

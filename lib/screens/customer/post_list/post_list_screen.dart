@@ -121,11 +121,11 @@ class _PostCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Card(
       elevation: 0,
-      color: AppTheme.surfaceHigh,
+      color: AppTheme.cardBackground,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(20),
         side: const BorderSide(
-          color: AppTheme.border,
+          color: AppTheme.cardBorder,
           width: 0.5,
         ),
       ),
@@ -150,7 +150,7 @@ class _PostCard extends StatelessWidget {
                         .textTheme
                         .bodySmall
                         ?.copyWith(
-                          color: AppTheme.textTertiary,
+                          color: AppTheme.onCardTertiary,
                         ),
                   ),
                   const Spacer(),
@@ -158,7 +158,7 @@ class _PostCard extends StatelessWidget {
                     const Icon(
                       Icons.image_outlined,
                       size: 18,
-                      color: AppTheme.textTertiary,
+                      color: AppTheme.onCardTertiary,
                     ),
                 ],
               ),
@@ -172,7 +172,7 @@ class _PostCard extends StatelessWidget {
                     .titleSmall
                     ?.copyWith(
                       fontWeight: FontWeight.w600,
-                      color: AppTheme.textPrimary,
+                      color: AppTheme.onCardPrimary,
                     ),
               ),
               if (post.content.isNotEmpty) ...[
@@ -187,7 +187,7 @@ class _PostCard extends StatelessWidget {
                       ?.copyWith(
                         fontSize: 13,
                         height: 1.5,
-                        color: AppTheme.textSecondary,
+                        color: AppTheme.onCardSecondary,
                       ),
                 ),
               ],

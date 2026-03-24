@@ -369,10 +369,11 @@ class _ContactSection extends StatelessWidget {
           const SizedBox(height: 12),
           Card(
             elevation: 0,
+            color: AppTheme.cardBackground,
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(20),
               side: const BorderSide(
-                color: AppTheme.border,
+                color: AppTheme.cardBorder,
               ),
             ),
             child: Padding(
@@ -384,7 +385,7 @@ class _ContactSection extends StatelessWidget {
                       const Icon(
                         Icons.location_on,
                         size: 20,
-                        color: AppTheme.textTertiary,
+                        color: AppTheme.onCardTertiary,
                       ),
                       const SizedBox(width: 8),
                       Expanded(
@@ -395,7 +396,7 @@ class _ContactSection extends StatelessWidget {
                               .bodyMedium
                               ?.copyWith(
                                 color: AppTheme
-                                    .textSecondary,
+                                    .onCardSecondary,
                               ),
                         ),
                       ),
@@ -410,7 +411,7 @@ class _ContactSection extends StatelessWidget {
                         const Icon(
                           Icons.call,
                           size: 20,
-                          color: AppTheme.textTertiary,
+                          color: AppTheme.onCardTertiary,
                         ),
                         const SizedBox(width: 8),
                         Text(
@@ -520,10 +521,10 @@ class _TabBarDelegate extends SliverPersistentHeaderDelegate {
   ) {
     return Container(
       decoration: const BoxDecoration(
-        color: AppTheme.surfaceHigh,
+        color: AppTheme.cardBackground,
         border: Border(
           bottom: BorderSide(
-            color: AppTheme.border,
+            color: AppTheme.cardBorder,
             width: 0.5,
           ),
         ),
@@ -596,11 +597,11 @@ class _NoticeTab extends StatelessWidget {
           ),
           child: Card(
             elevation: 0,
-            color: AppTheme.surfaceHigh,
+            color: AppTheme.cardBackground,
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(20),
               side: const BorderSide(
-                color: AppTheme.border,
+                color: AppTheme.cardBorder,
               ),
             ),
             child: InkWell(
@@ -623,7 +624,7 @@ class _NoticeTab extends StatelessWidget {
                           .titleSmall
                           ?.copyWith(
                             fontWeight: FontWeight.bold,
-                            color: AppTheme.textPrimary,
+                            color: AppTheme.onCardPrimary,
                           ),
                     ),
                     const SizedBox(height: 4),
@@ -634,7 +635,7 @@ class _NoticeTab extends StatelessWidget {
                           .bodySmall
                           ?.copyWith(
                             color:
-                                AppTheme.textTertiary,
+                                AppTheme.onCardTertiary,
                           ),
                     ),
                     const SizedBox(height: 4),
@@ -648,7 +649,7 @@ class _NoticeTab extends StatelessWidget {
                           ?.copyWith(
                             fontSize: 13,
                             height: 1.5,
-                            color: AppTheme.textSecondary,
+                            color: AppTheme.onCardSecondary,
                           ),
                     ),
                   ],
@@ -702,10 +703,11 @@ class _EventTab extends StatelessWidget {
           ),
           child: Card(
             elevation: 0,
+            color: AppTheme.cardBackground,
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(20),
               side: const BorderSide(
-                color: AppTheme.border,
+                color: AppTheme.cardBorder,
               ),
             ),
             child: InkWell(
@@ -750,7 +752,7 @@ class _EventTab extends StatelessWidget {
                                   fontWeight:
                                       FontWeight.w600,
                                   color: AppTheme
-                                      .textPrimary,
+                                      .onCardPrimary,
                                 ),
                           ),
                           const SizedBox(height: 4),
@@ -765,7 +767,7 @@ class _EventTab extends StatelessWidget {
                                   .bodySmall
                                   ?.copyWith(
                                     color: AppTheme
-                                        .textTertiary,
+                                        .onCardTertiary,
                                   ),
                             ),
                           const SizedBox(height: 4),
@@ -819,7 +821,7 @@ class _EventTab extends StatelessWidget {
     return Container(
       width: 80,
       height: 80,
-      color: AppTheme.surfaceVariant,
+      color: AppTheme.cardBackgroundVariant,
       child: const Icon(
         Icons.event,
         size: 40,
@@ -895,10 +897,11 @@ class _InventoryCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Card(
       elevation: 0,
+      color: AppTheme.cardBackground,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(20),
         side: const BorderSide(
-          color: AppTheme.border,
+          color: AppTheme.cardBorder,
         ),
       ),
       clipBehavior: Clip.antiAlias,
@@ -931,7 +934,7 @@ class _InventoryCard extends StatelessWidget {
                       .bodyMedium
                       ?.copyWith(
                         fontWeight: FontWeight.w500,
-                        color: AppTheme.textPrimary,
+                        color: AppTheme.onCardPrimary,
                       ),
                 ),
                 Text(
@@ -940,7 +943,7 @@ class _InventoryCard extends StatelessWidget {
                       .textTheme
                       .bodySmall
                       ?.copyWith(
-                        color: AppTheme.textSecondary,
+                        color: AppTheme.onCardSecondary,
                       ),
                 ),
               ],
@@ -953,7 +956,7 @@ class _InventoryCard extends StatelessWidget {
 
   Widget _defaultImage() {
     return Container(
-      color: AppTheme.surfaceVariant,
+      color: AppTheme.cardBackgroundVariant,
       child: const Center(
         child: Icon(
           Icons.inventory_2,

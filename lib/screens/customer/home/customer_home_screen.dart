@@ -238,7 +238,7 @@ class _SummaryCard extends StatelessWidget {
       width: double.infinity,
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: AppTheme.surfaceHigh,
+        color: AppTheme.cardBackground,
         borderRadius: BorderRadius.circular(16),
         boxShadow: const [
           BoxShadow(
@@ -268,7 +268,7 @@ class _SummaryCard extends StatelessWidget {
                   style: const TextStyle(
                     fontSize: 14,
                     fontWeight: FontWeight.w600,
-                    color: AppTheme.textPrimary,
+                    color: AppTheme.onCardPrimary,
                   ),
                 ),
               ],
@@ -293,7 +293,7 @@ class _SummaryCard extends StatelessWidget {
                   style: const TextStyle(
                     fontSize: 14,
                     fontWeight: FontWeight.w600,
-                    color: AppTheme.textPrimary,
+                    color: AppTheme.onCardPrimary,
                   ),
                 ),
               ],
@@ -331,7 +331,7 @@ class _OrderCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
-        color: AppTheme.surfaceHigh,
+        color: AppTheme.cardBackground,
         borderRadius: BorderRadius.circular(16),
         border: Border(
           left: BorderSide(
@@ -366,7 +366,7 @@ class _OrderCard extends StatelessWidget {
                 style: Theme.of(context)
                     .textTheme
                     .bodyMedium
-                    ?.copyWith(color: AppTheme.textSecondary),
+                    ?.copyWith(color: AppTheme.onCardSecondary),
               ),
               const SizedBox(height: 8),
               OrderTimelineRow(order: order),
@@ -377,7 +377,7 @@ class _OrderCard extends StatelessWidget {
                     const Icon(
                       Icons.notes,
                       size: 16,
-                      color: AppTheme.textTertiary,
+                      color: AppTheme.onCardTertiary,
                     ),
                     const SizedBox(width: 4),
                     Expanded(
@@ -387,7 +387,7 @@ class _OrderCard extends StatelessWidget {
                             .textTheme
                             .bodySmall
                             ?.copyWith(
-                              color: AppTheme.textTertiary,
+                              color: AppTheme.onCardTertiary,
                             ),
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
@@ -436,7 +436,7 @@ class _ShimmerLoading extends StatelessWidget {
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(16),
                 side: const BorderSide(
-                  color: AppTheme.border,
+                  color: AppTheme.cardBorder,
                 ),
               ),
               child: const Padding(

@@ -114,10 +114,10 @@ class _ProfileEditScreenState
             // Bottom Bar — 스펙: padding [16,28], fill #ffffff15, top border #ffffff20 0.5px
             Container(
               decoration: const BoxDecoration(
-                color: AppTheme.surfaceHigh,
+                color: AppTheme.cardBackground,
                 border: Border(
                   top: BorderSide(
-                    color: AppTheme.surfaceBorder,
+                    color: AppTheme.cardBorder,
                     width: 0.5,
                   ),
                 ),

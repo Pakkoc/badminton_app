@@ -362,11 +362,11 @@ class _ShopCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Card(
       elevation: 0,
-      color: AppTheme.surfaceHigh,
+      color: AppTheme.cardBackground,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(20),
         side: const BorderSide(
-          color: AppTheme.border,
+          color: AppTheme.cardBorder,
           width: 1,
         ),
       ),
@@ -388,13 +388,14 @@ class _ShopCard extends StatelessWidget {
                           .titleMedium
                           ?.copyWith(
                             fontWeight: FontWeight.bold,
+                            color: AppTheme.onCardPrimary,
                           ),
                     ),
                   ),
                   const Icon(
                     Icons.chevron_right,
                     size: 24,
-                    color: AppTheme.textTertiary,
+                    color: AppTheme.onCardTertiary,
                   ),
                 ],
               ),
@@ -404,7 +405,7 @@ class _ShopCard extends StatelessWidget {
                   const Icon(
                     Icons.location_on,
                     size: 16,
-                    color: AppTheme.textTertiary,
+                    color: AppTheme.onCardTertiary,
                   ),
                   const SizedBox(width: 4),
                   Expanded(
@@ -414,7 +415,7 @@ class _ShopCard extends StatelessWidget {
                           .textTheme
                           .bodyMedium
                           ?.copyWith(
-                            color: AppTheme.textSecondary,
+                            color: AppTheme.onCardSecondary,
                           ),
                     ),
                   ),

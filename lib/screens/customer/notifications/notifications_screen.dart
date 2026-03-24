@@ -139,7 +139,7 @@ class _NotificationTile extends StatelessWidget {
   Widget build(BuildContext context) {
     final bgColor = notification.isRead
         ? Colors.transparent
-        : AppTheme.surfaceHigh;
+        : AppTheme.cardBackground;
 
     final tile = InkWell(
       onTap: onTap,
@@ -152,7 +152,7 @@ class _NotificationTile extends StatelessWidget {
           color: bgColor,
           border: const Border(
             bottom: BorderSide(
-              color: AppTheme.border,
+              color: AppTheme.cardBorder,
               width: 1,
             ),
           ),
@@ -160,7 +160,7 @@ class _NotificationTile extends StatelessWidget {
         child: Row(
           children: [
             CircleAvatar(
-              backgroundColor: AppTheme.primaryContainer,
+              backgroundColor: AppTheme.cardBackground,
               child: Icon(
                 _iconForType(notification.type),
                 color: AppTheme.accent,

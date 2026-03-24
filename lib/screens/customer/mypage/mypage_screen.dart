@@ -168,7 +168,7 @@ class _ProfileCard extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: AppTheme.surfaceHigh,
+        color: AppTheme.cardBackground,
         borderRadius: BorderRadius.circular(20),
         boxShadow: const [
           BoxShadow(
@@ -184,7 +184,7 @@ class _ProfileCard extends StatelessWidget {
             width: 48,
             height: 48,
             decoration: BoxDecoration(
-              color: AppTheme.surfaceVariant,
+              color: AppTheme.cardBackgroundVariant,
               borderRadius: BorderRadius.circular(24),
             ),
             child: const Icon(
@@ -203,7 +203,7 @@ class _ProfileCard extends StatelessWidget {
                   style: const TextStyle(
                     fontSize: 18,
                     fontWeight: FontWeight.w700,
-                    color: AppTheme.textPrimary,
+                    color: AppTheme.onCardPrimary,
                   ),
                 ),
                 if (email != null) ...[
@@ -212,7 +212,7 @@ class _ProfileCard extends StatelessWidget {
                     email!,
                     style: const TextStyle(
                       fontSize: 14,
-                      color: AppTheme.textSecondary,
+                      color: AppTheme.onCardSecondary,
                     ),
                   ),
                 ],
@@ -263,7 +263,7 @@ class _SettingsCard extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: AppTheme.surfaceHigh,
+        color: AppTheme.cardBackground,
         borderRadius: BorderRadius.circular(20),
         boxShadow: const [
           BoxShadow(
@@ -281,7 +281,7 @@ class _SettingsCard extends StatelessWidget {
             style: TextStyle(
               fontSize: 16,
               fontWeight: FontWeight.w700,
-              color: AppTheme.textPrimary,
+              color: AppTheme.onCardPrimary,
             ),
           ),
           _NotifyToggleRow(
@@ -290,14 +290,14 @@ class _SettingsCard extends StatelessWidget {
             value: notifyShop,
             onChanged: onNotifyShopChanged,
           ),
-          const Divider(height: 1, color: AppTheme.border),
+          const Divider(height: 1, color: AppTheme.cardBorder),
           _NotifyToggleRow(
             label: '커뮤니티 알림',
             description: '댓글, 답글, 신고 등',
             value: notifyCommunity,
             onChanged: onNotifyCommunityChanged,
           ),
-          const Divider(height: 1, color: AppTheme.border),
+          const Divider(height: 1, color: AppTheme.cardBorder),
           SizedBox(
             height: 48,
             child: Row(
@@ -307,14 +307,14 @@ class _SettingsCard extends StatelessWidget {
                   '연락처',
                   style: TextStyle(
                     fontSize: 15,
-                    color: AppTheme.textPrimary,
+                    color: AppTheme.onCardPrimary,
                   ),
                 ),
                 Text(
                   phone,
                   style: const TextStyle(
                     fontSize: 14,
-                    color: AppTheme.textSecondary,
+                    color: AppTheme.onCardSecondary,
                   ),
                 ),
               ],
@@ -354,14 +354,14 @@ class _NotifyToggleRow extends StatelessWidget {
                 label,
                 style: const TextStyle(
                   fontSize: 15,
-                  color: AppTheme.textPrimary,
+                  color: AppTheme.onCardPrimary,
                 ),
               ),
               Text(
                 description,
                 style: const TextStyle(
                   fontSize: 12,
-                  color: AppTheme.textSecondary,
+                  color: AppTheme.onCardSecondary,
                 ),
               ),
             ],
@@ -392,7 +392,7 @@ class _AdminMenuCard extends StatelessWidget {
           horizontal: 16,
         ),
         decoration: BoxDecoration(
-          color: AppTheme.surfaceHigh,
+          color: AppTheme.cardBackground,
           borderRadius: BorderRadius.circular(20),
           boxShadow: const [
             BoxShadow(
@@ -424,14 +424,14 @@ class _AdminMenuCard extends StatelessWidget {
               style: TextStyle(
                 fontSize: 15,
                 fontWeight: FontWeight.w500,
-                color: AppTheme.textPrimary,
+                color: AppTheme.onCardPrimary,
               ),
             ),
             const Spacer(),
             const Icon(
               Icons.chevron_right,
               size: 20,
-              color: AppTheme.textTertiary,
+              color: AppTheme.onCardTertiary,
             ),
           ],
         ),
@@ -453,7 +453,7 @@ class _ShopModeCard extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: AppTheme.surfaceHigh,
+        color: AppTheme.cardBackground,
         borderRadius: BorderRadius.circular(20),
         boxShadow: const [
           BoxShadow(
@@ -500,14 +500,14 @@ class _ShopModeCard extends StatelessWidget {
                             fontSize: 15,
                             color: isRejected
                                 ? AppTheme.error
-                                : AppTheme.textPrimary,
+                                : AppTheme.onCardPrimary,
                           ),
                         ),
                       ),
                       if (!isPending)
                         const Icon(
                           Icons.chevron_right,
-                          color: AppTheme.textTertiary,
+                          color: AppTheme.onCardTertiary,
                           size: 20,
                         ),
                     ],
@@ -517,7 +517,7 @@ class _ShopModeCard extends StatelessWidget {
                     shop?.rejectReason != null) ...[
                   const Divider(
                     height: 1,
-                    color: AppTheme.border,
+                    color: AppTheme.cardBorder,
                   ),
                   Padding(
                     padding: const EdgeInsets.only(
@@ -530,7 +530,7 @@ class _ShopModeCard extends StatelessWidget {
                         '사유: ${shop!.rejectReason}',
                         style: const TextStyle(
                           fontSize: 13,
-                          color: AppTheme.textSecondary,
+                          color: AppTheme.onCardSecondary,
                         ),
                       ),
                     ),
@@ -605,7 +605,7 @@ class _AppInfoCard extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: AppTheme.surfaceHigh,
+        color: AppTheme.cardBackground,
         borderRadius: BorderRadius.circular(20),
         boxShadow: const [
           BoxShadow(
@@ -624,14 +624,14 @@ class _AppInfoCard extends StatelessWidget {
               '앱 버전',
               style: TextStyle(
                 fontSize: 15,
-                color: AppTheme.textPrimary,
+                color: AppTheme.onCardPrimary,
               ),
             ),
             Text(
               '1.0.0',
               style: TextStyle(
                 fontSize: 14,
-                color: AppTheme.textTertiary,
+                color: AppTheme.onCardTertiary,
               ),
             ),
           ],
@@ -653,7 +653,7 @@ class _LogoutButton extends StatelessWidget {
       child: Container(
         height: 48,
         decoration: BoxDecoration(
-          color: AppTheme.surfaceHigh,
+          color: AppTheme.cardBackground,
           borderRadius: BorderRadius.circular(20),
           border: Border.all(
             color: AppTheme.error,

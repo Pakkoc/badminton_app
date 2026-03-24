@@ -128,7 +128,7 @@ class _ProfileSetupScreenState
                     decoration: InputDecoration(
                       labelText: '이름',
                       filled: true,
-                      fillColor: AppTheme.surfaceVariant,
+                      fillColor: AppTheme.cardBackgroundVariant,
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(14),
                         borderSide: const BorderSide(
