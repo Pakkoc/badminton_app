@@ -33,13 +33,10 @@ class CourtBackground extends StatelessWidget {
   }
 }
 
-/// 배드민턴 코트 경계선 장식.
+/// 배드민턴 코트 경계선 장식 (배경 전용).
 ///
-/// design-system.md 기준:
-/// - 좌측 경계선: x=22.5, width=2
-/// - 우측 경계선: x=365.5, width=2
-/// - 상단 서비스라인: y=44.19, height=2
-/// - 하단 경계선: y=831.81, height=2
+/// 좌우 라인을 화면 가장자리(8px)로 밀어 컨텐츠와 겹치지 않게 하고,
+/// 불투명도를 낮춰 은은한 배경 장식으로만 보이도록 한다.
 class _CourtLines extends StatelessWidget {
   const _CourtLines();
 
@@ -60,13 +57,13 @@ class _CourtLinePainter extends CustomPainter {
   void paint(Canvas canvas, Size size) {
     final paint = Paint()
       ..color = AppTheme.courtLine
-      ..strokeWidth = 2
+      ..strokeWidth = 1.5
       ..style = PaintingStyle.stroke;
 
-    // 좌/우 경계선 (화면 기준 비율 적용)
-    // Pencil 기준: 390px 폭에서 x=22.5, x=365.5
-    final leftX = size.width * (22.5 / 390);
-    final rightX = size.width * (365.5 / 390);
+    // 좌/우 경계선 — 화면 가장자리 8px 위치 (컨텐츠 패딩 28px보다 충분히 바깥)
+    const edgeInset = 8.0;
+    final leftX = edgeInset;
+    final rightX = size.width - edgeInset;
 
     // 좌측 경계선
     canvas.drawLine(
@@ -82,19 +79,17 @@ class _CourtLinePainter extends CustomPainter {
       paint,
     );
 
-    // 상하 대칭 — 하단 간격(12.19/844)을 기준으로 상단도 동일
+    // 상하 경계선
     final inset = size.height * (12.19 / 844);
     final topY = inset;
     final bottomY = size.height - inset;
 
-    // 상단 경계선
     canvas.drawLine(
       Offset(0, topY),
       Offset(size.width, topY),
       paint,
     );
 
-    // 하단 경계선
     canvas.drawLine(
       Offset(0, bottomY),
       Offset(size.width, bottomY),
