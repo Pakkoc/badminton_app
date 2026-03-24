@@ -92,10 +92,10 @@ class _ShopSettingsScreenState
         children: [
           Expanded(
             child: SingleChildScrollView(
-              // Scroll Content: padding [12,28], gap 12
+              // Scroll Content: padding [12,16], gap 12
               padding: const EdgeInsets.symmetric(
                 vertical: 12,
-                horizontal: 28,
+                horizontal: 16,
               ),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -593,10 +593,10 @@ class _SaveButton extends StatelessWidget {
           ),
         ),
       ),
-      // Save Bar: padding [12,28], top border #ffffff20 0.5px
+      // Save Bar: padding [12,16], top border #ffffff20 0.5px
       padding: const EdgeInsets.symmetric(
         vertical: 12,
-        horizontal: 28,
+        horizontal: 16,
       ),
       child: SizedBox(
         width: double.infinity,

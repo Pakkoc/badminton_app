@@ -133,7 +133,7 @@ class _DashboardBody extends StatelessWidget {
           // Stats Section: padding [16,28], gap 12
           SliverPadding(
             padding: const EdgeInsets.symmetric(
-              horizontal: 28,
+              horizontal: 16,
               vertical: 16,
             ),
             sliver: SliverToBoxAdapter(
@@ -153,14 +153,14 @@ class _DashboardBody extends StatelessWidget {
           ),
           // Recent Header: padding [24,28,8,28]
           SliverPadding(
-            padding: const EdgeInsets.fromLTRB(28, 24, 28, 8),
+            padding: const EdgeInsets.fromLTRB(16, 24, 16, 8),
             sliver: SliverToBoxAdapter(
               child: _RecentHeader(onViewAll: onViewAll),
             ),
           ),
           // Order Cards: padding [0,28], gap 10
           SliverPadding(
-            padding: const EdgeInsets.symmetric(horizontal: 28),
+            padding: const EdgeInsets.symmetric(horizontal: 16),
             sliver: SliverList(
               delegate: SliverChildListDelegate([
                 if (state.recentOrders.isEmpty)

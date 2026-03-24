@@ -120,7 +120,7 @@ class _PostCreateScreenState
             child: SingleChildScrollView(
               // Content Area: padding [16,28], gap 20
               padding: const EdgeInsets.symmetric(
-                horizontal: 28,
+                horizontal: 16,
                 vertical: 16,
               ),
               child: Column(
@@ -292,7 +292,7 @@ class _PostCreateScreenState
           // Bottom Bar: padding [16,28], fill #ffffff15, top border #ffffff20 0.5px
           Container(
             padding: const EdgeInsets.symmetric(
-              horizontal: 28,
+              horizontal: 16,
               vertical: 16,
             ),
             decoration: const BoxDecoration(

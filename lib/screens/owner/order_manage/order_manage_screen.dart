@@ -119,7 +119,7 @@ class _OrderManageScreenState
     return ListView.builder(
       // Order List: padding [12,28], gap 10
       padding: const EdgeInsets.symmetric(
-        horizontal: 28,
+        horizontal: 16,
         vertical: 12,
       ),
       itemCount: orders.length,
@@ -195,7 +195,7 @@ class _StatusFilterTabs extends StatelessWidget {
     return SingleChildScrollView(
       scrollDirection: Axis.horizontal,
       padding: const EdgeInsets.symmetric(
-        horizontal: 28,
+        horizontal: 16,
         vertical: 8,
       ),
       child: Row(

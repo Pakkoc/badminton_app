@@ -69,7 +69,7 @@ class _OrderCreateScreenState
                   // QR Section: padding [16,28], gap 8
                   Padding(
                     padding: const EdgeInsets.symmetric(
-                      horizontal: 28,
+                      horizontal: 16,
                       vertical: 16,
                     ),
                     child: SizedBox(
@@ -109,7 +109,7 @@ class _OrderCreateScreenState
                   // Divider: "또는" padding [0,28], gap 12
                   const Padding(
                     padding: EdgeInsets.symmetric(
-                      horizontal: 28,
+                      horizontal: 16,
                     ),
                     child: Row(
                       children: [
@@ -138,7 +138,7 @@ class _OrderCreateScreenState
                   // Search Wrap: padding [0,28]
                   Padding(
                     padding: const EdgeInsets.symmetric(
-                      horizontal: 28,
+                      horizontal: 16,
                     ),
                     child: Column(
                       crossAxisAlignment:
@@ -229,7 +229,7 @@ class _OrderCreateScreenState
                   if (state.selectedMember != null)
                     Padding(
                       padding: const EdgeInsets.symmetric(
-                        horizontal: 28,
+                        horizontal: 16,
                         vertical: 16,
                       ),
                       child: _SelectedMemberCard(
@@ -240,7 +240,7 @@ class _OrderCreateScreenState
                   // Work Info Form: padding [8,28], gap 12
                   Padding(
                     padding: const EdgeInsets.symmetric(
-                      horizontal: 28,
+                      horizontal: 16,
                       vertical: 8,
                     ),
                     child: Column(
@@ -321,7 +321,7 @@ class _OrderCreateScreenState
                   // Submit Wrap: padding [16,28]
                   Padding(
                     padding: const EdgeInsets.symmetric(
-                      horizontal: 28,
+                      horizontal: 16,
                       vertical: 16,
                     ),
                     child: SizedBox(

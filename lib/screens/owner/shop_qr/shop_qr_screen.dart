@@ -188,7 +188,7 @@ class _ShopQrScreenState extends ConsumerState<ShopQrScreen> {
             child: SingleChildScrollView(
               // Content Area: padding [16,28], gap 20
               padding: const EdgeInsets.symmetric(
-                horizontal: 28,
+                horizontal: 16,
                 vertical: 16,
               ),
               child: Column(

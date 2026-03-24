@@ -513,9 +513,9 @@ class _InventoryScreenState
     return RefreshIndicator(
       onRefresh: _loadInventory,
       child: GridView.builder(
-        // Grid: 28px left padding
+        // Grid: 16px left padding
         padding: const EdgeInsets.symmetric(
-          horizontal: 28,
+          horizontal: 16,
           vertical: 16,
         ),
         gridDelegate:

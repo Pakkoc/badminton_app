@@ -61,7 +61,7 @@ class _PostManageScreenState extends ConsumerState<PostManageScreen> {
                     : ListView.separated(
                         // Post List Content: padding [12,28], gap 12
                         padding: const EdgeInsets.symmetric(
-                          horizontal: 28,
+                          horizontal: 16,
                           vertical: 12,
                         ),
                         itemCount: state.posts.length,
