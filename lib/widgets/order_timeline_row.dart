@@ -15,12 +15,12 @@ class OrderTimelineRow extends StatelessWidget {
   static const _active = TextStyle(
     fontSize: 11,
     fontWeight: FontWeight.w500,
-    color: AppTheme.textTertiary,
+    color: AppTheme.onCardTertiary,
   );
 
   static const _inactive = TextStyle(
     fontSize: 11,
-    color: AppTheme.textHint,
+    color: AppTheme.onCardHint,
   );
 
   @override

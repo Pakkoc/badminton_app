@@ -280,7 +280,7 @@ class _FilterChip extends StatelessWidget {
                 fontWeight: FontWeight.w500,
                 color: isSelected
                     ? Colors.white
-                    : AppTheme.textSecondary,
+                    : AppTheme.onCardSecondary,
               ),
             ),
           ],

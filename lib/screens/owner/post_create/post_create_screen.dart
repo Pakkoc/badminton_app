@@ -145,11 +145,14 @@ class _PostCreateScreenState
                     height: 48,
                     child: TextField(
                       controller: _titleController,
+                      style: const TextStyle(
+                        color: AppTheme.onCardPrimary,
+                      ),
                       decoration: InputDecoration(
                         hintText: '제목을 입력하세요',
                         hintStyle: const TextStyle(
                           fontSize: 14,
-                          color: AppTheme.textTertiary,
+                          color: AppTheme.onCardHint,
                         ),
                         filled: true,
                         fillColor: AppTheme.surfaceHigh,
@@ -188,11 +191,14 @@ class _PostCreateScreenState
                     height: 160,
                     child: TextField(
                       controller: _contentController,
+                      style: const TextStyle(
+                        color: AppTheme.onCardPrimary,
+                      ),
                       decoration: InputDecoration(
                         hintText: '내용을 입력하세요',
                         hintStyle: const TextStyle(
                           fontSize: 14,
-                          color: AppTheme.textTertiary,
+                          color: AppTheme.onCardHint,
                         ),
                         filled: true,
                         fillColor: AppTheme.surfaceHigh,
@@ -390,7 +396,7 @@ class _CategoryChip extends StatelessWidget {
             fontWeight: FontWeight.w500,
             color: isSelected
                 ? AppTheme.activeTab
-                : AppTheme.textSecondary,
+                : AppTheme.onCardSecondary,
           ),
         ),
       ),

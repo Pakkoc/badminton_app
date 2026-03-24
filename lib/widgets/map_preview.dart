@@ -114,7 +114,12 @@ class MapPreview extends StatelessWidget {
             const SizedBox(height: 8),
             Text(
               '지도 미리보기',
-              style: Theme.of(context).textTheme.bodySmall,
+              style: Theme.of(context)
+                  .textTheme
+                  .bodySmall
+                  ?.copyWith(
+                    color: AppTheme.onCardTertiary,
+                  ),
             ),
           ],
         ),

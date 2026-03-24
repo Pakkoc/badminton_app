@@ -150,16 +150,19 @@ class _OrderCreateScreenState
                           height: 48,
                           child: TextField(
                             controller: _searchController,
+                            style: const TextStyle(
+                              color: AppTheme.onCardPrimary,
+                            ),
                             decoration: InputDecoration(
                               hintText: '회원 이름 또는 연락처 검색',
                               hintStyle: const TextStyle(
                                 fontSize: 14,
-                                color: AppTheme.textTertiary,
+                                color: AppTheme.onCardHint,
                               ),
                               prefixIcon: const Icon(
                                 Icons.search,
                                 size: 16,
-                                color: AppTheme.textTertiary,
+                                color: AppTheme.onCardTertiary,
                               ),
                               filled: true,
                               fillColor:
@@ -260,11 +263,14 @@ class _OrderCreateScreenState
                           height: 80,
                           child: TextField(
                             controller: _memoController,
+                            style: const TextStyle(
+                              color: AppTheme.onCardPrimary,
+                            ),
                             decoration: InputDecoration(
                               hintText: '메모 (선택사항)',
                               hintStyle: const TextStyle(
                                 fontSize: 14,
-                                color: AppTheme.textTertiary,
+                                color: AppTheme.onCardHint,
                               ),
                               filled: true,
                               fillColor:
@@ -381,8 +387,19 @@ class _SearchResultsList extends StatelessWidget {
           itemBuilder: (context, index) {
             final member = results[index];
             return ListTile(
-              title: Text(member.name),
-              subtitle: Text(member.phone),
+              title: Text(
+                member.name,
+                style: const TextStyle(
+                  color: AppTheme.onCardPrimary,
+                  fontWeight: FontWeight.w500,
+                ),
+              ),
+              subtitle: Text(
+                member.phone,
+                style: const TextStyle(
+                  color: AppTheme.onCardSecondary,
+                ),
+              ),
               onTap: () => onSelect(member),
             );
           },

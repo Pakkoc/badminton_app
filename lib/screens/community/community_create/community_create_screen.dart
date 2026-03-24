@@ -109,8 +109,14 @@ class _CommunityCreateScreenState
                           // 제목 입력 필드
                           TextField(
                             controller: _titleController,
+                            style: const TextStyle(
+                              color: AppTheme.onCardPrimary,
+                            ),
                             decoration: InputDecoration(
                               hintText: '제목을 입력하세요',
+                              hintStyle: const TextStyle(
+                                color: AppTheme.onCardHint,
+                              ),
                               filled: true,
                               fillColor: AppTheme.cardBackgroundVariant,
                               border: OutlineInputBorder(
@@ -148,8 +154,14 @@ class _CommunityCreateScreenState
                           // 내용 입력 필드
                           TextField(
                             controller: _contentController,
+                            style: const TextStyle(
+                              color: AppTheme.onCardPrimary,
+                            ),
                             decoration: InputDecoration(
                               hintText: '내용을 입력하세요',
+                              hintStyle: const TextStyle(
+                                color: AppTheme.onCardHint,
+                              ),
                               filled: true,
                               fillColor: AppTheme.cardBackgroundVariant,
                               border: OutlineInputBorder(

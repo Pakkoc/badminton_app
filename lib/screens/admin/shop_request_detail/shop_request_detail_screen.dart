@@ -244,7 +244,10 @@ class _SectionCard extends StatelessWidget {
             Text(
               title,
               style:
-                  Theme.of(context).textTheme.titleMedium,
+                  Theme.of(context).textTheme.titleMedium
+                      ?.copyWith(
+                    color: AppTheme.onCardPrimary,
+                  ),
             ),
             const SizedBox(height: 12),
             ...children,
@@ -287,7 +290,10 @@ class _InfoRow extends StatelessWidget {
             child: Text(
               value,
               style:
-                  Theme.of(context).textTheme.bodyMedium,
+                  Theme.of(context).textTheme.bodyMedium
+                      ?.copyWith(
+                    color: AppTheme.onCardPrimary,
+                  ),
             ),
           ),
         ],

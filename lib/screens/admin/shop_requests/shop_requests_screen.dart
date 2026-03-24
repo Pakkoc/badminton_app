@@ -133,7 +133,10 @@ class _ShopRequestCard extends StatelessWidget {
                   children: [
                     Text(
                       name,
-                      style: theme.textTheme.titleMedium,
+                      style: theme.textTheme.titleMedium
+                          ?.copyWith(
+                        color: AppTheme.onCardPrimary,
+                      ),
                     ),
                     const SizedBox(height: 4),
                     if (businessNumber != null)
@@ -141,11 +144,17 @@ class _ShopRequestCard extends StatelessWidget {
                         Formatters.businessNumber(
                           businessNumber!,
                         ),
-                        style: theme.textTheme.bodySmall,
+                        style: theme.textTheme.bodySmall
+                            ?.copyWith(
+                          color: AppTheme.onCardTertiary,
+                        ),
                       ),
                     Text(
                       '신청일: ${Formatters.date(createdAt)}',
-                      style: theme.textTheme.bodySmall,
+                      style: theme.textTheme.bodySmall
+                          ?.copyWith(
+                        color: AppTheme.onCardTertiary,
+                      ),
                     ),
                   ],
                 ),

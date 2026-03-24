@@ -450,10 +450,16 @@ class _CommunityDetailScreenState
                           Expanded(
                             child: TextField(
                               controller: _commentController,
+                              style: const TextStyle(
+                                color: AppTheme.onCardPrimary,
+                              ),
                               decoration: InputDecoration(
                                 hintText: _replyToName != null
                                     ? '답글을 입력하세요'
                                     : '댓글을 입력하세요',
+                                hintStyle: const TextStyle(
+                                  color: AppTheme.onCardHint,
+                                ),
                                 filled: true,
                                 fillColor: AppTheme.cardBackgroundVariant,
                                 border: OutlineInputBorder(
