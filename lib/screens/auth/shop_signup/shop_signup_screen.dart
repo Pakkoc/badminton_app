@@ -114,7 +114,7 @@ class _ShopSignupScreenState
       ),
       body: CourtBackground(
         child: SingleChildScrollView(
-          padding: const EdgeInsets.fromLTRB(28, 16, 28, 16),
+          padding: const EdgeInsets.fromLTRB(16, 16, 16, 16),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [

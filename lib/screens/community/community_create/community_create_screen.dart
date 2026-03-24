@@ -92,7 +92,7 @@ class _CommunityCreateScreenState
                 children: [
                   Expanded(
                     child: SingleChildScrollView(
-                      padding: const EdgeInsets.fromLTRB(28, 16, 28, 16),
+                      padding: const EdgeInsets.fromLTRB(16, 16, 16, 16),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
@@ -210,7 +210,7 @@ class _CommunityCreateScreenState
                   ),
                   // Bottom bar: 제출 버튼
                   Container(
-                    padding: const EdgeInsets.fromLTRB(28, 16, 28, 16),
+                    padding: const EdgeInsets.fromLTRB(16, 16, 16, 16),
                     decoration: const BoxDecoration(
                       color: AppTheme.surface,
                       border: Border(

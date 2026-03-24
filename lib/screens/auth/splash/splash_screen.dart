@@ -70,7 +70,7 @@ class _SplashScreenState extends ConsumerState<SplashScreen>
     return Scaffold(
       body: CourtBackground(
         child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 28),
+          padding: const EdgeInsets.symmetric(horizontal: 16),
           child: FadeTransition(
             opacity: _fadeAnimation,
             child: ScaleTransition(

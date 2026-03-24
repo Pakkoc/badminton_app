@@ -86,7 +86,7 @@ class _CommunityListScreenState extends ConsumerState<CommunityListScreen> {
               ref.invalidate(communityPostListProvider);
             },
             child: ListView.separated(
-              padding: const EdgeInsets.fromLTRB(28, 12, 28, 12),
+              padding: const EdgeInsets.fromLTRB(16, 12, 16, 12),
               itemCount: posts.length,
               separatorBuilder: (context, index) =>
                   const SizedBox(height: 12),

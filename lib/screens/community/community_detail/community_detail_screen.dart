@@ -229,7 +229,7 @@ class _CommunityDetailScreenState
             children: [
               Expanded(
                 child: SingleChildScrollView(
-                  padding: const EdgeInsets.fromLTRB(28, 20, 28, 32),
+                  padding: const EdgeInsets.fromLTRB(16, 20, 16, 32),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -410,7 +410,7 @@ class _CommunityDetailScreenState
               ),
               // 댓글 입력창
               Container(
-                padding: const EdgeInsets.fromLTRB(28, 8, 28, 8),
+                padding: const EdgeInsets.fromLTRB(16, 8, 16, 8),
                 decoration: const BoxDecoration(
                   color: AppTheme.surface,
                   border: Border(

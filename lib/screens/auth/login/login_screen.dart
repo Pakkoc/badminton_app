@@ -43,7 +43,7 @@ class LoginScreen extends ConsumerWidget {
         child: SafeArea(
           child: Padding(
             padding:
-                const EdgeInsets.fromLTRB(28, 24, 28, 64),
+                const EdgeInsets.fromLTRB(16, 24, 16, 64),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
