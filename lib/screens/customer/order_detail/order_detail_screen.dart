@@ -61,7 +61,7 @@ class OrderDetailScreen extends ConsumerWidget {
 
     return SingleChildScrollView(
       padding: const EdgeInsets.symmetric(
-        horizontal: 28,
+        horizontal: 16,
         vertical: 16,
       ),
       child: Column(

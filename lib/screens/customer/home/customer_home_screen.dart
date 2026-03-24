@@ -168,7 +168,7 @@ class _OrderListBody extends StatelessWidget {
       onRefresh: onRefresh,
       child: ListView.builder(
         padding: const EdgeInsets.symmetric(
-          horizontal: 28,
+          horizontal: 16,
           vertical: 16,
         ),
         itemCount: state.activeOrders.length +
@@ -424,7 +424,7 @@ class _ShimmerLoading extends StatelessWidget {
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.symmetric(
-        horizontal: 28,
+        horizontal: 16,
         vertical: 16,
       ),
       child: Column(

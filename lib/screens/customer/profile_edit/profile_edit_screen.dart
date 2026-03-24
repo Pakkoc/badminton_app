@@ -74,7 +74,7 @@ class _ProfileEditScreenState
             Expanded(
               child: SingleChildScrollView(
                 padding: const EdgeInsets.symmetric(
-                  horizontal: 28,
+                  horizontal: 16,
                   vertical: 16,
                 ),
                 child: Column(
@@ -123,7 +123,7 @@ class _ProfileEditScreenState
                 ),
               ),
               padding: const EdgeInsets.symmetric(
-                horizontal: 28,
+                horizontal: 16,
                 vertical: 16,
               ),
               child: SizedBox(

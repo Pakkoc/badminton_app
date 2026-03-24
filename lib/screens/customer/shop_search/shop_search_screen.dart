@@ -67,7 +67,7 @@ class _ShopSearchScreenState
         ),
         actions: [
           Padding(
-            padding: const EdgeInsets.only(right: 28),
+            padding: const EdgeInsets.only(right: 16),
             child: _ViewModeToggle(
               viewMode: state.viewMode,
               onChanged: (mode) => ref
@@ -322,7 +322,7 @@ class _ShopListView extends StatelessWidget {
   Widget build(BuildContext context) {
     return ListView.builder(
       padding: const EdgeInsets.symmetric(
-        horizontal: 28,
+        horizontal: 16,
         vertical: 12,
       ),
       itemCount: shops.length,
@@ -648,7 +648,7 @@ class _BottomSheetCard extends StatelessWidget {
             ),
           ),
           Padding(
-            padding: const EdgeInsets.fromLTRB(28, 12, 28, 16),
+            padding: const EdgeInsets.fromLTRB(16, 12, 16, 16),
             child: _ShopCard(
               shop: shop,
               counts: counts,

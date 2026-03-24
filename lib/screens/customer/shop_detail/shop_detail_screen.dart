@@ -108,7 +108,7 @@ class _ShopDetailScreenState
                 // 섹션 구분선
                 const Padding(
                   padding: EdgeInsets.symmetric(
-                    horizontal: 28,
+                    horizontal: 16,
                     vertical: 8,
                   ),
                   child: Divider(
@@ -192,7 +192,7 @@ class _ShopNameSection extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.fromLTRB(28, 20, 28, 0),
+      padding: const EdgeInsets.fromLTRB(16, 20, 16, 0),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -250,7 +250,7 @@ class _OrderStatusCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.fromLTRB(28, 24, 28, 0),
+      padding: const EdgeInsets.fromLTRB(16, 24, 16, 0),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -355,7 +355,7 @@ class _ContactSection extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.fromLTRB(28, 24, 28, 0),
+      padding: const EdgeInsets.fromLTRB(16, 24, 16, 0),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -455,7 +455,7 @@ class _DirectionsButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.fromLTRB(28, 24, 28, 0),
+      padding: const EdgeInsets.fromLTRB(16, 24, 16, 0),
       child: SizedBox(
         width: double.infinity,
         height: 48,
@@ -585,7 +585,7 @@ class _NoticeTab extends StatelessWidget {
 
     return ListView.builder(
       padding: const EdgeInsets.symmetric(
-        horizontal: 28,
+        horizontal: 16,
         vertical: 12,
       ),
       itemCount: posts.length,
@@ -689,7 +689,7 @@ class _EventTab extends StatelessWidget {
 
     return ListView.builder(
       padding: const EdgeInsets.symmetric(
-        horizontal: 28,
+        horizontal: 16,
         vertical: 12,
       ),
       itemCount: posts.length,
@@ -866,7 +866,7 @@ class _InventoryTab extends StatelessWidget {
         Expanded(
           child: GridView.builder(
             padding: const EdgeInsets.symmetric(
-              horizontal: 28,
+              horizontal: 16,
               vertical: 12,
             ),
             gridDelegate:

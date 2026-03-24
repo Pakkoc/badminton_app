@@ -145,7 +145,7 @@ class _NotificationTile extends StatelessWidget {
       onTap: onTap,
       child: Container(
         padding: const EdgeInsets.symmetric(
-          horizontal: 28,
+          horizontal: 16,
           vertical: 16,
         ),
         decoration: BoxDecoration(

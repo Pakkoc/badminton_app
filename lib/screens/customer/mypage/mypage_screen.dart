@@ -48,7 +48,7 @@ class _MypageScreenState extends ConsumerState<MypageScreen> {
 
           return ListView(
             padding: const EdgeInsets.symmetric(
-              horizontal: 28,
+              horizontal: 16,
               vertical: 16,
             ),
             children: [

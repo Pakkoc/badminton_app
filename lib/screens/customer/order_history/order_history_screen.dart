@@ -89,7 +89,7 @@ class OrderHistoryScreen extends ConsumerWidget {
           .loadHistory(),
       child: ListView.builder(
         padding: const EdgeInsets.symmetric(
-          horizontal: 28,
+          horizontal: 16,
           vertical: 16,
         ),
         itemCount: state.orders.length,

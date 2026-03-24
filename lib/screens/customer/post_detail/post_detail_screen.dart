@@ -97,7 +97,7 @@ class _PostContent extends StatelessWidget {
     final post = state.post!;
 
     return SingleChildScrollView(
-      padding: const EdgeInsets.fromLTRB(28, 20, 28, 32),
+      padding: const EdgeInsets.fromLTRB(16, 20, 16, 32),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [

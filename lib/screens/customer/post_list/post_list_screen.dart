@@ -81,7 +81,7 @@ class _PostListScreenState
     return ListView.builder(
       itemCount: state.posts.length,
       padding: const EdgeInsets.symmetric(
-        horizontal: 28,
+        horizontal: 16,
         vertical: 12,
       ),
       itemBuilder: (context, index) {
