@@ -532,7 +532,7 @@ class _TabBarDelegate extends SliverPersistentHeaderDelegate {
       child: TabBar(
         controller: tabController,
         labelColor: AppTheme.activeTab,
-        unselectedLabelColor: AppTheme.textTertiary,
+        unselectedLabelColor: AppTheme.onCardTertiary,
         indicatorColor: AppTheme.activeTab,
         indicatorWeight: 2,
         isScrollable: false,
@@ -825,7 +825,7 @@ class _EventTab extends StatelessWidget {
       child: const Icon(
         Icons.event,
         size: 40,
-        color: AppTheme.textTertiary,
+        color: AppTheme.onCardTertiary,
       ),
     );
   }
@@ -961,7 +961,7 @@ class _InventoryCard extends StatelessWidget {
         child: Icon(
           Icons.inventory_2,
           size: 40,
-          color: AppTheme.textTertiary,
+          color: AppTheme.onCardTertiary,
         ),
       ),
     );

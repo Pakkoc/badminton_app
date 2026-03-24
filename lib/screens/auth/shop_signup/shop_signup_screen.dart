@@ -135,8 +135,14 @@ class _ShopSignupScreenState
               const SizedBox(height: 16),
               TextFormField(
                 controller: _shopNameController,
+                style: const TextStyle(
+                  color: AppTheme.onCardPrimary,
+                ),
                 decoration: InputDecoration(
                   labelText: '샵 이름',
+                  labelStyle: const TextStyle(
+                    color: AppTheme.onCardTertiary,
+                  ),
                   filled: true,
                   fillColor: AppTheme.cardBackgroundVariant,
                   border: OutlineInputBorder(
@@ -186,8 +192,14 @@ class _ShopSignupScreenState
               const SizedBox(height: 16),
               TextFormField(
                 controller: _descriptionController,
+                style: const TextStyle(
+                  color: AppTheme.onCardPrimary,
+                ),
                 decoration: InputDecoration(
                   labelText: '소개글',
+                  labelStyle: const TextStyle(
+                    color: AppTheme.onCardTertiary,
+                  ),
                   alignLabelWithHint: true,
                   filled: true,
                   fillColor: AppTheme.cardBackgroundVariant,
@@ -347,8 +359,14 @@ class _AddressField extends StatelessWidget {
     return TextFormField(
       controller: controller,
       readOnly: true,
+      style: const TextStyle(
+        color: AppTheme.onCardPrimary,
+      ),
       decoration: InputDecoration(
         labelText: '주소',
+        labelStyle: const TextStyle(
+          color: AppTheme.onCardTertiary,
+        ),
         filled: true,
         fillColor: AppTheme.cardBackgroundVariant,
         border: OutlineInputBorder(
@@ -388,9 +406,18 @@ class _BusinessNumberField extends StatelessWidget {
   Widget build(BuildContext context) {
     return TextFormField(
       controller: controller,
+      style: const TextStyle(
+        color: AppTheme.onCardPrimary,
+      ),
       decoration: InputDecoration(
         labelText: '사업자등록번호',
+        labelStyle: const TextStyle(
+          color: AppTheme.onCardTertiary,
+        ),
         hintText: '000-00-00000',
+        hintStyle: const TextStyle(
+          color: AppTheme.onCardHint,
+        ),
         filled: true,
         fillColor: AppTheme.cardBackgroundVariant,
         border: OutlineInputBorder(

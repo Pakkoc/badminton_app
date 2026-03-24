@@ -178,6 +178,9 @@ class _NotificationTile extends StatelessWidget {
                       fontWeight: notification.isRead
                           ? FontWeight.normal
                           : FontWeight.bold,
+                      color: notification.isRead
+                          ? AppTheme.textPrimary
+                          : AppTheme.onCardPrimary,
                     ),
                   ),
                   const SizedBox(height: 4),
@@ -185,7 +188,12 @@ class _NotificationTile extends StatelessWidget {
                     notification.body,
                     style: Theme.of(context)
                         .textTheme
-                        .bodyMedium,
+                        .bodyMedium
+                        ?.copyWith(
+                          color: notification.isRead
+                              ? null
+                              : AppTheme.onCardSecondary,
+                        ),
                   ),
                 ],
               ),
@@ -196,7 +204,12 @@ class _NotificationTile extends StatelessWidget {
                 notification.createdAt,
               ),
               style:
-                  Theme.of(context).textTheme.bodySmall,
+                  Theme.of(context).textTheme.bodySmall
+                      ?.copyWith(
+                        color: notification.isRead
+                            ? null
+                            : AppTheme.onCardTertiary,
+                      ),
             ),
           ],
         ),

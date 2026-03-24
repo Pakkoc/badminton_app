@@ -204,7 +204,7 @@ class _ToggleSegment extends StatelessWidget {
               ?.copyWith(
                 color: isActive
                     ? Colors.white
-                    : AppTheme.textSecondary,
+                    : AppTheme.onCardSecondary,
                 fontWeight: FontWeight.w500,
               ),
         ),

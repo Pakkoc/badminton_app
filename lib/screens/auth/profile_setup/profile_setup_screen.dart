@@ -125,8 +125,14 @@ class _ProfileSetupScreenState
                   // 이름 입력 필드
                   TextFormField(
                     controller: _nameController,
+                    style: const TextStyle(
+                      color: AppTheme.onCardPrimary,
+                    ),
                     decoration: InputDecoration(
                       labelText: '이름',
+                      labelStyle: const TextStyle(
+                        color: AppTheme.onCardTertiary,
+                      ),
                       filled: true,
                       fillColor: AppTheme.cardBackgroundVariant,
                       border: OutlineInputBorder(
