@@ -146,7 +146,7 @@ class _ViewModeToggle extends StatelessWidget {
     return Container(
       height: 32,
       decoration: BoxDecoration(
-        color: const Color(0x12FFFFFF),
+        color: AppTheme.surfaceVariant,
         borderRadius: BorderRadius.circular(14),
       ),
       child: Row(
@@ -366,7 +366,7 @@ class _ShopCard extends StatelessWidget {
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(20),
         side: const BorderSide(
-          color: Color(0x30FFFFFF),
+          color: AppTheme.border,
           width: 1,
         ),
       ),
@@ -623,7 +623,7 @@ class _BottomSheetCard extends StatelessWidget {
           top: Radius.circular(20),
         ),
         border: Border.all(
-          color: const Color(0x30FFFFFF),
+          color: AppTheme.border,
           width: 0.5,
         ),
         boxShadow: const [

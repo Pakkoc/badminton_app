@@ -366,7 +366,7 @@ class _CommunityDetailScreenState
                       ),
                       const SizedBox(height: 8),
                       const Divider(
-                        color: Color(0x20FFFFFF),
+                        color: AppTheme.border,
                         height: 1,
                         thickness: 1,
                       ),
@@ -412,10 +412,10 @@ class _CommunityDetailScreenState
               Container(
                 padding: const EdgeInsets.fromLTRB(28, 8, 28, 8),
                 decoration: const BoxDecoration(
-                  color: Color(0x15FFFFFF),
+                  color: AppTheme.surface,
                   border: Border(
                     top: BorderSide(
-                      color: Color(0x20FFFFFF),
+                      color: AppTheme.border,
                       width: 0.5,
                     ),
                   ),

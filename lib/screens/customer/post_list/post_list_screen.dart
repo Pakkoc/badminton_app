@@ -125,7 +125,7 @@ class _PostCard extends StatelessWidget {
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(20),
         side: const BorderSide(
-          color: Color(0x20FFFFFF),
+          color: AppTheme.border,
           width: 0.5,
         ),
       ),

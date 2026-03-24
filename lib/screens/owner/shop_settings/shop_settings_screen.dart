@@ -101,26 +101,9 @@ class _ShopSettingsScreenState
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   // 관리 메뉴 섹션
-                  Row(
-                    children: [
-                      const Icon(
-                        Icons.menu,
-                        color: AppTheme.accent,
-                        size: 20,
-                      ),
-                      const SizedBox(width: 6),
-                      Text(
-                        '관리 메뉴',
-                        style: Theme.of(context)
-                            .textTheme
-                            .titleMedium
-                            ?.copyWith(
-                              fontSize: 16,
-                              fontWeight: FontWeight.w600,
-                              color: AppTheme.textPrimary,
-                            ),
-                      ),
-                    ],
+                  const _SectionHeader(
+                    icon: Icons.menu,
+                    label: '관리 메뉴',
                   ),
                   const SizedBox(height: 12),
                   Container(
@@ -197,7 +180,7 @@ class _ShopSettingsScreenState
 
                   // 샵 정보 카드
                   Container(
-                    padding: const EdgeInsets.all(14),
+                    padding: const EdgeInsets.all(20),
                     decoration: BoxDecoration(
                       color: AppTheme.surfaceHigh,
                       borderRadius: BorderRadius.circular(20),
@@ -212,24 +195,24 @@ class _ShopSettingsScreenState
                           onChanged: notifier.updateShopName,
                           validator: Validators.shopName,
                         ),
-                        const SizedBox(height: 12),
+                        const SizedBox(height: 16),
                         _AddressSettingsField(
                           controller: _addressController,
                           onSearch: () =>
                               notifier.searchAddress(context),
                         ),
-                        const SizedBox(height: 12),
+                        const SizedBox(height: 16),
                         MapPreview(
                           latitude: state.shop?.latitude,
                           longitude: state.shop?.longitude,
                         ),
-                        const SizedBox(height: 12),
+                        const SizedBox(height: 16),
                         _PhoneSettingsField(
                           label: '전화번호',
                           controller: _phoneController,
                           onChanged: notifier.updatePhone,
                         ),
-                        const SizedBox(height: 12),
+                        const SizedBox(height: 16),
                         _SettingsField(
                           label: '소개글',
                           controller: _descriptionController,
@@ -252,7 +235,7 @@ class _ShopSettingsScreenState
 
                   // 사장님 정보 카드
                   Container(
-                    padding: const EdgeInsets.all(14),
+                    padding: const EdgeInsets.all(20),
                     decoration: BoxDecoration(
                       color: AppTheme.surfaceHigh,
                       borderRadius: BorderRadius.circular(20),
@@ -266,7 +249,7 @@ class _ShopSettingsScreenState
                           controller: _ownerNameController,
                           onChanged: notifier.updateOwnerName,
                         ),
-                        const SizedBox(height: 12),
+                        const SizedBox(height: 16),
                         _PhoneSettingsField(
                           label: '전화번호',
                           controller: _ownerPhoneController,
@@ -346,9 +329,9 @@ class _SettingsField extends StatelessWidget {
                 color: AppTheme.textTertiary,
               ),
               filled: true,
-              fillColor: AppTheme.primaryContainer,
+              fillColor: AppTheme.surfaceVariant,
               border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(8),
+                borderRadius: BorderRadius.circular(14),
                 borderSide: BorderSide.none,
               ),
               contentPadding: const EdgeInsets.symmetric(
@@ -394,25 +377,25 @@ class _PhoneSettingsField extends StatelessWidget {
           data: Theme.of(context).copyWith(
             inputDecorationTheme: const InputDecorationTheme(
               filled: true,
-              fillColor: AppTheme.primaryContainer,
+              fillColor: AppTheme.surfaceVariant,
               border: OutlineInputBorder(
-                borderRadius: BorderRadius.all(Radius.circular(8)),
+                borderRadius: BorderRadius.all(Radius.circular(14)),
                 borderSide: BorderSide.none,
               ),
               enabledBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.all(Radius.circular(8)),
+                borderRadius: BorderRadius.all(Radius.circular(14)),
                 borderSide: BorderSide.none,
               ),
               focusedBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.all(Radius.circular(8)),
+                borderRadius: BorderRadius.all(Radius.circular(14)),
                 borderSide: BorderSide.none,
               ),
               errorBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.all(Radius.circular(8)),
+                borderRadius: BorderRadius.all(Radius.circular(14)),
                 borderSide: BorderSide(color: AppTheme.error),
               ),
               focusedErrorBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.all(Radius.circular(8)),
+                borderRadius: BorderRadius.all(Radius.circular(14)),
                 borderSide: BorderSide(color: AppTheme.error),
               ),
               contentPadding: EdgeInsets.symmetric(
@@ -472,9 +455,9 @@ class _AddressSettingsField extends StatelessWidget {
                 color: AppTheme.textTertiary,
               ),
               filled: true,
-              fillColor: AppTheme.primaryContainer,
+              fillColor: AppTheme.surfaceVariant,
               border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(8),
+                borderRadius: BorderRadius.circular(14),
                 borderSide: BorderSide.none,
               ),
               contentPadding: const EdgeInsets.symmetric(
@@ -605,7 +588,7 @@ class _SaveButton extends StatelessWidget {
       decoration: const BoxDecoration(
         border: Border(
           top: BorderSide(
-            color: Color(0x20FFFFFF),
+            color: AppTheme.border,
             width: 0.5,
           ),
         ),

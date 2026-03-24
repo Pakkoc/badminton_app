@@ -200,10 +200,10 @@ class _CommunityCreateScreenState
                   Container(
                     padding: const EdgeInsets.fromLTRB(28, 16, 28, 16),
                     decoration: const BoxDecoration(
-                      color: Color(0x15FFFFFF),
+                      color: AppTheme.surface,
                       border: Border(
                         top: BorderSide(
-                          color: Color(0x20FFFFFF),
+                          color: AppTheme.border,
                           width: 0.5,
                         ),
                       ),

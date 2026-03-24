@@ -163,12 +163,12 @@ class _OrderCreateScreenState
                               ),
                               filled: true,
                               fillColor:
-                                  const Color(0x12FFFFFF),
+                                  AppTheme.surfaceVariant,
                               border: OutlineInputBorder(
                                 borderRadius:
                                     BorderRadius.circular(14),
                                 borderSide: const BorderSide(
-                                  color: Color(0x20FFFFFF),
+                                  color: AppTheme.border,
                                 ),
                               ),
                               enabledBorder:
@@ -176,7 +176,7 @@ class _OrderCreateScreenState
                                 borderRadius:
                                     BorderRadius.circular(14),
                                 borderSide: const BorderSide(
-                                  color: Color(0x20FFFFFF),
+                                  color: AppTheme.border,
                                 ),
                               ),
                               focusedBorder:
@@ -268,12 +268,12 @@ class _OrderCreateScreenState
                               ),
                               filled: true,
                               fillColor:
-                                  const Color(0x12FFFFFF),
+                                  AppTheme.surfaceVariant,
                               border: OutlineInputBorder(
                                 borderRadius:
                                     BorderRadius.circular(14),
                                 borderSide: const BorderSide(
-                                  color: Color(0x20FFFFFF),
+                                  color: AppTheme.border,
                                 ),
                               ),
                               enabledBorder:
@@ -281,7 +281,7 @@ class _OrderCreateScreenState
                                 borderRadius:
                                     BorderRadius.circular(14),
                                 borderSide: const BorderSide(
-                                  color: Color(0x20FFFFFF),
+                                  color: AppTheme.border,
                                 ),
                               ),
                               focusedBorder:

@@ -122,7 +122,7 @@ class _LargeStatusBadge extends StatelessWidget {
       height: 72,
       padding: const EdgeInsets.symmetric(horizontal: 24),
       decoration: BoxDecoration(
-        color: const Color(0x10FFFFFF),
+        color: AppTheme.surfaceVariant,
         borderRadius: BorderRadius.circular(20),
         border: Border.all(
           color: fgColor.withValues(alpha: 0.4),

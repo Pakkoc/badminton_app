@@ -132,13 +132,13 @@ class _ProfileSetupScreenState
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(14),
                         borderSide: const BorderSide(
-                          color: Color(0x20FFFFFF),
+                          color: AppTheme.border,
                         ),
                       ),
                       enabledBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(14),
                         borderSide: const BorderSide(
-                          color: Color(0x20FFFFFF),
+                          color: AppTheme.border,
                         ),
                       ),
                       contentPadding: const EdgeInsets.symmetric(

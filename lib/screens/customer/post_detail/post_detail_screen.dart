@@ -150,7 +150,7 @@ class _PostContent extends StatelessWidget {
           ),
           const SizedBox(height: 16),
           const Divider(
-            color: Color(0x30FFFFFF),
+            color: AppTheme.border,
             height: 1,
             thickness: 1,
           ),
@@ -232,14 +232,14 @@ class _ImageGallery extends StatelessWidget {
               fit: BoxFit.cover,
               placeholder: (context, url) => Container(
                 height: 200,
-                color: const Color(0x20FFFFFF),
+                color: AppTheme.border,
                 child: const Center(
                   child: CircularProgressIndicator(),
                 ),
               ),
               errorWidget: (context, url, error) => Container(
                 height: 200,
-                color: const Color(0x20FFFFFF),
+                color: AppTheme.border,
                 child: const Icon(
                   Icons.broken_image_outlined,
                   color: AppTheme.textTertiary,

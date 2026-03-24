@@ -158,7 +158,7 @@ class _CategoryTabs extends StatelessWidget {
       decoration: const BoxDecoration(
         border: Border(
           bottom: BorderSide(
-            color: Color(0x30FFFFFF),
+            color: AppTheme.border,
             width: 0.5,
           ),
         ),

@@ -138,17 +138,17 @@ class _ShopSignupScreenState
                 decoration: InputDecoration(
                   labelText: '샵 이름',
                   filled: true,
-                  fillColor: const Color(0x12FFFFFF),
+                  fillColor: AppTheme.surfaceVariant,
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(14),
                     borderSide: const BorderSide(
-                      color: Color(0x20FFFFFF),
+                      color: AppTheme.border,
                     ),
                   ),
                   enabledBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(14),
                     borderSide: const BorderSide(
-                      color: Color(0x20FFFFFF),
+                      color: AppTheme.border,
                     ),
                   ),
                 ),
@@ -190,17 +190,17 @@ class _ShopSignupScreenState
                   labelText: '소개글',
                   alignLabelWithHint: true,
                   filled: true,
-                  fillColor: const Color(0x12FFFFFF),
+                  fillColor: AppTheme.surfaceVariant,
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(14),
                     borderSide: const BorderSide(
-                      color: Color(0x20FFFFFF),
+                      color: AppTheme.border,
                     ),
                   ),
                   enabledBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(14),
                     borderSide: const BorderSide(
-                      color: Color(0x20FFFFFF),
+                      color: AppTheme.border,
                     ),
                   ),
                 ),
@@ -350,17 +350,17 @@ class _AddressField extends StatelessWidget {
       decoration: InputDecoration(
         labelText: '주소',
         filled: true,
-        fillColor: const Color(0x12FFFFFF),
+        fillColor: AppTheme.surfaceVariant,
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(14),
           borderSide: const BorderSide(
-            color: Color(0x20FFFFFF),
+            color: AppTheme.border,
           ),
         ),
         enabledBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(14),
           borderSide: const BorderSide(
-            color: Color(0x20FFFFFF),
+            color: AppTheme.border,
           ),
         ),
         suffixIcon: IconButton(
@@ -392,17 +392,17 @@ class _BusinessNumberField extends StatelessWidget {
         labelText: '사업자등록번호',
         hintText: '000-00-00000',
         filled: true,
-        fillColor: const Color(0x12FFFFFF),
+        fillColor: AppTheme.surfaceVariant,
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(14),
           borderSide: const BorderSide(
-            color: Color(0x20FFFFFF),
+            color: AppTheme.border,
           ),
         ),
         enabledBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(14),
           borderSide: const BorderSide(
-            color: Color(0x20FFFFFF),
+            color: AppTheme.border,
           ),
         ),
       ),
