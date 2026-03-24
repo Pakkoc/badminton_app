@@ -455,7 +455,7 @@ class _CommunityDetailScreenState
                                     ? '답글을 입력하세요'
                                     : '댓글을 입력하세요',
                                 filled: true,
-                                fillColor: AppTheme.surfaceHigh,
+                                fillColor: AppTheme.cardBackgroundVariant,
                                 border: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(20),
                                   borderSide: BorderSide.none,

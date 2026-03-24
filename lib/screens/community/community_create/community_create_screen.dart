@@ -112,7 +112,7 @@ class _CommunityCreateScreenState
                             decoration: InputDecoration(
                               hintText: '제목을 입력하세요',
                               filled: true,
-                              fillColor: AppTheme.surfaceHigh,
+                              fillColor: AppTheme.cardBackgroundVariant,
                               border: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(14),
                                 borderSide: BorderSide.none,
@@ -151,7 +151,7 @@ class _CommunityCreateScreenState
                             decoration: InputDecoration(
                               hintText: '내용을 입력하세요',
                               filled: true,
-                              fillColor: AppTheme.surfaceHigh,
+                              fillColor: AppTheme.cardBackgroundVariant,
                               border: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(14),
                                 borderSide: BorderSide.none,

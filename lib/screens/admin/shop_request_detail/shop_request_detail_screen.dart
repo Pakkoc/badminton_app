@@ -279,7 +279,7 @@ class _InfoRow extends StatelessWidget {
                   .textTheme
                   .bodyMedium
                   ?.copyWith(
-                    color: AppTheme.textTertiary,
+                    color: AppTheme.onCardTertiary,
                   ),
             ),
           ),

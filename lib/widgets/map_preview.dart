@@ -75,7 +75,7 @@ class MapPreview extends StatelessWidget {
 
   Widget _buildEmpty(BuildContext context) {
     return Container(
-      color: AppTheme.surfaceHigh,
+      color: AppTheme.cardBackground,
       child: Center(
         child: Column(
           mainAxisSize: MainAxisSize.min,
@@ -83,14 +83,14 @@ class MapPreview extends StatelessWidget {
             const Icon(
               Icons.map_outlined,
               size: 32,
-              color: AppTheme.textTertiary,
+              color: AppTheme.onCardTertiary,
             ),
             const SizedBox(height: 8),
             Text(
               emptyText,
               style: const TextStyle(
                 fontSize: 13,
-                color: AppTheme.textTertiary,
+                color: AppTheme.onCardTertiary,
               ),
             ),
           ],
@@ -101,7 +101,7 @@ class MapPreview extends StatelessWidget {
 
   Widget _buildPlaceholder(BuildContext context) {
     return Container(
-      color: AppTheme.surfaceHigh,
+      color: AppTheme.cardBackground,
       child: Center(
         child: Column(
           mainAxisSize: MainAxisSize.min,

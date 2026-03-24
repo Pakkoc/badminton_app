@@ -117,7 +117,7 @@ class _ShopRequestCard extends StatelessWidget {
                 width: 48,
                 height: 48,
                 decoration: BoxDecoration(
-                  color: AppTheme.surfaceHigh,
+                  color: AppTheme.cardBackground,
                   borderRadius: BorderRadius.circular(12),
                 ),
                 child: const Icon(
@@ -152,7 +152,7 @@ class _ShopRequestCard extends StatelessWidget {
               ),
               const Icon(
                 Icons.chevron_right,
-                color: AppTheme.textTertiary,
+                color: AppTheme.onCardTertiary,
               ),
             ],
           ),

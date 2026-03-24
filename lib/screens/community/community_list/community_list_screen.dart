@@ -118,10 +118,10 @@ class _PostCard extends StatelessWidget {
       child: Container(
         padding: const EdgeInsets.all(16),
         decoration: BoxDecoration(
-          color: AppTheme.surfaceHigh,
+          color: AppTheme.cardBackground,
           borderRadius: BorderRadius.circular(20),
           border: Border.all(
-            color: AppTheme.border,
+            color: AppTheme.cardBorder,
             width: 0.5,
           ),
           boxShadow: const [
@@ -143,21 +143,25 @@ class _PostCard extends StatelessWidget {
                     post.title,
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
-                    style: Theme.of(context).textTheme.titleSmall,
+                    style: Theme.of(context).textTheme.titleSmall?.copyWith(
+                          color: AppTheme.onCardPrimary,
+                        ),
                   ),
                   const SizedBox(height: 6),
                   Row(
                     children: [
                       Text(
                         post.authorName ?? '알 수 없음',
-                        style: Theme.of(context).textTheme.bodySmall,
+                        style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                              color: AppTheme.onCardSecondary,
+                            ),
                       ),
                       const SizedBox(width: 8),
                       Text(
                         Formatters.relativeTime(post.createdAt),
                         style:
                             Theme.of(context).textTheme.bodySmall?.copyWith(
-                                  color: AppTheme.textTertiary,
+                                  color: AppTheme.onCardTertiary,
                                 ),
                       ),
                       const Spacer(),
@@ -165,12 +169,14 @@ class _PostCard extends StatelessWidget {
                         const Icon(
                           Icons.chat_bubble_outline,
                           size: 14,
-                          color: AppTheme.textTertiary,
+                          color: AppTheme.onCardTertiary,
                         ),
                         const SizedBox(width: 2),
                         Text(
                           '${post.commentCount}',
-                          style: Theme.of(context).textTheme.bodySmall,
+                          style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                                color: AppTheme.onCardSecondary,
+                              ),
                         ),
                         const SizedBox(width: 8),
                       ],
@@ -178,12 +184,14 @@ class _PostCard extends StatelessWidget {
                         const Icon(
                           Icons.favorite_border,
                           size: 14,
-                          color: AppTheme.textTertiary,
+                          color: AppTheme.onCardTertiary,
                         ),
                         const SizedBox(width: 2),
                         Text(
                           '${post.likeCount}',
-                          style: Theme.of(context).textTheme.bodySmall,
+                          style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                                color: AppTheme.onCardSecondary,
+                              ),
                         ),
                       ],
                     ],
@@ -203,7 +211,7 @@ class _PostCard extends StatelessWidget {
                   errorBuilder: (context, err, stack) => const SizedBox(
                     width: 60,
                     height: 60,
-                    child: Icon(Icons.image, color: AppTheme.textTertiary),
+                    child: Icon(Icons.image, color: AppTheme.onCardTertiary),
                   ),
                 ),
               ),
