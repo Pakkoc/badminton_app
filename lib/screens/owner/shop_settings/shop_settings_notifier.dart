@@ -60,6 +60,26 @@ class ShopSettingsNotifier extends Notifier<ShopSettingsState> {
     }
   }
 
+  /// 편집 모드 시작 — 현재 값을 스냅샷으로 저장.
+  void startEditing() {
+    state = state.copyWith(
+      isEditing: true,
+      originalShop: state.shop,
+      originalOwnerName: state.ownerName,
+      originalOwnerPhone: state.ownerPhone,
+    );
+  }
+
+  /// 편집 취소 — 스냅샷에서 복원.
+  void cancelEditing() {
+    state = state.copyWith(
+      isEditing: false,
+      shop: state.originalShop,
+      ownerName: state.originalOwnerName,
+      ownerPhone: state.originalOwnerPhone,
+    );
+  }
+
   void updateShopName(String name) {
     if (state.shop == null) return;
     state = state.copyWith(
@@ -183,6 +203,7 @@ class ShopSettingsNotifier extends Notifier<ShopSettingsState> {
         ownerName: updatedUser.name,
         ownerPhone: updatedUser.phone,
         isSubmitting: false,
+        isEditing: false,
       );
       return true;
     } on AppException catch (e) {

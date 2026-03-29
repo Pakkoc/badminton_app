@@ -85,21 +85,56 @@ class _ShopSettingsScreenState
       );
     }
 
+    final isEditing = state.isEditing;
+
     return Scaffold(
-      appBar: AppBar(title: const Text('샵 설정')),
-      body: CourtBackground(
-        child: Column(
-        children: [
-          Expanded(
-            child: SingleChildScrollView(
-              // Scroll Content: padding [12,16], gap 12
-              padding: const EdgeInsets.symmetric(
-                vertical: 12,
-                horizontal: 16,
+      appBar: AppBar(
+        title: const Text('샵 설정'),
+        actions: [
+          TextButton(
+            onPressed: () {
+              if (isEditing) {
+                notifier.cancelEditing();
+                // 컨트롤러 값 원복
+                if (state.originalShop != null) {
+                  _nameController.text =
+                      state.originalShop!.name;
+                  _addressController.text =
+                      state.originalShop!.address;
+                  _phoneController.text =
+                      state.originalShop!.phone;
+                  _descriptionController.text =
+                      state.originalShop!.description ?? '';
+                }
+                _ownerNameController.text =
+                    state.originalOwnerName;
+                _ownerPhoneController.text =
+                    state.originalOwnerPhone;
+              } else {
+                notifier.startEditing();
+              }
+            },
+            child: Text(
+              isEditing ? '취소' : '수정하기',
+              style: TextStyle(
+                color: isEditing
+                    ? AppTheme.error
+                    : AppTheme.accent,
+                fontWeight: FontWeight.w600,
               ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
+            ),
+          ),
+        ],
+      ),
+      body: CourtBackground(
+        child: SingleChildScrollView(
+          padding: const EdgeInsets.symmetric(
+            vertical: 12,
+            horizontal: 16,
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
                   // 관리 메뉴 섹션
                   const _SectionHeader(
                     icon: Icons.menu,
@@ -194,12 +229,14 @@ class _ShopSettingsScreenState
                           controller: _nameController,
                           onChanged: notifier.updateShopName,
                           validator: Validators.shopName,
+                          enabled: isEditing,
                         ),
                         const SizedBox(height: 16),
                         _AddressSettingsField(
                           controller: _addressController,
                           onSearch: () =>
                               notifier.searchAddress(context),
+                          enabled: isEditing,
                         ),
                         const SizedBox(height: 16),
                         MapPreview(
@@ -211,6 +248,7 @@ class _ShopSettingsScreenState
                           label: '전화번호',
                           controller: _phoneController,
                           onChanged: notifier.updatePhone,
+                          enabled: isEditing,
                         ),
                         const SizedBox(height: 16),
                         _SettingsField(
@@ -220,6 +258,7 @@ class _ShopSettingsScreenState
                           maxLines: 4,
                           height: 80,
                           validator: Validators.description,
+                          enabled: isEditing,
                         ),
                       ],
                     ),
@@ -248,39 +287,39 @@ class _ShopSettingsScreenState
                           label: '이름',
                           controller: _ownerNameController,
                           onChanged: notifier.updateOwnerName,
+                          enabled: isEditing,
                         ),
                         const SizedBox(height: 16),
                         _PhoneSettingsField(
                           label: '전화번호',
                           controller: _ownerPhoneController,
                           onChanged: notifier.updateOwnerPhone,
+                          enabled: isEditing,
                         ),
                       ],
                     ),
                   ),
-                  const SizedBox(height: 8),
+                  // 저장 버튼 — 편집 모드일 때만 표시
+                  if (isEditing) ...[
+                    const SizedBox(height: 24),
+                    _SaveButton(
+                      isSubmitting: state.isSubmitting,
+                      onPressed: () async {
+                        final success = await notifier.submit();
+                        if (success && context.mounted) {
+                          AppToast.success(
+                            context,
+                            '샵 설정이 저장되었습니다',
+                          );
+                        }
+                      },
+                    ),
+                  ],
+                  const SizedBox(height: 16),
                 ],
               ),
             ),
           ),
-
-          // 저장 버튼 — 하단 고정
-          _SaveButton(
-            isSubmitting: state.isSubmitting,
-            onPressed: () async {
-              final success = await notifier.submit();
-              if (success && context.mounted) {
-                AppToast.success(
-                  context,
-                  '샵 설정이 저장되었습니다',
-                );
-                context.pop();
-              }
-            },
-          ),
-        ],
-      ),
-      ),
     );
   }
 }
@@ -293,6 +332,7 @@ class _SettingsField extends StatelessWidget {
     this.maxLines = 1,
     this.height = 44,
     this.validator,
+    this.enabled = true,
   });
 
   final String label;
@@ -301,6 +341,7 @@ class _SettingsField extends StatelessWidget {
   final int maxLines;
   final double height;
   final String? Function(String?)? validator;
+  final bool enabled;
 
   @override
   Widget build(BuildContext context) {
@@ -319,12 +360,15 @@ class _SettingsField extends StatelessWidget {
           height: height,
           child: TextFormField(
             controller: controller,
-            onChanged: onChanged,
+            onChanged: enabled ? onChanged : null,
+            readOnly: !enabled,
             maxLines: maxLines,
-            validator: validator,
+            validator: enabled ? validator : null,
             autovalidateMode: AutovalidateMode.onUserInteraction,
-            style: const TextStyle(
-              color: AppTheme.onCardPrimary,
+            style: TextStyle(
+              color: enabled
+                  ? AppTheme.onCardPrimary
+                  : AppTheme.onCardTertiary,
             ),
             decoration: InputDecoration(
               hintStyle: const TextStyle(
@@ -332,7 +376,9 @@ class _SettingsField extends StatelessWidget {
                 color: AppTheme.onCardHint,
               ),
               filled: true,
-              fillColor: AppTheme.cardBackgroundVariant,
+              fillColor: enabled
+                  ? AppTheme.cardBackgroundVariant
+                  : AppTheme.cardBackground,
               border: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(14),
                 borderSide: BorderSide.none,
@@ -357,11 +403,13 @@ class _PhoneSettingsField extends StatelessWidget {
     required this.label,
     required this.controller,
     this.onChanged,
+    this.enabled = true,
   });
 
   final String label;
   final TextEditingController controller;
   final ValueChanged<String>? onChanged;
+  final bool enabled;
 
   @override
   Widget build(BuildContext context) {
@@ -378,9 +426,11 @@ class _PhoneSettingsField extends StatelessWidget {
         const SizedBox(height: 6),
         Theme(
           data: Theme.of(context).copyWith(
-            inputDecorationTheme: const InputDecorationTheme(
+            inputDecorationTheme: InputDecorationTheme(
               filled: true,
-              fillColor: AppTheme.cardBackgroundVariant,
+              fillColor: enabled
+                  ? AppTheme.cardBackgroundVariant
+                  : AppTheme.cardBackground,
               border: OutlineInputBorder(
                 borderRadius: BorderRadius.all(Radius.circular(14)),
                 borderSide: BorderSide.none,
@@ -411,12 +461,17 @@ class _PhoneSettingsField extends StatelessWidget {
           ),
           child: SizedBox(
             height: 44,
-            child: PhoneInputField(
-              controller: controller,
-              label: '',
-              onChanged: onChanged,
-              textStyle: const TextStyle(
-                color: AppTheme.onCardPrimary,
+            child: IgnorePointer(
+              ignoring: !enabled,
+              child: PhoneInputField(
+                controller: controller,
+                label: '',
+                onChanged: enabled ? onChanged : null,
+                textStyle: TextStyle(
+                  color: enabled
+                      ? AppTheme.onCardPrimary
+                      : AppTheme.onCardTertiary,
+                ),
               ),
             ),
           ),
@@ -431,10 +486,12 @@ class _AddressSettingsField extends StatelessWidget {
   const _AddressSettingsField({
     required this.controller,
     required this.onSearch,
+    this.enabled = true,
   });
 
   final TextEditingController controller;
   final VoidCallback onSearch;
+  final bool enabled;
 
   @override
   Widget build(BuildContext context) {
@@ -454,9 +511,11 @@ class _AddressSettingsField extends StatelessWidget {
           child: TextFormField(
             controller: controller,
             readOnly: true,
-            onTap: onSearch,
-            style: const TextStyle(
-              color: AppTheme.onCardPrimary,
+            onTap: enabled ? onSearch : null,
+            style: TextStyle(
+              color: enabled
+                  ? AppTheme.onCardPrimary
+                  : AppTheme.onCardTertiary,
             ),
             decoration: InputDecoration(
               hintStyle: const TextStyle(
@@ -464,7 +523,9 @@ class _AddressSettingsField extends StatelessWidget {
                 color: AppTheme.onCardHint,
               ),
               filled: true,
-              fillColor: AppTheme.cardBackgroundVariant,
+              fillColor: enabled
+                  ? AppTheme.cardBackgroundVariant
+                  : AppTheme.cardBackground,
               border: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(14),
                 borderSide: BorderSide.none,
@@ -473,14 +534,16 @@ class _AddressSettingsField extends StatelessWidget {
                 horizontal: 16,
                 vertical: 12,
               ),
-              suffixIcon: IconButton(
-                icon: const Icon(
-                  Icons.search,
-                  color: AppTheme.onCardTertiary,
-                ),
-                tooltip: '주소 검색',
-                onPressed: onSearch,
-              ),
+              suffixIcon: enabled
+                  ? IconButton(
+                      icon: const Icon(
+                        Icons.search,
+                        color: AppTheme.onCardTertiary,
+                      ),
+                      tooltip: '주소 검색',
+                      onPressed: onSearch,
+                    )
+                  : null,
             ),
           ),
         ),
@@ -593,47 +656,32 @@ class _SaveButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      decoration: const BoxDecoration(
-        border: Border(
-          top: BorderSide(
-            color: AppTheme.border,
-            width: 0.5,
+    return SizedBox(
+      width: double.infinity,
+      height: 48,
+      child: ElevatedButton(
+        onPressed: isSubmitting ? null : onPressed,
+        style: ElevatedButton.styleFrom(
+          backgroundColor: AppTheme.primaryCta,
+          foregroundColor: Colors.white,
+          disabledBackgroundColor:
+              AppTheme.primaryCta.withValues(alpha: 0.5),
+          disabledForegroundColor:
+              Colors.white.withValues(alpha: 0.5),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(20),
           ),
         ),
-      ),
-      // Save Bar: padding [12,16], top border #ffffff20 0.5px
-      padding: const EdgeInsets.symmetric(
-        vertical: 12,
-        horizontal: 16,
-      ),
-      child: SizedBox(
-        width: double.infinity,
-        height: 48,
-        child: ElevatedButton(
-          onPressed: isSubmitting ? null : onPressed,
-          style: ElevatedButton.styleFrom(
-            backgroundColor: AppTheme.primaryCta,
-            foregroundColor: Colors.white,
-            disabledBackgroundColor:
-                AppTheme.primaryCta.withValues(alpha: 0.5),
-            disabledForegroundColor:
-                Colors.white.withValues(alpha: 0.5),
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(20),
-            ),
-          ),
-          child: isSubmitting
-              ? const SizedBox(
-                  width: 24,
-                  height: 24,
-                  child: CircularProgressIndicator(
-                    strokeWidth: 2,
-                    color: Colors.white,
-                  ),
-                )
-              : const Text('저장하기'),
-        ),
+        child: isSubmitting
+            ? const SizedBox(
+                width: 24,
+                height: 24,
+                child: CircularProgressIndicator(
+                  strokeWidth: 2,
+                  color: Colors.white,
+                ),
+              )
+            : const Text('저장하기'),
       ),
     );
   }
