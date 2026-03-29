@@ -8,16 +8,19 @@ class PhoneInputField extends StatelessWidget {
     required this.controller,
     this.label = '전화번호',
     this.onChanged,
+    this.textStyle,
   });
 
   final TextEditingController controller;
   final String label;
   final ValueChanged<String>? onChanged;
+  final TextStyle? textStyle;
 
   @override
   Widget build(BuildContext context) {
     return TextFormField(
       controller: controller,
+      style: textStyle,
       decoration: InputDecoration(
         labelText: label,
         hintText: '010-1234-5678',

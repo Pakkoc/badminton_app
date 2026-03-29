@@ -323,10 +323,13 @@ class _SettingsField extends StatelessWidget {
             maxLines: maxLines,
             validator: validator,
             autovalidateMode: AutovalidateMode.onUserInteraction,
+            style: const TextStyle(
+              color: AppTheme.onCardPrimary,
+            ),
             decoration: InputDecoration(
               hintStyle: const TextStyle(
                 fontSize: 14,
-                color: AppTheme.onCardTertiary,
+                color: AppTheme.onCardHint,
               ),
               filled: true,
               fillColor: AppTheme.cardBackgroundVariant,
@@ -412,6 +415,9 @@ class _PhoneSettingsField extends StatelessWidget {
               controller: controller,
               label: '',
               onChanged: onChanged,
+              textStyle: const TextStyle(
+                color: AppTheme.onCardPrimary,
+              ),
             ),
           ),
         ),
@@ -449,10 +455,13 @@ class _AddressSettingsField extends StatelessWidget {
             controller: controller,
             readOnly: true,
             onTap: onSearch,
+            style: const TextStyle(
+              color: AppTheme.onCardPrimary,
+            ),
             decoration: InputDecoration(
               hintStyle: const TextStyle(
                 fontSize: 14,
-                color: AppTheme.onCardTertiary,
+                color: AppTheme.onCardHint,
               ),
               filled: true,
               fillColor: AppTheme.cardBackgroundVariant,
