@@ -7,6 +7,7 @@
 | "에이전트 만들어줘", "새 에이전트 생성" | `subagent-creator` | SKILL.md |
 | "스킬 만들어줘", "새 스킬 생성" | `skill-creator` | SKILL.md |
 | "ㅇㅇㅇ 오류가 발생했습니다", "ㅇㅇㅇ 에러/버그" | `problem-tracker` | SKILL.md |
+| "레이아웃", "스크롤", "Sliver", "GoRouter", "딥링크", "QR스캔", "Isolate", "공유 기능" | `flutter-skill` | SKILL.md |
 
 ## Git Commit Convention
 
