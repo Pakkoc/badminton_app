@@ -1,4 +1,5 @@
 import 'package:badminton_app/app/theme.dart';
+import 'package:badminton_app/core/utils/formatters.dart';
 import 'package:badminton_app/core/utils/validators.dart';
 import 'package:badminton_app/providers/app_mode_provider.dart';
 import 'package:badminton_app/screens/owner/shop_settings/shop_settings_notifier.dart';
@@ -221,47 +222,96 @@ class _ShopSettingsScreenState
                       borderRadius: BorderRadius.circular(20),
                       border: Border.all(color: AppTheme.cardBorder),
                     ),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        _SettingsField(
-                          label: '샵 이름',
-                          controller: _nameController,
-                          onChanged: notifier.updateShopName,
-                          validator: Validators.shopName,
-                          enabled: isEditing,
-                        ),
-                        const SizedBox(height: 16),
-                        _AddressSettingsField(
-                          controller: _addressController,
-                          onSearch: () =>
-                              notifier.searchAddress(context),
-                          enabled: isEditing,
-                        ),
-                        const SizedBox(height: 16),
-                        MapPreview(
-                          latitude: state.shop?.latitude,
-                          longitude: state.shop?.longitude,
-                        ),
-                        const SizedBox(height: 16),
-                        _PhoneSettingsField(
-                          label: '전화번호',
-                          controller: _phoneController,
-                          onChanged: notifier.updatePhone,
-                          enabled: isEditing,
-                        ),
-                        const SizedBox(height: 16),
-                        _SettingsField(
-                          label: '소개글',
-                          controller: _descriptionController,
-                          onChanged: notifier.updateDescription,
-                          maxLines: 4,
-                          height: 80,
-                          validator: Validators.description,
-                          enabled: isEditing,
-                        ),
-                      ],
-                    ),
+                    child: isEditing
+                        ? Column(
+                            crossAxisAlignment:
+                                CrossAxisAlignment.start,
+                            children: [
+                              _SettingsField(
+                                label: '샵 이름',
+                                controller: _nameController,
+                                onChanged:
+                                    notifier.updateShopName,
+                                validator: Validators.shopName,
+                              ),
+                              const SizedBox(height: 16),
+                              _AddressSettingsField(
+                                controller: _addressController,
+                                onSearch: () => notifier
+                                    .searchAddress(context),
+                              ),
+                              const SizedBox(height: 16),
+                              MapPreview(
+                                latitude: state.shop?.latitude,
+                                longitude:
+                                    state.shop?.longitude,
+                              ),
+                              const SizedBox(height: 16),
+                              _PhoneSettingsField(
+                                label: '전화번호',
+                                controller: _phoneController,
+                                onChanged: notifier.updatePhone,
+                              ),
+                              const SizedBox(height: 16),
+                              _SettingsField(
+                                label: '소개글',
+                                controller:
+                                    _descriptionController,
+                                onChanged:
+                                    notifier.updateDescription,
+                                maxLines: 4,
+                                height: 80,
+                                validator:
+                                    Validators.description,
+                              ),
+                            ],
+                          )
+                        : Column(
+                            crossAxisAlignment:
+                                CrossAxisAlignment.start,
+                            children: [
+                              _ReadOnlyField(
+                                label: '샵 이름',
+                                value:
+                                    state.shop?.name ?? '',
+                              ),
+                              const Divider(
+                                height: 24,
+                                color: AppTheme.cardBorder,
+                              ),
+                              _ReadOnlyField(
+                                label: '주소',
+                                value:
+                                    state.shop?.address ?? '',
+                              ),
+                              const SizedBox(height: 16),
+                              MapPreview(
+                                latitude: state.shop?.latitude,
+                                longitude:
+                                    state.shop?.longitude,
+                              ),
+                              const Divider(
+                                height: 24,
+                                color: AppTheme.cardBorder,
+                              ),
+                              _ReadOnlyField(
+                                label: '전화번호',
+                                value: Formatters.phone(
+                                  state.shop?.phone ?? '',
+                                ),
+                              ),
+                              const Divider(
+                                height: 24,
+                                color: AppTheme.cardBorder,
+                              ),
+                              _ReadOnlyField(
+                                label: '소개글',
+                                value:
+                                    state.shop?.description ??
+                                        '',
+                              ),
+                            ],
+                          ),
                   ),
                   const SizedBox(height: 24),
 
@@ -280,24 +330,48 @@ class _ShopSettingsScreenState
                       borderRadius: BorderRadius.circular(20),
                       border: Border.all(color: AppTheme.cardBorder),
                     ),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        _SettingsField(
-                          label: '이름',
-                          controller: _ownerNameController,
-                          onChanged: notifier.updateOwnerName,
-                          enabled: isEditing,
-                        ),
-                        const SizedBox(height: 16),
-                        _PhoneSettingsField(
-                          label: '전화번호',
-                          controller: _ownerPhoneController,
-                          onChanged: notifier.updateOwnerPhone,
-                          enabled: isEditing,
-                        ),
-                      ],
-                    ),
+                    child: isEditing
+                        ? Column(
+                            crossAxisAlignment:
+                                CrossAxisAlignment.start,
+                            children: [
+                              _SettingsField(
+                                label: '이름',
+                                controller:
+                                    _ownerNameController,
+                                onChanged:
+                                    notifier.updateOwnerName,
+                              ),
+                              const SizedBox(height: 16),
+                              _PhoneSettingsField(
+                                label: '전화번호',
+                                controller:
+                                    _ownerPhoneController,
+                                onChanged:
+                                    notifier.updateOwnerPhone,
+                              ),
+                            ],
+                          )
+                        : Column(
+                            crossAxisAlignment:
+                                CrossAxisAlignment.start,
+                            children: [
+                              _ReadOnlyField(
+                                label: '이름',
+                                value: state.ownerName,
+                              ),
+                              const Divider(
+                                height: 24,
+                                color: AppTheme.cardBorder,
+                              ),
+                              _ReadOnlyField(
+                                label: '전화번호',
+                                value: Formatters.phone(
+                                  state.ownerPhone,
+                                ),
+                              ),
+                            ],
+                          ),
                   ),
                   // 저장 버튼 — 편집 모드일 때만 표시
                   if (isEditing) ...[
@@ -324,6 +398,42 @@ class _ShopSettingsScreenState
   }
 }
 
+/// 읽기 모드 전용 — 라벨 + 텍스트 값.
+class _ReadOnlyField extends StatelessWidget {
+  const _ReadOnlyField({
+    required this.label,
+    required this.value,
+  });
+
+  final String label;
+  final String value;
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          label,
+          style: const TextStyle(
+            fontSize: 12,
+            color: AppTheme.onCardSecondary,
+          ),
+        ),
+        const SizedBox(height: 6),
+        Text(
+          value.isEmpty ? '-' : value,
+          style: const TextStyle(
+            fontSize: 14,
+            color: AppTheme.onCardPrimary,
+          ),
+        ),
+      ],
+    );
+  }
+}
+
+/// 편집 모드 전용 입력 필드.
 class _SettingsField extends StatelessWidget {
   const _SettingsField({
     required this.label,
@@ -332,7 +442,6 @@ class _SettingsField extends StatelessWidget {
     this.maxLines = 1,
     this.height = 44,
     this.validator,
-    this.enabled = true,
   });
 
   final String label;
@@ -341,7 +450,6 @@ class _SettingsField extends StatelessWidget {
   final int maxLines;
   final double height;
   final String? Function(String?)? validator;
-  final bool enabled;
 
   @override
   Widget build(BuildContext context) {
@@ -360,15 +468,12 @@ class _SettingsField extends StatelessWidget {
           height: height,
           child: TextFormField(
             controller: controller,
-            onChanged: enabled ? onChanged : null,
-            readOnly: !enabled,
+            onChanged: onChanged,
             maxLines: maxLines,
-            validator: enabled ? validator : null,
+            validator: validator,
             autovalidateMode: AutovalidateMode.onUserInteraction,
-            style: TextStyle(
-              color: enabled
-                  ? AppTheme.onCardPrimary
-                  : AppTheme.onCardTertiary,
+            style: const TextStyle(
+              color: AppTheme.onCardPrimary,
             ),
             decoration: InputDecoration(
               hintStyle: const TextStyle(
@@ -376,9 +481,7 @@ class _SettingsField extends StatelessWidget {
                 color: AppTheme.onCardHint,
               ),
               filled: true,
-              fillColor: enabled
-                  ? AppTheme.cardBackgroundVariant
-                  : AppTheme.cardBackground,
+              fillColor: AppTheme.cardBackgroundVariant,
               border: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(14),
                 borderSide: BorderSide.none,
@@ -403,13 +506,11 @@ class _PhoneSettingsField extends StatelessWidget {
     required this.label,
     required this.controller,
     this.onChanged,
-    this.enabled = true,
   });
 
   final String label;
   final TextEditingController controller;
   final ValueChanged<String>? onChanged;
-  final bool enabled;
 
   @override
   Widget build(BuildContext context) {
@@ -426,11 +527,9 @@ class _PhoneSettingsField extends StatelessWidget {
         const SizedBox(height: 6),
         Theme(
           data: Theme.of(context).copyWith(
-            inputDecorationTheme: InputDecorationTheme(
+            inputDecorationTheme: const InputDecorationTheme(
               filled: true,
-              fillColor: enabled
-                  ? AppTheme.cardBackgroundVariant
-                  : AppTheme.cardBackground,
+              fillColor: AppTheme.cardBackgroundVariant,
               border: OutlineInputBorder(
                 borderRadius: BorderRadius.all(Radius.circular(14)),
                 borderSide: BorderSide.none,
@@ -461,17 +560,12 @@ class _PhoneSettingsField extends StatelessWidget {
           ),
           child: SizedBox(
             height: 44,
-            child: IgnorePointer(
-              ignoring: !enabled,
-              child: PhoneInputField(
-                controller: controller,
-                label: '',
-                onChanged: enabled ? onChanged : null,
-                textStyle: TextStyle(
-                  color: enabled
-                      ? AppTheme.onCardPrimary
-                      : AppTheme.onCardTertiary,
-                ),
+            child: PhoneInputField(
+              controller: controller,
+              label: '',
+              onChanged: onChanged,
+              textStyle: const TextStyle(
+                color: AppTheme.onCardPrimary,
               ),
             ),
           ),
@@ -486,12 +580,10 @@ class _AddressSettingsField extends StatelessWidget {
   const _AddressSettingsField({
     required this.controller,
     required this.onSearch,
-    this.enabled = true,
   });
 
   final TextEditingController controller;
   final VoidCallback onSearch;
-  final bool enabled;
 
   @override
   Widget build(BuildContext context) {
@@ -511,11 +603,9 @@ class _AddressSettingsField extends StatelessWidget {
           child: TextFormField(
             controller: controller,
             readOnly: true,
-            onTap: enabled ? onSearch : null,
-            style: TextStyle(
-              color: enabled
-                  ? AppTheme.onCardPrimary
-                  : AppTheme.onCardTertiary,
+            onTap: onSearch,
+            style: const TextStyle(
+              color: AppTheme.onCardPrimary,
             ),
             decoration: InputDecoration(
               hintStyle: const TextStyle(
@@ -523,9 +613,7 @@ class _AddressSettingsField extends StatelessWidget {
                 color: AppTheme.onCardHint,
               ),
               filled: true,
-              fillColor: enabled
-                  ? AppTheme.cardBackgroundVariant
-                  : AppTheme.cardBackground,
+              fillColor: AppTheme.cardBackgroundVariant,
               border: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(14),
                 borderSide: BorderSide.none,
@@ -534,16 +622,14 @@ class _AddressSettingsField extends StatelessWidget {
                 horizontal: 16,
                 vertical: 12,
               ),
-              suffixIcon: enabled
-                  ? IconButton(
-                      icon: const Icon(
-                        Icons.search,
-                        color: AppTheme.onCardTertiary,
-                      ),
-                      tooltip: '주소 검색',
-                      onPressed: onSearch,
-                    )
-                  : null,
+              suffixIcon: IconButton(
+                icon: const Icon(
+                  Icons.search,
+                  color: AppTheme.onCardTertiary,
+                ),
+                tooltip: '주소 검색',
+                onPressed: onSearch,
+              ),
             ),
           ),
         ),
