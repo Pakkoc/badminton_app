@@ -48,7 +48,7 @@ void main() {
         ),
       );
       await tester.pumpAndSettle();
-      expect(find.text('완료'), findsOneWidget);
+      expect(find.text('작성 완료'), findsOneWidget);
     });
 
     testWidgets('제목, 내용 입력 필드가 표시된다', (tester) async {

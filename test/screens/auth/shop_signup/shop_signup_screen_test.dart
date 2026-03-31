@@ -79,15 +79,16 @@ void main() {
       await tester.pumpWidget(buildSubject());
       await tester.pumpAndSettle();
 
-      expect(find.text('샵 등록'), findsOneWidget);
+      // AppBar 제목 + StepProgressRow '샵 등록' 텍스트
+      expect(find.text('샵 등록'), findsNWidgets(2));
     });
 
-    testWidgets('안내 문구를 표시한다', (tester) async {
+    testWidgets('섹션 제목을 표시한다', (tester) async {
       await tester.pumpWidget(buildSubject());
       await tester.pumpAndSettle();
 
       expect(
-        find.text('샵 정보를 등록해주세요'),
+        find.text('샵 정보'),
         findsOneWidget,
       );
     });
@@ -127,11 +128,11 @@ void main() {
       expect(find.text('소개글'), findsOneWidget);
     });
 
-    testWidgets('"등록 신청" 버튼을 표시한다', (tester) async {
+    testWidgets('"등록 완료" 버튼을 표시한다', (tester) async {
       await tester.pumpWidget(buildSubject());
       await tester.pumpAndSettle();
 
-      expect(find.text('등록 신청'), findsOneWidget);
+      expect(find.text('등록 완료'), findsOneWidget);
     });
 
     testWidgets('뒤로가기 버튼이 있다', (tester) async {

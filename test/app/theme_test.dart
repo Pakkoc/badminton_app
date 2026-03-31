@@ -114,10 +114,10 @@ void main() {
         );
       });
 
-      test('AppBar 배경이 surfaceHigh이다', () {
+      test('AppBar 배경이 background이다', () {
         expect(
           theme.appBarTheme.backgroundColor,
-          AppTheme.surfaceHigh,
+          AppTheme.background,
         );
       });
 

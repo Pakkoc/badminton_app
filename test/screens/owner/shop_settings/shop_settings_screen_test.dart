@@ -75,11 +75,11 @@ void main() {
       // 섹션 헤더 확인
       expect(find.text('샵 정보'), findsOneWidget);
       expect(find.text('사장님 정보'), findsOneWidget);
-      // 주소 검색 아이콘 확인
-      expect(find.byIcon(Icons.search), findsOneWidget);
+      // 관리 메뉴 섹션 확인
+      expect(find.text('관리 메뉴'), findsOneWidget);
     });
 
-    testWidgets('저장 버튼이 표시된다', (tester) async {
+    testWidgets('편집 모드에서 저장 버튼이 표시된다', (tester) async {
       // Arrange & Act
       await pumpTestApp(
         tester,
@@ -87,7 +87,10 @@ void main() {
         overrides: [
           shopSettingsNotifierProvider.overrideWith(
             () => _FakeShopSettingsNotifier(
-              ShopSettingsState(shop: testShop),
+              ShopSettingsState(
+                shop: testShop,
+                isEditing: true,
+              ),
             ),
           ),
         ],
@@ -108,6 +111,7 @@ void main() {
             () => _FakeShopSettingsNotifier(
               ShopSettingsState(
                 shop: testShop,
+                isEditing: true,
                 isSubmitting: true,
               ),
             ),

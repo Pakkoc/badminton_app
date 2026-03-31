@@ -8,7 +8,7 @@ import '../../../helpers/test_app.dart';
 
 void main() {
   group('ProfileEditScreen', () {
-    testWidgets('AppBar 제목이 "프로필 편집"이다', (tester) async {
+    testWidgets('AppBar 제목이 "프로필 수정"이다', (tester) async {
       // Arrange & Act
       await pumpTestApp(
         tester,
@@ -26,7 +26,7 @@ void main() {
       );
 
       // Assert
-      expect(find.text('프로필 편집'), findsOneWidget);
+      expect(find.text('프로필 수정'), findsOneWidget);
     });
 
     testWidgets('이름과 전화번호 필드가 표시된다', (tester) async {

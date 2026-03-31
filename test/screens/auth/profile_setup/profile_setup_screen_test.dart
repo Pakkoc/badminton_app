@@ -110,20 +110,20 @@ void main() {
       expect(find.byIcon(Icons.arrow_back), findsOneWidget);
     });
 
-    testWidgets('AppBar에 로그아웃 아이콘 버튼이 존재한다', (tester) async {
+    testWidgets('뒤로가기(arrow_back) 버튼이 로그아웃 역할을 한다', (tester) async {
       await tester.pumpWidget(buildSubject());
       await tester.pumpAndSettle();
 
-      expect(find.byIcon(Icons.logout), findsOneWidget);
+      expect(find.byIcon(Icons.arrow_back), findsOneWidget);
     });
 
     testWidgets(
-      '로그아웃 버튼 탭 시 확인 다이얼로그를 표시한다',
+      '뒤로가기 버튼 탭 시 확인 다이얼로그를 표시한다',
       (tester) async {
         await tester.pumpWidget(buildSubject());
         await tester.pumpAndSettle();
 
-        await tester.tap(find.byIcon(Icons.logout));
+        await tester.tap(find.byIcon(Icons.arrow_back));
         await tester.pumpAndSettle();
 
         expect(
@@ -143,7 +143,7 @@ void main() {
         await tester.pumpWidget(buildSubject());
         await tester.pumpAndSettle();
 
-        await tester.tap(find.byIcon(Icons.logout));
+        await tester.tap(find.byIcon(Icons.arrow_back));
         await tester.pumpAndSettle();
 
         // 다이얼로그의 "로그아웃" TextButton만 찾음
@@ -166,7 +166,7 @@ void main() {
         await tester.pumpWidget(buildSubject());
         await tester.pumpAndSettle();
 
-        await tester.tap(find.byIcon(Icons.logout));
+        await tester.tap(find.byIcon(Icons.arrow_back));
         await tester.pumpAndSettle();
 
         await tester.tap(find.text('취소'));

@@ -37,7 +37,7 @@ void main() {
     );
 
     testWidgets(
-      '슬로건 "배드민턴 거트 추적 서비스"가 표시된다',
+      '슬로건 "배드민턴 거트 작업 실시간 추적"이 표시된다',
       (tester) async {
         // Arrange & Act
         await tester.pumpWidget(
@@ -51,12 +51,12 @@ void main() {
         );
 
         // Assert
-        expect(find.text('배드민턴 거트 추적 서비스'), findsOneWidget);
+        expect(find.text('배드민턴 거트 작업 실시간 추적'), findsOneWidget);
       },
     );
 
     testWidgets(
-      '로딩 스피너가 표시된다',
+      '저작권 문구가 표시된다',
       (tester) async {
         // Arrange & Act
         await tester.pumpWidget(
@@ -71,7 +71,7 @@ void main() {
 
         // Assert
         expect(
-          find.byType(CircularProgressIndicator),
+          find.text('© 2026 거트알림'),
           findsOneWidget,
         );
       },

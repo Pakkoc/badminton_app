@@ -35,7 +35,7 @@ void main() {
         );
 
         // Assert
-        expect(find.text('카카오로 시작하기'), findsOneWidget);
+        expect(find.text('카카오 로그인'), findsOneWidget);
       },
     );
 
@@ -54,7 +54,7 @@ void main() {
         );
 
         // Assert
-        expect(find.text('네이버로 시작하기'), findsOneWidget);
+        expect(find.text('네이버 로그인'), findsOneWidget);
       },
     );
 
@@ -73,7 +73,7 @@ void main() {
         );
 
         // Assert
-        expect(find.text('Gmail로 시작하기'), findsOneWidget);
+        expect(find.text('Google로 시작'), findsOneWidget);
       },
     );
 
