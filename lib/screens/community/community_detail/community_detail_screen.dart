@@ -228,157 +228,205 @@ class _CommunityDetailScreenState
           return Column(
             children: [
               Expanded(
-                child: SingleChildScrollView(
-                  padding: const EdgeInsets.fromLTRB(16, 20, 16, 32),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      // 작성자 + 시간
-                      Row(
-                        children: [
-                          CircleAvatar(
-                            radius: 16,
-                            backgroundImage:
-                                post.authorProfileImageUrl != null
-                                    ? NetworkImage(
-                                        post.authorProfileImageUrl!)
-                                    : null,
-                            child: post.authorProfileImageUrl == null
-                                ? const Icon(Icons.person, size: 16)
-                                : null,
-                          ),
-                          const SizedBox(width: 10),
-                          Text(
-                            post.authorName ?? '알 수 없음',
-                            style:
-                                Theme.of(context).textTheme.titleSmall,
-                          ),
-                          const SizedBox(width: 10),
-                          Text(
-                            Formatters.relativeTime(post.createdAt),
-                            style: Theme.of(context)
-                                .textTheme
-                                .bodySmall
-                                ?.copyWith(
-                                  color: AppTheme.textTertiary,
+                child: CustomScrollView(
+                  slivers: [
+                    // 게시글 본문
+                    SliverToBoxAdapter(
+                      child: Padding(
+                        padding: const EdgeInsets.fromLTRB(
+                            16, 20, 16, 0),
+                        child: Column(
+                          crossAxisAlignment:
+                              CrossAxisAlignment.start,
+                          children: [
+                            // 작성자 + 시간
+                            Row(
+                              children: [
+                                CircleAvatar(
+                                  radius: 16,
+                                  backgroundImage: post
+                                              .authorProfileImageUrl !=
+                                          null
+                                      ? NetworkImage(post
+                                          .authorProfileImageUrl!)
+                                      : null,
+                                  child: post.authorProfileImageUrl ==
+                                          null
+                                      ? const Icon(
+                                          Icons.person,
+                                          size: 16)
+                                      : null,
                                 ),
-                          ),
-                          const Spacer(),
-                          PopupMenuButton<String>(
-                            onSelected: (value) {
-                              if (value == 'edit') {
-                                context.push(
-                                    '/community/${post.id}/edit');
-                              } else if (value == 'delete') {
-                                _deletePost();
-                              } else if (value == 'report') {
-                                _reportPost();
-                              }
-                            },
-                            itemBuilder: (_) => [
-                              if (isAuthor) ...[
-                                const PopupMenuItem(
-                                  value: 'edit',
-                                  child: Text('수정'),
+                                const SizedBox(width: 10),
+                                Text(
+                                  post.authorName ??
+                                      '알 수 없음',
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .titleSmall,
                                 ),
-                                const PopupMenuItem(
-                                  value: 'delete',
-                                  child: Text('삭제'),
+                                const SizedBox(width: 10),
+                                Text(
+                                  Formatters.relativeTime(
+                                      post.createdAt),
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .bodySmall
+                                      ?.copyWith(
+                                        color: AppTheme
+                                            .textTertiary,
+                                      ),
+                                ),
+                                const Spacer(),
+                                PopupMenuButton<String>(
+                                  onSelected: (value) {
+                                    if (value == 'edit') {
+                                      context.push(
+                                          '/community/${post.id}/edit');
+                                    } else if (value ==
+                                        'delete') {
+                                      _deletePost();
+                                    } else if (value ==
+                                        'report') {
+                                      _reportPost();
+                                    }
+                                  },
+                                  itemBuilder: (_) => [
+                                    if (isAuthor) ...[
+                                      const PopupMenuItem(
+                                        value: 'edit',
+                                        child: Text('수정'),
+                                      ),
+                                      const PopupMenuItem(
+                                        value: 'delete',
+                                        child: Text('삭제'),
+                                      ),
+                                    ],
+                                    if (!isAuthor)
+                                      const PopupMenuItem(
+                                        value: 'report',
+                                        child: Text('신고'),
+                                      ),
+                                  ],
                                 ),
                               ],
-                              if (!isAuthor)
-                                const PopupMenuItem(
-                                  value: 'report',
-                                  child: Text('신고'),
+                            ),
+                            const SizedBox(height: 16),
+                            // 제목
+                            Text(
+                              post.title,
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .titleLarge
+                                  ?.copyWith(
+                                    fontSize: 20,
+                                    fontWeight:
+                                        FontWeight.bold,
+                                  ),
+                            ),
+                            const SizedBox(height: 12),
+                            // 내용
+                            Text(
+                              post.content,
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .bodyMedium
+                                  ?.copyWith(
+                                    fontSize: 14,
+                                    height: 1.6,
+                                    color: AppTheme
+                                        .textSecondary,
+                                  ),
+                            ),
+                            // 이미지
+                            if (post
+                                .images.isNotEmpty) ...[
+                              const SizedBox(height: 16),
+                              ...post.images.map(
+                                (url) => Padding(
+                                  padding:
+                                      const EdgeInsets
+                                          .only(bottom: 8),
+                                  child: ClipRRect(
+                                    borderRadius:
+                                        BorderRadius
+                                            .circular(8),
+                                    child: Image.network(
+                                      url,
+                                      fit: BoxFit.cover,
+                                    ),
+                                  ),
                                 ),
-                            ],
-                          ),
-                        ],
-                      ),
-                      const SizedBox(height: 16),
-                      // 제목
-                      Text(
-                        post.title,
-                        style: Theme.of(context)
-                            .textTheme
-                            .titleLarge
-                            ?.copyWith(
-                              fontSize: 20,
-                              fontWeight: FontWeight.bold,
-                            ),
-                      ),
-                      const SizedBox(height: 12),
-                      // 내용
-                      Text(
-                        post.content,
-                        style: Theme.of(context)
-                            .textTheme
-                            .bodyMedium
-                            ?.copyWith(
-                              fontSize: 14,
-                              height: 1.6,
-                              color: AppTheme.textSecondary,
-                            ),
-                      ),
-                      // 이미지
-                      if (post.images.isNotEmpty) ...[
-                        const SizedBox(height: 16),
-                        ...post.images.map(
-                          (url) => Padding(
-                            padding: const EdgeInsets.only(bottom: 8),
-                            child: ClipRRect(
-                              borderRadius: BorderRadius.circular(8),
-                              child: Image.network(
-                                url,
-                                fit: BoxFit.cover,
                               ),
+                            ],
+                            const SizedBox(height: 16),
+                            // 좋아요 버튼
+                            Row(
+                              children: [
+                                IconButton(
+                                  onPressed:
+                                      _togglePostLike,
+                                  padding: EdgeInsets.zero,
+                                  constraints:
+                                      const BoxConstraints(),
+                                  icon: Icon(
+                                    isLiked
+                                        ? Icons.favorite
+                                        : Icons
+                                            .favorite_border,
+                                    color: isLiked
+                                        ? Colors.red
+                                        : AppTheme
+                                            .textTertiary,
+                                  ),
+                                ),
+                                const SizedBox(width: 4),
+                                Text(
+                                    '${post.likeCount}'),
+                                const SizedBox(width: 16),
+                                const Icon(
+                                  Icons
+                                      .chat_bubble_outline,
+                                  size: 20,
+                                ),
+                                const SizedBox(width: 4),
+                                Text(
+                                    '${post.commentCount}'),
+                              ],
                             ),
-                          ),
+                            const SizedBox(height: 8),
+                            const Divider(
+                              color: AppTheme.border,
+                              height: 1,
+                              thickness: 1,
+                            ),
+                            const SizedBox(height: 8),
+                          ],
                         ),
-                      ],
-                      const SizedBox(height: 16),
-                      // 좋아요 버튼
-                      Row(
-                        children: [
-                          IconButton(
-                            onPressed: _togglePostLike,
-                            padding: EdgeInsets.zero,
-                            constraints: const BoxConstraints(),
-                            icon: Icon(
-                              isLiked
-                                  ? Icons.favorite
-                                  : Icons.favorite_border,
-                              color: isLiked
-                                  ? Colors.red
-                                  : AppTheme.textTertiary,
-                            ),
-                          ),
-                          const SizedBox(width: 4),
-                          Text('${post.likeCount}'),
-                          const SizedBox(width: 16),
-                          const Icon(
-                            Icons.chat_bubble_outline,
-                            size: 20,
-                          ),
-                          const SizedBox(width: 4),
-                          Text('${post.commentCount}'),
-                        ],
                       ),
-                      const SizedBox(height: 8),
-                      const Divider(
-                        color: AppTheme.border,
-                        height: 1,
-                        thickness: 1,
+                    ),
+                    // 댓글 섹션 (lazy rendering)
+                    commentsAsync.when(
+                      loading: () =>
+                          const SliverToBoxAdapter(
+                        child: LoadingIndicator(),
                       ),
-                      const SizedBox(height: 8),
-                      // 댓글 섹션
-                      commentsAsync.when(
-                        loading: () => const LoadingIndicator(),
-                        error: (e, _) => Text('댓글 로딩 실패: $e'),
-                        data: (comments) => _CommentSection(
+                      error: (e, _) =>
+                          SliverToBoxAdapter(
+                        child:
+                            Text('댓글 로딩 실패: $e'),
+                      ),
+                      data: (comments) =>
+                          SliverPadding(
+                        padding:
+                            const EdgeInsets.fromLTRB(
+                                16, 0, 16, 32),
+                        sliver: _CommentSliverList(
                           comments: comments,
-                          currentUserId: _currentUserId,
-                          postAuthorId: post.authorId,
+                          currentUserId:
+                              _currentUserId,
+                          postAuthorId:
+                              post.authorId,
                           onReply: (
                             commentId,
                             parentCommentId,
@@ -387,25 +435,32 @@ class _CommunityDetailScreenState
                           ) {
                             setState(() {
                               _replyToId = commentId;
-                              _replyToParentId = parentCommentId;
-                              _replyToName = replyToName;
-                              _mentionName = mentionName;
+                              _replyToParentId =
+                                  parentCommentId;
+                              _replyToName =
+                                  replyToName;
+                              _mentionName =
+                                  mentionName;
                             });
                           },
                           onDelete: _deleteComment,
                           onReport: _reportComment,
-                          onToggleLike: (commentId) async {
+                          onToggleLike:
+                              (commentId) async {
                             final likeRepo = ref.read(
                                 communityLikeRepositoryProvider);
-                            await likeRepo.toggleCommentLike(
-                                _currentUserId, commentId);
+                            await likeRepo
+                                .toggleCommentLike(
+                                    _currentUserId,
+                                    commentId);
                             ref.invalidate(
-                                communityCommentsProvider(widget.postId));
+                                communityCommentsProvider(
+                                    widget.postId));
                           },
                         ),
                       ),
-                    ],
-                  ),
+                    ),
+                  ],
                 ),
               ),
               // 댓글 입력창
@@ -508,7 +563,116 @@ class _CommunityDetailScreenState
   }
 }
 
-// ── _CommentSection ────────────────────────────────────────────────
+// ── _CommentSliverList (lazy rendering) ───────────────────────────
+
+class _CommentSliverList extends StatefulWidget {
+  const _CommentSliverList({
+    required this.comments,
+    required this.currentUserId,
+    required this.postAuthorId,
+    required this.onReply,
+    required this.onDelete,
+    required this.onReport,
+    required this.onToggleLike,
+  });
+
+  final List<CommunityComment> comments;
+  final String currentUserId;
+  final String postAuthorId;
+  final void Function(
+    String commentId,
+    String? parentCommentId,
+    String replyToName,
+    String? mentionName,
+  ) onReply;
+  final void Function(String id) onDelete;
+  final void Function(String id) onReport;
+  final void Function(String id) onToggleLike;
+
+  @override
+  State<_CommentSliverList> createState() =>
+      _CommentSliverListState();
+}
+
+class _CommentSliverListState
+    extends State<_CommentSliverList> {
+  final Map<String, bool> _expanded = {};
+
+  bool _isExpanded(String id) => _expanded[id] ?? false;
+
+  void _toggle(String id) {
+    setState(() => _expanded[id] = !_isExpanded(id));
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final topLevel = widget.comments
+        .where((c) => c.parentId == null)
+        .toList();
+
+    return SliverList(
+      delegate: SliverChildBuilderDelegate(
+        (context, index) {
+          final comment = topLevel[index];
+          final replies = widget.comments
+              .where((c) => c.parentId == comment.id)
+              .toList();
+          final hasReplies = replies.isNotEmpty;
+          final expanded = _isExpanded(comment.id);
+          final isLast = index == topLevel.length - 1;
+
+          return Column(
+            crossAxisAlignment:
+                CrossAxisAlignment.start,
+            children: [
+              _CommentRow(
+                comment: comment,
+                isAuthor: comment.authorId ==
+                    widget.currentUserId,
+                isPostAuthor: comment.authorId ==
+                    widget.postAuthorId,
+                hasRepliesBelow: hasReplies,
+                onReply: () => widget.onReply(
+                  comment.id,
+                  null,
+                  comment.authorName ?? '알 수 없음',
+                  null,
+                ),
+                onDelete: () =>
+                    widget.onDelete(comment.id),
+                onReport: () =>
+                    widget.onReport(comment.id),
+                onToggleLike: () =>
+                    widget.onToggleLike(comment.id),
+              ),
+              if (hasReplies)
+                _ThreadSection(
+                  replies: replies,
+                  expanded: expanded,
+                  onToggle: () => _toggle(comment.id),
+                  isLastTopLevel: isLast,
+                  currentUserId: widget.currentUserId,
+                  postAuthorId: widget.postAuthorId,
+                  onReply: widget.onReply,
+                  onDelete: widget.onDelete,
+                  onReport: widget.onReport,
+                  onToggleLike: widget.onToggleLike,
+                ),
+              if (!isLast)
+                const Divider(
+                  color: AppTheme.border,
+                  height: 1,
+                ),
+            ],
+          );
+        },
+        childCount: topLevel.length,
+      ),
+    );
+  }
+}
+
+// ── _CommentSection (legacy, used by tests) ───────────────────────
 
 class _CommentSection extends StatefulWidget {
   const _CommentSection({
