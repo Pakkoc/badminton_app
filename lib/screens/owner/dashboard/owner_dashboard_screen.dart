@@ -11,6 +11,7 @@ import 'package:badminton_app/widgets/notification_bell.dart';
 import 'package:badminton_app/widgets/order_timeline_row.dart';
 import 'package:badminton_app/widgets/status_badge.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
@@ -24,12 +25,34 @@ class OwnerDashboardScreen extends ConsumerStatefulWidget {
 
 class _OwnerDashboardScreenState
     extends ConsumerState<OwnerDashboardScreen> {
+  final _scrollController = ScrollController();
+  bool _showFab = true;
+
   @override
   void initState() {
     super.initState();
+    _scrollController.addListener(_onScroll);
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _loadDashboard();
     });
+  }
+
+  void _onScroll() {
+    final direction =
+        _scrollController.position.userScrollDirection;
+    if (direction == ScrollDirection.reverse &&
+        _showFab) {
+      setState(() => _showFab = false);
+    } else if (direction == ScrollDirection.forward &&
+        !_showFab) {
+      setState(() => _showFab = true);
+    }
+  }
+
+  @override
+  void dispose() {
+    _scrollController.dispose();
+    super.dispose();
   }
 
   void _loadDashboard() {
@@ -47,53 +70,48 @@ class _OwnerDashboardScreenState
     final state = ref.watch(ownerDashboardNotifierProvider);
 
     return Scaffold(
-      appBar: AppBar(
-        title: const Text(
-          '대시보드',
-          style: TextStyle(
-            fontSize: 20,
-            fontWeight: FontWeight.bold,
-            color: AppTheme.textPrimary,
-          ),
-        ),
-        actions: [
-          NotificationBell(
-            onPressed: () =>
-                context.push('/owner/notifications'),
-          ),
-        ],
-      ),
       body: CourtBackground(
         child: _DashboardBody(
-        state: state,
-        onRetry: _loadDashboard,
-        onStatusChange: (orderId, newStatus) {
-          ref
-              .read(ownerDashboardNotifierProvider.notifier)
-              .changeOrderStatus(orderId, newStatus);
-        },
-        onViewAll: () {
-          StatefulNavigationShell.of(context).goBranch(1);
-        },
-      ),
-      ),
-      floatingActionButton: SizedBox(
-        width: 56,
-        height: 56,
-        child: FloatingActionButton(
-          onPressed: () {
-            final shopId = ref
-                .read(ownerDashboardNotifierProvider)
-                .shopId;
-            context.push(
-              '/owner/dashboard/order-create'
-              '?shopId=$shopId',
-            );
+          state: state,
+          onRetry: _loadDashboard,
+          scrollController: _scrollController,
+          onStatusChange: (orderId, newStatus) {
+            ref
+                .read(
+                    ownerDashboardNotifierProvider.notifier)
+                .changeOrderStatus(orderId, newStatus);
           },
-          backgroundColor: AppTheme.primaryCta,
-          foregroundColor: Colors.white,
-          shape: const CircleBorder(),
-          child: const Icon(Icons.add),
+          onViewAll: () {
+            StatefulNavigationShell.of(context)
+                .goBranch(1);
+          },
+        ),
+      ),
+      floatingActionButton: AnimatedSlide(
+        duration: const Duration(milliseconds: 200),
+        offset: _showFab ? Offset.zero : const Offset(0, 2),
+        child: AnimatedOpacity(
+          duration: const Duration(milliseconds: 200),
+          opacity: _showFab ? 1 : 0,
+          child: SizedBox(
+            width: 56,
+            height: 56,
+            child: FloatingActionButton(
+              onPressed: () {
+                final shopId = ref
+                    .read(ownerDashboardNotifierProvider)
+                    .shopId;
+                context.push(
+                  '/owner/dashboard/order-create'
+                  '?shopId=$shopId',
+                );
+              },
+              backgroundColor: AppTheme.primaryCta,
+              foregroundColor: Colors.white,
+              shape: const CircleBorder(),
+              child: const Icon(Icons.add),
+            ),
+          ),
         ),
       ),
     );
@@ -104,12 +122,14 @@ class _DashboardBody extends StatelessWidget {
   const _DashboardBody({
     required this.state,
     required this.onRetry,
+    required this.scrollController,
     required this.onStatusChange,
     required this.onViewAll,
   });
 
   final OwnerDashboardState state;
   final VoidCallback onRetry;
+  final ScrollController scrollController;
   final void Function(String, OrderStatus) onStatusChange;
   final VoidCallback onViewAll;
 
@@ -129,7 +149,26 @@ class _DashboardBody extends StatelessWidget {
     return RefreshIndicator(
       onRefresh: () async => onRetry(),
       child: CustomScrollView(
+        controller: scrollController,
         slivers: [
+          SliverAppBar(
+            floating: true,
+            snap: true,
+            title: const Text(
+              '대시보드',
+              style: TextStyle(
+                fontSize: 20,
+                fontWeight: FontWeight.bold,
+                color: AppTheme.textPrimary,
+              ),
+            ),
+            actions: [
+              NotificationBell(
+                onPressed: () => context
+                    .push('/owner/notifications'),
+              ),
+            ],
+          ),
           // Stats Section: padding [16,28], gap 12
           SliverPadding(
             padding: const EdgeInsets.symmetric(
