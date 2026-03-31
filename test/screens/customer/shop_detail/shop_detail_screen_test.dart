@@ -105,9 +105,10 @@ void main() {
           ),
         );
         await tester.pumpAndSettle();
+        // SliverAppBar 타이틀 + _ShopNameSection에 각각 표시
         expect(
           find.text(testShop.name),
-          findsOneWidget,
+          findsNWidgets(2),
         );
         expect(
           find.byIcon(Icons.storefront),

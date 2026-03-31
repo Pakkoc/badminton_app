@@ -4,7 +4,6 @@ import 'package:badminton_app/models/inventory_item.dart';
 import 'package:badminton_app/models/post.dart';
 import 'package:badminton_app/models/shop.dart';
 import 'package:badminton_app/screens/customer/shop_detail/shop_detail_notifier.dart';
-import 'package:badminton_app/screens/customer/shop_detail/shop_detail_state.dart';
 import 'package:badminton_app/widgets/court_background.dart';
 import 'package:badminton_app/widgets/error_view.dart';
 import 'package:badminton_app/widgets/loading_indicator.dart';
@@ -54,124 +53,153 @@ class _ShopDetailScreenState
   Widget build(BuildContext context) {
     final state = ref.watch(shopDetailNotifierProvider);
 
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('샵 정보'),
-      ),
-      body: CourtBackground(
-        child: _buildBody(context, ref, state),
-      ),
-    );
-  }
-
-  Widget _buildBody(
-    BuildContext context,
-    WidgetRef ref,
-    ShopDetailState state,
-  ) {
     if (state.isLoading) {
-      return const LoadingIndicator();
+      return Scaffold(
+        appBar: AppBar(
+          title: const Text('샵 정보'),
+        ),
+        body: const CourtBackground(
+          child: LoadingIndicator(),
+        ),
+      );
     }
 
     if (state.error != null && state.shop == null) {
-      return ErrorView(
-        message: state.error!,
-        onRetry: () => ref
-            .read(shopDetailNotifierProvider.notifier)
-            .loadShop(widget.shopId),
+      return Scaffold(
+        appBar: AppBar(
+          title: const Text('샵 정보'),
+        ),
+        body: CourtBackground(
+          child: ErrorView(
+            message: state.error!,
+            onRetry: () => ref
+                .read(shopDetailNotifierProvider.notifier)
+                .loadShop(widget.shopId),
+          ),
+        ),
       );
     }
 
     final shop = state.shop;
     if (shop == null) {
-      return const LoadingIndicator();
+      return Scaffold(
+        appBar: AppBar(
+          title: const Text('샵 정보'),
+        ),
+        body: const CourtBackground(
+          child: LoadingIndicator(),
+        ),
+      );
     }
 
-    return NestedScrollView(
-      headerSliverBuilder: (context, innerBoxIsScrolled) {
-        return [
-          SliverToBoxAdapter(
-            child: Column(
-              crossAxisAlignment:
-                  CrossAxisAlignment.start,
-              children: [
-                // 지도 미리보기 — 스펙 3.2
-                _MapPreview(shop: shop),
-                // 샵 이름/소개 — 스펙 3.3
-                _ShopNameSection(shop: shop),
-                // 작업 현황 — 스펙 3.4
-                _OrderStatusCard(
-                  receivedCount: state.receivedCount,
-                  inProgressCount:
-                      state.inProgressCount,
-                ),
-                // 섹션 구분선
-                const Padding(
-                  padding: EdgeInsets.symmetric(
-                    horizontal: 16,
-                    vertical: 8,
+    return Scaffold(
+      body: CourtBackground(
+        child: NestedScrollView(
+          headerSliverBuilder:
+              (context, innerBoxIsScrolled) {
+            return [
+              SliverAppBar(
+                pinned: true,
+                expandedHeight: 240,
+                flexibleSpace: FlexibleSpaceBar(
+                  title: Text(
+                    shop.name,
+                    style: const TextStyle(
+                      fontSize: 14,
+                      fontWeight: FontWeight.w600,
+                    ),
                   ),
-                  child: Divider(
-                    color: AppTheme.border,
-                    height: 1,
+                  collapseMode: CollapseMode.pin,
+                  background: GestureDetector(
+                    onTap: () => _openMap(shop),
+                    child: Stack(
+                      fit: StackFit.expand,
+                      children: [
+                        MapPreview(
+                          latitude: shop.latitude,
+                          longitude: shop.longitude,
+                          height: 240,
+                          emptyText:
+                              '위치 정보가 없습니다',
+                        ),
+                        const DecoratedBox(
+                          decoration: BoxDecoration(
+                            gradient: LinearGradient(
+                              begin:
+                                  Alignment.topCenter,
+                              end: Alignment
+                                  .bottomCenter,
+                              colors: [
+                                Colors.transparent,
+                                Color(0x80000000),
+                              ],
+                              stops: [0.5, 1.0],
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
                 ),
-                // 위치 및 연락처 — 스펙 3.5
-                _ContactSection(shop: shop),
-                // 길찾기 버튼 — 스펙 3.6
-                _DirectionsButton(shop: shop),
-                const SizedBox(height: 24),
-              ],
-            ),
+              ),
+              SliverToBoxAdapter(
+                child: Column(
+                  crossAxisAlignment:
+                      CrossAxisAlignment.start,
+                  children: [
+                    _ShopNameSection(shop: shop),
+                    _OrderStatusCard(
+                      receivedCount:
+                          state.receivedCount,
+                      inProgressCount:
+                          state.inProgressCount,
+                    ),
+                    const Padding(
+                      padding: EdgeInsets.symmetric(
+                        horizontal: 16,
+                        vertical: 8,
+                      ),
+                      child: Divider(
+                        color: AppTheme.border,
+                        height: 1,
+                      ),
+                    ),
+                    _ContactSection(shop: shop),
+                    _DirectionsButton(shop: shop),
+                    const SizedBox(height: 24),
+                  ],
+                ),
+              ),
+              SliverPersistentHeader(
+                pinned: true,
+                delegate: _TabBarDelegate(
+                  tabController: _tabController,
+                ),
+              ),
+            ];
+          },
+          body: TabBarView(
+            controller: _tabController,
+            children: [
+              _NoticeTab(
+                posts: state.noticePosts,
+                shopId: widget.shopId,
+              ),
+              _EventTab(
+                posts: state.eventPosts,
+                shopId: widget.shopId,
+              ),
+              _InventoryTab(
+                items: state.inventoryItems,
+              ),
+            ],
           ),
-          SliverPersistentHeader(
-            pinned: true,
-            delegate: _TabBarDelegate(
-              tabController: _tabController,
-            ),
-          ),
-        ];
-      },
-      body: TabBarView(
-        controller: _tabController,
-        children: [
-          _NoticeTab(
-            posts: state.noticePosts,
-            shopId: widget.shopId,
-          ),
-          _EventTab(
-            posts: state.eventPosts,
-            shopId: widget.shopId,
-          ),
-          _InventoryTab(
-            items: state.inventoryItems,
-          ),
-        ],
+        ),
       ),
     );
   }
-}
 
-/// 지도 미리보기 — 스펙 3.2.
-class _MapPreview extends StatelessWidget {
-  const _MapPreview({required this.shop});
-
-  final Shop shop;
-
-  @override
-  Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: () => _openMap(),
-      child: MapPreview(
-        latitude: shop.latitude,
-        longitude: shop.longitude,
-        height: 180,
-        emptyText: '위치 정보가 없습니다',
-      ),
-    );
-  }
-
-  Future<void> _openMap() async {
+  Future<void> _openMap(Shop shop) async {
     final uri = Uri.parse(
       'nmap://place?lat=${shop.latitude}'
       '&lng=${shop.longitude}'
