@@ -56,110 +56,179 @@ class _OrderManageScreenState
 
   @override
   Widget build(BuildContext context) {
-
     final state = ref.watch(orderManageNotifierProvider);
 
     return Scaffold(
-      appBar: AppBar(
-        title: const Text(
-          '작업 관리',
-          style: TextStyle(
-            fontSize: 20,
-            fontWeight: FontWeight.bold,
-            color: AppTheme.textPrimary,
-          ),
-        ),
-      ),
       body: CourtBackground(
-        child: Column(
-        children: [
-          _StatusFilterTabs(
-            selectedFilter: state.selectedFilter,
-            totalCount: state.orders.length,
-            countByStatus: {
-              for (final s in OrderStatus.values)
-                s: state.orders
-                    .where((o) => o.status == s)
-                    .length,
-            },
-            onFilterChanged: (status) {
-              ref
-                  .read(orderManageNotifierProvider.notifier)
-                  .filterByStatus(status);
-            },
-          ),
-          Expanded(child: _buildBody(state)),
-        ],
-      ),
+        child: _buildScrollView(context, state),
       ),
     );
   }
 
-  Widget _buildBody(OrderManageState state) {
-    if (state.isLoading) {
-      return const LoadingIndicator();
-    }
-
-    if (state.error != null) {
-      return ErrorView(
-        message: state.error!,
-        onRetry: _loadOrders,
-      );
-    }
-
+  Widget _buildScrollView(
+    BuildContext context,
+    OrderManageState state,
+  ) {
     final orders = state.filteredOrders;
 
-    if (orders.isEmpty) {
-      return const EmptyState(
-        icon: Icons.inbox_outlined,
-        message: '작업이 없습니다',
-      );
-    }
-
-    return ListView.builder(
-      // Order List: padding [12,28], gap 10
-      padding: const EdgeInsets.symmetric(
-        horizontal: 16,
-        vertical: 12,
-      ),
-      itemCount: orders.length,
-      itemBuilder: (context, index) {
-        final order = orders[index];
-        final memberName =
-            state.memberNames[order.memberId] ?? '회원';
-        return Padding(
-          padding: EdgeInsets.only(
-            bottom: index < orders.length - 1 ? 10 : 0,
+    return RefreshIndicator(
+      onRefresh: _loadOrders,
+      child: CustomScrollView(
+        slivers: [
+          SliverAppBar(
+            floating: true,
+            snap: true,
+            title: const Text(
+              '작업 관리',
+              style: TextStyle(
+                fontSize: 20,
+                fontWeight: FontWeight.bold,
+                color: AppTheme.textPrimary,
+              ),
+            ),
           ),
-          child: _OrderManageCard(
-            order: order,
-            memberName: memberName,
-            onStatusChange: (newStatus) {
-              ref
-                  .read(orderManageNotifierProvider.notifier)
-                  .changeStatus(order.id, newStatus);
-            },
-            onDelete: order.status == OrderStatus.received
-                ? () {
-                    showConfirmDialog(
-                      context: context,
-                      title: '작업 삭제',
-                      content: '이 작업을 삭제하시겠습니까?',
-                      onConfirm: () {
-                        ref
-                            .read(
-                                orderManageNotifierProvider
-                                    .notifier)
-                            .deleteOrder(order.id);
-                      },
+          SliverPersistentHeader(
+            pinned: true,
+            delegate: _FilterTabDelegate(
+              selectedFilter: state.selectedFilter,
+              totalCount: state.orders.length,
+              countByStatus: {
+                for (final s in OrderStatus.values)
+                  s: state.orders
+                      .where((o) => o.status == s)
+                      .length,
+              },
+              onFilterChanged: (status) {
+                ref
+                    .read(orderManageNotifierProvider
+                        .notifier)
+                    .filterByStatus(status);
+              },
+            ),
+          ),
+          if (state.isLoading)
+            const SliverFillRemaining(
+              child: LoadingIndicator(),
+            )
+          else if (state.error != null)
+            SliverFillRemaining(
+              child: ErrorView(
+                message: state.error!,
+                onRetry: _loadOrders,
+              ),
+            )
+          else if (orders.isEmpty)
+            const SliverFillRemaining(
+              child: EmptyState(
+                icon: Icons.inbox_outlined,
+                message: '작업이 없습니다',
+              ),
+            )
+          else
+            SliverPadding(
+              padding: const EdgeInsets.symmetric(
+                horizontal: 16,
+                vertical: 12,
+              ),
+              sliver: SliverList(
+                delegate: SliverChildBuilderDelegate(
+                  (context, index) {
+                    final order = orders[index];
+                    final memberName =
+                        state.memberNames[
+                                order.memberId] ??
+                            '회원';
+                    return Padding(
+                      padding: EdgeInsets.only(
+                        bottom:
+                            index < orders.length - 1
+                                ? 10
+                                : 0,
+                      ),
+                      child: _OrderManageCard(
+                        order: order,
+                        memberName: memberName,
+                        onStatusChange: (newStatus) {
+                          ref
+                              .read(
+                                  orderManageNotifierProvider
+                                      .notifier)
+                              .changeStatus(
+                                  order.id, newStatus);
+                        },
+                        onDelete: order.status ==
+                                OrderStatus.received
+                            ? () {
+                                showConfirmDialog(
+                                  context: context,
+                                  title: '작업 삭제',
+                                  content:
+                                      '이 작업을 삭제하시겠습니까?',
+                                  onConfirm: () {
+                                    ref
+                                        .read(
+                                            orderManageNotifierProvider
+                                                .notifier)
+                                        .deleteOrder(
+                                            order.id);
+                                  },
+                                );
+                              }
+                            : null,
+                      ),
                     );
-                  }
-                : null,
-          ),
-        );
-      },
+                  },
+                  childCount: orders.length,
+                ),
+              ),
+            ),
+        ],
+      ),
     );
   }
+}
+
+class _FilterTabDelegate
+    extends SliverPersistentHeaderDelegate {
+  const _FilterTabDelegate({
+    required this.selectedFilter,
+    required this.totalCount,
+    required this.countByStatus,
+    required this.onFilterChanged,
+  });
+
+  final OrderStatus? selectedFilter;
+  final int totalCount;
+  final Map<OrderStatus, int> countByStatus;
+  final void Function(OrderStatus?) onFilterChanged;
+
+  @override
+  double get minExtent => 52;
+  @override
+  double get maxExtent => 52;
+
+  @override
+  Widget build(
+    BuildContext context,
+    double shrinkOffset,
+    bool overlapsContent,
+  ) {
+    return Container(
+      color: AppTheme.cardBackground,
+      child: _StatusFilterTabs(
+        selectedFilter: selectedFilter,
+        totalCount: totalCount,
+        countByStatus: countByStatus,
+        onFilterChanged: onFilterChanged,
+      ),
+    );
+  }
+
+  @override
+  bool shouldRebuild(
+          covariant _FilterTabDelegate old) =>
+      selectedFilter != old.selectedFilter ||
+      totalCount != old.totalCount;
 }
 
 class _StatusFilterTabs extends StatelessWidget {
