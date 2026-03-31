@@ -93,8 +93,8 @@ void main() {
             ),
           ),
         );
-        // Large badge + timeline 모두에 "접수됨" 표시
-        expect(find.text('접수됨'), findsNWidgets(2));
+        // SliverAppBar(타이틀+배경) + timeline에 "접수됨" 표시
+        expect(find.text('접수됨'), findsNWidgets(3));
       },
     );
 
@@ -111,7 +111,8 @@ void main() {
         );
         expect(find.text('진행 상태'), findsOneWidget);
         expect(find.text('접수됨'), findsOneWidget);
-        expect(find.text('작업중'), findsNWidgets(2));
+        // SliverAppBar(타이틀+배경) + timeline에 "작업중" 표시
+        expect(find.text('작업중'), findsNWidgets(3));
         expect(find.text('완료'), findsOneWidget);
       },
     );

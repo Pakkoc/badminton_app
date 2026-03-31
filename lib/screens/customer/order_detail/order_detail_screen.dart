@@ -3,7 +3,6 @@ import 'package:badminton_app/core/utils/formatters.dart';
 import 'package:badminton_app/models/enums.dart';
 import 'package:badminton_app/models/shop.dart';
 import 'package:badminton_app/screens/customer/order_detail/order_detail_notifier.dart';
-import 'package:badminton_app/screens/customer/order_detail/order_detail_state.dart';
 import 'package:badminton_app/widgets/court_background.dart';
 import 'package:badminton_app/widgets/error_view.dart';
 import 'package:badminton_app/widgets/loading_indicator.dart';
@@ -25,81 +24,48 @@ class OrderDetailScreen extends ConsumerWidget {
     final state =
         ref.watch(orderDetailNotifierProvider(orderId));
 
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('작업 상세'),
-      ),
-      body: CourtBackground(
-        child: _buildBody(context, ref, state),
-      ),
-    );
-  }
-
-  Widget _buildBody(
-    BuildContext context,
-    WidgetRef ref,
-    OrderDetailState state,
-  ) {
     if (state.isLoading) {
-      return const LoadingIndicator();
+      return Scaffold(
+        appBar: AppBar(
+          title: const Text('작업 상세'),
+        ),
+        body: const CourtBackground(
+          child: LoadingIndicator(),
+        ),
+      );
     }
 
     if (state.error != null) {
-      return ErrorView(
-        message: state.error!,
-        onRetry: () => ref
-            .read(
-                orderDetailNotifierProvider(orderId).notifier)
-            .loadOrder(orderId),
+      return Scaffold(
+        appBar: AppBar(
+          title: const Text('작업 상세'),
+        ),
+        body: CourtBackground(
+          child: ErrorView(
+            message: state.error!,
+            onRetry: () => ref
+                .read(orderDetailNotifierProvider(orderId)
+                    .notifier)
+                .loadOrder(orderId),
+          ),
+        ),
       );
     }
 
     final order = state.order;
     if (order == null) {
-      return const LoadingIndicator();
+      return Scaffold(
+        appBar: AppBar(
+          title: const Text('작업 상세'),
+        ),
+        body: const CourtBackground(
+          child: LoadingIndicator(),
+        ),
+      );
     }
 
-    return SingleChildScrollView(
-      padding: const EdgeInsets.symmetric(
-        horizontal: 16,
-        vertical: 16,
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          _LargeStatusBadge(status: order.status),
-          const SizedBox(height: 24),
-          _TimelineSection(
-            createdAt: order.createdAt,
-            inProgressAt: order.inProgressAt,
-            completedAt: order.completedAt,
-            currentStatus: order.status,
-          ),
-          if (order.memo != null &&
-              order.memo!.isNotEmpty) ...[
-            const SizedBox(height: 24),
-            _MemoSection(memo: order.memo!),
-          ],
-          if (state.shop != null) ...[
-            const SizedBox(height: 24),
-            _ShopInfoSection(shop: state.shop!),
-          ],
-          const SizedBox(height: 16),
-        ],
-      ),
-    );
-  }
-}
-
-/// 상태 뱃지 (Large) — 스펙 섹션 3.2.
-class _LargeStatusBadge extends StatelessWidget {
-  const _LargeStatusBadge({required this.status});
-
-  final OrderStatus status;
-
-  @override
-  Widget build(BuildContext context) {
-    final (bgColor, fgColor, icon) = switch (status) {
+    final (bgColor, fgColor, icon) =
+        switch (order.status) {
       OrderStatus.received => (
         AppTheme.receivedBackground,
         AppTheme.receivedText,
@@ -117,34 +83,87 @@ class _LargeStatusBadge extends StatelessWidget {
       ),
     };
 
-    return Container(
-      width: double.infinity,
-      height: 72,
-      padding: const EdgeInsets.symmetric(horizontal: 24),
-      decoration: BoxDecoration(
-        color: AppTheme.cardBackgroundVariant,
-        borderRadius: BorderRadius.circular(20),
-        border: Border.all(
-          color: fgColor.withValues(alpha: 0.4),
-          width: 1,
-        ),
-      ),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Icon(icon, size: 32, color: fgColor),
-          const SizedBox(width: 12),
-          Text(
-            status.label,
-            style: Theme.of(context)
-                .textTheme
-                .headlineLarge
-                ?.copyWith(
-                  fontWeight: FontWeight.bold,
-                  color: fgColor,
+    return Scaffold(
+      body: CourtBackground(
+        child: CustomScrollView(
+          slivers: [
+            SliverAppBar(
+              pinned: true,
+              expandedHeight: 120,
+              flexibleSpace: FlexibleSpaceBar(
+                title: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Icon(icon, size: 18, color: fgColor),
+                    const SizedBox(width: 6),
+                    Text(
+                      order.status.label,
+                      style: TextStyle(
+                        fontSize: 14,
+                        fontWeight: FontWeight.w600,
+                        color: fgColor,
+                      ),
+                    ),
+                  ],
                 ),
-          ),
-        ],
+                centerTitle: true,
+                background: Container(
+                  alignment: Alignment.center,
+                  padding: const EdgeInsets.only(top: 40),
+                  child: Row(
+                    mainAxisAlignment:
+                        MainAxisAlignment.center,
+                    children: [
+                      Icon(
+                        icon,
+                        size: 40,
+                        color: fgColor,
+                      ),
+                      const SizedBox(width: 12),
+                      Text(
+                        order.status.label,
+                        style: Theme.of(context)
+                            .textTheme
+                            .headlineLarge
+                            ?.copyWith(
+                              fontWeight: FontWeight.bold,
+                              color: fgColor,
+                            ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+            SliverPadding(
+              padding: const EdgeInsets.symmetric(
+                horizontal: 16,
+                vertical: 16,
+              ),
+              sliver: SliverList(
+                delegate: SliverChildListDelegate([
+                  _TimelineSection(
+                    createdAt: order.createdAt,
+                    inProgressAt: order.inProgressAt,
+                    completedAt: order.completedAt,
+                    currentStatus: order.status,
+                  ),
+                  if (order.memo != null &&
+                      order.memo!.isNotEmpty) ...[
+                    const SizedBox(height: 24),
+                    _MemoSection(memo: order.memo!),
+                  ],
+                  if (state.shop != null) ...[
+                    const SizedBox(height: 24),
+                    _ShopInfoSection(
+                        shop: state.shop!),
+                  ],
+                  const SizedBox(height: 16),
+                ]),
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
