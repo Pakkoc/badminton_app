@@ -1,5 +1,64 @@
 # CLAUDE.md
 
+This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
+
+## 빌드 및 테스트 명령어
+
+```bash
+# 빌드 (반드시 스크립트 사용 — dart-define 필수)
+bash scripts/build.sh
+
+# 빌드 + 연결된 기기에 설치
+bash scripts/install.sh
+
+# 전체 테스트
+flutter test
+
+# 단일 테스트 파일
+flutter test test/screens/customer/home/customer_home_screen_test.dart
+
+# 특정 디렉터리 테스트
+flutter test test/screens/owner/dashboard/
+
+# 코드 분석 (lint)
+flutter analyze
+
+# freezed/json_serializable 코드 생성
+dart run build_runner build --delete-conflicting-outputs
+```
+
+**주의**: `flutter build apk --release`만 실행하면 환경변수가 빈 문자열 → "서버 오류" 발생. 반드시 `scripts/build.sh` 사용.
+
+## 아키텍처
+
+```
+lib/
+  app/           — 테마(AppTheme), 라우터(go_router 22개 라우트)
+  core/          — config, error(AppException), utils(Formatters, Validators)
+  models/        — freezed 불변 데이터 모델 10개 + Enum 6개
+  repositories/  — Supabase 데이터 접근 (12개 리포지토리)
+  providers/     — Riverpod providers (auth, shop, community 등)
+  services/      — FCM 서비스
+  widgets/       — 공통 위젯 8개 (StatusBadge, EmptyState, CourtBackground 등)
+  screens/
+    auth/        — 스플래시, 로그인, 프로필 설정, 샵 등록
+    customer/    — 고객 홈, 주문 상세/이력, 샵 검색/상세, 마이페이지
+    owner/       — 대시보드, 작업 접수/관리, 샵 QR/설정, 재고/게시글 관리
+    community/   — 커뮤니티 목록/상세/작성
+    admin/       — 샵 승인, 신고 관리
+```
+
+### 핵심 흐름
+- **고객**: QR 스캔 → `https://gutalarm.app/shop/{id}` 딥링크 → 자동 회원등록 + 작업 접수
+- **사장님**: 대시보드에서 작업 관리 → 상태 변경 → Realtime + FCM으로 고객에게 알림
+- **인증 가드**: `router.dart`에서 역할별(admin/owner/customer) redirect 처리
+
+### 데이터 흐름
+```
+UI (Screen) → Notifier (StateNotifier) → Repository → Supabase
+                  ↑ Riverpod Provider로 연결
+```
+
 ## 스킬 사용 판별
 
 | 사용자 요청 패턴 | 스킬 | 진입점 |
